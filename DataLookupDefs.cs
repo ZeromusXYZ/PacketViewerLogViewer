@@ -9,9 +9,30 @@ namespace PacketViewerLogViewer.Packets
 {
     public struct DataLookupEntry
     {
-        Int64 ID ;
-        string Val ;
-        string Extra ;
+        public UInt64 ID ;
+        public string Val ;
+        public string Extra ;
+    }
+
+    public class DataLookupList
+    {
+        public Dictionary<UInt64, DataLookupEntry> data = new Dictionary<UInt64, DataLookupEntry>();
+
+        public string GetValue(UInt64 ID)
+        {
+            DataLookupEntry res;
+            if (data.TryGetValue(ID, out res))
+                return res.Val;
+            return "";
+        }
+
+        public string GetExtra(UInt64 ID)
+        {
+            DataLookupEntry res;
+            if (data.TryGetValue(ID, out res))
+                return res.Extra;
+            return "";
+        }
     }
 
     static public class DataLookups
@@ -37,31 +58,64 @@ namespace PacketViewerLogViewer.Packets
         public static string LU_Mounts = "mounts";
         public static string LU_RoE = "roe";
 
+        public static DataLookupList NullList = new DataLookupList();
+        public static DataLookupEntry NullEntry = new DataLookupEntry();
+
         // lookupname, id, lookupresult
-        static public Dictionary<string,Dictionary<UInt64, DataLookupEntry>> NLU = new Dictionary<string,Dictionary<UInt64, DataLookupEntry>>();
-        
+        static public Dictionary<string, DataLookupList> LookupLists = new Dictionary<string, DataLookupList>();
+
         static DataLookups()
         {
-            //
+            NullEntry.ID = 0;
+            NullEntry.Val = "NULL";
+            NullEntry.Extra = "";
         }
 
         static void LoadLookupFile(string fileName)
         {
+            // Extract name
             var lookupname = Path.GetFileNameWithoutExtension(fileName).ToLower();
+            // Create new list
+            DataLookupList dll = new DataLookupList();
+            // Add it
+            LookupLists.Add(lookupname,dll);
+            // Load file
             List<string> sl = File.ReadAllLines(fileName).ToList();
-
-            // TODO: parse file
-
+            // Parse File
+            foreach(string line in sl)
+            {
+                string[] fields = line.Split(';');
+                if (fields.Length > 1)
+                {
+                    if (UInt64.TryParse(fields[0], out UInt64 newID))
+                    {
+                        DataLookupEntry dle = new DataLookupEntry();
+                        dle.ID = newID;
+                        dle.Val = fields[1];
+                        if (fields.Length > 2)
+                            dle.Extra = fields[2];
+                        dll.data.Add(newID,dle);
+                    }
+                }
+            }
         }
 
         public static void LoadLookups()
         {
-            NLU.Clear();
+            LookupLists.Clear();
             DirectoryInfo DI = new DirectoryInfo(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + "lookup");
             foreach(var fi in DI.GetFiles())
             {
                 LoadLookupFile(fi.FullName);
             }
+        }
+
+        public static DataLookupList NLU(string lookupName)
+        {
+            DataLookupList res;
+            if (LookupLists.TryGetValue(lookupName, out res))
+                return res;
+            return NullList;
         }
 
 
