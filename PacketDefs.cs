@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace PacketViewerLogViewer.Packets
 {
@@ -36,6 +37,7 @@ namespace PacketViewerLogViewer.Packets
         public UInt16 PacketID { get; protected set; }
         public UInt16 PacketDataSize { get; protected set; }
         public UInt16 PacketSync { get; protected set; }
+        public DateTime TimeStamp { get; protected set; }
         public DateTime VirtualTimeStamp { get; protected set; }
         public string OriginalTimeString { get; protected set; }
 
@@ -49,6 +51,7 @@ namespace PacketViewerLogViewer.Packets
             PacketID = 0x000 ;
             PacketDataSize = 0x0000 ;
             PacketSync = 0x0000 ;
+            TimeStamp = new DateTime(0);
             VirtualTimeStamp = new DateTime(0);
             OriginalTimeString = "";
         }
@@ -423,81 +426,77 @@ namespace PacketViewerLogViewer.Packets
             return -1;
         }
 
+        public bool CompileData()
+        {
+            if (RawBytes.Count < 4)
+            {
+                PacketID = 0xFFFF;
+                PacketDataSize = 0;
+                HeaderText = "Invalid Packet Size < 4";
+                return false;
+            }
+            PacketID = (UInt16)( GetByteAtPos(0) + ((GetByteAtPos(1) & 0x01) * 0x100) );
+            PacketDataSize = (UInt16)((GetByteAtPos(1) & 0xFE) * 2);
+            PacketSync = (UInt16)(GetByteAtPos(2) + (GetByteAtPos(3) * 0x100));
+            string TS = "";
+            if ( (OriginalTimeString.ToLower().IndexOf("[c->s]") > 0) || (OriginalTimeString.ToLower().IndexOf("[s->c]") > 0) )
+            {
+                // Packeteer doesn't have time info (yet)
+                TimeStamp = new DateTime(0);
+                VirtualTimeStamp = new DateTime(0);
+                OriginalTimeString = "0000-00-00 00:00";
+            }
+            else
+            {
+                // Try to determine timestamp from header
+                var P1 = OriginalHeaderText.IndexOf('[');
+                var P2 = OriginalHeaderText.IndexOf(']');
+                if ((P1 > 0) && (P2 > 0) && (P2 > P1))
+                {
+                    OriginalTimeString = OriginalHeaderText.Substring(P1 + 1, P2 - P1 - 1);
+                    if (OriginalTimeString.Length > 0)
+                    {
+                        // Source: https://docs.microsoft.com/en-us/dotnet/api/system.datetime.parse?view=netframework-4.7.2#System_DateTime_Parse_System_String_System_IFormatProvider_System_Globalization_DateTimeStyles_
+                        // Assume a date and time string formatted for the fr-FR culture is the local 
+                        // time and convert it to UTC.
+                        // dateString = "2008-03-01 10:00";
+                        CultureInfo culture = CultureInfo.CreateSpecificCulture("fr-FR"); // French seems to best match for what we need here
+                        DateTimeStyles styles = DateTimeStyles.AssumeLocal;
+                        try
+                        {
+                            TimeStamp = DateTime.Parse(OriginalTimeString, culture, styles);
+                            TS = TimeStamp.ToString("yyyy-MM-dd HH:mm:ss");
+                        }
+                        catch (FormatException)
+                        {
+                            TimeStamp = new DateTime(0);
+                            TS = "";
+                            OriginalTimeString = "0000-00-00 00:00";
+                        }
+                        VirtualTimeStamp = TimeStamp;
+                    }
+                }
+            }
+            if (TimeStamp.Ticks == 0)
+                TS = "";
 
-
-        /*
-        Function TPacketData.CompileData: Boolean;
-        VAR
-          S, TS: String;
-          P1, P2: Integer;
-        begin
-          Result := False;
-          If Length(fRawBytes) < 4 then
-          Begin
-            fPacketID := $FFFF; // invalid data
-            fPacketDataSize := 0;
-            fHeaderText := 'Invalid Packet Size < 4';
-            exit;
-          End;
-          fPacketID := fRawBytes[$0] + ((fRawBytes[$1] AND $01) * $100);
-          fPacketDataSize := (fRawBytes[$1] AND $FE) * 2;
-          // basically, all packets are always multiples of 4 bytes
-          fPacketSync := fRawBytes[$2] + (fRawBytes[$3] * $100); // packet order number
-
-          If (Pos('[c->s]', LowerCase(fOriginalTimeString)) > 0) or
-            (Pos('[s->c]', LowerCase(fOriginalTimeString)) > 0) Then
-          Begin
-            // Packeteer doesn't have time info (yet)
-            TS := '';
-            fTimeStamp := 0;
-            fVirtualTimeStamp := 0;
-            fOriginalTimeString := '0000-00-00 00:00';
-          End
-          Else
-          Begin
-            // Try to determine timestamp from header
-            fOriginalTimeString := '';
-            P1 := Pos('[', fOriginalHeaderText);
-            P2 := Pos(']', fOriginalHeaderText);
-            If (P1 > 0) and (P2 > 0) and (P2 > P1) Then
-            Begin
-              fOriginalTimeString := Copy(fOriginalHeaderText, P1 + 1, P2 - P1 - 1);
-              If (Length(fOriginalTimeString) > 0) Then
-                Try
-                  fTimeStamp := VarToDateTime(fOriginalTimeString);
-                  fVirtualTimeStamp := fTimeStamp;
-                  // <-- seems to work better than anything I'd like to try
-                  // fTimeStamp := StrToDateTime(fOriginalTimeString);
-                  DateTimeToString(TS, 'hh:nn:ss', TimeStamp);
-                Except
-                  TS := '';
-                  fTimeStamp := 0;
-                  fVirtualTimeStamp := 0;
-                  fOriginalTimeString := '0000-00-00 00:00';
-                End;
-            End;
-          End;
-
-          If (fTimeStamp = 0) Then
-            TS := '';
-          // If (fTimeStamp = 0) Then TS := '??:??:??' ;
-
-          Case PacketLogType Of
-            1:
-              S := 'OUT ';
-            2:
-              S := 'IN  ';
-          Else
-            S := '??? ';
-          End;
-          S := TS + ' : ' + S + '0x' + IntToHex(PacketID, 3) + ' - ';
-
-          fHeaderText := S + PacketTypeToString(PacketLogType, PacketID);
-          Result := true;
-        end;
-
-        */
-
+            string S = "";
+            switch(PacketLogType)
+            {
+                case PacketLogTypes.OutGoing:
+                    S = "OUT ";
+                    break;
+                case PacketLogTypes.InComming:
+                    S = "IN  ";
+                    break;
+                default:
+                    S = "??? ";
+                    break;
+            }
+            S = TS + " : " + S + "0x" + PacketID.ToString("X3") + " - ";
+            HeaderText = S + DataLookups.PacketTypeToString(PacketLogType, PacketID);
+            return true;
+        }
 
     }
 

@@ -103,10 +103,14 @@ namespace PacketViewerLogViewer.Packets
         public static void LoadLookups()
         {
             LookupLists.Clear();
-            DirectoryInfo DI = new DirectoryInfo(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + "lookup");
-            foreach(var fi in DI.GetFiles())
+            var lookupPath = System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + "lookup";
+            DirectoryInfo DI = new DirectoryInfo(lookupPath);
+            if (Directory.Exists(lookupPath))
             {
-                LoadLookupFile(fi.FullName);
+                foreach (var fi in DI.GetFiles())
+                {
+                    LoadLookupFile(fi.FullName);
+                }
             }
         }
 
@@ -118,6 +122,17 @@ namespace PacketViewerLogViewer.Packets
             return NullList;
         }
 
+        public static string PacketTypeToString(PacketLogTypes PacketLogType, UInt16 PacketID)
+        {
+            string res = "";
+            if (PacketLogType == PacketLogTypes.OutGoing)
+                res = NLU(LU_PacketOut).GetValue(PacketID);
+            if (PacketLogType == PacketLogTypes.InComming)
+                res = NLU(LU_PacketIn).GetValue(PacketID);
+            if (res == "")
+                res = "??? unknown";
+            return res;
+        }
 
     }
 }
