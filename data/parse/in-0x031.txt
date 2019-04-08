@@ -1,0 +1,55 @@
+file;in-0x031;Synth List;List of recipes or materials needed for a recip
+
+info;0;Info;This packet uses 2 different layout depending on what it's send for
+
+[[Recipe List]]
+info;0;Info (1);When you ask the guild NPC that provides regular Image Support for recipes
+uint32;$04;NPC ID;1-2
+uint16;$06;NPC Index;3
+data6;$08;_unknown?;4 5 6
+item;$0E;Item 1;7
+item;$10;Item 2;8
+item;$12;Item 3;9
+item;$14;Item 4;10
+item;$16;Item 5;11
+item;$18;Item 6;12
+item;$1A;Item 7;13
+item;$1C;Item 8;14
+item;$1E;Item 9;15
+item;$20;Item 10;16
+item;$22;Item 11;17
+item;$24;Item 12;18
+item;$26;Item 13;19
+item;$28;Item 14;20
+item;$2A;Item 15;21
+item;$2C;Item 16;22
+uint16;$2E;_unknown?;23
+item;$30;Next page Item?;24
+[[]]
+
+[[Recipe Details]]
+info;0;Info (2);When you ask a guild NPC for a specific recipe
+item;$04;Item to make;1
+uint16;$06;Subcraft 1;2
+uint16;$08;Subcraft 2;3
+uint16;$0A;Subcraft 3;4
+item;$0C;Crystal;5
+uint16;$0E;KeyItem needed;6
+item;$10;Ingredient 1;7
+item;$12;Ingredient 2;8
+item;$14;Ingredient 3;9
+item;$16;Ingredient 4;10
+item;$18;Ingredient 5;11
+item;$1A;Ingredient 6;12
+item;$1C;Ingredient 7;13
+item;$1E;Ingredient 8;14
+item;$20;Quantity 1;15
+item;$22;Quantity 2;16
+item;$24;Quantity 3;17
+item;$26;Quantity 4;18
+item;$28;Quantity 5;19
+item;$2A;Quantity 6;20
+item;$2C;Quantity 7;21
+item;$2E;Quantity 8;22
+data4;$30;_unknown?;23-24
+[[]]

@@ -1,0 +1,7 @@
+file;in-0x083;Guild Inv List;Provides the items, prices, and counts for guild inventories
+
+
+guildshopitems;$04;Guild Shop Item Entry
+byte;$F4;Item Count
+bits;$F5:0-4;Packet Count
+bits;$F5:4-4;_0xC?

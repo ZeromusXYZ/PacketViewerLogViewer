@@ -42,5 +42,10 @@ namespace PacketViewerLogViewer
         {
             MessageBox.Show("Made by ZeromusXYZ\r\nVersion " + versionString, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            DataLookups.LoadLookups();
+        }
     }
 }

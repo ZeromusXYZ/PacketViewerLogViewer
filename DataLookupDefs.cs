@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace PacketViewerLogViewer.Packets
 {
@@ -36,17 +37,31 @@ namespace PacketViewerLogViewer.Packets
         public static string LU_Mounts = "mounts";
         public static string LU_RoE = "roe";
 
-        static public Dictionary<string,Dictionary<string, DataLookupEntry>> NLU = new Dictionary<string,Dictionary<string, DataLookupEntry>>();
-
+        // lookupname, id, lookupresult
+        static public Dictionary<string,Dictionary<UInt64, DataLookupEntry>> NLU = new Dictionary<string,Dictionary<UInt64, DataLookupEntry>>();
+        
         static DataLookups()
         {
-            // Load data
+            //
         }
 
-        static void LoadLookups()
+        static void LoadLookupFile(string fileName)
+        {
+            var lookupname = Path.GetFileNameWithoutExtension(fileName).ToLower();
+            List<string> sl = File.ReadAllLines(fileName).ToList();
+
+            // TODO: parse file
+
+        }
+
+        public static void LoadLookups()
         {
             NLU.Clear();
-
+            DirectoryInfo DI = new DirectoryInfo(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + "lookup");
+            foreach(var fi in DI.GetFiles())
+            {
+                LoadLookupFile(fi.FullName);
+            }
         }
 
 

@@ -163,14 +163,14 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
             this.mmSearchSearch.Text = "Search ...";
             // 
             // mmSearchNext
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
             this.mmSearchNext.Text = "Search next";
             // 
             // mmFilter
@@ -187,32 +187,32 @@
             // mmFilterEdit
             // 
             this.mmFilterEdit.Name = "mmFilterEdit";
-            this.mmFilterEdit.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterEdit.Size = new System.Drawing.Size(106, 22);
             this.mmFilterEdit.Text = "Edit ...";
             // 
             // mmFilterReset
             // 
             this.mmFilterReset.Name = "mmFilterReset";
-            this.mmFilterReset.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterReset.Size = new System.Drawing.Size(106, 22);
             this.mmFilterReset.Text = "Reset";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(103, 6);
             // 
             // mmFilterApply
             // 
             this.mmFilterApply.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem4});
             this.mmFilterApply.Name = "mmFilterApply";
-            this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterApply.Size = new System.Drawing.Size(106, 22);
             this.mmFilterApply.Text = "Apply";
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(57, 6);
             // 
             // mmVideo
             // 
@@ -390,6 +390,7 @@
             this.MinimumSize = new System.Drawing.Size(400, 300);
             this.Name = "MainForm";
             this.Text = "Packet Viewer Log Viewer";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.MM.ResumeLayout(false);
             this.MM.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

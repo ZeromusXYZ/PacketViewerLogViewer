@@ -1,0 +1,10 @@
+file;in-0x05B;Dialog Choice;Selecting a dialog option
+
+uint32;$04;Target ID
+uint16;$06;Option Index
+uint16;$08;_unknown?
+uint16;$0C;Target Index
+bool;$0E;Automated Message
+byte;$0F;_unknown?
+zone;$10;Zone
+uint16;$12;Menu ID

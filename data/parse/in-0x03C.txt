@@ -1,0 +1,5 @@
+file;in-0x03C;Shop;Displays items in a vendors shop.
+
+uint16;$04;_zero?
+uint16;$06;_padding?
+shopitems;$08;Shop Item Entry

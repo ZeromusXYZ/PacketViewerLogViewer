@@ -1,0 +1,6 @@
+file;in-0x057;Weather Change;Updates the weather effect when the weather changes
+
+vanatime;04;Vanadiel Time;-- 04   Units of minutes.
+weather;$08;Weather
+byte;$09;_unknown?
+uint16;$0A;_unknown?

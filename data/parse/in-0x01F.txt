@@ -1,0 +1,7 @@
+file;in-0x01F;Item Assign;Assigns an ID to equipped items in your inventory.
+
+uint32;$04;Count
+item;$08;Item
+container;$0A;Bag
+byte;$0B;Index
+byte;$0C;Status

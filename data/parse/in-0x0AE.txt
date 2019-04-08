@@ -1,0 +1,5 @@
+file;in-0x0AE;Mount List;Packet that shows your current mounts
+
+rem;the sub-offset for these parsers are the size in bits to parse, comment field is used as lookup filename
+
+bitflaglist;$04:64;Mount;mounts

@@ -1,0 +1,136 @@
+Place parsers .txt files into the parse folder
+The low viewer will look for a .txt file inside it with the following name
+
+parse\[data direction]-[hex packet id].txt
+
+- [data direction] is either 'in' or 'out'
+- [hex packet id] needs to be in 0x??? format (3 hex digits)
+
+example:
+
+parse\out-0x015.txt     <-- Standard Client Packet (your character's position update to the server)
+
+
+The file will be parsed line by line, and if something matches, it'll show it in the program
+Line format is as following
+
+type;offset[;name[;description]]
+
+- type are some pre-defined types in the log viewer
+- offset is the byte-offset within the raw data (including the header)
+  This can be in decimal format or hex format (C or Pascal)  10 = 0xA = 0x0A = $A = $0A
+- name is what you want to show in the row header (optional, if ommited will display your type and offset instead)
+- description is not used at this time (might use this for flags in the future)
+
+currently supported types:
+
+typename: file rem comment
+description: nothing at all
+
+
+typename: byte , char , b
+description: unsigned 8 bit (1 byte) value
+
+typename: byteflag , flag
+description: unsigned byte value, but also shows the value as bits
+
+typename: bit , bool
+description: display true/false value for a specific bit in a byte. To specific which bit, add a : after the offset
+  examples for value at offset $0A with a value of 9 (00001001):
+  bit;$0A:4;Bit4;  --> results in  False
+  bit;$0A:0;Bit0;  --> results in  True
+
+typename: bits , bitrange
+description: display a int64 value for a specified bits. To specific which bit, add a : after the offset and a - to add a size (in bits)
+  examples for value at offset $0A with a value of 73 (01001001):
+  bits;$0A:4-2;Bit4 to 5;  --> results in 0              ^^
+  bits;$0A:0-5;Bit0 to 5;  --> results in 9               ^^^^^
+  bits;$0A:6;Bit6;  --> results in 1 (no size=1)        ^
+  warning: you can specify more than 64 bits in size, but only the first 64 will be used to display a int64
+
+
+typename: word , uint16 , w
+description: unsigned 16 bit (2 byte) value
+
+typename: int16 , short
+description: signed 16 bit (2 byte) value
+
+typename: int , int32 , i
+description: signed 32 bit (4 byte) value
+
+typename: dword , long , longword , uint32 , u
+description: unsigned 32 bit (4 byte) value
+
+typename: float , f
+description: 4 byte floating point number
+
+typename: string , string??
+description: shows a null terminated string,
+  if a number is added to "string" in the field name, it will count as a maximum string size.
+  e.g. use string8 for max of 8 bytes of data
+  does NOT support anto-translate or non-ascii (e.g. japanese text) in this program
+
+typename: data??
+description: ?? bytes or raw data displayed in Hex. (e.g. data16)
+
+typename: ip4 , ip
+description: 4 byte IP adress in 0.0.0.0 format
+
+typename: pos
+description: series of 3 floats to make XYZ coordinates
+
+typename: dir
+description: more visually appealing way of displaying a byte that is used for direction
+
+typename: job
+description: short job name
+
+typename: ms , timestamp
+description: more visually appealing way of displaying a uint32 that is used as a timestamp in milliseconds
+
+typename: frames , frame
+description: more visually appealing way of displaying a uint32 that is used as a timestamp in frames (60 second)
+
+typename: equipslot , slot
+description: Shows named version of a equipment slot byte (uses equipslot.txt)
+
+typename: container , inventory , bag
+description: Shows named version of inventory bag byte (uses containers.txt)
+
+typename: item
+description: 2 byte itemid with name (using items.txt)
+
+typename: item-head , item-body , item-hands , item-legs , item-feet , item-main , item-sub , item-ranged
+description: 2 byte itemmodelid with name (using itemmodels.txt)
+
+typename: zone , map
+description: 2 byte map name (uses zones.txt)
+
+typename: music , bgm
+description: 2 byte music number and track name (uses music.txt)
+
+typename: weather
+description: 2 byte number and weather name (uses weather.txt)
+
+typename: bitflaglist
+description: checks X amount of bits if they are set. Displays a line for every bit
+  that is set (with it's bit number). And uses a lookup file to add a name if known.
+  sub-offset must be set to the amount of BITS you want to check (e.g. 1024 for the spells list)
+  the description for this type is used as the lookup name
+  example:
+  bitflaglist;$04:1024;Magic List;spells
+              ^    ^    ^          ^-- base name of lookup, this would be spells.txt
+              |    |    +-- Label prefix to show
+              |    +-- number of BITS to expect (note ":" in front of this, not a ";" )
+              +-- Starting BYTE
+
+typename: packet-in-0x028
+description: Shows info about incomming packet 0x028 (has no color coding)
+  it needs a special handler because of the way the packet has variable size
+  depending on conditional bit flags (would be too complex to script)
+  Does nothing if it's not used in the correct packet parser
+
+
+If there is unused data left in the packet past the last defined position,
+the log viewer will display them all as byteflag values with their
+position as a name.

@@ -1,0 +1,13 @@
+file;in-0x051;Model Change;Info about equipment and appearance.
+
+byte;$04;Face
+byte;$05;Race
+item-head;$06;Head Model;-$1000
+item-body;$08;Body Model;-$2000
+item-hands;$0A;Hands Model;-$3000
+item-legs;$0C;Legs Model;-$4000
+item-feet;$0E;Feet Model;-$5000
+item-main;$10;Main Weapon Model;-$6000
+item-sub;$12;Sub Weapon Model;-$7000
+item-ranged;$14;Ranged Weapon Model;-$8000
+uint16;$16;_unknown?

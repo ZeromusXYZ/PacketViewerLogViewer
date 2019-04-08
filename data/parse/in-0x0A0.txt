@@ -1,0 +1,6 @@
+file;in-0x0A0;Party Map Marker;Marks where players are on your map
+
+uint32;$04;Player ID
+zone;$08;Zone
+uint16;$0A;Target ID
+pos;$0C;Position

@@ -1,0 +1,12 @@
+rem;original-file;concierge.pfl
+outtype;show
+out;0x05B;Dialog choice
+out;0x016;Update Request
+out;0x01A;Action
+intype;show
+in;0x048;Linkshell Concierge List
+in;0x05C;Dialogue Information
+in;0x032;NPC Interaction 1
+in;0x034;NPC Interaction 2
+in;0x033;String NPC Interaction
+in;0x036;NPC Chat

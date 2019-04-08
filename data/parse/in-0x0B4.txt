@@ -1,0 +1,7 @@
+file;in-0x0B4;Seek AnonResp;Server response sent after you put up party or anon flag
+
+byteflag;$04;Flags 1
+byteflag;$05;Flags 2
+byteflag;$06;Flags 3
+byteflag;$07;Flags 4
+

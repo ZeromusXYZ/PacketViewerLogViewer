@@ -1,0 +1,11 @@
+file;in-0x04D;Servmes Response;Server response when someone requests it.
+
+byte;$04;Is Message Offset;-- 04  01  Message does not appear without this
+byte;$05;_unknown?;-- 05  01  Nonessential to message appearance
+byte;$06;_unknown?;-- 06  01  Message does not appear without this
+byte;$07;Language;-- 07  02  Message does not appear without this
+uint32;$08;Timestamp;-- 08  UTC Timestamp
+uint32;$0A;Message Length Total
+uint32;$10;Message Offset
+uint32;$14;This Message Length;Max 236?
+string;$18;Text

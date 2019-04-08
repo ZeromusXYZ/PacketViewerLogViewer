@@ -1,0 +1,6 @@
+file;in-0x01E;Modify Inventory;Modifies items in your inventory
+
+uint32;$04;Count
+container;$08;Bag
+byte;$09;Index
+byteflag;$0A;Status

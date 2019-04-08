@@ -1,0 +1,17 @@
+file;in-0x070;Others Synth Result;Results of an attempted synthesis process by others
+
+byte;$04;Synth Result
+byte;$05;Quality
+byte;$06;Count;Even set on fails
+byte;$07;_junk?
+item;$08;Item
+item;$0A;Lost Item 1
+item;$0C;Lost Item 2
+item;$0E;Lost Item 3
+item;$10;Lost Item 4
+item;$12;Lost Item 5
+item;$14;Lost Item 6
+item;$16;Lost Item 7
+item;$18;Lost Item 8
+uint32;$1A;Skill?
+string;$1E;Player Name

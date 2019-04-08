@@ -1,0 +1,12 @@
+file;in-0x028;Action (incomplete);Packet sent when an NPC is attacking.
+
+rem;byte;$04;Size
+rem;uint32;$05;Actor
+rem;bits;$09:0-10;Target Count
+rem;bits;$0A:2-4;Action Category
+rem;bits;$0A:6-16;Action ID
+rem;bits;$0C:6-16;_unknown
+rem;bits;$0E:6-32;Recast
+
+packet-in-0x028;0;Data;Custom parser because this thing is way too complex ?
+rem;info;0;Unsupported;The current parser can not handle details about this packet yet
