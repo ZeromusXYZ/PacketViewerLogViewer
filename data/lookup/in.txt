@@ -95,7 +95,6 @@ rem;0x04B;Logout Acknowledge;Acknowledges a logout attempt.
 0x0D3;Lot/drop item;Sent when someone casts a lot on an item or when the item drops to someone.
 0x0DC;Party Invite;Party Invite packet.
 0x0DD;Party Member Update;Alliance/party member info - zone, HP%, HP% etc.
-0x0DD;Party Member Update;Alliance/party member info - zone, HP%, HP% etc.
 0x0DE;Mog House Related?;Related to opening/closing mog house ?
 0x0DF;Char Update;A packet sent from server which updates character HP, MP and TP.
 0x0E0;Linkshell Equip;Updates your linkshell menu with the current linkshell.

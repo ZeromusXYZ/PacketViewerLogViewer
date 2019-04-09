@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Globalization;
 
 namespace PacketViewerLogViewer.Packets
 {
@@ -71,6 +72,51 @@ namespace PacketViewerLogViewer.Packets
             NullEntry.Extra = "";
         }
 
+        private static bool TryFieldParse(string field, out UInt64 res)
+        {
+            bool result = false ;
+            if (field.StartsWith("0x"))
+            {
+                try
+                {
+                    res = UInt64.Parse(field.Substring(2, field.Length - 2), NumberStyles.HexNumber);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            else
+            if (field.StartsWith("$"))
+            {
+                try
+                {
+                    res = UInt64.Parse(field.Substring(1, field.Length - 1), NumberStyles.HexNumber);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            else
+            {
+                try
+                {
+                    res = UInt64.Parse(field);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            return result;
+        }
+        
+
+
         static void LoadLookupFile(string fileName)
         {
             // Extract name
@@ -87,7 +133,7 @@ namespace PacketViewerLogViewer.Packets
                 string[] fields = line.Split(';');
                 if (fields.Length > 1)
                 {
-                    if (UInt64.TryParse(fields[0], out UInt64 newID))
+                    if (TryFieldParse(fields[0], out UInt64 newID))
                     {
                         DataLookupEntry dle = new DataLookupEntry();
                         dle.ID = newID;
@@ -125,9 +171,9 @@ namespace PacketViewerLogViewer.Packets
         public static string PacketTypeToString(PacketLogTypes PacketLogType, UInt16 PacketID)
         {
             string res = "";
-            if (PacketLogType == PacketLogTypes.OutGoing)
+            if (PacketLogType == PacketLogTypes.Outgoing)
                 res = NLU(LU_PacketOut).GetValue(PacketID);
-            if (PacketLogType == PacketLogTypes.InComming)
+            if (PacketLogType == PacketLogTypes.Incoming)
                 res = NLU(LU_PacketIn).GetValue(PacketID);
             if (res == "")
                 res = "??? unknown";

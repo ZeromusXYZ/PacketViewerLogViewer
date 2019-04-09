@@ -18,6 +18,9 @@ namespace PacketViewerLogViewer
         const string urlGitHub = "https://github.com/ZeromusXYZ/PacketViewerLogViewer";
         const string urlVideoLAN = "https://www.videolan.org/";
 
+        PacketList PLLoaded; // File Loaded
+        PacketList PL; // Filtered File Data Displayed
+
         public MainForm()
         {
             InitializeComponent();
@@ -45,7 +48,60 @@ namespace PacketViewerLogViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            DataLookups.LoadLookups();
+            Application.UseWaitCursor = true;
+            try
+            {
+                DataLookups.LoadLookups();
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Exception: " + x.Message, "Loading Lookup Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                Close();
+            }
+            PLLoaded = new PacketList();
+            PL = new PacketList();
+            Application.UseWaitCursor = false;
         }
+
+        private void mmFileOpen_Click(object sender, EventArgs e)
+        {
+            openLogFileDialog.Title = "Open log file";
+            if (openLogFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            if (!PLLoaded.LoadFromFile(openLogFileDialog.FileName))
+            {
+                MessageBox.Show("Error loading file: " + openLogFileDialog.FileName, "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                PLLoaded.Clear();
+                return;
+            }
+
+            PL.CopyFrom(PLLoaded);
+            FillListBox();
+        }
+
+        private void FillListBox()
+        {
+            Application.UseWaitCursor = true;
+            lbPackets.Items.Clear();
+            for(int i = 0; i < PL.Count(); i++)
+            {
+                PacketData pd = PL.GetPacket(i);
+                switch(pd.PacketLogType)
+                {
+                    case PacketLogTypes.Outgoing:
+                        lbPackets.Items.Add("=> " + pd.HeaderText);
+                        break;
+                    case PacketLogTypes.Incoming:
+                        lbPackets.Items.Add("<= " + pd.HeaderText);
+                        break;
+                    default:
+                        lbPackets.Items.Add("?? " + pd.HeaderText);
+                        break;
+                }
+            }
+            Application.UseWaitCursor = false;
+        }
+
     }
 }

@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.IO;
+using System.Windows.Forms ;
 
 namespace PacketViewerLogViewer.Packets
 {
-    public enum PacketLogTypes { Unknown, OutGoing, InComming }
+    public enum PacketLogTypes { Unknown, Outgoing, Incoming }
+    public enum FilterType { None, HidePackets, ShowPackets, AllowNone };
+    public enum PacketLogFileType { Unknown = 0, WindowerPacketViewer = 1, AshitaPacketeer = 2 }
 
     public static class String6BitEncodeKeys
     {
@@ -30,18 +34,18 @@ namespace PacketViewerLogViewer.Packets
     public class PacketData
     {
         public List<String> RawText { get; protected set; }
-        public string HeaderText { get; protected set; }
-        public string OriginalHeaderText { get; protected set; }
-        public List<byte> RawBytes { get; protected set; }
-        public PacketLogTypes PacketLogType { get; protected set; }
-        public UInt16 PacketID { get; protected set; }
-        public UInt16 PacketDataSize { get; protected set; }
-        public UInt16 PacketSync { get; protected set; }
-        public DateTime TimeStamp { get; protected set; }
-        public DateTime VirtualTimeStamp { get; protected set; }
-        public string OriginalTimeString { get; protected set; }
+        public string HeaderText { get; set; }
+        public string OriginalHeaderText { get; set; }
+        public List<byte> RawBytes { get; set; }
+        public PacketLogTypes PacketLogType { get; set; }
+        public UInt16 PacketID { get; set; }
+        public UInt16 PacketDataSize { get; set; }
+        public UInt16 PacketSync { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public DateTime VirtualTimeStamp { get; set; }
+        public string OriginalTimeString { get; set; }
 
-        PacketData()
+        public PacketData()
         {
             RawText = new List<string>();
             HeaderText = "Unknown Header";
@@ -89,12 +93,15 @@ namespace PacketViewerLogViewer.Packets
             int c = 0;
             for(int i = 0 ; i <= 0xf ; i++)
             {
-                var h = s.Substring(11 + (i * 3), 2);
+                var h = s.Substring(10 + (i * 3), 2);
                 if (h != "--")
                 {
-                    if (!byte.TryParse("0x" + h, out byte b))
-                        break;
-                    RawBytes.Add(b);
+                    try
+                    {
+                        byte b = byte.Parse(h, System.Globalization.NumberStyles.HexNumber);
+                        RawBytes.Add(b);
+                    }
+                    catch { }
                     c++;
                 }
             }
@@ -483,10 +490,10 @@ namespace PacketViewerLogViewer.Packets
             string S = "";
             switch(PacketLogType)
             {
-                case PacketLogTypes.OutGoing:
+                case PacketLogTypes.Outgoing:
                     S = "OUT ";
                     break;
-                case PacketLogTypes.InComming:
+                case PacketLogTypes.Incoming:
                     S = "IN  ";
                     break;
                 default:
@@ -499,5 +506,307 @@ namespace PacketViewerLogViewer.Packets
         }
 
     }
+
+    public class PacketList
+    {
+        protected List<PacketData> PacketDataList { get; set; }
+
+        public FilterType FilterOutType { get ; set ; }
+        public List<UInt16> FilterOutList { get; set; }
+        public FilterType FilterInType { get; set; }
+        public List<UInt16> FilterInList { get; set; }
+
+        public PacketList()
+        {
+            PacketDataList = new List<PacketData>();
+            FilterOutType = FilterType.None;
+            FilterOutList = new List<UInt16>();
+            FilterInType = FilterType.None;
+            FilterInList = new List<UInt16>();
+        }
+
+        ~PacketList()
+        {
+            ClearFilters();
+            Clear();
+        }
+
+        public void Clear()
+        {
+            PacketDataList.Clear();
+        }
+
+        public void ClearFilters()
+        {
+            FilterOutType = FilterType.None;
+            FilterOutList.Clear();
+            FilterInType = FilterType.None;
+            FilterInList.Clear();
+        }
+
+        public bool LoadFromFile(string fileName)
+        {
+            if (!File.Exists(fileName))
+                return false;
+            PacketLogTypes packetType = PacketLogTypes.Unknown;
+            PacketLogFileType logType = PacketLogFileType.Unknown;
+            var fn = fileName.ToLower();
+            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("in") > 0))
+                packetType = PacketLogTypes.Incoming;
+            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("out") > 0))
+                packetType = PacketLogTypes.Outgoing;
+            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("in") > 0))
+                packetType = PacketLogTypes.Incoming;
+            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("out") > 0))
+                packetType = PacketLogTypes.Outgoing;
+
+            if ((logType == PacketLogFileType.Unknown) && (Path.GetExtension(fn) == ".log"))
+                logType = PacketLogFileType.WindowerPacketViewer;
+            if ((logType == PacketLogFileType.Unknown) && (Path.GetExtension(fn) == ".txt"))
+                logType = PacketLogFileType.AshitaPacketeer;
+
+            List<string> sl = File.ReadAllLines(fileName).ToList();
+            return LoadFromStringList(sl, logType, packetType);
+        }
+
+        public bool LoadFromStringList(List<string> FileData,PacketLogFileType logFileType , PacketLogTypes preferedType)
+        {
+            // Add dummy blank lines to fix a bug of ignoring last packet if isn't finished by a blank line
+            FileData.Add("");
+
+            // TODO: Loading Form
+            Application.UseWaitCursor = true;
+
+            PacketData PD = null;
+            bool IsUndefinedPacketType = true;
+            bool AskForPacketType = true;
+            foreach(string s in FileData)
+            {
+                // TODO: Progress bar
+                if ((s != "") && (PD == null))
+                {
+                    // Begin building a new packet
+                    PD = new PacketData();
+                    if (s.ToLower().IndexOf("outgoing") > 0)
+                    {
+                        PD.PacketLogType = PacketLogTypes.Outgoing;
+                        IsUndefinedPacketType = false;
+                        logFileType = PacketLogFileType.WindowerPacketViewer;
+                    }
+                    else
+                    if (s.ToLower().IndexOf("incoming") > 0)
+                    {
+                        PD.PacketLogType = PacketLogTypes.Incoming;
+                        IsUndefinedPacketType = false;
+                        logFileType = PacketLogFileType.WindowerPacketViewer;
+                    }
+                    else
+                    if (s.ToLower().IndexOf("[c->s]") > 0)
+                    {
+                        PD.PacketLogType = PacketLogTypes.Outgoing;
+                        IsUndefinedPacketType = false;
+                        logFileType = PacketLogFileType.AshitaPacketeer;
+                    }
+                    else
+                    if (s.ToLower().IndexOf("[s->c]") > 0)
+                    {
+                        PD.PacketLogType = PacketLogTypes.Incoming;
+                        IsUndefinedPacketType = false;
+                        logFileType = PacketLogFileType.AshitaPacketeer;
+                    }
+                    else
+                    {
+                        PD.PacketLogType = preferedType;
+                    }
+
+                    if (
+                        // Not a comment or empty line
+                        ((s != "") && (!s.StartsWith("--"))) &&
+                        // Unknown packet and we need to know ?
+                        (IsUndefinedPacketType && AskForPacketType && (PD.PacketLogType == PacketLogTypes.Unknown))
+                       )
+                    {
+                        AskForPacketType = false;
+                        // Ask for type
+                        var askDlgStr = "Unable to indentify the packet type.\r\nDo you want to assign a default type ?\r\n\r\nPress YES for Incomming\r\n\r\nPress NO for outgoing\r\n\r\nPress Cancel to keep it undefined\r\n\r\nLineData:\r\n\r\n" + s.Substring(0,Math.Min(s.Length,100)) + " ...";
+                        var askDlgRes = MessageBox.Show(askDlgStr, "Packet Type ?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                        if (askDlgRes == DialogResult.Yes)
+                        {
+                            preferedType = PacketLogTypes.Incoming ;
+                            IsUndefinedPacketType = false;
+                            PD.PacketLogType = preferedType ;
+                        }
+                        else
+                        if (askDlgRes == DialogResult.No)
+                        {
+                            preferedType = PacketLogTypes.Outgoing;
+                            IsUndefinedPacketType = false;
+                            PD.PacketLogType = preferedType;
+                        }
+                    }
+
+                    PD.RawText.Add(s);
+                    PD.HeaderText = s;
+                    PD.OriginalHeaderText = s;
+
+                } // end start new packet
+                else
+                if ((s != "") && (PD != null))
+                {
+                    // Add line of data
+                    PD.RawText.Add(s);
+                    // Actual packet data starts at the 3rd line after the header
+                    if ((logFileType != PacketLogFileType.AshitaPacketeer) && (PD.RawText.Count > 3))
+                    {
+                        PD.AddRawLineAsBytes(s);
+                    }
+                    else
+                    if ((logFileType == PacketLogFileType.AshitaPacketeer) && (PD.RawText.Count > 1))
+                    {
+                        PD.AddRawPacketeerLineAsBytes(s);
+                    }
+                }
+                else
+                if ((s == "") && (PD != null))
+                {
+                    // Close this packet and add it to list
+                    if (PD.CompileData())
+                    {
+                        PacketDataList.Add(PD);
+                    }
+                    else
+                    {
+                        // Invalid data
+                    }
+                    PD = null;
+                }
+                else
+                if ((s == "") && (PD == null))
+                {
+                    // Blank line
+                }
+                else
+                if (s.StartsWith("--") && (PD != null))
+                {
+                    // Comment
+                }
+                else
+                {
+                    // ERROR, this should not be possible in a valid file, but just ignore it
+                }
+
+            } // end foreach datafile line
+            // TODO: Progress bar hide
+            Application.UseWaitCursor = false;
+            return true;
+        }
+
+        public int Count()
+        {
+            return PacketDataList.Count;
+        }
+
+        public PacketData GetPacket(int index)
+        {
+            if ((index >= 0) && (index < PacketDataList.Count))
+                return PacketDataList[index];
+            return null;
+        }
+
+        public int CopyFrom(PacketList Original)
+        {
+            int c = 0;
+            Clear();
+            foreach(PacketData pd in Original.PacketDataList)
+            {
+                PacketDataList.Add(pd);
+                c++;
+            }
+            return c;
+        }
+
+        protected bool DoIShowThis(UInt16 PacketID, FilterType FT, List<UInt16> FL)
+        {
+            switch (FT)
+            { 
+                case FilterType.AllowNone:
+                    return false;
+                case FilterType.ShowPackets:
+                    return FL.Contains(PacketID);
+                case FilterType.HidePackets:
+                    return !FL.Contains(PacketID);
+                case FilterType.None:
+                default:
+                    return true;
+            }
+        }
+
+        protected bool DoIShowThis(PacketData PD)
+        {
+            if ((PD.PacketLogType == PacketLogTypes.Incoming) && (FilterInType != FilterType.None))
+                return DoIShowThis(PD.PacketID, FilterInType, FilterInList);
+            if ((PD.PacketLogType == PacketLogTypes.Outgoing) && (FilterOutType != FilterType.None))
+                return DoIShowThis(PD.PacketID, FilterOutType, FilterOutList);
+            return true;
+        }
+
+        public int FilterFrom(PacketList Original)
+        {
+            int c = 0;
+            Clear();
+            foreach (PacketData pd in Original.PacketDataList)
+            {
+                if (DoIShowThis(pd))
+                {
+                    PacketDataList.Add(pd);
+                    c++;
+                }
+            }
+            return c;
+        }
+
+        public void BuildVirtualTimeStamps()
+        {
+            // Need a minimum of 3 packets to be able to have effect
+            if (PacketDataList.Count <= 1)
+                return;
+
+            int i = 0;
+            float divider = 0.0f;
+            DateTime FirstOfGroupTime = GetPacket(0).TimeStamp;
+            int FirstOfGroupIndex = 0;
+            DateTime LastTimeStamp = FirstOfGroupTime;
+
+            while (i < PacketDataList.Count)
+            {
+                PacketData thisPacket = GetPacket(i);
+                if (thisPacket.TimeStamp == LastTimeStamp)
+                {
+                    // Same packet Group
+                    divider += 1.0f;
+                }
+                if ((thisPacket.TimeStamp != LastTimeStamp) || (i >= PacketDataList.Count))
+                {
+                    // Last packet of the group
+                    for(int n = 1; n < (divider - 1); n++)
+                    {
+                        TimeSpan stepTime = new TimeSpan(0, 0, 0, 0, (1000 / (int)Math.Round(divider * n)));
+                        GetPacket(FirstOfGroupIndex + n).VirtualTimeStamp = FirstOfGroupTime + stepTime;
+                    }
+
+                    if (i < (PacketDataList.Count - 1))
+                    {
+                        // If not the last one
+                        FirstOfGroupIndex = i + 1;
+                        FirstOfGroupTime = GetPacket(i + 1).TimeStamp;
+                    }
+                }
+                LastTimeStamp = thisPacket.TimeStamp;
+                i++;
+            }
+
+        }
+
+    } // End PacketList
 
 }

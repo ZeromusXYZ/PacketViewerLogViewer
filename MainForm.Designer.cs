@@ -63,6 +63,7 @@
             this.lInfo = new System.Windows.Forms.Label();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.mInfo = new System.Windows.Forms.RichTextBox();
+            this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -111,6 +112,7 @@
             this.mmFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
             this.mmFileOpen.Size = new System.Drawing.Size(199, 22);
             this.mmFileOpen.Text = "Open ...";
+            this.mmFileOpen.Click += new System.EventHandler(this.mmFileOpen_Click);
             // 
             // mmFileAppend
             // 
@@ -377,6 +379,13 @@
             this.mInfo.TabIndex = 0;
             this.mInfo.Text = resources.GetString("mInfo.Text");
             // 
+            // openLogFileDialog
+            // 
+            this.openLogFileDialog.DefaultExt = "log";
+            this.openLogFileDialog.Filter = "Log files|*.log;*.txt|Packet Viewer Log Files|*.log|Packeteer Log Files|*.txt|All" +
+    " Files|*.*";
+            this.openLogFileDialog.SupportMultiDottedExtensions = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -445,6 +454,7 @@
         private System.Windows.Forms.DataGridView dGV;
         private System.Windows.Forms.CheckBox cbOriginalData;
         private System.Windows.Forms.RichTextBox mInfo;
+        private System.Windows.Forms.OpenFileDialog openLogFileDialog;
     }
 }
 
