@@ -83,21 +83,38 @@ namespace PacketViewerLogViewer
         private void FillListBox()
         {
             Application.UseWaitCursor = true;
-            lbPackets.Items.Clear();
-            for(int i = 0; i < PL.Count(); i++)
+            using (LoadingForm loadform = new LoadingForm(this))
             {
-                PacketData pd = PL.GetPacket(i);
-                switch(pd.PacketLogType)
+                try
                 {
-                    case PacketLogTypes.Outgoing:
-                        lbPackets.Items.Add("=> " + pd.HeaderText);
-                        break;
-                    case PacketLogTypes.Incoming:
-                        lbPackets.Items.Add("<= " + pd.HeaderText);
-                        break;
-                    default:
-                        lbPackets.Items.Add("?? " + pd.HeaderText);
-                        break;
+                    loadform.Show();
+                    loadform.pb.Minimum = 0;
+                    loadform.pb.Maximum = PL.Count();
+                    lbPackets.Items.Clear();
+                    for (int i = 0; i < PL.Count(); i++)
+                    {
+                        PacketData pd = PL.GetPacket(i);
+                        switch (pd.PacketLogType)
+                        {
+                            case PacketLogTypes.Outgoing:
+                                lbPackets.Items.Add("=> " + pd.HeaderText);
+                                break;
+                            case PacketLogTypes.Incoming:
+                                lbPackets.Items.Add("<= " + pd.HeaderText);
+                                break;
+                            default:
+                                lbPackets.Items.Add("?? " + pd.HeaderText);
+                                break;
+                        }
+                        loadform.pb.Value = i;
+                        if ((i % 50) == 0)
+                            loadform.pb.Refresh();
+                    }
+                    loadform.Hide();
+                }
+                catch
+                {
+
                 }
             }
             Application.UseWaitCursor = false;

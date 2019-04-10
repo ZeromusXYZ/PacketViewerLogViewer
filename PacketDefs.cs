@@ -552,13 +552,13 @@ namespace PacketViewerLogViewer.Packets
             PacketLogFileType logType = PacketLogFileType.Unknown;
             var fn = fileName.ToLower();
             // first check out, then in (as "in" is also in "ougoing")
-            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("out") > 0))
+            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("out") >= 0))
                 packetType = PacketLogTypes.Outgoing;
-            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("in") > 0))
+            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("in") >= 0))
                 packetType = PacketLogTypes.Incoming;
-            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("out") > 0))
+            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("out") >= 0))
                 packetType = PacketLogTypes.Outgoing;
-            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("in") > 0))
+            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("in") >= 0))
                 packetType = PacketLogTypes.Incoming;
 
             if ((logType == PacketLogFileType.Unknown) && (Path.GetExtension(fn) == ".log"))
@@ -581,7 +581,7 @@ namespace PacketViewerLogViewer.Packets
             PacketData PD = null;
             bool IsUndefinedPacketType = true;
             bool AskForPacketType = true;
-            TODO Check prefered log type in/out
+
             foreach(string s in FileData)
             {
                 // TODO: Progress bar
@@ -589,28 +589,28 @@ namespace PacketViewerLogViewer.Packets
                 {
                     // Begin building a new packet
                     PD = new PacketData();
-                    if (s.ToLower().IndexOf("outgoing") > 0)
+                    if (s.ToLower().IndexOf("outgoing") >= 0)
                     {
                         PD.PacketLogType = PacketLogTypes.Outgoing;
                         IsUndefinedPacketType = false;
                         logFileType = PacketLogFileType.WindowerPacketViewer;
                     }
                     else
-                    if (s.ToLower().IndexOf("incoming") > 0)
+                    if (s.ToLower().IndexOf("incoming") >= 0)
                     {
                         PD.PacketLogType = PacketLogTypes.Incoming;
                         IsUndefinedPacketType = false;
                         logFileType = PacketLogFileType.WindowerPacketViewer;
                     }
                     else
-                    if (s.ToLower().IndexOf("[c->s]") > 0)
+                    if (s.ToLower().IndexOf("[c->s]") >= 0)
                     {
                         PD.PacketLogType = PacketLogTypes.Outgoing;
                         IsUndefinedPacketType = false;
                         logFileType = PacketLogFileType.AshitaPacketeer;
                     }
                     else
-                    if (s.ToLower().IndexOf("[s->c]") > 0)
+                    if (s.ToLower().IndexOf("[s->c]") >= 0)
                     {
                         PD.PacketLogType = PacketLogTypes.Incoming;
                         IsUndefinedPacketType = false;
