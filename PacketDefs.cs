@@ -458,7 +458,7 @@ namespace PacketViewerLogViewer.Packets
                 // Try to determine timestamp from header
                 var P1 = OriginalHeaderText.IndexOf('[');
                 var P2 = OriginalHeaderText.IndexOf(']');
-                if ((P1 > 0) && (P2 > 0) && (P2 > P1))
+                if ((P1 >= 0) && (P2 >= 0) && (P2 > P1))
                 {
                     OriginalTimeString = OriginalHeaderText.Substring(P1 + 1, P2 - P1 - 1);
                     if (OriginalTimeString.Length > 0)
@@ -472,7 +472,7 @@ namespace PacketViewerLogViewer.Packets
                         try
                         {
                             TimeStamp = DateTime.Parse(OriginalTimeString, culture, styles);
-                            TS = TimeStamp.ToString("yyyy-MM-dd HH:mm:ss");
+                            TS = TimeStamp.ToString("HH:mm:ss");
                         }
                         catch (FormatException)
                         {
@@ -551,14 +551,15 @@ namespace PacketViewerLogViewer.Packets
             PacketLogTypes packetType = PacketLogTypes.Unknown;
             PacketLogFileType logType = PacketLogFileType.Unknown;
             var fn = fileName.ToLower();
-            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("in") > 0))
-                packetType = PacketLogTypes.Incoming;
+            // first check out, then in (as "in" is also in "ougoing")
             if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("out") > 0))
                 packetType = PacketLogTypes.Outgoing;
-            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("in") > 0))
+            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("in") > 0))
                 packetType = PacketLogTypes.Incoming;
             if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("out") > 0))
                 packetType = PacketLogTypes.Outgoing;
+            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("in") > 0))
+                packetType = PacketLogTypes.Incoming;
 
             if ((logType == PacketLogFileType.Unknown) && (Path.GetExtension(fn) == ".log"))
                 logType = PacketLogFileType.WindowerPacketViewer;
@@ -580,6 +581,7 @@ namespace PacketViewerLogViewer.Packets
             PacketData PD = null;
             bool IsUndefinedPacketType = true;
             bool AskForPacketType = true;
+            TODO Check prefered log type in/out
             foreach(string s in FileData)
             {
                 // TODO: Progress bar
