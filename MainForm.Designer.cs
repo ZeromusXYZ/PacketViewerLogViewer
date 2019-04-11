@@ -64,6 +64,7 @@
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.mInfo = new System.Windows.Forms.RichTextBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.mmFileClose = new System.Windows.Forms.ToolStripMenuItem();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -101,6 +102,7 @@
             this.mmFileS1,
             this.mmFileSettings,
             this.toolStripMenuItem2,
+            this.mmFileClose,
             this.mmFileExit});
             this.mmFile.Name = "mmFile";
             this.mmFile.Size = new System.Drawing.Size(37, 20);
@@ -121,6 +123,7 @@
             | System.Windows.Forms.Keys.O)));
             this.mmFileAppend.Size = new System.Drawing.Size(199, 22);
             this.mmFileAppend.Text = "Append ...";
+            this.mmFileAppend.Click += new System.EventHandler(this.mmFileAppend_Click);
             // 
             // mmAddFromClipboard
             // 
@@ -147,7 +150,7 @@
             // mmFileExit
             // 
             this.mmFileExit.Name = "mmFileExit";
-            this.mmFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.mmFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.mmFileExit.Size = new System.Drawing.Size(199, 22);
             this.mmFileExit.Text = "E&xit";
             this.mmFileExit.Click += new System.EventHandler(this.mmFileExit_Click);
@@ -283,12 +286,13 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.lbPackets);
+            this.splitContainer1.Panel1MinSize = 350;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(984, 435);
-            this.splitContainer1.SplitterDistance = 328;
+            this.splitContainer1.SplitterDistance = 350;
             this.splitContainer1.TabIndex = 3;
             // 
             // lbPackets
@@ -296,12 +300,15 @@
             this.lbPackets.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbPackets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lbPackets.FormattingEnabled = true;
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(12, 12);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(301, 396);
+            this.lbPackets.Size = new System.Drawing.Size(323, 396);
             this.lbPackets.TabIndex = 0;
+            this.lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
+            this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
             // 
             // splitContainer2
             // 
@@ -320,7 +327,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.cbOriginalData);
             this.splitContainer2.Panel2.Controls.Add(this.mInfo);
-            this.splitContainer2.Size = new System.Drawing.Size(652, 435);
+            this.splitContainer2.Size = new System.Drawing.Size(630, 435);
             this.splitContainer2.SplitterDistance = 276;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -335,14 +342,14 @@
             this.dGV.Location = new System.Drawing.Point(6, 32);
             this.dGV.Name = "dGV";
             this.dGV.ReadOnly = true;
-            this.dGV.Size = new System.Drawing.Size(634, 241);
+            this.dGV.Size = new System.Drawing.Size(612, 241);
             this.dGV.TabIndex = 2;
             // 
             // cbShowBlock
             // 
             this.cbShowBlock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbShowBlock.FormattingEnabled = true;
-            this.cbShowBlock.Location = new System.Drawing.Point(482, 6);
+            this.cbShowBlock.Location = new System.Drawing.Point(460, 6);
             this.cbShowBlock.Name = "cbShowBlock";
             this.cbShowBlock.Size = new System.Drawing.Size(158, 22);
             this.cbShowBlock.TabIndex = 1;
@@ -366,6 +373,7 @@
             this.cbOriginalData.TabIndex = 1;
             this.cbOriginalData.Text = "Show original data";
             this.cbOriginalData.UseVisualStyleBackColor = true;
+            this.cbOriginalData.CheckedChanged += new System.EventHandler(this.cbOriginalData_CheckedChanged);
             // 
             // mInfo
             // 
@@ -375,16 +383,24 @@
             this.mInfo.Location = new System.Drawing.Point(6, 3);
             this.mInfo.Name = "mInfo";
             this.mInfo.ReadOnly = true;
-            this.mInfo.Size = new System.Drawing.Size(634, 122);
+            this.mInfo.Size = new System.Drawing.Size(612, 122);
             this.mInfo.TabIndex = 0;
             this.mInfo.Text = resources.GetString("mInfo.Text");
             // 
             // openLogFileDialog
             // 
             this.openLogFileDialog.DefaultExt = "log";
-            this.openLogFileDialog.Filter = "Log files|*.log;*.txt|Packet Viewer Log Files|*.log|Packeteer Log Files|*.txt|All" +
-    " Files|*.*";
+            this.openLogFileDialog.Filter = "Log files|*.log;*.txt;*.sqlite|Packet Viewer Log Files|*.log|Packeteer Log Files|" +
+    "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
+            // 
+            // mmFileClose
+            // 
+            this.mmFileClose.Name = "mmFileClose";
+            this.mmFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.mmFileClose.Size = new System.Drawing.Size(199, 22);
+            this.mmFileClose.Text = "Close";
+            this.mmFileClose.Click += new System.EventHandler(this.mmFileClose_Click);
             // 
             // MainForm
             // 
@@ -456,6 +472,7 @@
         private System.Windows.Forms.CheckBox cbOriginalData;
         private System.Windows.Forms.RichTextBox mInfo;
         private System.Windows.Forms.OpenFileDialog openLogFileDialog;
+        private System.Windows.Forms.ToolStripMenuItem mmFileClose;
     }
 }
 

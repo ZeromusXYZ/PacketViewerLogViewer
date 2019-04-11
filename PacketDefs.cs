@@ -7,13 +7,15 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms ;
 using System.Data.Sql;
+using System.Data.Common;
 using Microsoft.Data.Sqlite;
+using PacketViewerLogViewer;
 
 namespace PacketViewerLogViewer.Packets
 {
     public enum PacketLogTypes { Unknown, Outgoing, Incoming }
     public enum FilterType { None, HidePackets, ShowPackets, AllowNone };
-    public enum PacketLogFileType { Unknown = 0, WindowerPacketViewer = 1, AshitaPacketeer = 2 }
+    public enum PacketLogFileType { Unknown = 0, WindowerPacketViewer = 1, AshitaPacketeer = 2, PacketDB = 3 }
 
     public static class String6BitEncodeKeys
     {
@@ -35,7 +37,7 @@ namespace PacketViewerLogViewer.Packets
 
     public class PacketData
     {
-        public List<String> RawText { get; protected set; }
+        public List<String> RawText { get; set; }
         public string HeaderText { get; set; }
         public string OriginalHeaderText { get; set; }
         public List<byte> RawBytes { get; set; }
@@ -46,6 +48,7 @@ namespace PacketViewerLogViewer.Packets
         public DateTime TimeStamp { get; set; }
         public DateTime VirtualTimeStamp { get; set; }
         public string OriginalTimeString { get; set; }
+        public int capturedZoneId { get; set; }
 
         public PacketData()
         {
@@ -60,6 +63,7 @@ namespace PacketViewerLogViewer.Packets
             TimeStamp = new DateTime(0);
             VirtualTimeStamp = new DateTime(0);
             OriginalTimeString = "";
+            capturedZoneId = 0;
         }
 
         ~PacketData()
@@ -140,6 +144,18 @@ namespace PacketViewerLogViewer.Packets
                 }
             }
             return c;
+        }
+
+        public int AddRawHexDataAsBytes(string hexData)
+        {
+            RawBytes.Clear();
+            string[] nums = hexData.Split(' ');
+            foreach(string num in nums)
+            {
+                byte b = byte.Parse(num, System.Globalization.NumberStyles.HexNumber);
+                RawBytes.Add(b);
+            }
+            return 0;
         }
 
         public string PrintRawBytesAsHex()
@@ -448,6 +464,8 @@ namespace PacketViewerLogViewer.Packets
             PacketDataSize = (UInt16)((GetByteAtPos(1) & 0xFE) * 2);
             PacketSync = (UInt16)(GetByteAtPos(2) + (GetByteAtPos(3) * 0x100));
             string TS = "";
+            if (TimeStamp.Ticks > 0)
+                TS = TimeStamp.ToString("HH:mm:ss");
             if ( (OriginalTimeString.ToLower().IndexOf("[c->s]") > 0) || (OriginalTimeString.ToLower().IndexOf("[s->c]") > 0) )
             {
                 // Packeteer doesn't have time info (yet)
@@ -567,9 +585,23 @@ namespace PacketViewerLogViewer.Packets
                 logType = PacketLogFileType.WindowerPacketViewer;
             if ((logType == PacketLogFileType.Unknown) && (Path.GetExtension(fn) == ".txt"))
                 logType = PacketLogFileType.AshitaPacketeer;
+            if ((logType == PacketLogFileType.Unknown) && (Path.GetExtension(fn) == ".sqlite"))
+                logType = PacketLogFileType.PacketDB;
 
-            List<string> sl = File.ReadAllLines(fileName).ToList();
-            return LoadFromStringList(sl, logType, packetType);
+            if ((logType == PacketLogFileType.WindowerPacketViewer) || (logType == PacketLogFileType.AshitaPacketeer))
+            {
+                List<string> sl = File.ReadAllLines(fileName).ToList();
+                return LoadFromStringList(sl, logType, packetType);
+            }
+            else
+            if (logType == PacketLogFileType.PacketDB)
+            {
+                return LoadFromSQLite3(fileName);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool LoadFromStringList(List<string> FileData,PacketLogFileType logFileType , PacketLogTypes preferedType)
@@ -580,147 +612,217 @@ namespace PacketViewerLogViewer.Packets
             // TODO: Loading Form
             Application.UseWaitCursor = true;
 
-            PacketData PD = null;
-            bool IsUndefinedPacketType = true;
-            bool AskForPacketType = true;
-
-            foreach(string s in FileData)
+            using (LoadingForm loadform = new LoadingForm(MainForm.thisMainForm))
             {
-                // TODO: Progress bar
-                if ((s != "") && (PD == null))
+                try
                 {
-                    // Begin building a new packet
-                    PD = new PacketData();
-                    if (s.ToLower().IndexOf("outgoing") >= 0)
-                    {
-                        PD.PacketLogType = PacketLogTypes.Outgoing;
-                        IsUndefinedPacketType = false;
-                        logFileType = PacketLogFileType.WindowerPacketViewer;
-                    }
-                    else
-                    if (s.ToLower().IndexOf("incoming") >= 0)
-                    {
-                        PD.PacketLogType = PacketLogTypes.Incoming;
-                        IsUndefinedPacketType = false;
-                        logFileType = PacketLogFileType.WindowerPacketViewer;
-                    }
-                    else
-                    if (s.ToLower().IndexOf("[c->s]") >= 0)
-                    {
-                        PD.PacketLogType = PacketLogTypes.Outgoing;
-                        IsUndefinedPacketType = false;
-                        logFileType = PacketLogFileType.AshitaPacketeer;
-                    }
-                    else
-                    if (s.ToLower().IndexOf("[s->c]") >= 0)
-                    {
-                        PD.PacketLogType = PacketLogTypes.Incoming;
-                        IsUndefinedPacketType = false;
-                        logFileType = PacketLogFileType.AshitaPacketeer;
-                    }
-                    else
-                    {
-                        PD.PacketLogType = preferedType;
-                    }
+                    loadform.Text = "Loading text log file";
+                    loadform.Show();
+                    loadform.pb.Minimum = 0;
+                    loadform.pb.Maximum = FileData.Count ;
+                    loadform.pb.Step = 100;
 
-                    if (
-                        // Not a comment or empty line
-                        ((s != "") && (!s.StartsWith("--"))) &&
-                        // Unknown packet and we need to know ?
-                        (IsUndefinedPacketType && AskForPacketType && (PD.PacketLogType == PacketLogTypes.Unknown))
-                       )
+                    PacketData PD = null;
+                    bool IsUndefinedPacketType = true;
+                    bool AskForPacketType = true;
+
+                    int c = 0;
+                    foreach(string s in FileData)
                     {
-                        AskForPacketType = false;
-                        // Ask for type
-                        var askDlgStr = "Unable to indentify the packet type.\r\nDo you want to assign a default type ?\r\n\r\nPress YES for Incomming\r\n\r\nPress NO for outgoing\r\n\r\nPress Cancel to keep it undefined\r\n\r\nLineData:\r\n\r\n" + s.Substring(0,Math.Min(s.Length,100)) + " ...";
-                        var askDlgRes = MessageBox.Show(askDlgStr, "Packet Type ?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                        if (askDlgRes == DialogResult.Yes)
+                        if ((s != "") && (PD == null))
                         {
-                            preferedType = PacketLogTypes.Incoming ;
-                            IsUndefinedPacketType = false;
-                            PD.PacketLogType = preferedType ;
+                            // Begin building a new packet
+                            PD = new PacketData();
+                            if (s.ToLower().IndexOf("outgoing") >= 0)
+                            {
+                                PD.PacketLogType = PacketLogTypes.Outgoing;
+                                IsUndefinedPacketType = false;
+                                logFileType = PacketLogFileType.WindowerPacketViewer;
+                            }
+                            else
+                            if (s.ToLower().IndexOf("incoming") >= 0)
+                            {
+                                PD.PacketLogType = PacketLogTypes.Incoming;
+                                IsUndefinedPacketType = false;
+                                logFileType = PacketLogFileType.WindowerPacketViewer;
+                            }
+                            else
+                            if (s.ToLower().IndexOf("[c->s]") >= 0)
+                            {
+                                PD.PacketLogType = PacketLogTypes.Outgoing;
+                                IsUndefinedPacketType = false;
+                                logFileType = PacketLogFileType.AshitaPacketeer;
+                            }
+                            else
+                            if (s.ToLower().IndexOf("[s->c]") >= 0)
+                            {
+                                PD.PacketLogType = PacketLogTypes.Incoming;
+                                IsUndefinedPacketType = false;
+                                logFileType = PacketLogFileType.AshitaPacketeer;
+                            }
+                            else
+                            {
+                                PD.PacketLogType = preferedType;
+                            }
+
+                            if (
+                                // Not a comment or empty line
+                                ((s != "") && (!s.StartsWith("--"))) &&
+                                // Unknown packet and we need to know ?
+                                (IsUndefinedPacketType && AskForPacketType && (PD.PacketLogType == PacketLogTypes.Unknown))
+                               )
+                            {
+                                AskForPacketType = false;
+                                // Ask for type
+                                var askDlgStr = "Unable to indentify the packet type.\r\nDo you want to assign a default type ?\r\n\r\nPress YES for Incomming\r\n\r\nPress NO for outgoing\r\n\r\nPress Cancel to keep it undefined\r\n\r\nLineData:\r\n\r\n" + s.Substring(0,Math.Min(s.Length,100)) + " ...";
+                                var askDlgRes = MessageBox.Show(askDlgStr, "Packet Type ?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                                if (askDlgRes == DialogResult.Yes)
+                                {
+                                    preferedType = PacketLogTypes.Incoming ;
+                                    IsUndefinedPacketType = false;
+                                    PD.PacketLogType = preferedType ;
+                                }
+                                else
+                                if (askDlgRes == DialogResult.No)
+                                {
+                                    preferedType = PacketLogTypes.Outgoing;
+                                    IsUndefinedPacketType = false;
+                                    PD.PacketLogType = preferedType;
+                                }
+                            }
+
+                            PD.RawText.Add(s);
+                            PD.HeaderText = s;
+                            PD.OriginalHeaderText = s;
+
+                        } // end start new packet
+                        else
+                        if ((s != "") && (PD != null))
+                        {
+                            // Add line of data
+                            PD.RawText.Add(s);
+                            // Actual packet data starts at the 3rd line after the header
+                            if ((logFileType != PacketLogFileType.AshitaPacketeer) && (PD.RawText.Count > 3))
+                            {
+                                PD.AddRawLineAsBytes(s);
+                            }
+                            else
+                            if ((logFileType == PacketLogFileType.AshitaPacketeer) && (PD.RawText.Count > 1))
+                            {
+                                PD.AddRawPacketeerLineAsBytes(s);
+                            }
                         }
                         else
-                        if (askDlgRes == DialogResult.No)
+                        if ((s == "") && (PD != null))
                         {
-                            preferedType = PacketLogTypes.Outgoing;
-                            IsUndefinedPacketType = false;
-                            PD.PacketLogType = preferedType;
+                            // Close this packet and add it to list
+                            if (PD.CompileData())
+                            {
+                                PacketDataList.Add(PD);
+                            }
+                            else
+                            {
+                                // Invalid data
+                            }
+                            PD = null;
                         }
-                    }
+                        else
+                        if ((s == "") && (PD == null))
+                        {
+                            // Blank line
+                        }
+                        else
+                        if (s.StartsWith("--") && (PD != null))
+                        {
+                            // Comment
+                        }
+                        else
+                        {
+                            // ERROR, this should not be possible in a valid file, but just ignore it
+                        }
 
-                    PD.RawText.Add(s);
-                    PD.HeaderText = s;
-                    PD.OriginalHeaderText = s;
+                        c++;
+                        if ((c % 100) == 0)
+                        {
+                            loadform.pb.PerformStep();
+                            loadform.pb.Refresh();
+                        }
+                    } // end foreach datafile line
 
-                } // end start new packet
-                else
-                if ((s != "") && (PD != null))
-                {
-                    // Add line of data
-                    PD.RawText.Add(s);
-                    // Actual packet data starts at the 3rd line after the header
-                    if ((logFileType != PacketLogFileType.AshitaPacketeer) && (PD.RawText.Count > 3))
-                    {
-                        PD.AddRawLineAsBytes(s);
-                    }
-                    else
-                    if ((logFileType == PacketLogFileType.AshitaPacketeer) && (PD.RawText.Count > 1))
-                    {
-                        PD.AddRawPacketeerLineAsBytes(s);
-                    }
                 }
-                else
-                if ((s == "") && (PD != null))
+                catch
                 {
-                    // Close this packet and add it to list
-                    if (PD.CompileData())
-                    {
-                        PacketDataList.Add(PD);
-                    }
-                    else
-                    {
-                        // Invalid data
-                    }
-                    PD = null;
+                    Application.UseWaitCursor = false;
+                    return false;
                 }
-                else
-                if ((s == "") && (PD == null))
-                {
-                    // Blank line
-                }
-                else
-                if (s.StartsWith("--") && (PD != null))
-                {
-                    // Comment
-                }
-                else
-                {
-                    // ERROR, this should not be possible in a valid file, but just ignore it
-                }
-
-            } // end foreach datafile line
-            // TODO: Progress bar hide
+            }
             Application.UseWaitCursor = false;
             return true;
         }
 
-        public bool LoadFromSQLite(string sqliteFileName)
+        public bool LoadFromSQLite3(string sqliteFileName)
         {
-            using (SqliteConnection sqlConnection = new SqliteConnection("Data Source = \"" + sqliteFileName + "\"; Version = 3;)"))
+            int c = 0;
+            using (LoadingForm loadform = new LoadingForm(MainForm.thisMainForm))
             {
-                sqlConnection.Open();
+                try
+                {
+                    loadform.Text = "Loading sqlite log file";
+                    loadform.Show();
+                    loadform.pb.Minimum = 0;
+                    loadform.pb.Maximum = 100000;
+                    loadform.pb.Step = 100;
 
-                string sql = "SELECT * FROM `packets` ORDER by PACKET_ID ASC";
-                
-                SqliteCommand command = new SqliteCommand(sql, sqlConnection);
-                SqliteDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                    Console.WriteLine("Name: " + reader["name"] + "\tScore: " + reader["score"]);
-                TODO
+                    using (SqliteConnection sqlConnection = new SqliteConnection("Data Source=" + sqliteFileName))
+                    {
+                        sqlConnection.Open();
 
+                        string sql = "SELECT * FROM `packets` ORDER by PACKET_ID ASC";
+
+                        SqliteCommand command = new SqliteCommand(sql, sqlConnection);
+                        SqliteDataReader reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            PacketData pd = new PacketData();
+                            pd.TimeStamp = reader.GetDateTime(reader.GetOrdinal("RECEIVED_DT"));
+                            pd.VirtualTimeStamp = pd.TimeStamp;
+                            var dir = reader.GetInt16(reader.GetOrdinal("DIRECTION")); // 0 = in ; 1 = out
+                            if (dir == 0)
+                                pd.PacketLogType = PacketLogTypes.Incoming;
+                            if (dir == 1)
+                                pd.PacketLogType = PacketLogTypes.Outgoing;
+                            pd.PacketID = (UInt16)reader.GetInt32(reader.GetOrdinal("PACKET_TYPE"));
+                            var pData = reader.GetString(reader.GetOrdinal("PACKET_DATA"));
+                            pd.RawText.Add(pData);
+                            pd.AddRawHexDataAsBytes(pData);
+                            pd.capturedZoneId = reader.GetInt16(reader.GetOrdinal("ZONE_ID"));
+
+                            pd.OriginalHeaderText = "PACKET_ID " + reader.GetInt64(reader.GetOrdinal("PACKET_ID")) + " , DIR " + dir.ToString() + " , TYPE " + pd.PacketID.ToString();
+                            pd.OriginalTimeString = "";
+
+                            if (pd.CompileData())
+                                PacketDataList.Add(pd);
+
+                            c++;
+                            if ((c % 100) == 0)
+                            {
+                                loadform.pb.PerformStep();
+                                if (loadform.pb.Value >= loadform.pb.Maximum)
+                                    loadform.pb.Value = loadform.pb.Minimum;
+                                loadform.pb.Refresh();
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show("Exception: " + x.Message, "Exception loading SQLite file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
             }
             return true;
+
         }
 
         public int Count()
