@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms ;
+using System.Data.Sql;
+using Microsoft.Data.Sqlite;
 
 namespace PacketViewerLogViewer.Packets
 {
@@ -700,6 +702,24 @@ namespace PacketViewerLogViewer.Packets
             } // end foreach datafile line
             // TODO: Progress bar hide
             Application.UseWaitCursor = false;
+            return true;
+        }
+
+        public bool LoadFromSQLite(string sqliteFileName)
+        {
+            using (SqliteConnection sqlConnection = new SqliteConnection("Data Source = \"" + sqliteFileName + "\"; Version = 3;)"))
+            {
+                sqlConnection.Open();
+
+                string sql = "SELECT * FROM `packets` ORDER by PACKET_ID ASC";
+                
+                SqliteCommand command = new SqliteCommand(sql, sqlConnection);
+                SqliteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                    Console.WriteLine("Name: " + reader["name"] + "\tScore: " + reader["score"]);
+                TODO
+
+            }
             return true;
         }
 
