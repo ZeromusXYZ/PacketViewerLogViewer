@@ -37,6 +37,7 @@
             this.mmFileS1 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mmFileClose = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.mmSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mmSearchSearch = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,6 @@
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.mInfo = new System.Windows.Forms.RichTextBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.mmFileClose = new System.Windows.Forms.ToolStripMenuItem();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -141,11 +141,20 @@
             this.mmFileSettings.Name = "mmFileSettings";
             this.mmFileSettings.Size = new System.Drawing.Size(199, 22);
             this.mmFileSettings.Text = "Settings ...";
+            this.mmFileSettings.Click += new System.EventHandler(this.mmFileSettings_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(196, 6);
+            // 
+            // mmFileClose
+            // 
+            this.mmFileClose.Name = "mmFileClose";
+            this.mmFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.mmFileClose.Size = new System.Drawing.Size(199, 22);
+            this.mmFileClose.Text = "Close";
+            this.mmFileClose.Click += new System.EventHandler(this.mmFileClose_Click);
             // 
             // mmFileExit
             // 
@@ -393,14 +402,6 @@
             this.openLogFileDialog.Filter = "Log files|*.log;*.txt;*.sqlite|Packet Viewer Log Files|*.log|Packeteer Log Files|" +
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
-            // 
-            // mmFileClose
-            // 
-            this.mmFileClose.Name = "mmFileClose";
-            this.mmFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.mmFileClose.Size = new System.Drawing.Size(199, 22);
-            this.mmFileClose.Text = "Close";
-            this.mmFileClose.Click += new System.EventHandler(this.mmFileClose_Click);
             // 
             // MainForm
             // 

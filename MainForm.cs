@@ -301,6 +301,16 @@ namespace PacketViewerLogViewer
 
         }
 
+        private void mmFileSettings_Click(object sender, EventArgs e)
+        {
+            using (SettingsForm settingsDialog = new SettingsForm())
+            {
+                if (settingsDialog.ShowDialog() == DialogResult.OK)
+                    MessageBox.Show("Settings saved");
+                settingsDialog.Dispose();
+            }
+        }
+
         /*
         Procedure TMainForm.UpdatePacketDetails(ShowBlock: String);
         Begin
