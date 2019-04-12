@@ -415,7 +415,7 @@
             this.MainMenuStrip = this.MM;
             this.MinimumSize = new System.Drawing.Size(400, 300);
             this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Packet Viewer Log Viewer";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.MM.ResumeLayout(false);

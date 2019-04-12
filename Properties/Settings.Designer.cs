@@ -22,5 +22,221 @@ namespace PacketViewerLogViewer.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 64, 0")]
+        public global::System.Drawing.Color ColFontIN {
+            get {
+                return ((global::System.Drawing.Color)(this["ColFontIN"]));
+            }
+            set {
+                this["ColFontIN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("238, 255, 238")]
+        public global::System.Drawing.Color ColBackIN {
+            get {
+                return ((global::System.Drawing.Color)(this["ColBackIN"]));
+            }
+            set {
+                this["ColBackIN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("204, 255, 204")]
+        public global::System.Drawing.Color ColSyncIN {
+            get {
+                return ((global::System.Drawing.Color)(this["ColSyncIN"]));
+            }
+            set {
+                this["ColSyncIN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("64, 128, 64")]
+        public global::System.Drawing.Color ColSelectIN {
+            get {
+                return ((global::System.Drawing.Color)(this["ColSelectIN"]));
+            }
+            set {
+                this["ColSelectIN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 32, 0")]
+        public global::System.Drawing.Color ColBarIN {
+            get {
+                return ((global::System.Drawing.Color)(this["ColBarIN"]));
+            }
+            set {
+                this["ColBarIN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0, 64")]
+        public global::System.Drawing.Color ColFontOUT {
+            get {
+                return ((global::System.Drawing.Color)(this["ColFontOUT"]));
+            }
+            set {
+                this["ColFontOUT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("238, 238, 255")]
+        public global::System.Drawing.Color ColBackOUT {
+            get {
+                return ((global::System.Drawing.Color)(this["ColBackOUT"]));
+            }
+            set {
+                this["ColBackOUT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("204, 204, 255")]
+        public global::System.Drawing.Color ColSyncOUT {
+            get {
+                return ((global::System.Drawing.Color)(this["ColSyncOUT"]));
+            }
+            set {
+                this["ColSyncOUT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("64, 64, 128")]
+        public global::System.Drawing.Color ColSelectOUT {
+            get {
+                return ((global::System.Drawing.Color)(this["ColSelectOUT"]));
+            }
+            set {
+                this["ColSelectOUT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0, 32")]
+        public global::System.Drawing.Color ColBarOUT {
+            get {
+                return ((global::System.Drawing.Color)(this["ColBarOUT"]));
+            }
+            set {
+                this["ColBarOUT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("32, 32, 32")]
+        public global::System.Drawing.Color ColFontUNK {
+            get {
+                return ((global::System.Drawing.Color)(this["ColFontUNK"]));
+            }
+            set {
+                this["ColFontUNK"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color ColBackUNK {
+            get {
+                return ((global::System.Drawing.Color)(this["ColBackUNK"]));
+            }
+            set {
+                this["ColBackUNK"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("238, 238, 238")]
+        public global::System.Drawing.Color ColSyncUNK {
+            get {
+                return ((global::System.Drawing.Color)(this["ColSyncUNK"]));
+            }
+            set {
+                this["ColSyncUNK"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("204, 204, 204")]
+        public global::System.Drawing.Color ColSelectUNK {
+            get {
+                return ((global::System.Drawing.Color)(this["ColSelectUNK"]));
+            }
+            set {
+                this["ColSelectUNK"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color ColBarUNK {
+            get {
+                return ((global::System.Drawing.Color)(this["ColBarUNK"]));
+            }
+            set {
+                this["ColBarUNK"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("238, 255, 238")]
+        public global::System.Drawing.Color ColSelectedFontIN {
+            get {
+                return ((global::System.Drawing.Color)(this["ColSelectedFontIN"]));
+            }
+            set {
+                this["ColSelectedFontIN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("238, 238, 255")]
+        public global::System.Drawing.Color ColSelectedFontOUT {
+            get {
+                return ((global::System.Drawing.Color)(this["ColSelectedFontOUT"]));
+            }
+            set {
+                this["ColSelectedFontOUT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("16, 16, 16")]
+        public global::System.Drawing.Color ColSelectedFontUNK {
+            get {
+                return ((global::System.Drawing.Color)(this["ColSelectedFontUNK"]));
+            }
+            set {
+                this["ColSelectedFontUNK"] = value;
+            }
+        }
     }
 }

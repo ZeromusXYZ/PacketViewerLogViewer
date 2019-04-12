@@ -620,7 +620,7 @@ namespace PacketViewerLogViewer.Packets
                     loadform.Show();
                     loadform.pb.Minimum = 0;
                     loadform.pb.Maximum = FileData.Count ;
-                    loadform.pb.Step = 100;
+                    loadform.pb.Step = 1000;
 
                     PacketData PD = null;
                     bool IsUndefinedPacketType = true;
@@ -742,7 +742,7 @@ namespace PacketViewerLogViewer.Packets
                         }
 
                         c++;
-                        if ((c % 100) == 0)
+                        if ((c % 1000) == 0)
                         {
                             loadform.pb.PerformStep();
                             loadform.pb.Refresh();

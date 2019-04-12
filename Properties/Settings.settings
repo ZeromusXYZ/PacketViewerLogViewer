@@ -1,7 +1,60 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PacketViewerLogViewer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ColFontIN" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">0, 64, 0</Value>
+    </Setting>
+    <Setting Name="ColBackIN" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">238, 255, 238</Value>
+    </Setting>
+    <Setting Name="ColSyncIN" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">204, 255, 204</Value>
+    </Setting>
+    <Setting Name="ColSelectIN" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">64, 128, 64</Value>
+    </Setting>
+    <Setting Name="ColBarIN" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">0, 32, 0</Value>
+    </Setting>
+    <Setting Name="ColFontOUT" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">0, 0, 64</Value>
+    </Setting>
+    <Setting Name="ColBackOUT" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">238, 238, 255</Value>
+    </Setting>
+    <Setting Name="ColSyncOUT" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">204, 204, 255</Value>
+    </Setting>
+    <Setting Name="ColSelectOUT" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">64, 64, 128</Value>
+    </Setting>
+    <Setting Name="ColBarOUT" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">0, 0, 32</Value>
+    </Setting>
+    <Setting Name="ColFontUNK" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">32, 32, 32</Value>
+    </Setting>
+    <Setting Name="ColBackUNK" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="ColSyncUNK" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">238, 238, 238</Value>
+    </Setting>
+    <Setting Name="ColSelectUNK" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">204, 204, 204</Value>
+    </Setting>
+    <Setting Name="ColBarUNK" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Black</Value>
+    </Setting>
+    <Setting Name="ColSelectedFontIN" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">238, 255, 238</Value>
+    </Setting>
+    <Setting Name="ColSelectedFontOUT" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">238, 238, 255</Value>
+    </Setting>
+    <Setting Name="ColSelectedFontUNK" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">16, 16, 16</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

@@ -18,6 +18,7 @@ namespace PacketViewerLogViewer
         public static Form thisMainForm ;
 
         const string versionString = "0.0.1";
+        string defaultTitle = "";
         const string urlGitHub = "https://github.com/ZeromusXYZ/PacketViewerLogViewer";
         const string urlVideoLAN = "https://www.videolan.org/";
 
@@ -48,11 +49,15 @@ namespace PacketViewerLogViewer
 
         private void mmAboutAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Made by ZeromusXYZ\r\nVersion " + versionString, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using (AboutBoxForm ab = new AboutBoxForm())
+            {
+                ab.ShowDialog();
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            defaultTitle = Text;
             Application.UseWaitCursor = true;
             try
             {
@@ -82,12 +87,12 @@ namespace PacketViewerLogViewer
                 PLLoaded.Clear();
                 return;
             }
-
+            Text = defaultTitle + " - " + openLogFileDialog.FileName;
             PL.CopyFrom(PLLoaded);
-            FillListBox();
+            FillListBox(lbPackets,PL);
         }
 
-        private void FillListBox()
+        private void FillListBox(ListBox lb, PacketList pList)
         {
             Application.UseWaitCursor = true;
             using (LoadingForm loadform = new LoadingForm(this))
@@ -122,21 +127,21 @@ namespace PacketViewerLogViewer
                     }
                     loadform.Show();
                     loadform.pb.Minimum = 0;
-                    loadform.pb.Maximum = PL.Count();
-                    lbPackets.Items.Clear();
-                    for (int i = 0; i < PL.Count(); i++)
+                    loadform.pb.Maximum = pList.Count();
+                    lb.Items.Clear();
+                    for (int i = 0; i < pList.Count(); i++)
                     {
-                        PacketData pd = PL.GetPacket(i);
+                        PacketData pd = pList.GetPacket(i);
                         switch (pd.PacketLogType)
                         {
                             case PacketLogTypes.Outgoing:
-                                lbPackets.Items.Add("=> " + pd.HeaderText);
+                                lb.Items.Add("=> " + pd.HeaderText);
                                 break;
                             case PacketLogTypes.Incoming:
-                                lbPackets.Items.Add("<= " + pd.HeaderText);
+                                lb.Items.Add("<= " + pd.HeaderText);
                                 break;
                             default:
-                                lbPackets.Items.Add("?? " + pd.HeaderText);
+                                lb.Items.Add("?? " + pd.HeaderText);
                                 break;
                         }
                         loadform.pb.Value = i;
@@ -181,11 +186,12 @@ namespace PacketViewerLogViewer
 
         private void mmFileClose_Click(object sender, EventArgs e)
         {
+            Text = defaultTitle;
             PLLoaded.Clear();
             PLLoaded.ClearFilters();
             PL.Clear();
             PL.ClearFilters();
-            FillListBox();
+            FillListBox(lbPackets,PL);
         }
 
         private void lbPackets_DrawItem(object sender, DrawItemEventArgs e)
@@ -214,31 +220,46 @@ namespace PacketViewerLogViewer
             switch (pd.PacketLogType)
             {
                 case PacketLogTypes.Incoming:
-                    textCol = Color.Green;
+                    textCol = Properties.Settings.Default.ColFontIN;
                     if (isSelected)
-                        backCol = Color.FromArgb(0x88, 0xFF, 0x88);
+                    {
+                        backCol = Properties.Settings.Default.ColSelectIN;
+                        textCol = Properties.Settings.Default.ColSelectedFontIN;
+                    }
                     else
                     if (barOn)
-                        backCol = Color.FromArgb(0xCC, 0xFF, 0xCC);
+                        backCol = Properties.Settings.Default.ColSyncIN;
                     else
-                        backCol = Color.FromArgb(0xEE, 0xFF, 0xEE);
-                    barCol = Color.Black;
+                        backCol = Properties.Settings.Default.ColBackIN;
+                    barCol = Properties.Settings.Default.ColBarIN ;
                     break;
                 case PacketLogTypes.Outgoing:
-                    textCol = Color.Blue;
+                    textCol = Properties.Settings.Default.ColFontOUT;
                     if (isSelected)
-                        backCol = Color.FromArgb(0x88, 0x88, 0xFF);
+                    {
+                        backCol = Properties.Settings.Default.ColSelectOUT;
+                        textCol = Properties.Settings.Default.ColSelectedFontOUT;
+                    }
                     else
                     if (barOn)
-                        backCol = Color.FromArgb(0xCC, 0xCC, 0xFF);
+                        backCol = Properties.Settings.Default.ColSyncOUT;
                     else
-                        backCol = Color.FromArgb(0xEE, 0xEE, 0xFF);
-                    barCol = Color.Black;
+                        backCol = Properties.Settings.Default.ColBackOUT;
+                    barCol = Properties.Settings.Default.ColBarOUT;
                     break;
                 default:
-                    textCol = Color.DarkGray;
-                    backCol = Color.White;
-                    barCol = Color.Black;
+                    textCol = Properties.Settings.Default.ColFontUNK;
+                    if (isSelected)
+                    {
+                        backCol = Properties.Settings.Default.ColBarUNK;
+                        textCol = Properties.Settings.Default.ColSelectedFontUNK;
+                    }
+                    else
+                    if (barOn)
+                        backCol = Properties.Settings.Default.ColSyncUNK;
+                    else
+                        backCol = Properties.Settings.Default.ColBackUNK;
+                    barCol = Properties.Settings.Default.ColBarUNK;
                     break;
             }
 
@@ -278,9 +299,10 @@ namespace PacketViewerLogViewer
                 PLLoaded.Clear();
                 return;
             }
+            Text = defaultTitle + " - Multiple sources";
 
             PL.CopyFrom(PLLoaded);
-            FillListBox();
+            FillListBox(lbPackets,PL);
         }
 
         private void UpdatePacketDetails(PacketData pd, string SwitchBlockName)
@@ -306,7 +328,10 @@ namespace PacketViewerLogViewer
             using (SettingsForm settingsDialog = new SettingsForm())
             {
                 if (settingsDialog.ShowDialog() == DialogResult.OK)
-                    MessageBox.Show("Settings saved");
+                {
+                    Properties.Settings.Default.Save();
+                    //MessageBox.Show("Settings saved");
+                }
                 settingsDialog.Dispose();
             }
         }
