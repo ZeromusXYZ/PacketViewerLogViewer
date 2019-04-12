@@ -251,7 +251,7 @@ namespace PacketViewerLogViewer
                     textCol = Properties.Settings.Default.ColFontUNK;
                     if (isSelected)
                     {
-                        backCol = Properties.Settings.Default.ColBarUNK;
+                        backCol = Properties.Settings.Default.ColSelectUNK;
                         textCol = Properties.Settings.Default.ColSelectedFontUNK;
                     }
                     else

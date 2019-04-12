@@ -181,7 +181,7 @@ namespace PacketViewerLogViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("204, 204, 204")]
+        [global::System.Configuration.DefaultSettingValueAttribute("128, 32, 32")]
         public global::System.Drawing.Color ColSelectUNK {
             get {
                 return ((global::System.Drawing.Color)(this["ColSelectUNK"]));
@@ -229,7 +229,7 @@ namespace PacketViewerLogViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("16, 16, 16")]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
         public global::System.Drawing.Color ColSelectedFontUNK {
             get {
                 return ((global::System.Drawing.Color)(this["ColSelectedFontUNK"]));

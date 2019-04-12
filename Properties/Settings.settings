@@ -42,7 +42,7 @@
       <Value Profile="(Default)">238, 238, 238</Value>
     </Setting>
     <Setting Name="ColSelectUNK" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">204, 204, 204</Value>
+      <Value Profile="(Default)">128, 32, 32</Value>
     </Setting>
     <Setting Name="ColBarUNK" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Black</Value>
@@ -54,7 +54,7 @@
       <Value Profile="(Default)">238, 238, 255</Value>
     </Setting>
     <Setting Name="ColSelectedFontUNK" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">16, 16, 16</Value>
+      <Value Profile="(Default)">White</Value>
     </Setting>
   </Settings>
 </SettingsFile>
