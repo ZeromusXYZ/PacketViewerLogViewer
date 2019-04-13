@@ -15,7 +15,7 @@ namespace PacketViewerLogViewer.Packets
 {
     public enum PacketLogTypes { Unknown, Outgoing, Incoming }
     public enum FilterType { None, HidePackets, ShowPackets, AllowNone };
-    public enum PacketLogFileType { Unknown = 0, WindowerPacketViewer = 1, AshitaPacketeer = 2, PacketDB = 3 }
+    public enum PacketLogFileFormats { Unknown = 0, WindowerPacketViewer = 1, AshitaPacketeer = 2, PacketDB = 3 }
 
     public static class String6BitEncodeKeys
     {
@@ -569,7 +569,7 @@ namespace PacketViewerLogViewer.Packets
             if (!File.Exists(fileName))
                 return false;
             PacketLogTypes packetType = PacketLogTypes.Unknown;
-            PacketLogFileType logType = PacketLogFileType.Unknown;
+            PacketLogFileFormats logType = PacketLogFileFormats.Unknown;
             var fn = fileName.ToLower();
             // first check out, then in (as "in" is also in "ougoing")
             if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("out") >= 0))
@@ -581,20 +581,20 @@ namespace PacketViewerLogViewer.Packets
             if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("in") >= 0))
                 packetType = PacketLogTypes.Incoming;
 
-            if ((logType == PacketLogFileType.Unknown) && (Path.GetExtension(fn) == ".log"))
-                logType = PacketLogFileType.WindowerPacketViewer;
-            if ((logType == PacketLogFileType.Unknown) && (Path.GetExtension(fn) == ".txt"))
-                logType = PacketLogFileType.AshitaPacketeer;
-            if ((logType == PacketLogFileType.Unknown) && (Path.GetExtension(fn) == ".sqlite"))
-                logType = PacketLogFileType.PacketDB;
+            if ((logType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".log"))
+                logType = PacketLogFileFormats.WindowerPacketViewer;
+            if ((logType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".txt"))
+                logType = PacketLogFileFormats.AshitaPacketeer;
+            if ((logType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".sqlite"))
+                logType = PacketLogFileFormats.PacketDB;
 
-            if ((logType == PacketLogFileType.WindowerPacketViewer) || (logType == PacketLogFileType.AshitaPacketeer))
+            if ((logType == PacketLogFileFormats.WindowerPacketViewer) || (logType == PacketLogFileFormats.AshitaPacketeer))
             {
                 List<string> sl = File.ReadAllLines(fileName).ToList();
                 return LoadFromStringList(sl, logType, packetType);
             }
             else
-            if (logType == PacketLogFileType.PacketDB)
+            if (logType == PacketLogFileFormats.PacketDB)
             {
                 return LoadFromSQLite3(fileName);
             }
@@ -604,7 +604,7 @@ namespace PacketViewerLogViewer.Packets
             }
         }
 
-        public bool LoadFromStringList(List<string> FileData,PacketLogFileType logFileType , PacketLogTypes preferedType)
+        public bool LoadFromStringList(List<string> FileData,PacketLogFileFormats logFileType , PacketLogTypes preferedType)
         {
             // Add dummy blank lines to fix a bug of ignoring last packet if isn't finished by a blank line
             FileData.Add("");
@@ -637,28 +637,28 @@ namespace PacketViewerLogViewer.Packets
                             {
                                 PD.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
-                                logFileType = PacketLogFileType.WindowerPacketViewer;
+                                logFileType = PacketLogFileFormats.WindowerPacketViewer;
                             }
                             else
                             if (s.ToLower().IndexOf("incoming") >= 0)
                             {
                                 PD.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
-                                logFileType = PacketLogFileType.WindowerPacketViewer;
+                                logFileType = PacketLogFileFormats.WindowerPacketViewer;
                             }
                             else
                             if (s.ToLower().IndexOf("[c->s]") >= 0)
                             {
                                 PD.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
-                                logFileType = PacketLogFileType.AshitaPacketeer;
+                                logFileType = PacketLogFileFormats.AshitaPacketeer;
                             }
                             else
                             if (s.ToLower().IndexOf("[s->c]") >= 0)
                             {
                                 PD.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
-                                logFileType = PacketLogFileType.AshitaPacketeer;
+                                logFileType = PacketLogFileFormats.AshitaPacketeer;
                             }
                             else
                             {
@@ -708,12 +708,12 @@ namespace PacketViewerLogViewer.Packets
                             // Add line of data
                             PD.RawText.Add(s);
                             // Actual packet data starts at the 3rd line after the header
-                            if ((logFileType != PacketLogFileType.AshitaPacketeer) && (PD.RawText.Count > 3))
+                            if ((logFileType != PacketLogFileFormats.AshitaPacketeer) && (PD.RawText.Count > 3))
                             {
                                 PD.AddRawLineAsBytes(s);
                             }
                             else
-                            if ((logFileType == PacketLogFileType.AshitaPacketeer) && (PD.RawText.Count > 1))
+                            if ((logFileType == PacketLogFileFormats.AshitaPacketeer) && (PD.RawText.Count > 1))
                             {
                                 PD.AddRawPacketeerLineAsBytes(s);
                             }

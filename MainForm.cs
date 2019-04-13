@@ -321,6 +321,9 @@ namespace PacketViewerLogViewer
                 mInfo.Text = "Data:\r\n" + pd.PrintRawBytesAsHex();
             }
 
+            PacketParser PP = new PacketParser(pd.PacketID, pd.PacketLogType);
+            PP.AssignPacket(pd);
+            PP.ParseToDataGridView(dGV);
         }
 
         private void mmFileSettings_Click(object sender, EventArgs e)

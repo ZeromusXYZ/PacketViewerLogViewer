@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Forms;
 using System.Globalization;
 
 namespace PacketViewerLogViewer.Packets
@@ -149,7 +150,7 @@ namespace PacketViewerLogViewer.Packets
         public static void LoadLookups()
         {
             LookupLists.Clear();
-            var lookupPath = System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + "lookup";
+            var lookupPath = Application.StartupPath + Path.DirectorySeparatorChar + "lookup";
             DirectoryInfo DI = new DirectoryInfo(lookupPath);
             if (Directory.Exists(lookupPath))
             {
