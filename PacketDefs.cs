@@ -50,6 +50,13 @@ namespace PacketViewerLogViewer.Packets
         public string OriginalTimeString { get; set; }
         public int capturedZoneId { get; set; }
 
+        // Source: https://docs.microsoft.com/en-us/dotnet/api/system.datetime.parse?view=netframework-4.7.2#System_DateTime_Parse_System_String_System_IFormatProvider_System_Globalization_DateTimeStyles_
+        // Assume a date and time string formatted for the fr-FR culture is the local 
+        // time and convert it to UTC.
+        // dateString = "2008-03-01 10:00";
+        private CultureInfo cultureForDateTimeParse = CultureInfo.CreateSpecificCulture("fr-FR"); // French seems to best match for what we need here
+        private DateTimeStyles stylesForDateTimeParse = DateTimeStyles.AssumeLocal;
+
         public PacketData()
         {
             RawText = new List<string>();
@@ -269,11 +276,11 @@ namespace PacketViewerLogViewer.Packets
 
         public string GetStringAtPos(int pos, int maxSize = -1)
         {
-            string res = "";
+            string res = string.Empty;
             int i = 0;
-            while ((i < RawBytes.Count) && (RawBytes[i] != 0) && ((maxSize == -1) || (res.Length < maxSize)))
+            while (((i+pos) < RawBytes.Count) && (RawBytes[pos+i] != 0) && ((maxSize == -1) || (res.Length < maxSize)))
             {
-                res += (char)RawBytes[i];
+                res += (char)RawBytes[pos+i];
                 i++;
             }
             return res;
@@ -336,6 +343,9 @@ namespace PacketViewerLogViewer.Packets
             int P = pos;
             int B = BitOffset;
             int RestBits = BitsSize;
+            // Minimum 1 bit
+            if (RestBits < 1)
+                RestBits = 1;
             Int64 Mask = 1;
             while (RestBits > 0)
             {
@@ -451,7 +461,32 @@ namespace PacketViewerLogViewer.Packets
             return -1;
         }
 
-        public bool CompileData()
+        public bool DateTimeParse(string s, out DateTime res)
+        {
+            res = new DateTime(0);
+            if (s.Length != 19)
+                return false;
+            try
+            {
+                // 0         1
+                // 01234567890123456789
+                // 2018-05-16 18:11:35
+                var yyyy = int.Parse(s.Substring(0, 4));
+                var mm = int.Parse(s.Substring(5, 2));
+                var dd = int.Parse(s.Substring(8, 2));
+                var hh = int.Parse(s.Substring(11, 2));
+                var nn = int.Parse(s.Substring(14, 2));
+                var ss = int.Parse(s.Substring(17, 2));
+                res = new DateTime(yyyy, mm, dd, hh, nn, ss);
+                return true;
+            }
+            catch
+            {
+            }
+            return false ;
+        }
+
+        public bool CompileData(PacketLogFileFormats plff)
         {
             if (RawBytes.Count < 4)
             {
@@ -466,14 +501,13 @@ namespace PacketViewerLogViewer.Packets
             string TS = "";
             if (TimeStamp.Ticks > 0)
                 TS = TimeStamp.ToString("HH:mm:ss");
-            if ( (OriginalTimeString.ToLower().IndexOf("[c->s]") > 0) || (OriginalTimeString.ToLower().IndexOf("[s->c]") > 0) )
+            if (plff == PacketLogFileFormats.AshitaPacketeer)
             {
                 // Packeteer doesn't have time info (yet)
                 TimeStamp = new DateTime(0);
-                VirtualTimeStamp = new DateTime(0);
                 OriginalTimeString = "0000-00-00 00:00";
             }
-            else
+            if (plff == PacketLogFileFormats.WindowerPacketViewer)
             {
                 // Try to determine timestamp from header
                 var P1 = OriginalHeaderText.IndexOf('[');
@@ -483,15 +517,18 @@ namespace PacketViewerLogViewer.Packets
                     OriginalTimeString = OriginalHeaderText.Substring(P1 + 1, P2 - P1 - 1);
                     if (OriginalTimeString.Length > 0)
                     {
-                        // Source: https://docs.microsoft.com/en-us/dotnet/api/system.datetime.parse?view=netframework-4.7.2#System_DateTime_Parse_System_String_System_IFormatProvider_System_Globalization_DateTimeStyles_
-                        // Assume a date and time string formatted for the fr-FR culture is the local 
-                        // time and convert it to UTC.
-                        // dateString = "2008-03-01 10:00";
-                        CultureInfo culture = CultureInfo.CreateSpecificCulture("fr-FR"); // French seems to best match for what we need here
-                        DateTimeStyles styles = DateTimeStyles.AssumeLocal;
                         try
                         {
-                            TimeStamp = DateTime.Parse(OriginalTimeString, culture, styles);
+                            // try quick-parse first
+                            DateTime dt;
+                            if (DateTimeParse(OriginalTimeString, out dt))
+                            {
+                                TimeStamp = dt;
+                            }
+                            else
+                            {
+                                TimeStamp = DateTime.Parse(OriginalTimeString, cultureForDateTimeParse, stylesForDateTimeParse);
+                            }
                             TS = TimeStamp.ToString("HH:mm:ss");
                         }
                         catch (FormatException)
@@ -500,10 +537,10 @@ namespace PacketViewerLogViewer.Packets
                             TS = "";
                             OriginalTimeString = "0000-00-00 00:00";
                         }
-                        VirtualTimeStamp = TimeStamp;
                     }
                 }
             }
+            VirtualTimeStamp = TimeStamp;
             if (TimeStamp.Ticks == 0)
                 TS = "";
 
@@ -629,34 +666,35 @@ namespace PacketViewerLogViewer.Packets
                     int c = 0;
                     foreach(string s in FileData)
                     {
+                        string sLower = s.ToLower();
                         if ((s != "") && (PD == null))
                         {
                             // Begin building a new packet
                             PD = new PacketData();
-                            if (s.ToLower().IndexOf("outgoing") >= 0)
-                            {
-                                PD.PacketLogType = PacketLogTypes.Outgoing;
-                                IsUndefinedPacketType = false;
-                                logFileType = PacketLogFileFormats.WindowerPacketViewer;
-                            }
-                            else
-                            if (s.ToLower().IndexOf("incoming") >= 0)
+                            if (sLower.IndexOf("incoming") >= 0)
                             {
                                 PD.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.WindowerPacketViewer;
                             }
                             else
-                            if (s.ToLower().IndexOf("[c->s]") >= 0)
+                            if (sLower.IndexOf("outgoing") >= 0)
                             {
                                 PD.PacketLogType = PacketLogTypes.Outgoing;
+                                IsUndefinedPacketType = false;
+                                logFileType = PacketLogFileFormats.WindowerPacketViewer;
+                            }
+                            else
+                            if (sLower.IndexOf("[s->c]") >= 0)
+                            {
+                                PD.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.AshitaPacketeer;
                             }
                             else
-                            if (s.ToLower().IndexOf("[s->c]") >= 0)
+                            if (sLower.IndexOf("[c->s]") >= 0)
                             {
-                                PD.PacketLogType = PacketLogTypes.Incoming;
+                                PD.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.AshitaPacketeer;
                             }
@@ -722,7 +760,7 @@ namespace PacketViewerLogViewer.Packets
                         if ((s == "") && (PD != null))
                         {
                             // Close this packet and add it to list
-                            if (PD.CompileData())
+                            if (PD.CompileData(logFileType))
                             {
                                 PacketDataList.Add(PD);
                             }
@@ -806,7 +844,7 @@ namespace PacketViewerLogViewer.Packets
                             pd.OriginalHeaderText = "PACKET_ID " + reader.GetInt64(reader.GetOrdinal("PACKET_ID")) + " , DIR " + dir.ToString() + " , TYPE " + pd.PacketID.ToString();
                             pd.OriginalTimeString = "";
 
-                            if (pd.CompileData())
+                            if (pd.CompileData(PacketLogFileFormats.PacketDB))
                                 PacketDataList.Add(pd);
 
                             c++;

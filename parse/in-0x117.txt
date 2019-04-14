@@ -1,6 +1,5 @@
 file;in-0x117;Equipset Response;Returned from the server after the /equipset command
 
-
 byte;$04;Count
 data3;$05;_unknown?
 equipsetitemlist;$08:$04;Equip Item

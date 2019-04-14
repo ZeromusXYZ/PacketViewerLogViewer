@@ -38,5 +38,5 @@ byte;$12;Job ID -1
 [[]]
 
 [[Hurray]]
-item;$12;Weapon
+uint16:items;$12;Weapon
 [[]]

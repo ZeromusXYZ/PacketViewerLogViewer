@@ -1,9 +1,9 @@
 file;in-0x086;Guild Open;Sent to update the current guild status or open the guild buy/sell menu
 
 byte;$04;Guild Shop Status;0 = open  1 = closed   2 = holiday
-switchblock;$04;0;Open
-switchblock;$04;1;Closed
-switchblock;$04;2;Holiday
+switchblock;$04;Open;0
+switchblock;$04;Closed;1
+switchblock;$04;Holiday;2
 
 [[Open]]
 Info;$04;Guild Shop Status;Open

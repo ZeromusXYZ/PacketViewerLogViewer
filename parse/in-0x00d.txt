@@ -2,7 +2,7 @@ file;in-0x00d;PC Update;Packet contains info about another PC (i.e. coordinates)
 
 uint32;$04;Player ID
 uint16;$08;Index
-byteflag;0x0A;Update Mask 1
+byte;0x0A;Update Mask 1
 bit;$0A:0;  Bit0: Pos,Rot,Target,Speed
 bit;$0A:1;  Bit1: Status;-- 0A:1 Not used for 0x00D
 bit;$0A:2;  Bit2: Vitals;-- 0A:2 HP%, Status, Flags, LS color, "Face Flags"
@@ -18,7 +18,7 @@ byte;$1D;Animation Speed;0x32 represents 100%
 byte;$1E;HP %
 byte;$1F;Status
 
-byteflag;$20;Flags Byte 1
+byte;$20;Flags Byte 1
 rem;$20:0;  Bit0: None
 bit;$20:1;  Bit1: Deletes everyone
 bit;$20:2;  Bit2: Deletes everyone
@@ -28,7 +28,7 @@ rem;$20:5;  Bit5: None
 rem;$20:6;  Bit6: None
 rem;$20:7;  Bit7: None
 
-byteflag;$21;Flags Byte 2
+byte;$21;Flags Byte 2
 rem;$21:0;  Bit0: None
 rem;$21:1;  Bit1: None
 rem;$21:2;  Bit2: None
@@ -38,7 +38,7 @@ bit;$21:5;  Bit5: Orange name
 bit;$21:6;  Bit6: Away
 rem;$21:7;  Bit7: None
 
-byteflag;$22;Flags Byte 3
+byte;$22;Flags Byte 3
 bit;$22:0;  Bit0: POL Icon
 bit;$22:1;  Bit1: No Effect
 bit;$22:2;  Bit2: DC-ing
@@ -48,7 +48,7 @@ bit;$22:5;  Bit5: No LS
 bit;$22:6;  Bit6: No LS
 bit;$22:7;  Bit7: No LS
 
-byteflag;$23;Flags Byte 4
+byte;$23;Flags Byte 4
 bit;$23:0;  Bit0: AccLvBit1;Bit 1 & 2 defines GM level if GM level is set
 bit;$23:1;  Bit1: AccLvBit2;Shows trial account of these are set without GM
 bit;$23:2;  Bit2: GM Mode;Toggles GM mode on, use with Bit 1 & 2 to get higher-level GM icons/levels. 0=GM, 1=SeniorGM, 2=LeadGM, 3=Producer
@@ -70,7 +70,7 @@ uint32;$34;_unknown?
 uint16;$3C;Pet Target
 rem;data$10;$30;_mostlyunknown6; {ctype='data[0x1B]', label='_unknown6'}, -- 28   DSP notes that the 6th bit of byte 54 is the Ballista flag
 uint16;$44;Mount Type?
-byteflag;$43;Face Flags;0, 3, 4, or 8
+byte;$43;Face Flags;0, 3, 4, or 8
 uint32;$44;_unknown7
 
 byte;$48;Face

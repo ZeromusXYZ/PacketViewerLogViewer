@@ -3,33 +3,33 @@ file;in-0x056;Quest/Mission Log;Updates your quest and mission log on zone and w
 uint32;$24;Type
 
 rem; these first 2 are actually 0x0100 and 0x0108, but as there is no overlap, I'm just going to use byte switches for the blocks
-switchblock;$24;$00;Current Coalition Quests
-switchblock;$24;$08;Completed Coalition Quests
-switchblock;$24;$30;Completed Campaign Missions
-switchblock;$24;$38;Completed Campaign Missions (2)
-switchblock;$24;$50;Current San d'Oria Quests
-switchblock;$24;$58;Current Bastok Quests
-switchblock;$24;$60;Current Windurst Quests
-switchblock;$24;$68;Current Jeuno Quests
-switchblock;$24;$70;Current Other Quests
-switchblock;$24;$78;Current Outlands Quests
-switchblock;$24;$80;Current TOAU Quests and Missions
-switchblock;$24;$88;Current WOTG Quests
-switchblock;$24;$90;Completed San d'Oria Quests
-switchblock;$24;$98;Completed Bastok Quests
-switchblock;$24;$A0;Completed Windurst Quests
-switchblock;$24;$A8;Completed Jeuno Quests
-switchblock;$24;$B0;Completed Other Quests
-switchblock;$24;$B8;Completed Outlands Quests
-switchblock;$24;$C0;Completed TOAU Quests and Assaults
-switchblock;$24;$C8;Completed WOTG Quests
-switchblock;$24;$D0;Completed Missions (Nations, Zilart)
-switchblock;$24;$D8;Completed Missions (TOAU, WOTG)
-switchblock;$24;$E0;Current Abyssea Quests
-switchblock;$24;$E8;Completed Abyssea Quests
-switchblock;$24;$F0;Current Adoulin Quests
-switchblock;$24;$F8;Completed Adoulin Quests
-switchblock;$24;$FF;Current Missions
+switchblock;$24;Current Coalition Quests;$00
+switchblock;$24;Completed Coalition Quests;$08
+switchblock;$24;Completed Campaign Missions;$30
+switchblock;$24;Completed Campaign Missions (2);$38
+switchblock;$24;Current San d'Oria Quests;$50
+switchblock;$24;Current Bastok Quests;$58
+switchblock;$24;Current Windurst Quests;$60
+switchblock;$24;Current Jeuno Quests;$68
+switchblock;$24;Current Other Quests;$70
+switchblock;$24;Current Outlands Quests;$78
+switchblock;$24;Current TOAU Quests and Missions;$80
+switchblock;$24;Current WOTG Quests;$88
+switchblock;$24;Completed San d'Oria Quests;$90
+switchblock;$24;Completed Bastok Quests;$98
+switchblock;$24;Completed Windurst Quests;$A0
+switchblock;$24;Completed Jeuno Quests;$A8
+switchblock;$24;Completed Other Quests;$B0
+switchblock;$24;Completed Outlands Quests;$B8
+switchblock;$24;Completed TOAU Quests and Assaults;$C0
+switchblock;$24;Completed WOTG Quests;$C8
+switchblock;$24;Completed Missions (Nations, Zilart);$D0
+switchblock;$24;Completed Missions (TOAU, WOTG);$D8
+switchblock;$24;Current Abyssea Quests;$E0
+switchblock;$24;Completed Abyssea Quests;$E8
+switchblock;$24;Current Adoulin Quests;$F0
+switchblock;$24;Completed Adoulin Quests;$F8
+switchblock;$24;Current Missions;$FF
 
 
 rem;0x0030

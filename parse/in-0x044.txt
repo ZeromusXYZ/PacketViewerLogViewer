@@ -2,12 +2,12 @@ file;in-0x044;Job Info Extra;Contains information about Automaton stats and set 
 
 info;0;Info;This packet varies and is indexed by job ID (byte 4)
 
-job;$04;Job
-job;$05;Sub Job
+byte:jobs;$04;Job
+byte:jobs;$05;Sub Job
 uint16;$06;_unknown?
 
-switchblock;$04;18;Puppet Master
-switchblock;$04;23;Monstrosity
+switchblock;$04;Puppet Master;18
+switchblock;$04;Monstrosity;23
 
 [[Puppet Master]]
 info;$04;Info;--- Info as PUP ---

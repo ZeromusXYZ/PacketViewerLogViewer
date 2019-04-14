@@ -4,8 +4,8 @@ uint32;$04;Target ID
 uint16;$08;Target Index
 byte;$0A;Packet Type
 
-switchblock;$0A;1;MetaData
-switchblock;$0A;3;Equip
+switchblock;$0A;MetaData;1
+switchblock;$0A;Equip;3
 
 [[MetaData]]
 info;$0B;Info;Player Information
@@ -16,8 +16,8 @@ bits;$10:0-4;Linkshell Red
 bits;$10:4-4;Linkshell Green
 bits;$11:0-4;Linkshell Blue
 bits;$11:4-4;Junk bits?
-job;$12;Main Job
-job;$13;Sub Job
+byte:jobs;$12;Main Job
+byte:jobs;$13;Sub Job
 linkshellstring;$14;Linkshell Name
 byte;$24;Main Job Level
 byte;$25;Sub Job Level

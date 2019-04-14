@@ -13,7 +13,7 @@ bit;$28:6;  Bit6: Orange name
 bit;$28:7;  Bit7: Away
 
 byte;$2A;HP %
-byteflag;$2B;_flags
+byte;$2B;_flags
 
 bit;$28:0;  Bit0: POL Icon
 rem;$28:1;  Bit1: No obvious effect
@@ -24,15 +24,15 @@ bit;$28:5;  Bit5: AccLvBit1;
 bit;$28:6;  Bit6: AccLvBit2;
 bit;$28:7;  Bit7: GM Mode;
 
-byteflag;$2C;MoveSpeed/2 bit1-8;-- 2C   Player movement speed
-byteflag;$2D;MoveSpeed/2 bits9-12 + flags3
+byte;$2C;MoveSpeed/2 bit1-8;-- 2C   Player movement speed
+byte;$2D;MoveSpeed/2 bits9-12 + flags3
 rem;$2D:4;  Bit4: No effect
 bit;$2D:5;  Bit5: Event mode?
 rem;$2D:6;  Bit6: No effect
 bit;$2D:7;  Bit7: Invisible model
 
-byteflag;$2E;Yalms/step bit1-8;-- 2E   Determines how quickly your animation walks
-byteflag;$2F;Yalms/step bit9 + flags4
+byte;$2E;Yalms/step bit1-8;-- 2E   Determines how quickly your animation walks
+byte;$2F;Yalms/step bit9 + flags4
 rem;$2F:1;  Bit1: No obvious effect
 rem;$2F:2;  Bit2: No obvious effect
 rem;$2F:3;  Bit3: No obvious effect
@@ -46,7 +46,7 @@ byte;$31;LS Color Red
 byte;$32;LS Color Green
 byte;$33;LS Color Blue
 
-byteflag;$34;_flags + PetIndex
+byte;$34;_flags + PetIndex
 rem;$34:0;  Bit0: No obvious effect
 rem;$34:1;  Bit1: No obvious effect
 bit;$34:2;  Bit2: Autoinvite icon
@@ -55,18 +55,18 @@ bit;$36:3;  Bit3: Terror flag
 rem;bit;$36:4;  Bit4: No obvious effect
 
 
-byteflag;$37;_flags
-byteflag;$38;_flags
-byteflag;$39;_flags
-byteflag;$3A;_flags
-byteflag;$3B;_flags
+byte;$37;_flags
+byte;$38;_flags
+byte;$39;_flags
+byte;$3A;_flags
+byte;$3B;_flags
 ms;$3C;Time offset?;-- 3C   For me, this is the number of seconds in 66 hours
-timestamp;$40;Timestamp;-- 40   This is 32 years off of JST at the time the packet is sent.
+ms;$40;Timestamp;-- 40   This is 32 years off of JST at the time the packet is sent.
 data8;$44;_unknown3
 data8;$4C;Bit Mask
 data4;$54;_unknown4
-byteflag;$58;Indi-Buff bit1-7
-byteflag;$59;_unknown5
+byte;$58;Indi-Buff bit1-7
+byte;$59;_unknown5
 uint16;$5A;_junk?
 uint32;$5C;_flags;-- 5C   Two least significant bits seem to indicate whether Wardrobes 3 and 4, respectively, are enabled
 bit;$5C:0;  Bit0: Wardrobe 3?

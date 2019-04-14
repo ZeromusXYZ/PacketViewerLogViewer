@@ -12,5 +12,5 @@ blacklistentry;$A4;Blacklist Entry 9
 blacklistentry;$B8;Blacklist Entry 10
 blacklistentry;$CC;Blacklist Entry 11
 blacklistentry;$E0;Blacklist Entry 12
-byteflag;$F4;_unknown?;Should be 3
+byte;$F4;_unknown?;Should be 3
 byte;$F5;Size

@@ -4,7 +4,7 @@ bits;$04:0-1;Rank San d'Oria
 bits;$04:2-1;Rank Bastok
 bits;$04:4-1;Rank Windurst
 bits;$04:6-1;Rank ???
-byteflag;$05;Alliance Indicator
+byte;$05;Alliance Indicator
 data20;$06;_unused?
 uint32;$1A;Ronfaure
 uint32;$1E;Zulkheim

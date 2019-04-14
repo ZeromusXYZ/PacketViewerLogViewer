@@ -5,13 +5,13 @@ byte;$04;Update Type
 uint16;$06;Variable Data Size
 
 rem;I added some dummy blocks for values I encountered but don't know what they do yet
-switchblock;$04;$02;MeritPoints
-switchblock;$04;$03;Monipulator 1
-switchblock;$04;$04;Monipulator 2
-switchblock;$04;$05;JobPoints
-switchblock;$04;$06;Val$06
-switchblock;$04;$07;Val$07
-switchblock;$04;$09;Status Effects
+switchblock;$04;MeritPoints;$02
+switchblock;$04;Monipulator 1;$03
+switchblock;$04;Monipulator 2;$04
+switchblock;$04;JobPoints;$05
+switchblock;$04;Val0x06;$06
+switchblock;$04;Val0x07;$07
+switchblock;$04;Status Effects;$09
 
 
 [[MeritPoints]]
@@ -19,7 +19,7 @@ info;$04;Update Type;Merit Points
 rem;uint16;$06;_flag?;DSP sets this, not sure what it does
 uint16;$08;Limit Points
 byte;$0A;Merit Points
-byteflag;$0B;Flags
+byte;$0B;Flags
 bit;$0B:5;  Bit5: Merits Unlocked
 bit;$0B:6;  Bit6: EXP Capped
 bit;$0B:7;  Bit7: Merit Mode

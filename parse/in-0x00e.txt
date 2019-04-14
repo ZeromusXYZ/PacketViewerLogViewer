@@ -2,7 +2,7 @@ file;in-0x00e;NPC Update;Packet contains info about another PC (i.e. coordinates
 
 uint32;$04;NPC
 uint16;$08;Index
-byteflag;$0A;Update Mask;-- 0A   Bits that control which parts of the packet are actual updates (rest is zeroed). Model is always sent
+byte;$0A;Update Mask;-- 0A   Bits that control which parts of the packet are actual updates (rest is zeroed). Model is always sent
 bit;$0A:0;  Bit0: Pos,Rot,Walk
 bit;$0A:1;  Bit1: Claimer ID
 bit;$0A:2;  Bit2: HP, Status

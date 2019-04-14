@@ -2,9 +2,9 @@ file;in-0x061;Char Stats;Packet contains a lot of data about your character's st
 
 uint32;$04;Max HP
 uint32;$08;Max MP
-job;$0C;Main Job
+byte:jobs;$0C;Main Job
 byte;$0D;Main Job Level
-job;$0E;Sub Job
+byte:jobs;$0E;Sub Job
 byte;$0F;Sub Job Level
 uint16;$10;Current EXP
 uint16;$12;Required EXP
@@ -35,7 +35,7 @@ int16;$42;Dark Resist
 uint16;$44;Title
 uint16;$46;Nation Rank
 uint16;$48;Rank Points
-zone;$4A;Home Point Zone
+uint16:zones;$4A;Home Point Zone
 rem;uint16;$4C;_unknown1;-- 4C   0xFF-ing this last region has no notable effect.
 rem;uint16;$4E;_unknown1;
 nation;$50;Nation

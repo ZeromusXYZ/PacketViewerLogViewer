@@ -13,9 +13,9 @@ byte;$1C;_unknown?
 byte;$1D;HP%
 byte;$1E;MP%
 byte;$1F;_unknown?
-zone;$20;Zone
-job;$22;Main Job
+uint16:zones;$20;Zone
+byte:jobs;$22;Main Job
 byte;$23;Main Job Level
-job;$24;Sub Job
+byte:jobs;$24;Sub Job
 byte;$25;Sub Job Level
 string;$26;Name

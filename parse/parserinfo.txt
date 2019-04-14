@@ -1,5 +1,5 @@
-Place parsers .txt files into the parse folder
-The low viewer will look for a .txt file inside it with the following name
+Place parsers .txt items into the parse folder
+The low viewer will look for a .txt item inside it with the following name
 
 parse\[data direction]-[hex packet id].txt
 
@@ -11,7 +11,7 @@ example:
 parse\out-0x015.txt     <-- Standard Client Packet (your character's position update to the server)
 
 
-The file will be parsed line by line, and if something matches, it'll show it in the program
+The item will be parsed line by line, and if something matches, it'll show it in the program
 Line format is as following
 
 type;offset[;name[;description]]
@@ -24,15 +24,12 @@ type;offset[;name[;description]]
 
 currently supported types:
 
-typename: file rem comment
+typename: item rem comment
 description: nothing at all
 
 
-typename: byte , char , b
-description: unsigned 8 bit (1 byte) value
-
-typename: byteflag , flag
-description: unsigned byte value, but also shows the value as bits
+typename: byte [:lookup]
+description: unsigned 8 bit (1 byte) value, shows result as ordinal, hex, bitvalues and character
 
 typename: bit , bool
 description: display true/false value for a specific bit in a byte. To specific which bit, add a : after the offset
@@ -40,28 +37,28 @@ description: display true/false value for a specific bit in a byte. To specific 
   bit;$0A:4;Bit4;  --> results in  False
   bit;$0A:0;Bit0;  --> results in  True
 
-typename: bits , bitrange
+typename: bits [:lookup]
 description: display a int64 value for a specified bits. To specific which bit, add a : after the offset and a - to add a size (in bits)
   examples for value at offset $0A with a value of 73 (01001001):
   bits;$0A:4-2;Bit4 to 5;  --> results in 0              ^^
   bits;$0A:0-5;Bit0 to 5;  --> results in 9               ^^^^^
   bits;$0A:6;Bit6;  --> results in 1 (no size=1)        ^
-  warning: you can specify more than 64 bits in size, but only the first 64 will be used to display a int64
+  warning: you can specify more than 64 bits in size, but only the first 64 will be used to display a uint64
 
 
-typename: word , uint16 , w
+typename: uint16  [:lookup]
 description: unsigned 16 bit (2 byte) value
 
-typename: int16 , short
+typename: int16  [:lookup]
 description: signed 16 bit (2 byte) value
 
-typename: int , int32 , i
+typename: int32  [:lookup]
 description: signed 32 bit (4 byte) value
 
-typename: dword , long , longword , uint32 , u
+typename: uint32  [:lookup]
 description: unsigned 32 bit (4 byte) value
 
-typename: float , f
+typename: float
 description: 4 byte floating point number
 
 typename: string , string??
@@ -82,16 +79,13 @@ description: series of 3 floats to make XYZ coordinates
 typename: dir
 description: more visually appealing way of displaying a byte that is used for direction
 
-typename: job
-description: short job name
-
-typename: ms , timestamp
+typename: ms
 description: more visually appealing way of displaying a uint32 that is used as a timestamp in milliseconds
 
-typename: frames , frame
+typename: frames
 description: more visually appealing way of displaying a uint32 that is used as a timestamp in frames (60 second)
 
-typename: equipslot , slot
+typename: equipslot
 description: Shows named version of a equipment slot byte (uses equipslot.txt)
 
 typename: container , inventory , bag
@@ -114,7 +108,7 @@ description: 2 byte number and weather name (uses weather.txt)
 
 typename: bitflaglist
 description: checks X amount of bits if they are set. Displays a line for every bit
-  that is set (with it's bit number). And uses a lookup file to add a name if known.
+  that is set (with it's bit number). And uses a lookup item to add a name if known.
   sub-offset must be set to the amount of BITS you want to check (e.g. 1024 for the spells list)
   the description for this type is used as the lookup name
   example:

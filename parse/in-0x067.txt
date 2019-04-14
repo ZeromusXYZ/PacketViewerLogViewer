@@ -4,9 +4,9 @@ rem;Base Data
 bits;$04:0-6;Message Type
 bits;$04:6-10;Message Length
 
-switchbitsblock;$04:0-6;2;PC-Mode
-switchbitsblock;$04:0-6;3;NPC-Mode
-switchbitsblock;$04:0-6;4;DSP-Mode
+switchblock;$04:0-6;PC-Mode;2
+switchblock;$04:0-6;NPC-Mode;3
+switchblock;$04:0-6;DSP-Mode;4
 
 [[PC-Mode]]
 rem;-- Finish PC Update, received after incoming 0x00D and 0x037

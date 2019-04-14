@@ -1,4 +1,4 @@
-file;in-0x0D3;Lot/drop item;Sent when someone casts a lot on an item or when the item drops to someone
+file;in-0x0D3;Lot/dropitem;Sent when someone casts a lot on an item or when the item drops to someone
 
 uint32;$04;Highest Lotter ID
 uint32;$08;Current Lotter ID

@@ -12,12 +12,12 @@ byte;$1D;Animation Speed;Speed 0x32 represents 100%
 byte;$1E;HP %
 byte;$1F;Status
 data16;$20;_unknown1;
-zone;$30;Zone
+uint16:zones;$30;Zone
 data6;$32;_unknown2;
-timestamp;$38;Timestamp 1
-timestamp;$3C;Timestamp 2
+ms;$38;Timestamp 1
+ms;$3C;Timestamp 2
 uint16;$40;_unknown3
-zone;$42;_dupeZone
+uint16:zones;$42;_dupeZone
 byte;$44;Face
 byte;$45;Race
 item-head;$46;Head Model;-$1000
@@ -51,10 +51,10 @@ byte;$AD;_unknown10
 byte;$AE;Moghouse Leaving Flag
 byte;$AF;CanUseMisc(MogHouse)
 uint32;$B0;_unknown11
-job;$B4;Main Job
+byte:jobs;$B4;Main Job
 byte;$B5;_unknown12
 byte;$B6;_unknown13
-job;$B7;Sub Job
+byte:jobs;$B7;Sub Job
 uint16;$B8;_unknown14
 uint32;$BA;_unknown15
 byte;$BD;WAR Level

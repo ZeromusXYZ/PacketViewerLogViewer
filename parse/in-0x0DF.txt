@@ -9,7 +9,7 @@ byte;$16;HP%
 byte;$17;MP%
 uint32;$18;_unknown?
 uint32;$1C;_unknown?
-job;$20;Main Job
+byte:jobs;$20;Main Job
 byte;$21;Main Job Level
-job;$22;Sub Job
+byte:jobs;$22;Sub Job
 byte;$23;Sub Job Level

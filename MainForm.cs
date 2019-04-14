@@ -167,7 +167,9 @@ namespace PacketViewerLogViewer
                 return;
             }
             PacketData pd = PL.GetPacket(lb.SelectedIndex);
+            cbShowBlock.Enabled = false;
             UpdatePacketDetails(pd, "-");
+            cbShowBlock.Enabled = true;
             lb.Invalidate();
         }
 
@@ -323,7 +325,35 @@ namespace PacketViewerLogViewer
 
             PacketParser PP = new PacketParser(pd.PacketID, pd.PacketLogType);
             PP.AssignPacket(pd);
-            PP.ParseToDataGridView(dGV);
+            PP.ParseToDataGridView(dGV,SwitchBlockName);
+            if (PP.SwitchBlocks.Count > 0)
+            {
+                cbShowBlock.Items.Clear();
+                cbShowBlock.Items.Add("-");
+                cbShowBlock.Items.AddRange(PP.SwitchBlocks.ToArray());
+                cbShowBlock.Show();
+            }
+            else
+            {
+                cbShowBlock.Items.Clear();
+                cbShowBlock.Hide();
+            }
+            for(int i = 0; i < cbShowBlock.Items.Count;i++)
+            {
+                if ((SwitchBlockName == "-") && (cbShowBlock.Items[i].ToString() == PP.LastSwitchedBlock))
+                {
+                    if (cbShowBlock.SelectedIndex != i)
+                        cbShowBlock.SelectedIndex = i;
+                    //break;
+                }
+                else
+                if (cbShowBlock.Items[i].ToString() == SwitchBlockName)
+                {
+                    if (cbShowBlock.SelectedIndex != i)
+                        cbShowBlock.SelectedIndex = i;
+                    //break;
+                }
+            }
         }
 
         private void mmFileSettings_Click(object sender, EventArgs e)
@@ -339,84 +369,30 @@ namespace PacketViewerLogViewer
             }
         }
 
-        /*
-        Procedure TMainForm.UpdatePacketDetails(ShowBlock: String);
-        Begin
-          // Raw Data viewer
-          MInfo.Lines.Clear;
-          If (CBOriginalData.Checked) Then
-          Begin
-            MInfo.SelAttributes.Color := clBlack;
-            MInfo.Lines.Add('Source:');
-            MInfo.Lines.Add(PD.RawText.Text);
-            UpdateActiveRE := nil; // Disable color fields
-          End
-          Else
-          Begin
-            // MInfo.Lines.Add('RAW Data:');
-            // MInfo.Lines.Add(PD.PrintRawBytesAsHex);
-            UpdateActiveRE := MInfo; // Enable color fields
-            PrintRawBytesAsHexRE(PD, MInfo);
-          End;
+        private void CbShowBlock_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!cbShowBlock.Enabled)
+                return;
 
-          // Reset StringGrid
-          SG.RowCount := 0;
-          SG.ColCount := 4;
-          SG.ColWidths[0] := 40;
-          SG.ColWidths[1] := 0;
-          SG.ColWidths[2] := 150;
-          SG.ColWidths[3] := SG.Width - 220;
-          SG.Cols[0].Text := 'Pos';
-          SG.Cols[1].Text := 'Size';
-          SG.Cols[2].Text := 'VAR';
-          SG.Cols[3].Text := 'Value';
+            cbShowBlock.Enabled = false;
+            if ((lbPackets.SelectedIndex < 0) || (lbPackets.SelectedIndex >= PL.Count()))
+            {
+                mInfo.Text = "Please select a valid item from the list";
+                return;
+            }
+            PacketData pd = PL.GetPacket(lbPackets.SelectedIndex);
+            var sw = cbShowBlock.SelectedIndex;
+            if (sw >= 0)
+            {
+                UpdatePacketDetails(pd, cbShowBlock.Items[sw].ToString());
+            }
+            else
+            {
+                UpdatePacketDetails(pd, "-");
+            }
+            cbShowBlock.Enabled = true;
+            lbPackets.Invalidate();
+        }
 
-          // Add general header
-          AddSGRow($0, 'ID', S + ' 0x' + IntToHex(PD.PacketID, 3) + ' - ' +
-            PacketTypeToString(PD.PacketLogType, PD.PacketID), 2);
-          AddSGRow($2, 'Size', IntToStr(PD.PacketDataSize) + ' (0x' +
-            IntToHex(PD.PacketDataSize, 2) + ')', 2);
-          AddSGRow($2, 'Sync', IntToStr(PD.PacketSync) + ' (0x' +
-            IntToHex(PD.PacketSync, 4) + ')', 2);
-
-          // Clear switch block info
-          CBShowBlock.Enabled := False;
-          CBShowBlock.Text := '';
-          // Fill info grid
-          AddPacketInfoToStringGrid(PD, SG, ShowBlock);
-          // Re-Mark headers
-          SG.FixedCols := 1;
-          SG.FixedRows := 1;
-
-          // Block switch combobox
-          If (AvailableBlocks.Count > 0) Then
-          Begin
-            CBShowBlock.Clear;
-            CBShowBlock.Items.Add('');
-            CBShowBlock.Items.AddStrings(AvailableBlocks);
-            CBShowBlock.Text := '';
-            CBShowBlock.ItemIndex := 0;
-            CBShowBlock.Enabled := True;
-          End
-          else
-          Begin
-            CBShowBlock.Text := '';
-            CBShowBlock.Clear;
-            CBShowBlock.Enabled := False;
-          End;
-
-          CBShowBlock.Visible := AvailableBlocks.Count > 0;
-          LShowBlock.Visible := CBShowBlock.Visible;
-
-          For I := CBShowBlock.Items.Count - 1 DownTo 0 Do
-            If CBShowBlock.Items[I] = ShowBlock Then
-            Begin
-              CBShowBlock.ItemIndex := I;
-              Break;
-            End;
-
-          UpdateActiveRE := nil;
-        End;
-        */
     }
 }

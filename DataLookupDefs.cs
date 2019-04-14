@@ -73,7 +73,7 @@ namespace PacketViewerLogViewer.Packets
             NullEntry.Extra = "";
         }
 
-        private static bool TryFieldParse(string field, out UInt64 res)
+        public static bool TryFieldParse(string field, out UInt64 res)
         {
             bool result = false ;
             if (field.StartsWith("0x"))
@@ -115,7 +115,50 @@ namespace PacketViewerLogViewer.Packets
             }
             return result;
         }
-        
+
+        public static bool TryFieldParse(string field, out int res)
+        {
+            bool result = false;
+            if (field.StartsWith("0x"))
+            {
+                try
+                {
+                    res = int.Parse(field.Substring(2, field.Length - 2), NumberStyles.HexNumber);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            else
+            if (field.StartsWith("$"))
+            {
+                try
+                {
+                    res = int.Parse(field.Substring(1, field.Length - 1), NumberStyles.HexNumber);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            else
+            {
+                try
+                {
+                    res = int.Parse(field);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            return result;
+        }
+
 
 
         static void LoadLookupFile(string fileName)

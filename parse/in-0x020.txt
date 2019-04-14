@@ -2,25 +2,25 @@ file;in-0x020;Item Update;Info about item in your inventory.
 
 uint32;$04;Count
 uint32;$08;Bazaar Gil
-item;$0C;Item
-container;$0E;Bag
+uint16:items;$0C;Item
+byte:containers;$0E;Bag
 byte;$0F;Index
-byteflag;$10;Status
+byte;$10;Status
 data24;$11;ExtData
 data3;$29;_junk?
 
-switchbitsblock;$12:0-8;64;Gardening-Mode
+switchblock;$12:0-8;Gardening-Mode;64
 
 [[Gardening-Mode]]
 byte;$11;Growth Stage
 byte;$12;Pot Status;Enabled
 data1;$12;Pot Status;Enabled
 info;$13;Crystal Types;0=NONE 1=unk 2=ICE 3=unk 4=unk 5=unk 6=unk 7=LIGHT 8=DARK
-bitslookup;$13:0-8;Crystal Fed 1;garden_crystals
-bitslookup;$14:0-8;Crystal Fed 2;garden_crystals
-bitslookup;$15:0-8;Seed Type;garden_seed
+bits:garden_crystals;$13:0-8;Crystal Fed 1
+bits:garden_crystals;$14:0-8;Crystal Fed 2
+bits:garden_seed;$15:0-8;Seed Type
 bit;$16:0;  Bit0;Examined
 vanatime;$1D;Time Planted
-timestamp;$1D;Timestamp;
+ms;$1D;Timestamp;
 ms;$21;Time offset?;
 [[]]
