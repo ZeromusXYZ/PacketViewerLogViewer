@@ -267,6 +267,25 @@ namespace PacketViewerLogViewer
 
         public void ParseToDataGridView(DataGridView DGV,string ActiveSwitchBlock)
         {
+            byte DataFieldIndex = 0; // header is considered 0
+
+            void AddDataField(int StartPos, int FieldByteSize)
+            {
+                if (FieldByteSize < 1)
+                    FieldByteSize = 1;
+                if ((StartPos < 0) || (StartPos >= ParsedBytes.Count))
+                    return;
+                // DataFieldIndex++;
+                if (ParsedBytes[StartPos] == 0)
+                {
+                    DataFieldIndex++;
+                    for (int i = StartPos; (i < ParsedBytes.Count) && (i < (StartPos + FieldByteSize)); i++)
+                    {
+                        ParsedBytes[i] = DataFieldIndex;
+                    }
+                }
+            }
+
             // Header
             DGV.Rows.Clear();
             DGV.ColumnCount = 3;
@@ -320,8 +339,7 @@ namespace PacketViewerLogViewer
             ParsedBytes[3] = 0xFF;
             int DataCursor = 0;
             int DataSubCursor = 0;
-            byte DataFieldIndex = 1; // header is considered 0
-            
+
             string CurrentlyParsedSwitchBlock = "";
             SwitchBlocks.Clear();
             // Parse the parse file
@@ -513,78 +531,78 @@ namespace PacketViewerLogViewer
                 if (typeField == "info")
                 {
                     // Info line for the view
+                    AddDataField(Offset,0);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, descriptionField);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "byte")
                 {
                     var d = PD.GetByteAtPos(Offset);
                     var l = Lookup(lookupField,(UInt64)d);
+                    AddDataField(Offset,1);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " - 0x" + d.ToString("X2") + " - " + ByteToBits(d) + " - '" + (char)d + "'");
                     MarkParsed(Offset, 1, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if ((typeField == "bit") || (typeField == "bool"))
                 {
                     var d = PD.GetBitAtPos(Offset,SubOffset);
+                    AddDataField(Offset,1);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, d.ToString());
                     MarkParsed(Offset, 1, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "bits")
                 {
                     var d = PD.GetBitsAtPos(Offset, SubOffset, SubOffsetRange);
                     var l = Lookup(lookupField, (UInt64)d);
+                    AddDataField(Offset,1);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, l + "0x"+d.ToString("X") + " - " + d.ToString(""));
                     MarkParsed(Offset, (SubOffsetRange / 8), DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "uint16")
                 {
                     var d = PD.GetUInt16AtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)d);
+                    AddDataField(Offset,2);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")");
                     MarkParsed(Offset, 2, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "int16")
                 {
                     var d = PD.GetInt16AtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)d);
+                    AddDataField(Offset,2);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")");
                     MarkParsed(Offset, 2, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "uint32")
                 {
                     var d = PD.GetUInt32AtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)d);
+                    AddDataField(Offset,4);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")");
                     MarkParsed(Offset, 4, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "int32")
                 {
                     var d = PD.GetInt32AtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)d);
+                    AddDataField(Offset,4);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")");
                     MarkParsed(Offset, 4, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "float")
                 {
                     var d = PD.GetFloatAtPos(Offset);
+                    AddDataField(Offset,4);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, d.ToString());
                     MarkParsed(Offset, 4, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "pos")
@@ -592,18 +610,18 @@ namespace PacketViewerLogViewer
                     var x = PD.GetFloatAtPos(Offset);
                     var y = PD.GetFloatAtPos(Offset+4);
                     var z = PD.GetFloatAtPos(Offset+8);
+                    AddDataField(Offset,12);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, "X:"+x.ToString("F") + "  Y:" + y.ToString("F") + "  Z:" + z.ToString("F"));
                     MarkParsed(Offset, 12, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "dir")
                 {
                     var d = PD.GetByteAtPos(Offset);
                     var dir = ByteToRotation(d);
+                    AddDataField(Offset,1);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, dir);
                     MarkParsed(Offset, 1, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField.StartsWith("string"))
@@ -625,6 +643,7 @@ namespace PacketViewerLogViewer
                     if (d == string.Empty)
                         d = "null";
 
+                    AddDataField(Offset,size);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, d + " ("+dHex+")");
                     if (size > 1)
                     {
@@ -634,7 +653,6 @@ namespace PacketViewerLogViewer
                     {
                         MarkParsed(Offset, d.Length , DataFieldIndex);
                     }
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField.StartsWith("data"))
@@ -646,39 +664,39 @@ namespace PacketViewerLogViewer
                         size = 1;
                     }
                     var d = PD.GetDataAtPos(Offset, size);
+                    AddDataField(Offset,size);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, d);
                     MarkParsed(Offset, size, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "ms")
                 {
                     var d = PD.GetUInt32AtPos(Offset);
+                    AddDataField(Offset,4);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, MSToString(d));
                     MarkParsed(Offset, 4, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "frames")
                 {
                     var d = PD.GetUInt32AtPos(Offset);
+                    AddDataField(Offset,4);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, FramesToString(d));
                     MarkParsed(Offset, 4, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 if (typeField == "vanatime")
                 {
                     var d = PD.GetUInt32AtPos(Offset);
+                    AddDataField(Offset,4);
                     AddParseLineToView(DGV, posField, GetDataColor(DataFieldIndex), nameField, VanaTimeToString(d));
                     MarkParsed(Offset, 4, DataFieldIndex);
-                    DataFieldIndex++;
                 }
                 else
                 {
                     // Unknown field type
+                    AddDataField(Offset,0);
                     AddParseLineToView(DGV, "L " + parseLineNumber.ToString(), GetDataColor(DataFieldIndex), "Parse Error", "Unknown Field Type: " + typeField);
-                    DataFieldIndex++;
                 }
 
             }

@@ -129,15 +129,6 @@ To adjust packet info please check parserinfo.txt in the parse folder
 "filters" folder containts custom filters
 </value>
   </data>
-  <data name="mInfo.Text" xml:space="preserve">
-    <value>--&gt; Work in progress &lt;--
-Click File -&gt; Open to start
-
-To adjust packet info please check parserinfo.txt in the parse folder
-"lookup" folder is used to create some custom value names
-"filters" folder containts custom filters
-</value>
-  </data>
   <metadata name="openLogFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>91, 17</value>
   </metadata>

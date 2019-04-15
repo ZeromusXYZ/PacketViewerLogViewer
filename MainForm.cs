@@ -163,7 +163,9 @@ namespace PacketViewerLogViewer
             ListBox lb = (sender as ListBox);
             if ((lb.SelectedIndex < 0) || (lb.SelectedIndex >= PL.Count()))
             {
-                mInfo.Text = "Please select a valid item from the list";
+                rtInfo.SelectionColor = rtInfo.ForeColor;
+                rtInfo.SelectionBackColor = rtInfo.BackColor;
+                rtInfo.Text = "Please select a valid item from the list";
                 return;
             }
             PacketData pd = PL.GetPacket(lb.SelectedIndex);
@@ -179,7 +181,9 @@ namespace PacketViewerLogViewer
             ListBox lb = lbPackets ;
             if ((lb.SelectedIndex < 0) || (lb.SelectedIndex >= PL.Count()))
             {
-                mInfo.Text = "Please select a valid item from the list";
+                rtInfo.SelectionColor = rtInfo.ForeColor;
+                rtInfo.SelectionBackColor = rtInfo.BackColor;
+                rtInfo.Text = "Please select a valid item from the list";
                 return;
             }
             PacketData pd = PL.GetPacket(lb.SelectedIndex);
@@ -309,23 +313,56 @@ namespace PacketViewerLogViewer
 
         private void RawDataToRichText(PacketParser pp, RichTextBox rt)
         {
-            rtInfo.Clear();
-            for (int i = 0; i < pp.PD.RawBytes.Count; i++)
+
+            void AddChars(int startIndex)
             {
-                var n = pp.ParsedBytes[i];
-                rtInfo.SelectionColor = pp.GetDataColor(n);
-                rtInfo.AppendText(pp.PD.GetByteAtPos(i).ToString("X2"));
-                if ((i % 0x10) == 0xF)
+                rtInfo.SelectionColor = Color.DarkGray;
+                rtInfo.SelectionBackColor = Color.White;
+                rtInfo.AppendText("  | ");
+                for (int c = 0; (c < 0x10) && ((startIndex + c) < pp.ParsedBytes.Count); c++)
                 {
-                    rtInfo.AppendText("\r\n");
+                    rtInfo.SelectionColor = pp.GetDataColor(pp.ParsedBytes[startIndex + c]);
+                    char ch = (char)pp.PD.GetByteAtPos(startIndex + c);
+                    if ((ch < 32) || (ch >= 128))
+                        ch = '.';
+                    rtInfo.AppendText(ch.ToString());
                 }
-                else
+            }
+
+            rtInfo.Clear();
+            rtInfo.SelectionColor = Color.DarkGray;
+            rtInfo.SelectionBackColor = Color.White;
+            rtInfo.AppendText("     |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F    | 0123456789ABCDEF\r\n" + 
+                "-----+----------------------------------------------------  -+------------------\r\n");
+            int addCharCount = 0; 
+            for (int i = 0; i < pp.PD.RawBytes.Count; i += 0x10)
+            {
+                rtInfo.SelectionColor = Color.DarkGray;
+                rtInfo.SelectionBackColor = Color.White;
+                rtInfo.AppendText(i.ToString("X").PadLeft(4,' ') + " | ");
+                for (int i2 = 0; i2 < 0x10; i2++)
                 {
+                    if ((i + i2) < pp.ParsedBytes.Count)
+                    {
+                        var n = pp.ParsedBytes[i+i2];
+                        rtInfo.SelectionColor = pp.GetDataColor(n);
+                        rtInfo.AppendText(pp.PD.GetByteAtPos(i+i2).ToString("X2"));
+                        addCharCount++;
+                    }
+                    else
+                    {
+                        rtInfo.AppendText("  ");
+                    }
                     rtInfo.AppendText(" ");
-                    if ((i % 0x4) == 0x3)
+                    if ((i2 % 0x4) == 0x3)
                         rtInfo.AppendText(" ");
                 }
-               
+                if (addCharCount > 0)
+                {
+                    AddChars(i);
+                    addCharCount = 0;
+                }
+                rtInfo.AppendText("\r\n");
             }
             rtInfo.ReadOnly = true;
         }
@@ -336,7 +373,7 @@ namespace PacketViewerLogViewer
                 return;
             CurrentSync = pd.PacketSync;
             lInfo.Text = pd.OriginalHeaderText;
-            mInfo.Clear();
+            rtInfo.Clear();
 
             PacketParser PP = new PacketParser(pd.PacketID, pd.PacketLogType);
             PP.AssignPacket(pd);
@@ -372,12 +409,12 @@ namespace PacketViewerLogViewer
 
             if (cbOriginalData.Checked)
             {
-                mInfo.Text = "Source:\r\n" + string.Join("\r\n", pd.RawText.ToArray());
+                rtInfo.SelectionColor = rtInfo.ForeColor;
+                rtInfo.SelectionBackColor = rtInfo.BackColor;
                 rtInfo.Text = "Source:\r\n" + string.Join("\r\n", pd.RawText.ToArray());
             }
             else
             {
-                mInfo.Text = "Data:\r\n" + pd.PrintRawBytesAsHex();
                 RawDataToRichText(PP, rtInfo);
             }
 
@@ -404,7 +441,9 @@ namespace PacketViewerLogViewer
             cbShowBlock.Enabled = false;
             if ((lbPackets.SelectedIndex < 0) || (lbPackets.SelectedIndex >= PL.Count()))
             {
-                mInfo.Text = "Please select a valid item from the list";
+                rtInfo.SelectionColor = rtInfo.ForeColor;
+                rtInfo.SelectionBackColor = rtInfo.BackColor;
+                rtInfo.Text = "Please select a valid item from the list";
                 return;
             }
             PacketData pd = PL.GetPacket(lbPackets.SelectedIndex);
@@ -420,6 +459,5 @@ namespace PacketViewerLogViewer
             cbShowBlock.Enabled = true;
             lbPackets.Invalidate();
         }
-
     }
 }

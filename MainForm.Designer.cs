@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,10 +63,9 @@
             this.dGV = new System.Windows.Forms.DataGridView();
             this.cbShowBlock = new System.Windows.Forms.ComboBox();
             this.lInfo = new System.Windows.Forms.Label();
-            this.cbOriginalData = new System.Windows.Forms.CheckBox();
-            this.mInfo = new System.Windows.Forms.RichTextBox();
-            this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.rtInfo = new System.Windows.Forms.RichTextBox();
+            this.cbOriginalData = new System.Windows.Forms.CheckBox();
+            this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -340,7 +339,6 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.rtInfo);
             this.splitContainer2.Panel2.Controls.Add(this.cbOriginalData);
-            this.splitContainer2.Panel2.Controls.Add(this.mInfo);
             this.splitContainer2.Size = new System.Drawing.Size(630, 435);
             this.splitContainer2.SplitterDistance = 276;
             this.splitContainer2.TabIndex = 0;
@@ -349,11 +347,11 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -387,6 +385,17 @@
             this.lInfo.TabIndex = 0;
             this.lInfo.Text = "Info";
             // 
+            // rtInfo
+            // 
+            this.rtInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtInfo.Location = new System.Drawing.Point(6, 3);
+            this.rtInfo.Name = "rtInfo";
+            this.rtInfo.Size = new System.Drawing.Size(612, 125);
+            this.rtInfo.TabIndex = 2;
+            this.rtInfo.Text = resources.GetString("rtInfo.Text");
+            // 
             // cbOriginalData
             // 
             this.cbOriginalData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -399,34 +408,12 @@
             this.cbOriginalData.UseVisualStyleBackColor = true;
             this.cbOriginalData.CheckedChanged += new System.EventHandler(this.cbOriginalData_CheckedChanged);
             // 
-            // mInfo
-            // 
-            this.mInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.mInfo.Location = new System.Drawing.Point(6, 3);
-            this.mInfo.Name = "mInfo";
-            this.mInfo.ReadOnly = true;
-            this.mInfo.Size = new System.Drawing.Size(58, 122);
-            this.mInfo.TabIndex = 0;
-            this.mInfo.Text = resources.GetString("mInfo.Text");
-            // 
             // openLogFileDialog
             // 
             this.openLogFileDialog.DefaultExt = "log";
             this.openLogFileDialog.Filter = "Log files|*.log;*.txt;*.sqlite|Packet Viewer Log Files|*.log|Packeteer Log Files|" +
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
-            // 
-            // rtInfo
-            // 
-            this.rtInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtInfo.Location = new System.Drawing.Point(70, 3);
-            this.rtInfo.Name = "rtInfo";
-            this.rtInfo.Size = new System.Drawing.Size(548, 125);
-            this.rtInfo.TabIndex = 2;
-            this.rtInfo.Text = resources.GetString("rtInfo.Text");
             // 
             // MainForm
             // 
@@ -496,7 +483,6 @@
         private System.Windows.Forms.Label lInfo;
         private System.Windows.Forms.DataGridView dGV;
         private System.Windows.Forms.CheckBox cbOriginalData;
-        private System.Windows.Forms.RichTextBox mInfo;
         private System.Windows.Forms.OpenFileDialog openLogFileDialog;
         private System.Windows.Forms.ToolStripMenuItem mmFileClose;
         private System.Windows.Forms.RichTextBox rtInfo;
