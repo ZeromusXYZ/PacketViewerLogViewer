@@ -307,6 +307,29 @@ namespace PacketViewerLogViewer
             FillListBox(lbPackets,PL);
         }
 
+        private void RawDataToRichText(PacketParser pp, RichTextBox rt)
+        {
+            rtInfo.Clear();
+            for (int i = 0; i < pp.PD.RawBytes.Count; i++)
+            {
+                var n = pp.ParsedBytes[i];
+                rtInfo.SelectionColor = pp.GetDataColor(n);
+                rtInfo.AppendText(pp.PD.GetByteAtPos(i).ToString("X2"));
+                if ((i % 0x10) == 0xF)
+                {
+                    rtInfo.AppendText("\r\n");
+                }
+                else
+                {
+                    rtInfo.AppendText(" ");
+                    if ((i % 0x4) == 0x3)
+                        rtInfo.AppendText(" ");
+                }
+               
+            }
+            rtInfo.ReadOnly = true;
+        }
+
         private void UpdatePacketDetails(PacketData pd, string SwitchBlockName)
         {
             if (pd == null)
@@ -314,14 +337,6 @@ namespace PacketViewerLogViewer
             CurrentSync = pd.PacketSync;
             lInfo.Text = pd.OriginalHeaderText;
             mInfo.Clear();
-            if (cbOriginalData.Checked)
-            {
-                mInfo.Text = "Source:\r\n" + string.Join("\r\n", pd.RawText.ToArray());
-            }
-            else
-            {
-                mInfo.Text = "Data:\r\n" + pd.PrintRawBytesAsHex();
-            }
 
             PacketParser PP = new PacketParser(pd.PacketID, pd.PacketLogType);
             PP.AssignPacket(pd);
@@ -354,6 +369,18 @@ namespace PacketViewerLogViewer
                     //break;
                 }
             }
+
+            if (cbOriginalData.Checked)
+            {
+                mInfo.Text = "Source:\r\n" + string.Join("\r\n", pd.RawText.ToArray());
+                rtInfo.Text = "Source:\r\n" + string.Join("\r\n", pd.RawText.ToArray());
+            }
+            else
+            {
+                mInfo.Text = "Data:\r\n" + pd.PrintRawBytesAsHex();
+                RawDataToRichText(PP, rtInfo);
+            }
+
         }
 
         private void mmFileSettings_Click(object sender, EventArgs e)

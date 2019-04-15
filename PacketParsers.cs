@@ -21,8 +21,8 @@ namespace PacketViewerLogViewer
         public UInt16 ThisPacketID { get; set; }
         PacketLogTypes ThisPacketLogType { get; set; }
         List<string> RawParseData = new List<string>();
-        List<byte> ParsedBytes = new List<byte>();
-        private PacketData PD;
+        public List<byte> ParsedBytes = new List<byte>();
+        public PacketData PD;
         public List<string> SwitchBlocks = new List<string>();
         public string LastSwitchedBlock = "";
         private string[] CompasDirectionNames = new string[16] { "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N", "NNE", "NE", "ENE" };

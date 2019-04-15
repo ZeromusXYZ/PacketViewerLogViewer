@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +66,7 @@
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.mInfo = new System.Windows.Forms.RichTextBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -337,6 +338,7 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.rtInfo);
             this.splitContainer2.Panel2.Controls.Add(this.cbOriginalData);
             this.splitContainer2.Panel2.Controls.Add(this.mInfo);
             this.splitContainer2.Size = new System.Drawing.Size(630, 435);
@@ -347,11 +349,11 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -399,13 +401,12 @@
             // 
             // mInfo
             // 
-            this.mInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.mInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.mInfo.Location = new System.Drawing.Point(6, 3);
             this.mInfo.Name = "mInfo";
             this.mInfo.ReadOnly = true;
-            this.mInfo.Size = new System.Drawing.Size(612, 122);
+            this.mInfo.Size = new System.Drawing.Size(58, 122);
             this.mInfo.TabIndex = 0;
             this.mInfo.Text = resources.GetString("mInfo.Text");
             // 
@@ -415,6 +416,17 @@
             this.openLogFileDialog.Filter = "Log files|*.log;*.txt;*.sqlite|Packet Viewer Log Files|*.log|Packeteer Log Files|" +
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
+            // 
+            // rtInfo
+            // 
+            this.rtInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtInfo.Location = new System.Drawing.Point(70, 3);
+            this.rtInfo.Name = "rtInfo";
+            this.rtInfo.Size = new System.Drawing.Size(548, 125);
+            this.rtInfo.TabIndex = 2;
+            this.rtInfo.Text = resources.GetString("rtInfo.Text");
             // 
             // MainForm
             // 
@@ -487,6 +499,7 @@
         private System.Windows.Forms.RichTextBox mInfo;
         private System.Windows.Forms.OpenFileDialog openLogFileDialog;
         private System.Windows.Forms.ToolStripMenuItem mmFileClose;
+        private System.Windows.Forms.RichTextBox rtInfo;
     }
 }
 
