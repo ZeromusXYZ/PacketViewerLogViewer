@@ -24,6 +24,7 @@ namespace PacketViewerLogViewer
 
         PacketList PLLoaded; // File Loaded
         PacketList PL; // Filtered File Data Displayed
+        PacketParser PP;
         private UInt16 CurrentSync;
 
         public MainForm()
@@ -321,7 +322,17 @@ namespace PacketViewerLogViewer
                 rtInfo.AppendText("  | ");
                 for (int c = 0; (c < 0x10) && ((startIndex + c) < pp.ParsedBytes.Count); c++)
                 {
-                    rtInfo.SelectionColor = pp.GetDataColor(pp.ParsedBytes[startIndex + c]);
+                    var n = pp.ParsedBytes[startIndex + c];
+                    if (pp.SelectedFields.IndexOf(n) >= 0)
+                    {
+                        rtInfo.SelectionColor = Color.Yellow;
+                        rtInfo.SelectionBackColor = Color.Navy;
+                    }
+                    else
+                    {
+                        rtInfo.SelectionColor = pp.GetDataColor(n);
+                        rtInfo.SelectionBackColor = Color.White;
+                    }
                     char ch = (char)pp.PD.GetByteAtPos(startIndex + c);
                     if ((ch < 32) || (ch >= 128))
                         ch = '.';
@@ -345,12 +356,23 @@ namespace PacketViewerLogViewer
                     if ((i + i2) < pp.ParsedBytes.Count)
                     {
                         var n = pp.ParsedBytes[i+i2];
-                        rtInfo.SelectionColor = pp.GetDataColor(n);
+                        if (pp.SelectedFields.IndexOf(n) >= 0)
+                        {
+                            rtInfo.SelectionColor = Color.Yellow;
+                            rtInfo.SelectionBackColor = Color.Navy;
+                        }
+                        else
+                        {
+                            rtInfo.SelectionColor = pp.GetDataColor(n);
+                            rtInfo.SelectionBackColor = Color.White;
+                        }
                         rtInfo.AppendText(pp.PD.GetByteAtPos(i+i2).ToString("X2"));
                         addCharCount++;
                     }
                     else
                     {
+                        rtInfo.SelectionColor = Color.DarkGray;
+                        rtInfo.SelectionBackColor = Color.White;
                         rtInfo.AppendText("  ");
                     }
                     rtInfo.AppendText(" ");
@@ -375,7 +397,7 @@ namespace PacketViewerLogViewer
             lInfo.Text = pd.OriginalHeaderText;
             rtInfo.Clear();
 
-            PacketParser PP = new PacketParser(pd.PacketID, pd.PacketLogType);
+            PP = new PacketParser(pd.PacketID, pd.PacketLogType);
             PP.AssignPacket(pd);
             PP.ParseToDataGridView(dGV,SwitchBlockName);
             if (PP.SwitchBlocks.Count > 0)
@@ -458,6 +480,26 @@ namespace PacketViewerLogViewer
             }
             cbShowBlock.Enabled = true;
             lbPackets.Invalidate();
+        }
+
+        private void dGV_SelectionChanged(object sender, EventArgs e)
+        {
+            if ((PP == null) || (PP.PD == null))
+                return;
+            if (dGV.Tag != null)
+                return;
+            PP.SelectedFields.Clear();
+            for (int i = 0; i < dGV.RowCount;i++)
+            {
+                if ((dGV.Rows[i].Selected) && (i < PP.ParsedView.Count))
+                {
+                    var f = PP.ParsedView[i].FieldIndex;
+                    //if (f != 0xFF)
+                        PP.SelectedFields.Add(f);
+                }
+            }
+            PP.ToGridView(dGV);
+            RawDataToRichText(PP, rtInfo);
         }
     }
 }
