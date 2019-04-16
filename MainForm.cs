@@ -345,7 +345,8 @@ namespace PacketViewerLogViewer
             rtInfo.SelectionBackColor = Color.White;
             rtInfo.AppendText("     |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F    | 0123456789ABCDEF\r\n" + 
                 "-----+----------------------------------------------------  -+------------------\r\n");
-            int addCharCount = 0; 
+            int addCharCount = 0;
+            byte lastFieldIndex = 0;
             for (int i = 0; i < pp.PD.RawBytes.Count; i += 0x10)
             {
                 rtInfo.SelectionColor = Color.DarkGray;
@@ -356,6 +357,7 @@ namespace PacketViewerLogViewer
                     if ((i + i2) < pp.ParsedBytes.Count)
                     {
                         var n = pp.ParsedBytes[i+i2];
+                        lastFieldIndex = n;
                         if (pp.SelectedFields.IndexOf(n) >= 0)
                         {
                             rtInfo.SelectionColor = Color.Yellow;
@@ -363,8 +365,10 @@ namespace PacketViewerLogViewer
                         }
                         else
                         {
-                            rtInfo.SelectionColor = pp.GetDataColor(n);
-                            rtInfo.SelectionBackColor = Color.White;
+                            rtInfo.SelectionBackColor = pp.GetDataColor(n);
+                            rtInfo.SelectionColor = Color.White ;
+                            // rtInfo.SelectionColor = pp.GetDataColor(n);
+                            // rtInfo.SelectionBackColor = Color.White;
                         }
                         rtInfo.AppendText(pp.PD.GetByteAtPos(i+i2).ToString("X2"));
                         addCharCount++;
@@ -375,6 +379,22 @@ namespace PacketViewerLogViewer
                         rtInfo.SelectionBackColor = Color.White;
                         rtInfo.AppendText("  ");
                     }
+
+                    if ((i + i2 + 1) < pp.ParsedBytes.Count)
+                    {
+                        var n = pp.ParsedBytes[i + i2 + 1];
+                        if (n != lastFieldIndex)
+                        {
+                            rtInfo.SelectionColor = Color.Black;
+                            rtInfo.SelectionBackColor = Color.White;
+                        }
+                    }
+                    else
+                    {
+                        rtInfo.SelectionColor = Color.Black;
+                        rtInfo.SelectionBackColor = Color.White;
+                    }
+
                     rtInfo.AppendText(" ");
                     if ((i2 % 0x4) == 0x3)
                         rtInfo.AppendText(" ");

@@ -114,7 +114,8 @@ namespace PacketViewerLogViewer
         private string ByteToRotation(byte b)
         {
             int i = (b * 360) / 256;
-            return CompasDirectionNames[(i / 16) % 16] + " (0x"+b.ToString("X2")+ " ≈ " + i.ToString() + "°)";
+            double rads = ((Math.PI * 2) / 360 * i);
+            return CompasDirectionNames[(i / 16) % 16] + " (" + b.ToString()+" - 0x"+b.ToString("X2")+ " ≈ " + i.ToString() + "° = " + rads.ToString("F") + " rad)";
         }
 
         private string ByteToBits(byte b)
