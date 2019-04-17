@@ -40,6 +40,8 @@ namespace PacketViewerLogViewer
 
         public PacketParser(UInt16 aPacketID,PacketLogTypes aPacketLogType)
         {
+            // Default Field Colors
+            /*
             DataColors.Add(Color.Black);
             DataColors.Add(Color.Red);
             DataColors.Add(Color.Green);
@@ -48,6 +50,15 @@ namespace PacketViewerLogViewer
             DataColors.Add(Color.DarkGray);
             DataColors.Add(Color.Maroon);
             DataColors.Add(Color.Navy);
+            */
+            DataColors.Add(Color.Black);
+            DataColors.Add(Color.Chocolate);
+            DataColors.Add(Color.MediumSeaGreen);
+            DataColors.Add(Color.CornflowerBlue);
+            DataColors.Add(Color.DarkSalmon);
+            DataColors.Add(Color.DarkGray);
+            DataColors.Add(Color.Brown);
+            DataColors.Add(Color.MidnightBlue);
 
             var filename = Application.StartupPath + Path.DirectorySeparatorChar + "parse" + Path.DirectorySeparatorChar ;
             switch (aPacketLogType)

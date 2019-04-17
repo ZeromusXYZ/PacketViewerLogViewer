@@ -314,24 +314,64 @@ namespace PacketViewerLogViewer
 
         private void RawDataToRichText(PacketParser pp, RichTextBox rt)
         {
+            void SetColorBasic(byte n)
+            {
+                rtInfo.SelectionFont = rtInfo.Font;
+                rtInfo.SelectionColor = Color.Black;
+                rtInfo.SelectionBackColor = Color.White;
+            }
+
+            void SetColorGrid()
+            {
+                rtInfo.SelectionFont = rtInfo.Font;
+                rtInfo.SelectionColor = Color.DarkGray;
+                rtInfo.SelectionBackColor = Color.White;
+            }
+
+            void SetColorSelect(byte n,bool forchars)
+            {
+                if (!forchars)
+                {
+                    rtInfo.SelectionFont = new Font(rtInfo.Font, FontStyle.Italic);
+                }
+                else
+                {
+                    rtInfo.SelectionFont = rtInfo.Font;
+                }
+                rtInfo.SelectionColor = Color.Yellow;
+                rtInfo.SelectionBackColor = Color.DarkBlue;
+            }
+
+            void SetColorNotSelect(byte n, bool forchars)
+            {
+                rtInfo.SelectionFont = rtInfo.Font;
+                if ((pp.SelectedFields.Count > 0) || forchars)
+                {
+                    rtInfo.SelectionColor = pp.GetDataColor(n);
+                    rtInfo.SelectionBackColor = Color.White;
+                }
+                else
+                {
+                    rtInfo.SelectionColor = Color.White;
+                    rtInfo.SelectionBackColor = pp.GetDataColor(n);
+                }
+            }
+
 
             void AddChars(int startIndex)
             {
-                rtInfo.SelectionColor = Color.DarkGray;
-                rtInfo.SelectionBackColor = Color.White;
+                SetColorGrid();
                 rtInfo.AppendText("  | ");
                 for (int c = 0; (c < 0x10) && ((startIndex + c) < pp.ParsedBytes.Count); c++)
                 {
                     var n = pp.ParsedBytes[startIndex + c];
                     if (pp.SelectedFields.IndexOf(n) >= 0)
                     {
-                        rtInfo.SelectionColor = Color.Yellow;
-                        rtInfo.SelectionBackColor = Color.Navy;
+                        SetColorSelect(n,true);
                     }
                     else
                     {
-                        rtInfo.SelectionColor = pp.GetDataColor(n);
-                        rtInfo.SelectionBackColor = Color.White;
+                        SetColorNotSelect(n,true);
                     }
                     char ch = (char)pp.PD.GetByteAtPos(startIndex + c);
                     if ((ch < 32) || (ch >= 128))
@@ -341,16 +381,14 @@ namespace PacketViewerLogViewer
             }
 
             rtInfo.Clear();
-            rtInfo.SelectionColor = Color.DarkGray;
-            rtInfo.SelectionBackColor = Color.White;
+            SetColorGrid();
             rtInfo.AppendText("     |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F    | 0123456789ABCDEF\r\n" + 
                 "-----+----------------------------------------------------  -+------------------\r\n");
             int addCharCount = 0;
             byte lastFieldIndex = 0;
             for (int i = 0; i < pp.PD.RawBytes.Count; i += 0x10)
             {
-                rtInfo.SelectionColor = Color.DarkGray;
-                rtInfo.SelectionBackColor = Color.White;
+                SetColorGrid();
                 rtInfo.AppendText(i.ToString("X").PadLeft(4,' ') + " | ");
                 for (int i2 = 0; i2 < 0x10; i2++)
                 {
@@ -358,25 +396,30 @@ namespace PacketViewerLogViewer
                     {
                         var n = pp.ParsedBytes[i+i2];
                         lastFieldIndex = n;
-                        if (pp.SelectedFields.IndexOf(n) >= 0)
+                        if (pp.SelectedFields.Count > 0)
                         {
-                            rtInfo.SelectionColor = Color.Yellow;
-                            rtInfo.SelectionBackColor = Color.Navy;
+                            if (pp.SelectedFields.IndexOf(n) >= 0)
+                            {
+                                // Is selected field
+                                SetColorSelect(n, false);
+                            }
+                            else
+                            {
+                                // we have non-selected field
+                                SetColorNotSelect(n, false);
+                            }
                         }
                         else
                         {
-                            rtInfo.SelectionBackColor = pp.GetDataColor(n);
-                            rtInfo.SelectionColor = Color.White ;
-                            // rtInfo.SelectionColor = pp.GetDataColor(n);
-                            // rtInfo.SelectionBackColor = Color.White;
+                            // No fields selected
+                            SetColorNotSelect(n, false);
                         }
                         rtInfo.AppendText(pp.PD.GetByteAtPos(i+i2).ToString("X2"));
                         addCharCount++;
                     }
                     else
                     {
-                        rtInfo.SelectionColor = Color.DarkGray;
-                        rtInfo.SelectionBackColor = Color.White;
+                        SetColorGrid();
                         rtInfo.AppendText("  ");
                     }
 
@@ -385,14 +428,12 @@ namespace PacketViewerLogViewer
                         var n = pp.ParsedBytes[i + i2 + 1];
                         if (n != lastFieldIndex)
                         {
-                            rtInfo.SelectionColor = Color.Black;
-                            rtInfo.SelectionBackColor = Color.White;
+                            SetColorBasic(n);
                         }
                     }
                     else
                     {
-                        rtInfo.SelectionColor = Color.Black;
-                        rtInfo.SelectionBackColor = Color.White;
+                        SetColorGrid();
                     }
 
                     rtInfo.AppendText(" ");
