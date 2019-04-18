@@ -981,8 +981,9 @@ namespace PacketViewerLogViewer.Packets
     {
         public PacketList PLLoaded; // File Loaded
         public PacketList PL; // Filtered File Data Displayed
-        public PacketParser PP;
+        // public PacketParser PP;
         public UInt16 CurrentSync;
+        public string LoadedFileTitle ;
 
         public ListBox lbPackets;
 
@@ -995,7 +996,9 @@ namespace PacketViewerLogViewer.Packets
             lbPackets.Location = new System.Drawing.Point(0, 0);
             lbPackets.Size = new System.Drawing.Size(this.Width, this.Height);
             lbPackets.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-
+            lbPackets.DrawMode = DrawMode.OwnerDrawFixed;
+            LoadedFileTitle = "Packets";
+            CurrentSync = 0xFFFF;
         }
 
 

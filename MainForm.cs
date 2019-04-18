@@ -22,10 +22,10 @@ namespace PacketViewerLogViewer
         const string urlGitHub = "https://github.com/ZeromusXYZ/PacketViewerLogViewer";
         const string urlVideoLAN = "https://www.videolan.org/";
 
-        PacketList PLLoaded; // File Loaded
-        PacketList PL; // Filtered File Data Displayed
+        //PacketList PLLoaded; // File Loaded
+        //PacketList PL; // Filtered File Data Displayed
         PacketParser PP;
-        private UInt16 CurrentSync;
+        // private UInt16 CurrentSync;
 
         public MainForm()
         {
@@ -69,8 +69,7 @@ namespace PacketViewerLogViewer
                 MessageBox.Show("Exception: " + x.Message, "Loading Lookup Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Close();
             }
-            PLLoaded = new PacketList();
-            PL = new PacketList();
+            tcPackets.TabPages.Clear();
             Application.UseWaitCursor = false;
         }
 
@@ -81,8 +80,10 @@ namespace PacketViewerLogViewer
                 return;
 
             PacketTabPage tp = new PacketTabPage();
+            tp.lbPackets.DrawItem += lbPackets_DrawItem;
+            tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
             tcPackets.TabPages.Add(tp);
-            tp.Text = System.IO.Path.GetFileNameWithoutExtension(openLogFileDialog.FileName);
+            tp.Text = MakeTabName(openLogFileDialog.FileName);
 
             tp.PLLoaded.Clear();
             tp.PLLoaded.ClearFilters();
@@ -93,6 +94,7 @@ namespace PacketViewerLogViewer
                 return;
             }
             Text = defaultTitle + " - " + openLogFileDialog.FileName;
+            tp.LoadedFileTitle = openLogFileDialog.FileName;
             tp.PL.CopyFrom(tp.PLLoaded);
             FillListBox(tp.lbPackets, tp.PL);
         }
@@ -163,19 +165,22 @@ namespace PacketViewerLogViewer
             Application.UseWaitCursor = false;
         }
 
-        private void lbPackets_SelectedIndexChanged(object sender, EventArgs e)
+        public void lbPackets_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListBox lb = (sender as ListBox);
-            if ((lb.SelectedIndex < 0) || (lb.SelectedIndex >= PL.Count()))
+            if (!(lb.Parent is PacketTabPage))
+                return;
+            PacketTabPage tp = (lb.Parent as PacketTabPage);
+            if ((lb.SelectedIndex < 0) || (lb.SelectedIndex >= tp.PL.Count()))
             {
                 rtInfo.SelectionColor = rtInfo.ForeColor;
                 rtInfo.SelectionBackColor = rtInfo.BackColor;
                 rtInfo.Text = "Please select a valid item from the list";
                 return;
             }
-            PacketData pd = PL.GetPacket(lb.SelectedIndex);
+            PacketData pd = tp.PL.GetPacket(lb.SelectedIndex);
             cbShowBlock.Enabled = false;
-            UpdatePacketDetails(pd, "-");
+            UpdatePacketDetails(tp,pd, "-");
             cbShowBlock.Enabled = true;
             lb.Invalidate();
         }
@@ -183,34 +188,52 @@ namespace PacketViewerLogViewer
 
         private void cbOriginalData_CheckedChanged(object sender, EventArgs e)
         {
-            ListBox lb = lbPackets ;
-            if ((lb.SelectedIndex < 0) || (lb.SelectedIndex >= PL.Count()))
+            if (!(tcPackets.SelectedTab is PacketTabPage))
+            {
+                rtInfo.SelectionColor = rtInfo.ForeColor;
+                rtInfo.SelectionBackColor = rtInfo.BackColor;
+                rtInfo.Text = "Please select open a list first";
+                return;
+            }
+            PacketTabPage tp = (tcPackets.SelectedTab as PacketTabPage);
+            ListBox lb = tp.lbPackets ;
+            if ((lb.SelectedIndex < 0) || (lb.SelectedIndex >= tp.PL.Count()))
             {
                 rtInfo.SelectionColor = rtInfo.ForeColor;
                 rtInfo.SelectionBackColor = rtInfo.BackColor;
                 rtInfo.Text = "Please select a valid item from the list";
                 return;
             }
-            PacketData pd = PL.GetPacket(lb.SelectedIndex);
-            UpdatePacketDetails(pd, "-");
+            PacketData pd = tp.PL.GetPacket(lb.SelectedIndex);
+            UpdatePacketDetails(tp,pd, "-");
         }
 
         private void mmFileClose_Click(object sender, EventArgs e)
         {
             Text = defaultTitle;
+            if ((tcPackets.SelectedIndex >= 0) && (tcPackets.SelectedIndex < tcPackets.TabCount))
+            {
+                tcPackets.TabPages.RemoveAt(tcPackets.SelectedIndex);
+            }
+            /*
             PLLoaded.Clear();
             PLLoaded.ClearFilters();
             PL.Clear();
             PL.ClearFilters();
             FillListBox(lbPackets,PL);
+            */
         }
 
-        private void lbPackets_DrawItem(object sender, DrawItemEventArgs e)
+        public void lbPackets_DrawItem(object sender, DrawItemEventArgs e)
         {
+            ListBox lb = (sender as ListBox);
+            if (!(lb.Parent is PacketTabPage))
+                return;
+            PacketTabPage tp = (lb.Parent as PacketTabPage);
             PacketData pd = null;
-            if ((e.Index >= 0) && (e.Index < PL.Count()))
+            if ((e.Index >= 0) && (e.Index < tp.PL.Count()))
             {
-                pd = PL.GetPacket(e.Index);
+                pd = tp.PL.GetPacket(e.Index);
             }
             else
             {
@@ -219,8 +242,7 @@ namespace PacketViewerLogViewer
                 return;
             }
 
-            ListBox lb = (sender as ListBox);
-            bool barOn = (CurrentSync == pd.PacketSync);
+            bool barOn = (tp.CurrentSync == pd.PacketSync);
             bool isSelected = (e.Index == lb.SelectedIndex);
             Color textCol;
             Color backCol;
@@ -279,7 +301,6 @@ namespace PacketViewerLogViewer
             Brush backBrush = new SolidBrush(backCol);
             Brush barBrush = new SolidBrush(barCol);
 
-
             // Draw the background of the ListBox control for each item.
             e.Graphics.FillRectangle(backBrush, e.Bounds);
 
@@ -304,16 +325,19 @@ namespace PacketViewerLogViewer
             if (openLogFileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
-            if (!PLLoaded.LoadFromFile(openLogFileDialog.FileName))
+            PacketTabPage tp = GetCurrentOrNewPacketTabPage();
+            tp.Text = "Multi";
+            tp.LoadedFileTitle = "Multiple Sources";
+
+            if (!tp.PLLoaded.LoadFromFile(openLogFileDialog.FileName))
             {
                 MessageBox.Show("Error loading file: " + openLogFileDialog.FileName, "File Append Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                PLLoaded.Clear();
+                tp.PLLoaded.Clear();
                 return;
             }
-            Text = defaultTitle + " - Multiple sources";
-
-            PL.CopyFrom(PLLoaded);
-            FillListBox(lbPackets,PL);
+            Text = defaultTitle + " - " + tp.LoadedFileTitle;
+            tp.PL.CopyFrom(tp.PLLoaded);
+            FillListBox(tp.lbPackets,tp.PL);
         }
 
         private void RawDataToRichText(PacketParser pp, RichTextBox rt)
@@ -454,11 +478,11 @@ namespace PacketViewerLogViewer
             rtInfo.ReadOnly = true;
         }
 
-        private void UpdatePacketDetails(PacketData pd, string SwitchBlockName)
+        private void UpdatePacketDetails(PacketTabPage tp, PacketData pd, string SwitchBlockName)
         {
-            if (pd == null)
+            if (tp == null)
                 return;
-            CurrentSync = pd.PacketSync;
+            tp.CurrentSync = pd.PacketSync;
             lInfo.Text = pd.OriginalHeaderText;
             rtInfo.Clear();
 
@@ -525,26 +549,30 @@ namespace PacketViewerLogViewer
             if (!cbShowBlock.Enabled)
                 return;
 
+            if (!(tcPackets.SelectedTab is PacketTabPage))
+                return;
+            PacketTabPage tp = (tcPackets.SelectedTab as PacketTabPage);
+
             cbShowBlock.Enabled = false;
-            if ((lbPackets.SelectedIndex < 0) || (lbPackets.SelectedIndex >= PL.Count()))
+            if ((tp.lbPackets.SelectedIndex < 0) || (tp.lbPackets.SelectedIndex >= tp.PL.Count()))
             {
                 rtInfo.SelectionColor = rtInfo.ForeColor;
                 rtInfo.SelectionBackColor = rtInfo.BackColor;
                 rtInfo.Text = "Please select a valid item from the list";
                 return;
             }
-            PacketData pd = PL.GetPacket(lbPackets.SelectedIndex);
+            PacketData pd = tp.PL.GetPacket(tp.lbPackets.SelectedIndex);
             var sw = cbShowBlock.SelectedIndex;
             if (sw >= 0)
             {
-                UpdatePacketDetails(pd, cbShowBlock.Items[sw].ToString());
+                UpdatePacketDetails(tp,pd, cbShowBlock.Items[sw].ToString());
             }
             else
             {
-                UpdatePacketDetails(pd, "-");
+                UpdatePacketDetails(tp,pd, "-");
             }
             cbShowBlock.Enabled = true;
-            lbPackets.Invalidate();
+            tp.lbPackets.Invalidate();
         }
 
         private void dGV_SelectionChanged(object sender, EventArgs e)
@@ -565,6 +593,76 @@ namespace PacketViewerLogViewer
             }
             PP.ToGridView(dGV);
             RawDataToRichText(PP, rtInfo);
+        }
+
+        private string MakeTabName(string filename)
+        {
+            string res ;
+            string fn = System.IO.Path.GetFileNameWithoutExtension(filename);
+            string fnl = fn.ToLower();
+            if ((fnl == "full") || (fnl == "incoming") || (fnl == "outgoing"))
+            {
+                string ldir = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename)).ToLower();
+                if ((ldir == "packetviewer") || (ldir == "logs"))
+                {
+                    res = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(filename)));
+                }
+                else
+                {
+                    res = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename));
+                }
+            }
+            else
+            {
+                res = fn;
+            }
+            if (res.Length > 15)
+                res = res.Substring(0, 13)+"...";
+            return res ;
+        }
+
+        private void TcPackets_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TabControl tc = (sender as TabControl);
+            if (!(tc.SelectedTab is PacketTabPage))
+                return;
+            PacketTabPage tp = (tc.SelectedTab as PacketTabPage);
+            Text = defaultTitle + " - " + tp.LoadedFileTitle ;
+        }
+
+        private void MmAddFromClipboard_Click(object sender, EventArgs e)
+        {
+            if (!Clipboard.ContainsText())
+            {
+                MessageBox.Show("No text to paste", "Paste from Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+        }
+
+        private PacketTabPage GetCurrentOrNewPacketTabPage()
+        {
+            PacketTabPage tp;
+            if (!(tcPackets.SelectedTab is PacketTabPage))
+            {
+                tp = new PacketTabPage();
+                tp.lbPackets.DrawItem += lbPackets_DrawItem;
+                tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
+                tcPackets.TabPages.Add(tp);
+            }
+            else
+            {
+                tp = (tcPackets.SelectedTab as PacketTabPage);
+            }
+            return tp;
+        }
+
+        private void MmFilterEdit_Click(object sender, EventArgs e)
+        {
+            using (var filterDlg = new FilterForm())
+            {
+                filterDlg.ShowDialog(this);
+            }
         }
     }
 }

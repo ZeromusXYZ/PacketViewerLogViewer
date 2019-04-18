@@ -58,6 +58,8 @@
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.mmAboutAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tcPackets = new System.Windows.Forms.TabControl();
+            this.tpPackets1 = new System.Windows.Forms.TabPage();
             this.lbPackets = new System.Windows.Forms.ListBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dGV = new System.Windows.Forms.DataGridView();
@@ -66,20 +68,18 @@
             this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tcPackets = new System.Windows.Forms.TabControl();
-            this.tpPackets1 = new System.Windows.Forms.TabPage();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tcPackets.SuspendLayout();
+            this.tpPackets1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).BeginInit();
-            this.tcPackets.SuspendLayout();
-            this.tpPackets1.SuspendLayout();
             this.SuspendLayout();
             // 
             // MM
@@ -94,7 +94,7 @@
             this.MM.Location = new System.Drawing.Point(0, 0);
             this.MM.Name = "MM";
             this.MM.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.MM.Size = new System.Drawing.Size(984, 24);
+            this.MM.Size = new System.Drawing.Size(1084, 24);
             this.MM.TabIndex = 0;
             this.MM.Text = "Main Menu";
             // 
@@ -135,6 +135,7 @@
             this.mmAddFromClipboard.Name = "mmAddFromClipboard";
             this.mmAddFromClipboard.Size = new System.Drawing.Size(199, 22);
             this.mmAddFromClipboard.Text = "Add from clipboard";
+            this.mmAddFromClipboard.Click += new System.EventHandler(this.MmAddFromClipboard_Click);
             // 
             // mmFileS1
             // 
@@ -182,14 +183,14 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
             this.mmSearchSearch.Text = "Search ...";
             // 
             // mmSearchNext
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
             this.mmSearchNext.Text = "Search next";
             // 
             // mmFilter
@@ -206,26 +207,27 @@
             // mmFilterEdit
             // 
             this.mmFilterEdit.Name = "mmFilterEdit";
-            this.mmFilterEdit.Size = new System.Drawing.Size(106, 22);
+            this.mmFilterEdit.Size = new System.Drawing.Size(180, 22);
             this.mmFilterEdit.Text = "Edit ...";
+            this.mmFilterEdit.Click += new System.EventHandler(this.MmFilterEdit_Click);
             // 
             // mmFilterReset
             // 
             this.mmFilterReset.Name = "mmFilterReset";
-            this.mmFilterReset.Size = new System.Drawing.Size(106, 22);
+            this.mmFilterReset.Size = new System.Drawing.Size(180, 22);
             this.mmFilterReset.Text = "Reset";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(103, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
             // 
             // mmFilterApply
             // 
             this.mmFilterApply.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem4});
             this.mmFilterApply.Name = "mmFilterApply";
-            this.mmFilterApply.Size = new System.Drawing.Size(106, 22);
+            this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
             this.mmFilterApply.Text = "Apply";
             // 
             // toolStripMenuItem4
@@ -238,6 +240,7 @@
             this.mmVideo.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmVideoOpenLink,
             this.mmVideoSaveLinkData});
+            this.mmVideo.Enabled = false;
             this.mmVideo.Name = "mmVideo";
             this.mmVideo.Size = new System.Drawing.Size(49, 20);
             this.mmVideo.Text = "Video";
@@ -306,9 +309,36 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(984, 435);
+            this.splitContainer1.Size = new System.Drawing.Size(1084, 487);
             this.splitContainer1.SplitterDistance = 350;
             this.splitContainer1.TabIndex = 3;
+            // 
+            // tcPackets
+            // 
+            this.tcPackets.Alignment = System.Windows.Forms.TabAlignment.Left;
+            this.tcPackets.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tcPackets.Controls.Add(this.tpPackets1);
+            this.tcPackets.HotTrack = true;
+            this.tcPackets.Location = new System.Drawing.Point(0, 0);
+            this.tcPackets.Multiline = true;
+            this.tcPackets.Name = "tcPackets";
+            this.tcPackets.SelectedIndex = 0;
+            this.tcPackets.Size = new System.Drawing.Size(347, 484);
+            this.tcPackets.TabIndex = 1;
+            this.tcPackets.SelectedIndexChanged += new System.EventHandler(this.TcPackets_SelectedIndexChanged);
+            // 
+            // tpPackets1
+            // 
+            this.tpPackets1.Controls.Add(this.lbPackets);
+            this.tpPackets1.Location = new System.Drawing.Point(25, 4);
+            this.tpPackets1.Name = "tpPackets1";
+            this.tpPackets1.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPackets1.Size = new System.Drawing.Size(318, 476);
+            this.tpPackets1.TabIndex = 0;
+            this.tpPackets1.Text = "Packets";
+            this.tpPackets1.UseVisualStyleBackColor = true;
             // 
             // lbPackets
             // 
@@ -320,7 +350,7 @@
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(318, 424);
+            this.lbPackets.Size = new System.Drawing.Size(320, 466);
             this.lbPackets.TabIndex = 0;
             this.lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
@@ -343,8 +373,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.rtInfo);
             this.splitContainer2.Panel2.Controls.Add(this.cbOriginalData);
-            this.splitContainer2.Size = new System.Drawing.Size(630, 435);
-            this.splitContainer2.SplitterDistance = 276;
+            this.splitContainer2.Size = new System.Drawing.Size(730, 487);
+            this.splitContainer2.SplitterDistance = 328;
             this.splitContainer2.TabIndex = 0;
             // 
             // dGV
@@ -365,7 +395,7 @@
             this.dGV.ReadOnly = true;
             this.dGV.RowHeadersVisible = false;
             this.dGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dGV.Size = new System.Drawing.Size(612, 241);
+            this.dGV.Size = new System.Drawing.Size(712, 293);
             this.dGV.TabIndex = 2;
             this.dGV.SelectionChanged += new System.EventHandler(this.dGV_SelectionChanged);
             // 
@@ -374,7 +404,7 @@
             this.cbShowBlock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbShowBlock.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbShowBlock.FormattingEnabled = true;
-            this.cbShowBlock.Location = new System.Drawing.Point(460, 6);
+            this.cbShowBlock.Location = new System.Drawing.Point(560, 6);
             this.cbShowBlock.Name = "cbShowBlock";
             this.cbShowBlock.Size = new System.Drawing.Size(158, 22);
             this.cbShowBlock.TabIndex = 1;
@@ -397,7 +427,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtInfo.Location = new System.Drawing.Point(6, 3);
             this.rtInfo.Name = "rtInfo";
-            this.rtInfo.Size = new System.Drawing.Size(612, 125);
+            this.rtInfo.Size = new System.Drawing.Size(712, 125);
             this.rtInfo.TabIndex = 2;
             this.rtInfo.Text = resources.GetString("rtInfo.Text");
             // 
@@ -420,36 +450,11 @@
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
             // 
-            // tcPackets
-            // 
-            this.tcPackets.Alignment = System.Windows.Forms.TabAlignment.Left;
-            this.tcPackets.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tcPackets.Controls.Add(this.tpPackets1);
-            this.tcPackets.Location = new System.Drawing.Point(0, 0);
-            this.tcPackets.Multiline = true;
-            this.tcPackets.Name = "tcPackets";
-            this.tcPackets.SelectedIndex = 0;
-            this.tcPackets.Size = new System.Drawing.Size(347, 432);
-            this.tcPackets.TabIndex = 1;
-            // 
-            // tpPackets1
-            // 
-            this.tpPackets1.Controls.Add(this.lbPackets);
-            this.tpPackets1.Location = new System.Drawing.Point(25, 4);
-            this.tpPackets1.Name = "tpPackets1";
-            this.tpPackets1.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPackets1.Size = new System.Drawing.Size(318, 424);
-            this.tpPackets1.TabIndex = 0;
-            this.tpPackets1.Text = "Packets";
-            this.tpPackets1.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 459);
+            this.ClientSize = new System.Drawing.Size(1084, 511);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.MM);
             this.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -466,6 +471,8 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tcPackets.ResumeLayout(false);
+            this.tpPackets1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -473,8 +480,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).EndInit();
-            this.tcPackets.ResumeLayout(false);
-            this.tpPackets1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

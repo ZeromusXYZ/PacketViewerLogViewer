@@ -771,8 +771,8 @@ namespace PacketViewerLogViewer
                         Color.DarkGray,
                         "??_UInt32 (@" + i.ToString() + ")",
                         "0x" + PD.GetUInt32AtPos(i).ToString("X8") + " (" + PD.GetUInt32AtPos(i).ToString() + ")");
-                    i += 3; // move forward a extra 3 bytes
                     MarkParsed(i, 4, DataFieldIndex);
+                    i += 3; // move forward a extra 3 bytes
                 }
                 else
                 if (ParsedBytes[i] == 0)
