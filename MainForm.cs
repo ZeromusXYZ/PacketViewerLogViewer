@@ -80,17 +80,21 @@ namespace PacketViewerLogViewer
             if (openLogFileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
-            PLLoaded.Clear();
-            PLLoaded.ClearFilters();
-            if (!PLLoaded.LoadFromFile(openLogFileDialog.FileName))
+            PacketTabPage tp = new PacketTabPage();
+            tcPackets.TabPages.Add(tp);
+            tp.Text = System.IO.Path.GetFileNameWithoutExtension(openLogFileDialog.FileName);
+
+            tp.PLLoaded.Clear();
+            tp.PLLoaded.ClearFilters();
+            if (!tp.PLLoaded.LoadFromFile(openLogFileDialog.FileName))
             {
                 MessageBox.Show("Error loading file: " + openLogFileDialog.FileName, "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                PLLoaded.Clear();
+                tp.PLLoaded.Clear();
                 return;
             }
             Text = defaultTitle + " - " + openLogFileDialog.FileName;
-            PL.CopyFrom(PLLoaded);
-            FillListBox(lbPackets,PL);
+            tp.PL.CopyFrom(tp.PLLoaded);
+            FillListBox(tp.lbPackets, tp.PL);
         }
 
         private void FillListBox(ListBox lb, PacketList pList)

@@ -977,4 +977,28 @@ namespace PacketViewerLogViewer.Packets
 
     } // End PacketList
 
+    class PacketTabPage: System.Windows.Forms.TabPage
+    {
+        public PacketList PLLoaded; // File Loaded
+        public PacketList PL; // Filtered File Data Displayed
+        public PacketParser PP;
+        public UInt16 CurrentSync;
+
+        public ListBox lbPackets;
+
+        public PacketTabPage()
+        {
+            PLLoaded = new PacketList();
+            PL = new PacketList();
+            lbPackets = new ListBox();
+            lbPackets.Parent = this;
+            lbPackets.Location = new System.Drawing.Point(0, 0);
+            lbPackets.Size = new System.Drawing.Size(this.Width, this.Height);
+            lbPackets.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+
+        }
+
+
+    }
+
 }

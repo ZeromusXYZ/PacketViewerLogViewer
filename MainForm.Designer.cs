@@ -66,6 +66,8 @@
             this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.tcPackets = new System.Windows.Forms.TabControl();
+            this.tpPackets1 = new System.Windows.Forms.TabPage();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -76,6 +78,8 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).BeginInit();
+            this.tcPackets.SuspendLayout();
+            this.tpPackets1.SuspendLayout();
             this.SuspendLayout();
             // 
             // MM
@@ -296,7 +300,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.lbPackets);
+            this.splitContainer1.Panel1.Controls.Add(this.tcPackets);
             this.splitContainer1.Panel1MinSize = 350;
             // 
             // splitContainer1.Panel2
@@ -314,9 +318,9 @@
             this.lbPackets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lbPackets.FormattingEnabled = true;
             this.lbPackets.ItemHeight = 14;
-            this.lbPackets.Location = new System.Drawing.Point(12, 12);
+            this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(323, 396);
+            this.lbPackets.Size = new System.Drawing.Size(318, 424);
             this.lbPackets.TabIndex = 0;
             this.lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
@@ -416,6 +420,31 @@
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
             // 
+            // tcPackets
+            // 
+            this.tcPackets.Alignment = System.Windows.Forms.TabAlignment.Left;
+            this.tcPackets.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tcPackets.Controls.Add(this.tpPackets1);
+            this.tcPackets.Location = new System.Drawing.Point(0, 0);
+            this.tcPackets.Multiline = true;
+            this.tcPackets.Name = "tcPackets";
+            this.tcPackets.SelectedIndex = 0;
+            this.tcPackets.Size = new System.Drawing.Size(347, 432);
+            this.tcPackets.TabIndex = 1;
+            // 
+            // tpPackets1
+            // 
+            this.tpPackets1.Controls.Add(this.lbPackets);
+            this.tpPackets1.Location = new System.Drawing.Point(25, 4);
+            this.tpPackets1.Name = "tpPackets1";
+            this.tpPackets1.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPackets1.Size = new System.Drawing.Size(318, 424);
+            this.tpPackets1.TabIndex = 0;
+            this.tpPackets1.Text = "Packets";
+            this.tpPackets1.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -444,6 +473,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).EndInit();
+            this.tcPackets.ResumeLayout(false);
+            this.tpPackets1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -487,6 +518,8 @@
         private System.Windows.Forms.OpenFileDialog openLogFileDialog;
         private System.Windows.Forms.ToolStripMenuItem mmFileClose;
         private System.Windows.Forms.RichTextBox rtInfo;
+        private System.Windows.Forms.TabControl tcPackets;
+        private System.Windows.Forms.TabPage tpPackets1;
     }
 }
 
