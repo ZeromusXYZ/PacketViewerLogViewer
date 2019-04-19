@@ -642,26 +642,78 @@ namespace PacketViewerLogViewer
 
         private PacketTabPage GetCurrentOrNewPacketTabPage()
         {
-            PacketTabPage tp;
-            if (!(tcPackets.SelectedTab is PacketTabPage))
+            PacketTabPage tp = GetCurrentPacketTabPage();
+            if (tp == null)
             {
                 tp = new PacketTabPage();
                 tp.lbPackets.DrawItem += lbPackets_DrawItem;
                 tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
                 tcPackets.TabPages.Add(tp);
             }
+            return tp;
+        }
+
+        private PacketTabPage GetCurrentPacketTabPage()
+        {
+            if (!(tcPackets.SelectedTab is PacketTabPage))
+            {
+                return null;
+            }
             else
             {
-                tp = (tcPackets.SelectedTab as PacketTabPage);
+                return (tcPackets.SelectedTab as PacketTabPage);
             }
-            return tp;
         }
 
         private void MmFilterEdit_Click(object sender, EventArgs e)
         {
+            var tp = GetCurrentPacketTabPage();
             using (var filterDlg = new FilterForm())
             {
-                filterDlg.ShowDialog(this);
+                filterDlg.btnOK.Enabled = (tp != null);
+                if (tp != null)
+                {
+                    filterDlg.Filter.CopyFrom(tp.PL.Filter);
+                    filterDlg.LoadLocalFromFilter();
+                }
+                if (filterDlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    filterDlg.SaveLocalToFilter();
+                    tp.PL.Filter.CopyFrom(filterDlg.Filter);
+                    tp.PL.FilterFrom(tp.PLLoaded);
+                    FillListBox(tp.lbPackets, tp.PL);
+                }
+            }
+        }
+
+        private void MmFilterReset_Click(object sender, EventArgs e)
+        {
+            var tp = GetCurrentPacketTabPage();
+            if (tp != null)
+            {
+                tp.PL.Filter.Clear();
+                tp.PL.CopyFrom(tp.PLLoaded);
+                FillListBox(tp.lbPackets, tp.PL);
+            }
+
+        }
+
+        private void MmFilterApply_Click(object sender, EventArgs e)
+        {
+            // generate menu
+            // GetFiles
+        }
+
+        private void MMFilterApplyItem_Click(object sender, EventArgs e)
+        {
+            var tp = GetCurrentPacketTabPage();
+            if (tp == null)
+                return;
+
+            if (sender is ToolStripMenuItem)
+            {
+                var mITem = (sender as ToolStripMenuItem);
+                // apply filter
             }
         }
     }

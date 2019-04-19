@@ -48,7 +48,7 @@
             this.mmFilterReset = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFilterApply = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.MMFilterApplyItem = new System.Windows.Forms.ToolStripSeparator();
             this.mmVideo = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoOpenLink = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoSaveLinkData = new System.Windows.Forms.ToolStripMenuItem();
@@ -183,14 +183,14 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
             this.mmSearchSearch.Text = "Search ...";
             // 
             // mmSearchNext
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
             this.mmSearchNext.Text = "Search next";
             // 
             // mmFilter
@@ -216,6 +216,7 @@
             this.mmFilterReset.Name = "mmFilterReset";
             this.mmFilterReset.Size = new System.Drawing.Size(180, 22);
             this.mmFilterReset.Text = "Reset";
+            this.mmFilterReset.Click += new System.EventHandler(this.MmFilterReset_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -225,15 +226,17 @@
             // mmFilterApply
             // 
             this.mmFilterApply.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem4});
+            this.MMFilterApplyItem});
             this.mmFilterApply.Name = "mmFilterApply";
             this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
             this.mmFilterApply.Text = "Apply";
+            this.mmFilterApply.Click += new System.EventHandler(this.MmFilterApply_Click);
             // 
-            // toolStripMenuItem4
+            // MMFilterApplyItem
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(57, 6);
+            this.MMFilterApplyItem.Name = "MMFilterApplyItem";
+            this.MMFilterApplyItem.Size = new System.Drawing.Size(177, 6);
+            this.MMFilterApplyItem.Click += new System.EventHandler(this.MMFilterApplyItem_Click);
             // 
             // mmVideo
             // 
@@ -350,7 +353,7 @@
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(320, 466);
+            this.lbPackets.Size = new System.Drawing.Size(322, 466);
             this.lbPackets.TabIndex = 0;
             this.lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
@@ -504,7 +507,7 @@
         private System.Windows.Forms.ToolStripMenuItem mmFilterReset;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem mmFilterApply;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripSeparator MMFilterApplyItem;
         private System.Windows.Forms.ToolStripMenuItem mmVideo;
         private System.Windows.Forms.ToolStripMenuItem mmVideoOpenLink;
         private System.Windows.Forms.ToolStripMenuItem mmVideoSaveLinkData;

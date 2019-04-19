@@ -53,6 +53,8 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.saveFileDlg = new System.Windows.Forms.SaveFileDialog();
+            this.loadFileDlg = new System.Windows.Forms.OpenFileDialog();
+            this.btnClear = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -296,6 +298,7 @@
             this.btnOK.TabIndex = 10;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.BtnOK_Click);
             // 
             // btnCancel
             // 
@@ -317,6 +320,7 @@
             this.btnSave.TabIndex = 12;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // btnLoad
             // 
@@ -327,6 +331,7 @@
             this.btnLoad.TabIndex = 13;
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
             // 
             // saveFileDlg
             // 
@@ -335,6 +340,23 @@
             this.saveFileDlg.RestoreDirectory = true;
             this.saveFileDlg.Title = "Save Filter";
             // 
+            // loadFileDlg
+            // 
+            this.loadFileDlg.DefaultExt = "pfl";
+            this.loadFileDlg.Filter = "Filter Files|*.pfl|All Files|*.*";
+            this.loadFileDlg.RestoreDirectory = true;
+            this.loadFileDlg.Title = "Load Filter";
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(424, 286);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.TabIndex = 14;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            // 
             // FilterForm
             // 
             this.AcceptButton = this.btnOK;
@@ -342,6 +364,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(508, 397);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnCancel);
@@ -385,10 +408,12 @@
         private System.Windows.Forms.RadioButton rbInShow;
         private System.Windows.Forms.RadioButton rbInHide;
         private System.Windows.Forms.RadioButton rbInOff;
-        private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.SaveFileDialog saveFileDlg;
+        private System.Windows.Forms.OpenFileDialog loadFileDlg;
+        private System.Windows.Forms.Button btnClear;
+        public System.Windows.Forms.Button btnOK;
     }
 }

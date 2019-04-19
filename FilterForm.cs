@@ -13,15 +13,20 @@ namespace PacketViewerLogViewer
 {
     public partial class FilterForm : Form
     {
+
+        public PacketListFilter Filter;
+
         public FilterForm()
         {
             InitializeComponent();
+            Filter = new PacketListFilter();
+            saveFileDlg.InitialDirectory = Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "filter" + System.IO.Path.DirectorySeparatorChar;
+            loadFileDlg.InitialDirectory = Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "filter" + System.IO.Path.DirectorySeparatorChar;
+            ClearFilters();
         }
 
         private void FilterForm_Load(object sender, EventArgs e)
         {
-            saveFileDlg.InitialDirectory = Application.StartupPath + "filters" + System.IO.Path.DirectorySeparatorChar; 
-            ClearFilters();
             cbOutIDs.Items.Clear();
             foreach(var key in DataLookups.NLU(DataLookups.LU_PacketOut).data.Keys)
             {
@@ -47,6 +52,58 @@ namespace PacketViewerLogViewer
             rbInShow.Checked = false;
             rbInNone.Checked = false;
             lbIn.Items.Clear();
+        }
+
+        public void LoadLocalFromFilter()
+        {
+            rbOutOff.Checked = (Filter.FilterOutType == FilterType.Off);
+            rbOutHide.Checked = (Filter.FilterOutType == FilterType.HidePackets);
+            rbOutShow.Checked = (Filter.FilterOutType == FilterType.ShowPackets);
+            rbOutNone.Checked = (Filter.FilterOutType == FilterType.AllowNone);
+            lbOut.Items.Clear();
+            foreach(UInt16 n in Filter.FilterOutList)
+                lbOut.Items.Add("0x" + n.ToString("X3") + " - " + DataLookups.NLU(DataLookups.LU_PacketOut).GetValue((UInt64)n));
+
+            rbInOff.Checked = (Filter.FilterInType == FilterType.Off);
+            rbInHide.Checked = (Filter.FilterInType == FilterType.HidePackets);
+            rbInShow.Checked = (Filter.FilterInType == FilterType.ShowPackets);
+            rbInNone.Checked = (Filter.FilterInType == FilterType.AllowNone);
+            lbIn.Items.Clear();
+            foreach (UInt16 n in Filter.FilterInList)
+                lbIn.Items.Add("0x" + n.ToString("X3") + " - " + DataLookups.NLU(DataLookups.LU_PacketIn).GetValue((UInt64)n));
+        }
+
+        public void SaveLocalToFilter()
+        {
+            if (rbOutOff.Checked)
+                Filter.FilterOutType = FilterType.Off;
+            if (rbOutHide.Checked)
+                Filter.FilterOutType = FilterType.HidePackets;
+            if (rbOutShow.Checked)
+                Filter.FilterOutType = FilterType.ShowPackets;
+            if (rbOutNone.Checked)
+                Filter.FilterOutType = FilterType.AllowNone;
+            Filter.FilterOutList.Clear();
+            foreach (string line in lbOut.Items)
+            {
+                int n = ValForID(line);
+                Filter.AddOutFilterValueToList((UInt16)n);
+            }
+
+            if (rbInOff.Checked)
+                Filter.FilterInType = FilterType.Off;
+            if (rbInHide.Checked)
+                Filter.FilterInType = FilterType.HidePackets;
+            if (rbInShow.Checked)
+                Filter.FilterInType = FilterType.ShowPackets;
+            if (rbInNone.Checked)
+                Filter.FilterInType = FilterType.AllowNone;
+            Filter.FilterInList.Clear();
+            foreach (string line in lbIn.Items)
+            {
+                int n = ValForID(line);
+                Filter.AddInFilterValueToList((UInt16)n);
+            }
         }
 
         private int ValForID(string s)
@@ -88,6 +145,37 @@ namespace PacketViewerLogViewer
         {
             if (lbIn.SelectedIndex >= 0)
                 lbIn.Items.Remove(lbIn.SelectedItem);
+        }
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            if (saveFileDlg.ShowDialog() == DialogResult.OK)
+            {
+                SaveLocalToFilter();
+                Filter.SaveToFile(saveFileDlg.FileName);
+            }
+        }
+
+        private void BtnLoad_Click(object sender, EventArgs e)
+        {
+            if (loadFileDlg.ShowDialog() == DialogResult.OK)
+            {
+                if (!Filter.LoadFromFile(loadFileDlg.FileName))
+                    Filter.Clear();
+                LoadLocalFromFilter();
+            }
+
+        }
+
+        private void BtnClear_Click(object sender, EventArgs e)
+        {
+            Filter.Clear();
+            LoadLocalFromFilter();
+        }
+
+        private void BtnOK_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
         }
     }
 }

@@ -28,10 +28,10 @@ item-feet;$4E;Feet Model;-$5000
 item-main;$50;Main Weapon Model;-$6000
 item-sub;$52;Sub Weapon Model;-$7000
 item-ranged;$54;Ranged Weapon Model;-$8000
-music;$56;Music - Day
-music;$58;Music - Night
-music;$5A;Music - Solo Combat
-music;$5C;Music - Party Combat
+uint16:music;$56;Music - Day
+uint16:music;$58;Music - Night
+uint16:music;$5A;Music - Solo Combat
+uint16:music;$5C;Music - Party Combat
 uint16;$5E;Animation
 uint16;$60;Boundary
 uint16;$62;Menu Zone;Only set if the menu ID is sent, used as the zone for menu responses (0x5b, 0x5c)

@@ -586,15 +586,106 @@ namespace PacketViewerLogViewer.Packets
             FilterInList.Clear();
         }
 
+        public void CopyFrom(PacketListFilter aFilter)
+        {
+            FilterOutType = aFilter.FilterOutType;
+            FilterInType = aFilter.FilterInType;
+            FilterOutList.Clear();
+            FilterOutList.AddRange(aFilter.FilterOutList);
+            FilterInList.Clear();
+            FilterInList.AddRange(aFilter.FilterInList);
+        }
+
+        public void AddOutFilterValueToList(UInt16 value)
+        {
+            if ((value > 0) && (FilterOutList.IndexOf(value) < 0))
+                FilterOutList.Add(value);
+        }
+
+        public void AddInFilterValueToList(UInt16 value)
+        {
+            if ((value > 0) && (FilterInList.IndexOf(value) < 0))
+                FilterInList.Add(value);
+        }
+
         public bool LoadFromFile(string filename)
         {
-            return false;
+            try
+            {
+                List<string> sl = File.ReadAllLines(filename).ToList();
+
+                Clear();
+                foreach(string line in sl)
+                {
+                    var fields = line.Split(';');
+                    if (fields.Length <= 1)
+                        continue;
+
+                    var f0 = fields[0].ToLower();
+                    var f1 = fields[1].ToLower();
+
+                    switch (f0)
+                    {
+                        case "outtype":
+                            switch(f1)
+                            {
+                                case "off":
+                                    FilterOutType = FilterType.Off;
+                                    break;
+                                case "show":
+                                    FilterOutType = FilterType.ShowPackets;
+                                    break;
+                                case "hide":
+                                    FilterOutType = FilterType.HidePackets;
+                                    break;
+                                case "none":
+                                    FilterOutType = FilterType.AllowNone;
+                                    break;
+                            }
+                            break;
+                        case "intype":
+                            switch (f1)
+                            {
+                                case "off":
+                                    FilterInType = FilterType.Off;
+                                    break;
+                                case "show":
+                                    FilterInType = FilterType.ShowPackets;
+                                    break;
+                                case "hide":
+                                    FilterInType = FilterType.HidePackets;
+                                    break;
+                                case "none":
+                                    FilterInType = FilterType.AllowNone;
+                                    break;
+                            }
+                            break;
+                        case "out":
+                            if (DataLookups.TryFieldParse(f1, out int nout))
+                                AddOutFilterValueToList((UInt16)nout);
+                            break;
+                        case "in":
+                            if (DataLookups.TryFieldParse(f1, out int nin))
+                                AddInFilterValueToList((UInt16)nin);
+                            break;
+                    }
+
+
+                }
+
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Failed to load " + filename + "\r\nException: " + x.Message, "Load Filter Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
         }
 
         public bool SaveToFile(string filename)
         {
             List<string> sl = new List<string>();
-            sl.Add("rem;original-file;" + filename);
+            sl.Add("rem;original-file;" + Path.GetFileName(filename));
             switch(FilterOutType)
             {
                 case FilterType.Off:
@@ -630,7 +721,7 @@ namespace PacketViewerLogViewer.Packets
                     sl.Add("intype;none");
                     break;
             }
-            foreach (UInt16 i in FilterOutList)
+            foreach (UInt16 i in FilterInList)
             {
                 sl.Add("in;0x" + i.ToString("X3") + ";" + DataLookups.NLU(DataLookups.LU_PacketIn).GetValue(i));
             }
@@ -901,10 +992,18 @@ namespace PacketViewerLogViewer.Packets
                             pd.TimeStamp = reader.GetDateTime(reader.GetOrdinal("RECEIVED_DT"));
                             pd.VirtualTimeStamp = pd.TimeStamp;
                             var dir = reader.GetInt16(reader.GetOrdinal("DIRECTION")); // 0 = in ; 1 = out
-                            if (dir == 0)
-                                pd.PacketLogType = PacketLogTypes.Incoming;
-                            if (dir == 1)
-                                pd.PacketLogType = PacketLogTypes.Outgoing;
+                            switch (dir)
+                            {
+                                case 0:
+                                    pd.PacketLogType = PacketLogTypes.Incoming;
+                                    break;
+                                case 1:
+                                    pd.PacketLogType = PacketLogTypes.Outgoing;
+                                    break;
+                                default:
+                                    pd.PacketLogType = PacketLogTypes.Unknown;
+                                    break;
+                            }
                             pd.PacketID = (UInt16)reader.GetInt32(reader.GetOrdinal("PACKET_TYPE"));
                             var pData = reader.GetString(reader.GetOrdinal("PACKET_DATA"));
                             pd.RawText.Add(pData);
