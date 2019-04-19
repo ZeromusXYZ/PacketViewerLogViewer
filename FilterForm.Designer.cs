@@ -52,6 +52,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
+            this.saveFileDlg = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -299,6 +300,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(424, 54);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -325,6 +327,13 @@
             this.btnLoad.TabIndex = 13;
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
+            // 
+            // saveFileDlg
+            // 
+            this.saveFileDlg.DefaultExt = "pfl";
+            this.saveFileDlg.Filter = "Filter Files|*.pfl|All Files|*.*";
+            this.saveFileDlg.RestoreDirectory = true;
+            this.saveFileDlg.Title = "Save Filter";
             // 
             // FilterForm
             // 
@@ -380,5 +389,6 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.SaveFileDialog saveFileDlg;
     }
 }

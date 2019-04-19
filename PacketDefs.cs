@@ -14,7 +14,7 @@ using PacketViewerLogViewer;
 namespace PacketViewerLogViewer.Packets
 {
     public enum PacketLogTypes { Unknown, Outgoing, Incoming }
-    public enum FilterType { None, HidePackets, ShowPackets, AllowNone };
+    public enum FilterType { Off, HidePackets, ShowPackets, AllowNone };
     public enum PacketLogFileFormats { Unknown = 0, WindowerPacketViewer = 1, AshitaPacketeer = 2, PacketDB = 3 }
 
     public static class String6BitEncodeKeys
@@ -564,27 +564,105 @@ namespace PacketViewerLogViewer.Packets
 
     }
 
-    public class PacketList
+    public class PacketListFilter
     {
-        protected List<PacketData> PacketDataList { get; set; }
-
-        public FilterType FilterOutType { get ; set ; }
+        public FilterType FilterOutType { get; set; }
         public List<UInt16> FilterOutList { get; set; }
         public FilterType FilterInType { get; set; }
         public List<UInt16> FilterInList { get; set; }
 
+        public PacketListFilter()
+        {
+            FilterOutList = new List<UInt16>();
+            FilterInList = new List<UInt16>();
+            Clear();
+        }
+
+        public void Clear()
+        {
+            FilterOutType = FilterType.Off;
+            FilterOutList.Clear();
+            FilterInType = FilterType.Off;
+            FilterInList.Clear();
+        }
+
+        public bool LoadFromFile(string filename)
+        {
+            return false;
+        }
+
+        public bool SaveToFile(string filename)
+        {
+            List<string> sl = new List<string>();
+            sl.Add("rem;original-file;" + filename);
+            switch(FilterOutType)
+            {
+                case FilterType.Off:
+                    sl.Add("outtype;off");
+                    break;
+                case FilterType.ShowPackets:
+                    sl.Add("outtype;show");
+                    break;
+                case FilterType.HidePackets:
+                    sl.Add("outtype;hide");
+                    break;
+                case FilterType.AllowNone:
+                    sl.Add("outtype;none");
+                    break;
+            }
+            foreach(UInt16 i in FilterOutList)
+            {
+                sl.Add("out;0x"+ i.ToString("X3") + ";" + DataLookups.NLU(DataLookups.LU_PacketOut).GetValue(i));
+            }
+
+            switch (FilterInType)
+            {
+                case FilterType.Off:
+                    sl.Add("intype;off");
+                    break;
+                case FilterType.ShowPackets:
+                    sl.Add("intype;show");
+                    break;
+                case FilterType.HidePackets:
+                    sl.Add("intype;hide");
+                    break;
+                case FilterType.AllowNone:
+                    sl.Add("intype;none");
+                    break;
+            }
+            foreach (UInt16 i in FilterOutList)
+            {
+                sl.Add("in;0x" + i.ToString("X3") + ";" + DataLookups.NLU(DataLookups.LU_PacketIn).GetValue(i));
+            }
+
+            try
+            {
+                File.WriteAllLines(filename, sl);
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Failed to save " + filename + "\r\nException: " + x.Message, "Save Filter Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+    }
+
+    public class PacketList
+    {
+        protected List<PacketData> PacketDataList { get; set; }
+
+        public PacketListFilter Filter ;
+
         public PacketList()
         {
             PacketDataList = new List<PacketData>();
-            FilterOutType = FilterType.None;
-            FilterOutList = new List<UInt16>();
-            FilterInType = FilterType.None;
-            FilterInList = new List<UInt16>();
+            Filter = new PacketListFilter();
         }
 
         ~PacketList()
         {
-            ClearFilters();
+            Filter.Clear();
             Clear();
         }
 
@@ -593,15 +671,7 @@ namespace PacketViewerLogViewer.Packets
             PacketDataList.Clear();
         }
 
-        public void ClearFilters()
-        {
-            FilterOutType = FilterType.None;
-            FilterOutList.Clear();
-            FilterInType = FilterType.None;
-            FilterInList.Clear();
-        }
-
-        public bool LoadFromFile(string fileName)
+         public bool LoadFromFile(string fileName)
         {
             if (!File.Exists(fileName))
                 return false;
@@ -903,7 +973,7 @@ namespace PacketViewerLogViewer.Packets
                     return FL.Contains(PacketID);
                 case FilterType.HidePackets:
                     return !FL.Contains(PacketID);
-                case FilterType.None:
+                case FilterType.Off:
                 default:
                     return true;
             }
@@ -911,10 +981,10 @@ namespace PacketViewerLogViewer.Packets
 
         protected bool DoIShowThis(PacketData PD)
         {
-            if ((PD.PacketLogType == PacketLogTypes.Incoming) && (FilterInType != FilterType.None))
-                return DoIShowThis(PD.PacketID, FilterInType, FilterInList);
-            if ((PD.PacketLogType == PacketLogTypes.Outgoing) && (FilterOutType != FilterType.None))
-                return DoIShowThis(PD.PacketID, FilterOutType, FilterOutList);
+            if ((PD.PacketLogType == PacketLogTypes.Incoming) && (Filter.FilterInType != FilterType.Off))
+                return DoIShowThis(PD.PacketID, Filter.FilterInType, Filter.FilterInList);
+            if ((PD.PacketLogType == PacketLogTypes.Outgoing) && (Filter.FilterOutType != FilterType.Off))
+                return DoIShowThis(PD.PacketID, Filter.FilterOutType, Filter.FilterOutList);
             return true;
         }
 

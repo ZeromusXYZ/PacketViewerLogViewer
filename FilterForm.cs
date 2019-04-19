@@ -20,6 +20,7 @@ namespace PacketViewerLogViewer
 
         private void FilterForm_Load(object sender, EventArgs e)
         {
+            saveFileDlg.InitialDirectory = Application.StartupPath + "filters" + System.IO.Path.DirectorySeparatorChar; 
             ClearFilters();
             cbOutIDs.Items.Clear();
             foreach(var key in DataLookups.NLU(DataLookups.LU_PacketOut).data.Keys)

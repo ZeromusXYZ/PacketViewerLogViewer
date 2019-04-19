@@ -86,7 +86,7 @@ namespace PacketViewerLogViewer
             tp.Text = MakeTabName(openLogFileDialog.FileName);
 
             tp.PLLoaded.Clear();
-            tp.PLLoaded.ClearFilters();
+            tp.PLLoaded.Filter.Clear();
             if (!tp.PLLoaded.LoadFromFile(openLogFileDialog.FileName))
             {
                 MessageBox.Show("Error loading file: " + openLogFileDialog.FileName, "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
