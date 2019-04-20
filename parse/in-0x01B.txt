@@ -5,7 +5,7 @@ byte:jobs;$08;Main Job
 byte;$09;Flag or Main Job Level?
 byte;$0A;Flag or Sub Job Level?
 byte:jobs;$0B;Sub Job
-jobflags;$0C;Sub/Job Unlock Flags;
+bitflaglist2:jobflags;$0C:0-32;Sub/Job Unlock Flags;
 byte;$10;_unknown3;-- 10   Flag or List Start
 rem;byte;$11;WAR Level; <-- I don't think these are actually used, so skipping them in the list
 rem;byte;$12;MNK Level

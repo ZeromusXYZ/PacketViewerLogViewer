@@ -920,7 +920,109 @@ namespace PacketViewerLogViewer
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "0x" + PD.GetUInt32AtPos(Offset).ToString("X4") + " => " + d);
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
+                else
+                if (typeField == "equipsetitemlist")
+                {
+                    // Special field, SubOffset is used a position for the count byte
+                    var counter = PD.GetByteAtPos(SubOffset);
+                    // Otherwise works exactly the same as a loop of "equipsetitem"
+
+                    AddDataField(Offset, counter * 4);
+                    var c = 0;
+                    for (int off = 0; (off < PD.RawBytes.Count - 4) && (c < counter); off += 4)
+                    {
+                        string d = "";
+                        if (PD.GetBitAtPos(off + Offset, 0))
+                            d += "Active ";
+                        if (PD.GetBitAtPos(off + Offset, 1))
+                            d += "Bit1Set? ";
+                        var bagid = PD.GetBitsAtPos(off + Offset, 2, 6);
+                        var invindex = PD.GetByteAtPos(off + Offset + 1);
+                        var item = PD.GetUInt32AtPos(off + Offset + 2);
+                        d += DataLookups.NLU(DataLookups.LU_Container).GetValue((UInt64)bagid) + " ";
+                        d += "InvIndex: " + invindex.ToString() + " ";
+                        d += "Item: " + DataLookups.NLU(DataLookups.LU_Item).GetValue((UInt64)item);
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " #"+c.ToString(), "0x" + PD.GetUInt32AtPos(off + Offset).ToString("X4") + " => " + d);
+                        c++;
+                    }
+                    MarkParsed(Offset, counter * 4, DataFieldIndex);
+                }
+                else
+                if (typeField == "abilityrecastlist")
+                {
+                    string d = "";
+                    int off = Offset;
+                    int counter = SubOffset;
+                    for(int c = 0; c < counter; c++)
+                    {
+                        if (off > PD.RawBytes.Count - 8)
+                            break;
+
+                        var aID = PD.GetByteAtPos(off + 3);
+                        var aDur = PD.GetUInt16AtPos(off);
+
+                        d = "";
+                        d += "ID: 0x" + aID.ToString("X2") + " (" + DataLookups.NLU(DataLookups.LU_ARecast).GetValue(aID) + ") ";
+                        d += "Duration: " + aDur.ToString() + " - ";
+                        d += "byte@2: 0x" + PD.GetByteAtPos(off + 2).ToString("X2") + " ";
+                        d += "uint32@4: 0x" + PD.GetUInt32AtPos(off + 4).ToString("X8") + " ";
+
+                        // Only show used recast timers
+                        if ((aID != 0) || (c == 0))
+                        {
+                            AddDataField(off, 8);
+                            AddParseLineToView(DataFieldIndex, "0x"+off.ToString("X2") , GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                            MarkParsed(off, 8, DataFieldIndex);
+                        }
+                        off += 8;
+                    }
+                }
+                else
+                if (typeField == "blacklistentry")
+                {
+                    var pID = PD.GetUInt32AtPos(Offset);
+                    var pName = PD.GetStringAtPos(Offset + 4);
+                    AddDataField(Offset, 20);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "ID: 0x" + pID.ToString("X8") + " => " + pName);
+                    MarkParsed(Offset, 20, DataFieldIndex);
+                }
+                else
+                if (typeField == "meritentries")
+                {
+                    // Special field, SubOffset is used a position for the count byte
+                    var counter = PD.GetByteAtPos(SubOffset);
+                    // Otherwise works exactly the same as a loop of "equipsetitem"
+
+                    AddDataField(Offset, counter * 4);
+                    var c = 0;
+                    for (int off = 0; (off < PD.RawBytes.Count - 4) && (c < counter); off += 4)
+                    {
+                        var meritID = PD.GetUInt16AtPos(off + Offset);
+                        var meritNextCost = PD.GetByteAtPos(off + Offset + 2);
+                        var meritValue = PD.GetUInt32AtPos(off + Offset + 3);
+                        string d = "";
+                        d += "ID: 0x" + meritID.ToString("X4") + " (" + DataLookups.NLU(DataLookups.LU_Merit).GetValue((UInt64)meritID) + ") - ";
+                        d += "Next Cost: " + meritNextCost.ToString() + " - ";
+                        d += "Value: " + meritValue.ToString();
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                        c++;
+                    }
+                    MarkParsed(Offset, counter * 4, DataFieldIndex);
+                }
                 /*
+                */
+                /*
+                 * TODO: field types to implement
+                 * playercheckitems
+                 * bufficons
+                 * bufftimers
+                 * buffs
+                 * jobpointentries
+                 * shopitems
+                 * guildshopitems
+                 * jobpoints
+                 * roequest
+                 * packet-in-0x028
                 */
                 else
                 {

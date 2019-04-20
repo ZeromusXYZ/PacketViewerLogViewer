@@ -39,7 +39,7 @@ description: display true/false value for a specific bit in a byte. To specific 
   bit;$0A:0;Bit0;  --> results in  True
 
 typename: bits [:lookup]
-description: display a int64 value for a specified bits. To specific which bit, add a : after the offset and a - to add a size (in bits)
+description: display a int64 value for specified bits. To specific which bit, add a : after the offset and a - to add a size (in bits)
   examples for value at offset $0A with a value of 73 (01001001):
   bits;$0A:4-2;Bit4 to 5;  --> results in 0              ^^
   bits;$0A:0-5;Bit0 to 5;  --> results in 9               ^^^^^
@@ -110,6 +110,5 @@ description: Shows info about incomming packet 0x028 (has no color coding)
   Does nothing if it's not used in the correct packet parser
 
 
-If there is unused data left in the packet past the last defined position,
-the log viewer will display them all as byteflag values with their
-position as a name.
+If there is unused byte data left in the packet, the log viewer will generate a list of the bytes at the end of all parsed fields.
+It will try to generate either uint32's or byte's depending on the unused size.
