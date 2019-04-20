@@ -20,14 +20,14 @@ uint16;$40;_unknown3
 uint16:zones;$42;_dupeZone
 byte;$44;Face
 byte;$45;Race
-item-head;$46;Head Model;-$1000
-item-body;$48;Body Model;-$2000
-item-hands;$4A;Hands Model;-$3000
-item-legs;$4C;Legs Model;-$4000
-item-feet;$4E;Feet Model;-$5000
-item-main;$50;Main Weapon Model;-$6000
-item-sub;$52;Sub Weapon Model;-$7000
-item-ranged;$54;Ranged Weapon Model;-$8000
+uint16:itemmodels:-0x1000;$46;Head Model;
+uint16:itemmodels:-0x2000;$48;Body Model;
+uint16:itemmodels:-0x3000;$4A;Hands Model;
+uint16:itemmodels:-0x4000;$4C;Legs Model;
+uint16:itemmodels:-0x5000;$4E;Feet Model;
+uint16:itemmodels:-0x6000;$50;Main Weapon Model;
+uint16:itemmodels:-0x7000;$52;Sub Weapon Model;
+uint16:itemmodels:-0x8000;$54;Ranged Weapon Model;
 uint16:music;$56;Music - Day
 uint16:music;$58;Music - Night
 uint16:music;$5A;Music - Solo Combat
@@ -37,7 +37,7 @@ uint16;$60;Boundary
 uint16;$62;Menu Zone;Only set if the menu ID is sent, used as the zone for menu responses (0x5b, 0x5c)
 uint16;$64;Menu ID / CS-id
 uint16;$66;_unknown5
-weather;$68;Weather
+uint16:weather;$68;Weather
 uint32;$6A;Weather Change Time
 data22;$6E;_unknown7;
 string;$84;Player Name;

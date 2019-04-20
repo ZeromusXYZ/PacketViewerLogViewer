@@ -59,4 +59,4 @@ rem;    -- 9 following bits -- No clear purpose
 uint32;$A4;Mamool Ja Info
 uint32;$A8;Halvung Info
 uint32;$AC;Arrapago Info
-int;$B0;Imperial Standing
+int32;$B0;Imperial Standing

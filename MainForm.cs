@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using PacketViewerLogViewer.Packets;
+using System.IO;
 
 namespace PacketViewerLogViewer
 {
@@ -99,8 +100,9 @@ namespace PacketViewerLogViewer
             FillListBox(tp.lbPackets, tp.PL);
         }
 
-        private void FillListBox(ListBox lb, PacketList pList)
+        private void FillListBox(ListBox lb, PacketList pList, UInt16 GotTolastSync = 0)
         {
+            int GotoIndex = -1;
             Application.UseWaitCursor = true;
             using (LoadingForm loadform = new LoadingForm(this))
             {
@@ -151,9 +153,17 @@ namespace PacketViewerLogViewer
                                 lb.Items.Add("?? " + pd.HeaderText);
                                 break;
                         }
+                        if ((GotoIndex < 0) && (GotTolastSync > 0) && (pd.PacketSync == GotTolastSync))
+                        {
+                            GotoIndex = lb.Items.Count - 1;
+                        }
                         loadform.pb.Value = i;
                         if ((i % 50) == 0)
                             loadform.pb.Refresh();
+                    }
+                    if (GotoIndex >= 0)
+                    {
+                        lb.SelectedIndex = GotoIndex;
                     }
                     loadform.Hide();
                 }
@@ -628,14 +638,42 @@ namespace PacketViewerLogViewer
                 return;
             PacketTabPage tp = (tc.SelectedTab as PacketTabPage);
             Text = defaultTitle + " - " + tp.LoadedFileTitle ;
+            PacketData pd = tp.PL.GetPacket(tp.lbPackets.SelectedIndex);
+            cbShowBlock.Enabled = false;
+            UpdatePacketDetails(tp, pd, "-");
+            cbShowBlock.Enabled = true;
         }
 
         private void MmAddFromClipboard_Click(object sender, EventArgs e)
         {
-            if (!Clipboard.ContainsText())
+            if ((!Clipboard.ContainsText()) || (Clipboard.GetText() == string.Empty))
             {
-                MessageBox.Show("No text to paste", "Paste from Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Nothing to paste", "Paste from Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
+            }
+            try
+            {
+                PacketTabPage tp = GetCurrentOrNewPacketTabPage();
+                var cText = Clipboard.GetText().Replace("\r", "");
+                List<string> clipText = new List<string>();
+                clipText.AddRange(cText.Split((char)10).ToList());
+
+                tp.Text = "Clipboard";
+                tp.LoadedFileTitle = "Paste from Clipboard";
+
+                if (!tp.PLLoaded.LoadFromStringList(clipText, PacketLogFileFormats.Unknown, PacketLogTypes.Unknown))
+                {
+                    MessageBox.Show("Error loading data from clipboard", "Clipboard Paste Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    tp.PLLoaded.Clear();
+                    return;
+                }
+                Text = defaultTitle + " - " + tp.LoadedFileTitle;
+                tp.PL.CopyFrom(tp.PLLoaded);
+                FillListBox(tp.lbPackets, tp.PL);
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Paste Failed, Exception: "+x.Message, "Paste from Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -679,9 +717,11 @@ namespace PacketViewerLogViewer
                 if (filterDlg.ShowDialog(this) == DialogResult.OK)
                 {
                     filterDlg.SaveLocalToFilter();
+                    UInt16 lastSync = tp.CurrentSync;
                     tp.PL.Filter.CopyFrom(filterDlg.Filter);
                     tp.PL.FilterFrom(tp.PLLoaded);
-                    FillListBox(tp.lbPackets, tp.PL);
+                    FillListBox(tp.lbPackets, tp.PL,lastSync);
+
                 }
             }
         }
@@ -691,17 +731,16 @@ namespace PacketViewerLogViewer
             var tp = GetCurrentPacketTabPage();
             if (tp != null)
             {
+                UInt16 lastSync = tp.CurrentSync;
                 tp.PL.Filter.Clear();
                 tp.PL.CopyFrom(tp.PLLoaded);
-                FillListBox(tp.lbPackets, tp.PL);
+                FillListBox(tp.lbPackets, tp.PL,lastSync);
             }
 
         }
 
         private void MmFilterApply_Click(object sender, EventArgs e)
         {
-            // generate menu
-            // GetFiles
         }
 
         private void MMFilterApplyItem_Click(object sender, EventArgs e)
@@ -714,6 +753,38 @@ namespace PacketViewerLogViewer
             {
                 var mITem = (sender as ToolStripMenuItem);
                 // apply filter
+                UInt16 lastSync = tp.CurrentSync;
+                tp.PL.Filter.LoadFromFile(Application.StartupPath + Path.DirectorySeparatorChar + "filter" + Path.DirectorySeparatorChar + mITem.Text + ".pfl");
+                tp.PL.FilterFrom(tp.PLLoaded);
+                FillListBox(tp.lbPackets, tp.PL,lastSync);
+            }
+        }
+
+        private void MmFilterApply_DropDownOpening(object sender, EventArgs e)
+        {
+            // generate menu
+            // GetFiles
+            try
+            {
+                mmFilterApply.DropDownItems.Clear();
+                var di = new DirectoryInfo(Application.StartupPath + Path.DirectorySeparatorChar + "filter");
+                var files = di.GetFiles("*.pfl");
+                foreach (var fi in files)
+                {
+                    ToolStripMenuItem mi = new ToolStripMenuItem(Path.GetFileNameWithoutExtension(fi.Name));
+                    mi.Click += MMFilterApplyItem_Click;
+                    mmFilterApply.DropDownItems.Add(mi);
+                }
+                if (files.Length <= 0)
+                {
+                    ToolStripMenuItem mi = new ToolStripMenuItem("no filters found");
+                    mi.Enabled = false;
+                    mmFilterApply.DropDownItems.Add(mi);
+                }
+            }
+            catch
+            {
+                // Do nothing
             }
         }
     }

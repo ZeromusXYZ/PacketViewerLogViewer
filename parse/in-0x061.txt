@@ -38,7 +38,7 @@ uint16;$48;Rank Points
 uint16:zones;$4A;Home Point Zone
 rem;uint16;$4C;_unknown1;-- 4C   0xFF-ing this last region has no notable effect.
 rem;uint16;$4E;_unknown1;
-nation;$50;Nation
+byte:nations;$50;Nation
 byte;$51;_unknown?
 byte;$52;Superior Level
 byte;$53;_unknown?;Always 0 ?
@@ -46,8 +46,8 @@ byte;$54;Max iLevel
 byte;$55;iLevel above 99
 byte;$56;Main Weapon iLevel
 byte;$57;_unknown?;I'm gonna guess ranged iLevel?
-bits;$58:0-5;Unity ID;
-info;$58;Unity ID;0=None, 1=Pieuje, 2=Ayame, 3=Invincible Shield, 4=Apururu, 5=Maat, 6=Aldo, 7=Jakoh Wahcondalo, 8=Naja Salaheem, 9=Flavira
+bits:unity;$58:0-5;Unity ID;
+rem;$58;Unity ID;0=None, 1=Pieuje, 2=Ayame, 3=Invincible Shield, 4=Apururu, 5=Maat, 6=Aldo, 7=Jakoh Wahcondalo, 8=Naja Salaheem, 9=Flavira
 bits;$58:5-5;_unknown?;-- 58   Danger, 00ing caused my client to crash
 bits;$59:2-16;Unity Points
 bits;$5A:2-6;_unknown?;-- 5A   No obvious function

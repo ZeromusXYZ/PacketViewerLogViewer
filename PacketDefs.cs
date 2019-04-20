@@ -19,14 +19,14 @@ namespace PacketViewerLogViewer.Packets
 
     public static class String6BitEncodeKeys
     {
-        static char[] Item = new char[0x40] {
+        public static char[] Item = new char[0x40] {
         //   0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
            '\0', '0', '1', '2', '3', '4', '5', '6', '7', '9', '8', 'A', 'B', 'C', 'D', 'E', // 0x00
             'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', // 0x10
             'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', // 0x20
             'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '\0' // 0x30
         };
-        static char[] Linkshell = new char[0x40] {
+        public static char[] Linkshell = new char[0x40] {
         //   0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
            '\0', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', // 0x00
             'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', // 0x10
@@ -155,14 +155,33 @@ namespace PacketViewerLogViewer.Packets
 
         public int AddRawHexDataAsBytes(string hexData)
         {
-            RawBytes.Clear();
-            string[] nums = hexData.Split(' ');
-            foreach(string num in nums)
+            int res = 0;
+            try
             {
-                byte b = byte.Parse(num, System.Globalization.NumberStyles.HexNumber);
-                RawBytes.Add(b);
+                RawBytes.Clear();
+                string dataLine = hexData.Replace(" ", "").Replace("\r", "").Replace("\n", "").Replace("\t", "");
+                for (int i = 0; i < (dataLine.Length - 1); i += 2)
+                {
+                    string num = dataLine.Substring(i, 2);
+                    byte b = byte.Parse(num, System.Globalization.NumberStyles.HexNumber);
+                    RawBytes.Add(b);
+                    res++;
+                }
+                /*
+                string[] nums = hexData.Split(' ');
+                foreach(string num in nums)
+                {
+                    byte b = byte.Parse(num, System.Globalization.NumberStyles.HexNumber);
+                    RawBytes.Add(b);
+                    res++;
+                }
+                */
             }
-            return 0;
+            catch
+            {
+                //
+            }
+            return res;
         }
 
         public string PrintRawBytesAsHex()
@@ -900,6 +919,14 @@ namespace PacketViewerLogViewer.Packets
                             PD.HeaderText = s;
                             PD.OriginalHeaderText = s;
 
+                            if (logFileType == PacketLogFileFormats.Unknown)
+                            {
+                                // Assume the pasted data is just raw hex bytes
+                                PD.HeaderText = "Clipboard";
+                                PD.OriginalHeaderText = "Clipboard Data";
+                                PD.AddRawHexDataAsBytes(s);
+                            }
+
                         } // end start new packet
                         else
                         if ((s != "") && (PD != null))
@@ -915,6 +942,12 @@ namespace PacketViewerLogViewer.Packets
                             if ((logFileType == PacketLogFileFormats.AshitaPacketeer) && (PD.RawText.Count > 1))
                             {
                                 PD.AddRawPacketeerLineAsBytes(s);
+                            }
+                            else
+                            if (logFileType == PacketLogFileFormats.Unknown)
+                            {
+                                // Assume the pasted data is just raw hex bytes
+                                PD.AddRawHexDataAsBytes(s);
                             }
                         }
                         else
@@ -1047,7 +1080,10 @@ namespace PacketViewerLogViewer.Packets
         {
             if ((index >= 0) && (index < PacketDataList.Count))
                 return PacketDataList[index];
-            return null;
+            if (PacketDataList.Count > 0)
+                return PacketDataList[0];
+            else
+                return null;
         }
 
         public int CopyFrom(PacketList Original)

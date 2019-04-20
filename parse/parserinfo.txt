@@ -14,13 +14,14 @@ parse\out-0x015.txt     <-- Standard Client Packet (your character's position up
 The item will be parsed line by line, and if something matches, it'll show it in the program
 Line format is as following
 
-type;offset[;name[;description]]
+type[:lookup];offset[;name[;description]]
 
 - type are some pre-defined types in the log viewer
 - offset is the byte-offset within the raw data (including the header)
   This can be in decimal format or hex format (C or Pascal)  10 = 0xA = 0x0A = $A = $0A
 - name is what you want to show in the row header (optional, if ommited will display your type and offset instead)
 - description is not used at this time (might use this for flags in the future)
+- lookup is the name of the lookupfile to use for getting names of values, not all field types support this
 
 currently supported types:
 
@@ -70,7 +71,7 @@ description: shows a null terminated string,
 typename: data??
 description: ?? bytes or raw data displayed in Hex. (e.g. data16)
 
-typename: ip4 , ip
+typename: ip4
 description: 4 byte IP adress in 0.0.0.0 format
 
 typename: pos
@@ -85,38 +86,22 @@ description: more visually appealing way of displaying a uint32 that is used as 
 typename: frames
 description: more visually appealing way of displaying a uint32 that is used as a timestamp in frames (60 second)
 
-typename: equipslot
-description: Shows named version of a equipment slot byte (uses equipslot.txt)
-
-typename: container , inventory , bag
-description: Shows named version of inventory bag byte (uses containers.txt)
-
-typename: item
-description: 2 byte itemid with name (using items.txt)
-
-typename: item-head , item-body , item-hands , item-legs , item-feet , item-main , item-sub , item-ranged
-description: 2 byte itemmodelid with name (using itemmodels.txt)
-
-typename: zone , map
-description: 2 byte map name (uses zones.txt)
-
-typename: music , bgm
-description: 2 byte music number and track name (uses music.txt)
-
-typename: weather
-description: 2 byte number and weather name (uses weather.txt)
-
-typename: bitflaglist
+typename: bitflaglist  [:lookup]
 description: checks X amount of bits if they are set. Displays a line for every bit
   that is set (with it's bit number). And uses a lookup item to add a name if known.
   sub-offset must be set to the amount of BITS you want to check (e.g. 1024 for the spells list)
   the description for this type is used as the lookup name
   example:
-  bitflaglist;$04:1024;Magic List;spells
-              ^    ^    ^          ^-- base name of lookup, this would be spells.txt
-              |    |    +-- Label prefix to show
-              |    +-- number of BITS to expect (note ":" in front of this, not a ";" )
-              +-- Starting BYTE
+  bitflaglist:lookup;$04:0-1024;Magic List
+              ^      ^   ^ ^    ^          
+              |      |   | |    +-- Label prefix to show
+              |      |   | +-- number of BITS to expect
+			  |      |   +-- starting bit offset (note ":" in front of this, not a ";" )
+              |      +-- Starting BYTE
+              +-- base name of lookup file, this would be spells.txt
+
+typename: bitflaglist2  [:lookup]
+description: same as bitflaglist, but only generates one output line with all values together
 
 typename: packet-in-0x028
 description: Shows info about incomming packet 0x028 (has no color coding)

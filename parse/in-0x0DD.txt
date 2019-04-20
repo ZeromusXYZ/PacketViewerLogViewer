@@ -4,7 +4,7 @@ uint32;$04;Player ID
 uint32;$08;HP
 uint32;$0C;MP
 uint32;$10;TP
-partymemberflag;$14;Flags
+bitflaglist2:partymemberflag;$14:0-16;Flags
 uint16;$16;_unknown?
 uint16;$18;Player Index
 byte;$1A;Member Number

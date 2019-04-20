@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -133,7 +133,9 @@
             // mmAddFromClipboard
             // 
             this.mmAddFromClipboard.Name = "mmAddFromClipboard";
-            this.mmAddFromClipboard.Size = new System.Drawing.Size(199, 22);
+            this.mmAddFromClipboard.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.V)));
+            this.mmAddFromClipboard.Size = new System.Drawing.Size(247, 22);
             this.mmAddFromClipboard.Text = "Add from clipboard";
             this.mmAddFromClipboard.Click += new System.EventHandler(this.MmAddFromClipboard_Click);
             // 
@@ -175,6 +177,7 @@
             this.mmSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmSearchSearch,
             this.mmSearchNext});
+            this.mmSearch.Enabled = false;
             this.mmSearch.Name = "mmSearch";
             this.mmSearch.Size = new System.Drawing.Size(54, 20);
             this.mmSearch.Text = "&Search";
@@ -196,10 +199,10 @@
             // mmFilter
             // 
             this.mmFilter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mmFilterEdit,
-            this.mmFilterReset,
+            this.mmFilterApply,
             this.toolStripMenuItem3,
-            this.mmFilterApply});
+            this.mmFilterEdit,
+            this.mmFilterReset});
             this.mmFilter.Name = "mmFilter";
             this.mmFilter.Size = new System.Drawing.Size(45, 20);
             this.mmFilter.Text = "Fi&lter";
@@ -230,7 +233,7 @@
             this.mmFilterApply.Name = "mmFilterApply";
             this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
             this.mmFilterApply.Text = "Apply";
-            this.mmFilterApply.Click += new System.EventHandler(this.MmFilterApply_Click);
+            this.mmFilterApply.DropDownOpening += new System.EventHandler(this.MmFilterApply_DropDownOpening);
             // 
             // MMFilterApplyItem
             // 
@@ -353,7 +356,7 @@
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(322, 466);
+            this.lbPackets.Size = new System.Drawing.Size(324, 466);
             this.lbPackets.TabIndex = 0;
             this.lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
@@ -384,11 +387,11 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));

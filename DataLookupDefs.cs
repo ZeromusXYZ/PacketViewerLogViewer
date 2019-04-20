@@ -59,6 +59,7 @@ namespace PacketViewerLogViewer.Packets
         public static string LU_Trait = "trait";
         public static string LU_Mounts = "mounts";
         public static string LU_RoE = "roe";
+        public static string LU_CraftRanks = "craftranks";
 
         public static DataLookupList NullList = new DataLookupList();
         public static DataLookupEntry NullEntry = new DataLookupEntry();
@@ -119,6 +120,9 @@ namespace PacketViewerLogViewer.Packets
         public static bool TryFieldParse(string field, out int res)
         {
             bool result = false;
+            bool isNegatice = field.StartsWith("-");
+            if (isNegatice)
+                field = field.TrimStart('-');
             if (field.StartsWith("0x"))
             {
                 try
@@ -156,6 +160,8 @@ namespace PacketViewerLogViewer.Packets
                     res = 0;
                 }
             }
+            if (isNegatice)
+                res *= -1;
             return result;
         }
 

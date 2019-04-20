@@ -450,9 +450,10 @@ namespace PacketViewerLogViewer
                 string nameField = "";
                 string descriptionField = "";
                 string lookupField = "";
+                int lookupFieldOffset = 0;
                 if (fields.Length > 2)
                 {
-                    nameField = fields[2].Trim(' ');
+                    nameField = fields[2].TrimEnd(' ');
                 }
                 else
                 {
@@ -476,8 +477,14 @@ namespace PacketViewerLogViewer
                 var lookupFieldSplitPos = typeField.IndexOf(":");
                 if (lookupFieldSplitPos > 0)
                 {
-                    lookupField = typeField.Substring(lookupFieldSplitPos + 1, typeField.Length - lookupFieldSplitPos - 1);
-                    typeField = typeField.Substring(0,lookupFieldSplitPos);
+                    var lookupFields = typeField.Split(':');
+                    typeField = lookupFields[0];
+                    lookupField = lookupFields[1];
+                    if (lookupFields.Length > 2)
+                    {
+                        if (DataLookups.TryFieldParse(lookupFields[2], out int lookupoffsetres))
+                            lookupFieldOffset = lookupoffsetres;
+                    }
                 }
 
                 // Parse posField
@@ -597,7 +604,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "byte")
                 {
                     var d = PD.GetByteAtPos(Offset);
-                    var l = Lookup(lookupField,(UInt64)d);
+                    var l = Lookup(lookupField,(UInt64)(d + lookupFieldOffset));
                     AddDataField(Offset,1);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " - 0x" + d.ToString("X2") + " - " + ByteToBits(d) + " - '" + (char)d + "'");
                     MarkParsed(Offset, 1, DataFieldIndex);
@@ -614,7 +621,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "bits")
                 {
                     var d = PD.GetBitsAtPos(Offset, SubOffset, SubOffsetRange);
-                    var l = Lookup(lookupField, (UInt64)d);
+                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
                     AddDataField(Offset,1);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + "0x"+d.ToString("X") + " - " + d.ToString(""));
                     MarkParsed(Offset, (SubOffsetRange / 8), DataFieldIndex);
@@ -623,7 +630,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "uint16")
                 {
                     var d = PD.GetUInt16AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)d);
+                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
                     AddDataField(Offset,2);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")");
                     MarkParsed(Offset, 2, DataFieldIndex);
@@ -632,7 +639,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "int16")
                 {
                     var d = PD.GetInt16AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)d);
+                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
                     AddDataField(Offset,2);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")");
                     MarkParsed(Offset, 2, DataFieldIndex);
@@ -641,7 +648,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "uint32")
                 {
                     var d = PD.GetUInt32AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)d);
+                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
                     AddDataField(Offset,4);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")");
                     MarkParsed(Offset, 4, DataFieldIndex);
@@ -650,7 +657,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "int32")
                 {
                     var d = PD.GetInt32AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)d);
+                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
                     AddDataField(Offset,4);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")");
                     MarkParsed(Offset, 4, DataFieldIndex);
@@ -751,6 +758,170 @@ namespace PacketViewerLogViewer
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, VanaTimeToString(d));
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
+                else
+                if (typeField == "ip4")
+                {
+                    var d = PD.GetIP4AtPos(Offset);
+                    AddDataField(Offset, 4);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    MarkParsed(Offset, 4, DataFieldIndex);
+                }
+                else
+                if (typeField == "linkshellstring")
+                {
+                    var d = PD.GetPackedString16AtPos(Offset,String6BitEncodeKeys.Linkshell);
+                    AddDataField(Offset, 16);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    MarkParsed(Offset, 16, DataFieldIndex);
+                }
+                else
+                if (typeField == "inscribestring")
+                {
+                    var d = PD.GetPackedString16AtPos(Offset, String6BitEncodeKeys.Item);
+                    AddDataField(Offset, 16);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    MarkParsed(Offset, 16, DataFieldIndex);
+                }
+                else
+                if (typeField == "bitflaglist")
+                {
+                    // Default to 64 bits if nothing provided
+                    if (SubOffsetRange <= 0)
+                        SubOffsetRange = 64;
+                    AddDataField(Offset, SubOffsetRange / 8);
+                    int foundCount = 0;
+                    int posByte = Offset;
+                    int posBit = SubOffset;
+                    int bitNumber = 0;
+                    while (posByte + (posBit / 8) < PD.RawBytes.Count)
+                    {
+                        bool thisBit = PD.GetBitAtPos(posByte, posBit);
+                        if (thisBit)
+                        {
+                            foundCount++;
+                            string d = "Bit" + bitNumber.ToString();
+                            if (lookupField != string.Empty)
+                            {
+                                d += " => " + DataLookups.NLU(lookupField).GetValue((UInt64)(bitNumber + lookupFieldOffset));
+                            }
+                            AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " - Bit"+bitNumber.ToString(), d);
+                        }
+
+                        bitNumber++;
+                        posBit++;
+
+                        if (bitNumber >= SubOffsetRange)
+                            break;
+
+                        while (posBit >= 8)
+                        {
+                            posBit -= 8;
+                            posByte++;
+                        }
+                    }
+                    if (foundCount <= 0)
+                    {
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "No bits are set");
+                    }
+                    MarkParsed(Offset, SubOffsetRange / 8, DataFieldIndex);
+                }
+                else
+                if (typeField == "bitflaglist2")
+                {
+                    // Default to 16 bits if nothing provided
+                    if (SubOffsetRange <= 0)
+                        SubOffsetRange = 16;
+                    AddDataField(Offset, SubOffsetRange / 8);
+                    int foundCount = 0;
+                    int posByte = Offset;
+                    int posBit = SubOffset;
+                    int bitNumber = 0;
+                    string d2 = string.Empty;
+                    while (posByte + (posBit / 8) < PD.RawBytes.Count)
+                    {
+                        bool thisBit = PD.GetBitAtPos(posByte, posBit);
+                        if (thisBit)
+                        {
+                            foundCount++;
+                            string d = "Bit" + bitNumber.ToString();
+                            if (lookupField != string.Empty)
+                            {
+                                d = DataLookups.NLU(lookupField).GetValue((UInt64)(bitNumber + lookupFieldOffset));
+                            }
+                            if (d.Trim(' ') == "")
+                                d = "Bit" + bitNumber.ToString();
+                            if (d2 != string.Empty)
+                                d2 += ", ";
+                            d2 += d;
+                        }
+
+                        bitNumber++;
+                        posBit++;
+
+                        if (bitNumber >= SubOffsetRange)
+                            break;
+
+                        while (posBit >= 8)
+                        {
+                            posBit -= 8;
+                            posByte++;
+                        }
+                    }
+                    if (foundCount <= 0)
+                    {
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "No bits are set");
+                    }
+                    else
+                    {
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d2);
+                    }
+                    MarkParsed(Offset, SubOffsetRange / 8, DataFieldIndex);
+                }
+                else
+                if (typeField == "combatskill")
+                {
+                    var d = PD.GetUInt16AtPos(Offset);
+                    var cappedString = "";
+                    var skilllevel = (d & 0x7FFF);
+                    AddDataField(Offset, 2);
+                    if ((d & 0x8000) != 0)
+                        cappedString = " (Capped)";
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, skilllevel.ToString() + cappedString + " <= 0x"+d.ToString("X4"));
+                    MarkParsed(Offset, 2, DataFieldIndex);
+                }
+                else
+                if (typeField == "craftskill")
+                {
+                    var d = PD.GetUInt16AtPos(Offset);
+                    var cappedString = "";
+                    var craftlevel = ((d >> 5) & 0x03FF);
+                    var craftrank = (d & 0x001F);
+                    AddDataField(Offset, 2);
+                    if ((d & 0x8000) != 0)
+                        cappedString = " (Capped)";
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "Level: "+ craftlevel.ToString() + " Rank: " + craftrank.ToString() + " " + DataLookups.NLU(DataLookups.LU_CraftRanks).GetValue((UInt64)craftrank) + cappedString + " <= 0x" + d.ToString("X4"));
+                    MarkParsed(Offset, 2, DataFieldIndex);
+                }
+                else
+                if (typeField == "equipsetitem")
+                {
+                    AddDataField(Offset, 4);
+                    string d = "";
+                    if (PD.GetBitAtPos(Offset, 0))
+                        d += "Active ";
+                    if (PD.GetBitAtPos(Offset, 1))
+                        d += "Bit1Set? ";
+                    var bagid = PD.GetBitsAtPos(Offset, 2, 6);
+                    var invindex = PD.GetByteAtPos(Offset + 1);
+                    var item = PD.GetUInt32AtPos(Offset + 2);
+                    d += DataLookups.NLU(DataLookups.LU_Container).GetValue((UInt64)bagid)+" ";
+                    d += "InvIndex: " + invindex.ToString() + " " ;
+                    d += "Item: " + DataLookups.NLU(DataLookups.LU_Item).GetValue((UInt64)item);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "0x" + PD.GetUInt32AtPos(Offset).ToString("X4") + " => " + d);
+                    MarkParsed(Offset, 4, DataFieldIndex);
+                }
+                /*
+                */
                 else
                 {
                     // Unknown field type
