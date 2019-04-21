@@ -6,13 +6,13 @@ switchblock;$04;Closed;1
 switchblock;$04;Holiday;2
 
 [[Open]]
-Info;$04;Guild Shop Status;Open
+Info;0;Guild Shop Status;Open
 [[]]
 [[Closed]]
-Info;$04;Guild Shop Status;Closed
+Info;0;Guild Shop Status;Closed
 [[]]
 [[Holiday]]
-Info;$04;Guild Shop Status;Holiday
+Info;0;Guild Shop Status;Holiday
 byte;$08;Holiday
 [[]]
 

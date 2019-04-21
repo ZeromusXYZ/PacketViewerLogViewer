@@ -25,9 +25,11 @@ type[:lookup];offset[;name[;description]]
 
 currently supported types:
 
-typename: item rem comment
+typename: file , rem , comment
 description: nothing at all
 
+typename: info
+description: Displays the Description field in the fields view, usefull for adding field comments
 
 typename: byte [:lookup]
 description: unsigned 8 bit (1 byte) value, shows result as ordinal, hex, bitvalues and character

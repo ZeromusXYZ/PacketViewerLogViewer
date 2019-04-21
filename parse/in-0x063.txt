@@ -15,7 +15,7 @@ switchblock;$04;Status Effects;$09
 
 
 [[MeritPoints]]
-info;$04;Update Type;Merit Points
+info;0;Update Type;Merit Points
 rem;uint16;$06;_flag?;DSP sets this, not sure what it does
 uint16;$08;Limit Points
 byte;$0A;Merit Points
@@ -27,7 +27,7 @@ byte;$0C;Max Merit Points
 [[]]
 
 [[Monipulator 1]]
-info;$04;Update Type;Monipulator 1
+info;0;Update Type;Monipulator 1
 rem;uint16;$06;_flag?;-- 06   Consistently D8 for me
 uint16;$08;_species?;-- 08   Vary when I change species
 uint16;$0A;_flag?;-- 0A   Consistent across species
@@ -44,7 +44,7 @@ data128;$5C;Monster Level Fields;-- 5C   Mapped onto the item ID for these creat
 [[]]
 
 [[Monipulator 2]]
-info;$04;Update Type;Monipulator 2
+info;0;Update Type;Monipulator 2
 rem;uint16;$06;_unknown?;-- 06   B0 00
 data126;$08;_unknown?;-- 08   FF-ing has no effect.
 byte;$86;Slime Level
@@ -55,7 +55,7 @@ data32;$94;Variants Bitfields;-- 94   Does not show normal monsters, only varian
 [[]]
 
 [[JobPoints]]
-info;$04;Update Type;Job Points
+info;0;Update Type;Job Points
 rem;uint16;$06;_unknown?;-- 06 const=0x0098?
 uint16;$08;_unknown?;-- 08   Lowest bit of this might indicate JP availability
 uint16;$0A;_unknown?;-- 0A
@@ -87,17 +87,18 @@ jobpoints;$96;Monipulator?
 [[]]
 
 [[Val$06]]
-info;$04;Update Type;???
+info;0;Update Type;???
 [[]]
 
 [[Val$07]]
-info;$04;Update Type;???
+info;0;Update Type;???
 [[]]
 
 [[Status Effects]]
-info;$04;Update Type;Status Effects
+info;0;Update Type;Status Effects
 rem;uint16;$06;BuffDataByteSize
-buffs;$08:$48-32;Buff
-rem;bufficons;$08:32;Buff
+buffs;$08:32;Buff
+rem;we no longer use bufficons + bufftimers for this packet, but you can swap comments on them if you want them seperated again
+rem;bufficons;$08:32;Buffs
 rem;bufftimers;$48:32;Buff Times;time
 [[]]

@@ -10,7 +10,7 @@ switchblock;$04;Puppet Master;18
 switchblock;$04;Monstrosity;23
 
 [[Puppet Master]]
-info;$04;Info;--- Info as PUP ---
+info;0;Info;--- Info as PUP ---
 byte;$08;Automaton Head;-- 08   Harlequinn 1, Valoredge 2, Sharpshot 3, Stormwaker 4, Soulsoother 5, Spiritreaver 6
 byte;$09;Automaton Frame;-- 09   Harlequinn 20, Valoredge 21, Sharpshot 22, Stormwaker 23
 byte;$0A;Attachment Slot 1;-- 0A   Attachment assignments are based off their position in the equipment list. Strobe is 01, etc.
@@ -66,7 +66,7 @@ uint16;$9A;Additional CHR
 [[]]
 
 [[Monstrosity]]
-info;$04;Info;--- Info as Monipulator (MON) ---
+info;0;Info;--- Info as Monipulator (MON) ---
 uint16;$08;Species
 uint16;$0A;_unknown?
 uint16;$0C;Instinct Slot 1

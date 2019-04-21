@@ -125,6 +125,8 @@ namespace PacketViewerLogViewer
         {
             var s = cbOutIDs.Text ;
             var n = ValForID(s);
+            if ((rbOutOff.Checked) && (lbOut.Items.Count == 0))
+                rbOutShow.Checked = true;
             lbOut.Items.Add("0x" + n.ToString("X3") + " - " + DataLookups.NLU(DataLookups.LU_PacketOut).GetValue((UInt64)n));
         }
 
@@ -138,6 +140,8 @@ namespace PacketViewerLogViewer
         {
             var s = cbInIDs.Text;
             var n = ValForID(s);
+            if ((rbInOff.Checked) && (lbIn.Items.Count == 0))
+                rbInShow.Checked = true;
             lbIn.Items.Add("0x" + n.ToString("X3") + " - " + DataLookups.NLU(DataLookups.LU_PacketIn).GetValue((UInt64)n));
         }
 

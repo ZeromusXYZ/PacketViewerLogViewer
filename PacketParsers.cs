@@ -106,22 +106,6 @@ namespace PacketViewerLogViewer
             }
         }
 
-/*
-        CONST
-            CompasDirectionNames: Array[0..15] of String = ('E', 'ESE', 'SE', 'SSE',
-                'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N', 'NNE', 'NE', 'ENE');
-
-        Function ByteToRotation(B: Byte): String;
-        VAR
-          I: Integer;
-        Begin
-          I := B* 360;
-          I := I div 256;
-                Result := CompasDirectionNames[(B div 16) mod 16] + ' (0x' + IntToHex(B, 2) +
-            ' ≈ ' + IntToStr(I) + '°)';
-        End;
-*/
-
         private string ByteToRotation(byte b)
         {
             int i = (b * 360) / 256;
@@ -354,25 +338,241 @@ namespace PacketViewerLogViewer
             return false;
         }
 
+        private int Parse_Packet_In_0x028(PacketData PD,ref byte DataFieldIndex)
+        {
+            int bytesUsed = 0;
+
+            if ((PD.PacketLogType != PacketLogTypes.Incoming) || (PD.PacketID != 0x028))
+            {
+                AddParseLineToView(0x00, "Error", Color.Red, "Invalid", "Can only use this field type on a Incoming 0x028 packet");
+                return 0;
+            }
+            var pSize = PD.GetByteAtPos(0x04);
+            var pActor = PD.GetUInt32AtPos(0x05);
+            var pTargetCount = PD.GetBitsAtPos(0x09, 0, 10);
+            // First group contains info about the size instead of actual data ?
+            // The bit offset is a pain to work with however >.>
+
+            var pActionCategory = PD.GetBitsAtPos(0x0A, 2, 4);
+            var pActionID = PD.GetBitsAtPos(0x0A, 6, 16);
+            var pUnknown1 = PD.GetBitsAtPos(0x0C, 6, 16);
+            var pRecast = PD.GetBitsAtPos(0x0E, 6, 32);
+
+            AddDataFieldEx(0x04, 1, ref DataFieldIndex);
+            AddParseLineToView(DataFieldIndex, "0x04", GetDataColor(DataFieldIndex), "Info Size", pSize.ToString());
+            MarkParsed(0x04, 1, DataFieldIndex);
+            AddDataFieldEx(0x05, 4, ref DataFieldIndex);
+            AddParseLineToView(DataFieldIndex, "0x05", GetDataColor(DataFieldIndex), "Actor", "0x" + pActor.ToString("X8") + " - " + pActor.ToString());
+            MarkParsed(0x05, 4, DataFieldIndex);
+            AddDataFieldEx(0x09, 1, ref DataFieldIndex);
+            AddParseLineToView(DataFieldIndex, "0x09", GetDataColor(DataFieldIndex), "Target Count", pTargetCount.ToString());
+            MarkParsed(0x09, 1, DataFieldIndex);
+            AddDataFieldEx(0x0A, 1, ref DataFieldIndex);
+            AddParseLineToView(DataFieldIndex, "0x0A", GetDataColor(DataFieldIndex), "Action Category", pActionCategory.ToString() + " => ");
+            MarkParsed(0x0A, 1, DataFieldIndex);
+
+            // TODO: add the rest
+
+            /*
+              AddSGRow(SG, $A, 'Action Cat', IntToStr(pActionCategory) + ' - ' +
+                ActionCategoryToStr(pActionCategory), 1);
+              AddSGRow(SG, $A, 'Action ID', IntToStr(pActionID), 2);
+              AddSGRow(SG, $C, 'Unknown1', IntToStr(pUnknown1), 2);
+              AddSGRow(SG, $E, 'Recast', IntToStr(pRecast), 4);
+
+              FirstTargetOffset ;= 150; // $12;6
+              LastBit ;= PD.RawSize * 8;
+
+              Offset ;= FirstTargetOffset;
+              pTargetCountLoopCounter ;= 0;
+
+              While (Offset < LastBit) and (pTargetCountLoopCounter < pTargetCount) Do
+              Begin
+                pTargetCountLoopCounter ;= pTargetCountLoopCounter + 1;
+
+                pActionTargetID ;= PD.GetBitsAtPos(Offset, 32);
+                AddSGRow(SG, (Offset div 8), '#' + IntToStr(pTargetCountLoopCounter) +
+                  ' ; Target ID', '0x' + IntToHex(pActionTargetID, 8) + ' - ' +
+                  IntToStr(pActionTargetID), 4);
+                Offset ;= Offset + 32;
+
+                pActionTargetIDSize ;= PD.GetBitsAtPos(Offset, 4);
+                AddSGRow(SG, (Offset div 8), '#' + IntToStr(pTargetCountLoopCounter) +
+                  ' ; Count', IntToStr(pActionTargetIDSize), 1);
+                Offset ;= Offset + 4;
+
+                tTargetEffectLoopCounter ;= 0;
+                While (Offset < LastBit) and
+                  (tTargetEffectLoopCounter < pActionTargetIDSize) Do
+                Begin
+                  tTargetEffectLoopCounter ;= tTargetEffectLoopCounter + 1;
+
+                  tReaction ;= PD.GetBitsAtPos(Offset, 5);
+                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                    IntToStr(pActionTargetIDSize) + ' ; Reaction',
+                    IntToStr(tReaction) + ' - ' + ActionReactionToStr(tReaction), 1);
+                  Offset ;= Offset + 5;
+
+                  tAnimation ;= PD.GetBitsAtPos(Offset, 12);
+                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                    IntToStr(pActionTargetIDSize) + ' ; Animation',
+                    '0x' + IntToHex(tAnimation, 4) + ' - ' + IntToStr(tAnimation), 2);
+                  Offset ;= Offset + 12;
+
+                  tSpecialEffect ;= PD.GetBitsAtPos(Offset, 7);
+                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                    IntToStr(pActionTargetIDSize) + ' ; SpecialEffect',
+                    '0x' + IntToHex(tSpecialEffect, 2) + ' - ' +
+                    IntToStr(tSpecialEffect), 2);
+                  Offset ;= Offset + 7;
+
+                  tKnockback ;= PD.GetBitsAtPos(Offset, 3);
+                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                    IntToStr(pActionTargetIDSize) + ' ; Knockback',
+                    '0x' + IntToHex(tKnockback, 2) + ' - ' + IntToStr(tKnockback), 1);
+                  Offset ;= Offset + 3;
+
+                  tParam ;= PD.GetBitsAtPos(Offset, 17);
+                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                    IntToStr(pActionTargetIDSize) + ' ; Param', '0x' + IntToHex(tParam, 3) +
+                    ' - ' + IntToStr(tParam), 3);
+                  Offset ;= Offset + 17;
+
+                  tMessageID ;= PD.GetBitsAtPos(Offset, 10);
+                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                    IntToStr(pActionTargetIDSize) + ' ; MessageID',
+                    '0x' + IntToHex(tMessageID, 3) + ' - ' + IntToStr(tMessageID), 2);
+                  Offset ;= Offset + 10;
+
+                  tUnknown ;= PD.GetBitsAtPos(Offset, 31);
+                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                    IntToStr(pActionTargetIDSize) + ' ; ??? 31bits',
+                    '0x' + IntToHex(tUnknown, 8) + ' - ' + IntToStr(tUnknown), 2);
+                  Offset ;= Offset + 31;
+
+                  // Has additional effect ?
+                  If (PD.GetBitsAtPos(Offset, 1) <> 0) Then
+                  Begin
+                    // Yes
+                    Offset ;= Offset + 1;
+
+                    tAdditionalEffect ;= PD.GetBitsAtPos(Offset, 10);
+                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                      IntToStr(pActionTargetIDSize) + ' ; Added Effect',
+                      '0x' + IntToHex(tAdditionalEffect, 2) + ' - ' +
+                      IntToStr(tAdditionalEffect), 2);
+                    Offset ;= Offset + 10;
+
+                    tAddEffectParam ;= PD.GetBitsAtPos(Offset, 17);
+                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                      IntToStr(pActionTargetIDSize) + ' ; Effect Param',
+                      '0x' + IntToHex(tAddEffectParam, 5) + ' - ' +
+                      IntToStr(tAddEffectParam), 3);
+                    Offset ;= Offset + 17;
+
+                    tAddEffectMessage ;= PD.GetBitsAtPos(Offset, 10);
+                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                      IntToStr(pActionTargetIDSize) + ' ; Effect Msg',
+                      '0x' + IntToHex(tAddEffectMessage, 2) + ' - ' +
+                      IntToStr(tAddEffectMessage), 2);
+                    Offset ;= Offset + 10;
+                  End
+                  Else
+                  Begin
+                    // No ? Let's just go the next bit
+                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                      IntToStr(pActionTargetIDSize) + ' ; Added Effect', 'NO', 1);
+                    Offset ;= Offset + 1;
+                  End;
+
+                  // Has spike effect ?
+                  If (PD.GetBitsAtPos(Offset, 1) <> 0) Then
+                  Begin
+                    // Yes
+                    Offset ;= Offset + 1;
+
+                    tAdditionalEffect ;= PD.GetBitsAtPos(Offset, 10);
+                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                      IntToStr(pActionTargetIDSize) + ' ; Spike Effect',
+                      '0x' + IntToHex(tAdditionalEffect, 2) + ' - ' +
+                      IntToStr(tAdditionalEffect), 2);
+                    Offset ;= Offset + 10;
+
+                    tAddEffectParam ;= PD.GetBitsAtPos(Offset, 14);
+                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                      IntToStr(pActionTargetIDSize) + ' ; Spike Param',
+                      '0x' + IntToHex(tAddEffectParam, 4) + ' - ' +
+                      IntToStr(tAddEffectParam), 2);
+                    Offset ;= Offset + 14;
+
+                    tAddEffectMessage ;= PD.GetBitsAtPos(Offset, 10);
+                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                      IntToStr(pActionTargetIDSize) + ' ; Spike Msg',
+                      '0x' + IntToHex(tAddEffectMessage, 2) + ' - ' +
+                      IntToStr(tAddEffectMessage), 2);
+                    Offset ;= Offset + 10;
+                  End
+                  Else
+                  Begin
+                    // No ? Let's just go the next bit
+                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
+                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
+                      IntToStr(pActionTargetIDSize) + ' ; Spikes Effect', 'NO', 1);
+                    Offset ;= Offset + 1;
+                  End;
+
+                End; // tTargetEffectLoopCounter
+
+              End; // pTargetCountLoopCounter
+
+              If (Offset mod 8) > 0 Then
+                Result ;= (Offset div 8) + 1
+              else
+                Result ;= Offset div 8;
+            End;
+            */
+            return bytesUsed;
+        }
+
+        private void AddDataFieldEx(int StartPos, int FieldByteSize, ref byte DataFieldIndex)
+        {
+            if (FieldByteSize < 1)
+                FieldByteSize = 1;
+            if ((StartPos < 0) || (StartPos >= ParsedBytes.Count))
+                return;
+            // DataFieldIndex++;
+            if (ParsedBytes[StartPos] == 0)
+            {
+                DataFieldIndex++;
+                for (int i = StartPos; (i < ParsedBytes.Count) && (i < (StartPos + FieldByteSize)); i++)
+                {
+                    ParsedBytes[i] = DataFieldIndex;
+                }
+            }
+        }
+
+
         public void ParseToDataGridView(DataGridView DGV,string ActiveSwitchBlock)
         {
             byte DataFieldIndex = 0; // header is considered 0
 
             void AddDataField(int StartPos, int FieldByteSize)
             {
-                if (FieldByteSize < 1)
-                    FieldByteSize = 1;
-                if ((StartPos < 0) || (StartPos >= ParsedBytes.Count))
-                    return;
-                // DataFieldIndex++;
-                if (ParsedBytes[StartPos] == 0)
-                {
-                    DataFieldIndex++;
-                    for (int i = StartPos; (i < ParsedBytes.Count) && (i < (StartPos + FieldByteSize)); i++)
-                    {
-                        ParsedBytes[i] = DataFieldIndex;
-                    }
-                }
+                AddDataFieldEx(StartPos, FieldByteSize, ref DataFieldIndex);
             }
 
             // Fixed Header Info, Always 4 bytes, always listed
@@ -587,7 +787,11 @@ namespace PacketViewerLogViewer
                         // switchblock;checkpos;checkval;blockname
                         // Compares value at Offset, if posVal matches a value in the description field, activate blockname as current block
 
-                        int posVal = (int)PD.GetBitsAtPos(Offset, SubOffset, SubOffsetRange);
+                        int posVal = 0;
+                        if ((SubOffset != 0) || (SubOffsetRange != 0))
+                            posVal = (int)PD.GetBitsAtPos(Offset, SubOffset, SubOffsetRange);
+                        else
+                            posVal = (int)PD.GetByteAtPos(Offset);
                         // Switchval seems valid, next compare it
                         if (ValueInStringList(posVal, descriptionField))
                         {
@@ -604,8 +808,15 @@ namespace PacketViewerLogViewer
                 if (typeField == "info")
                 {
                     // Info line for the view
-                    AddDataField(Offset,0);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, descriptionField);
+                    if (Offset < 4)
+                        AddParseLineToView(0xFF, "Info", GetDataColor(0xFF), nameField, descriptionField);
+                    else
+                    {
+                        // Only mark it as parsed if a specific offset is provided
+                        AddDataField(Offset, 1);
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, descriptionField);
+                        MarkParsed(Offset, 1, DataFieldIndex);
+                    }
                 }
                 else
                 if (typeField == "byte")
@@ -629,9 +840,14 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetBitsAtPos(Offset, SubOffset, SubOffsetRange);
                     var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
-                    AddDataField(Offset,1);
+                    var firstbit = (Offset * 8) + SubOffset;
+                    var lastbit = firstbit + SubOffsetRange;
+                    var firstbyte = firstbit / 8;
+                    var lastbyte = lastbit / 8;
+                    var bytesize = lastbyte - firstbyte + 1;
+                    AddDataField(firstbyte, bytesize);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + "0x"+d.ToString("X") + " - " + d.ToString(""));
-                    MarkParsed(Offset, (SubOffsetRange / 8), DataFieldIndex);
+                    MarkParsed(firstbyte, bytesize, DataFieldIndex);
                 }
                 else
                 if (typeField == "uint16")
@@ -1016,21 +1232,281 @@ namespace PacketViewerLogViewer
                     }
                     MarkParsed(Offset, counter * 4, DataFieldIndex);
                 }
-                /*
-                */
-                /*
-                 * TODO: field types to implement
-                 * playercheckitems
-                 * bufficons
-                 * bufftimers
-                 * buffs
-                 * jobpointentries
-                 * shopitems
-                 * guildshopitems
-                 * jobpoints
-                 * roequest
-                 * packet-in-0x028
-                */
+                else
+                if( typeField == "playercheckitems")
+                {
+                    // SubOffset is the adress for the counter to use, defaults to previous byte
+                    int counter ;
+                    if (SubOffset < 1)
+                        counter = PD.GetByteAtPos(Offset - 1);
+                    else
+                        counter = PD.GetByteAtPos(SubOffset);
+
+                    var n = Offset;
+                    var c = 0;
+                    while ((n <= (PD.RawBytes.Count - 28)) && (c < counter))
+                    {
+                        c++;
+                        UInt16 idVal = PD.GetUInt16AtPos(n);
+                        UInt16 slotVal = PD.GetUInt16AtPos(n+2);
+                        byte unkVal = PD.GetByteAtPos(n+3);
+                        string idStr = "0x" + idVal.ToString("X4") + " => " + DataLookups.NLU(DataLookups.LU_Item).GetValue(idVal);
+                        string slotStr = "0x" + slotVal.ToString("X4") + " => " + DataLookups.NLU(DataLookups.LU_EquipmentSlots).GetValue(slotVal);
+                        string unkStr = "0x" + unkVal.ToString("X4") + " (" + unkVal.ToString()+")" ;
+                        string extdataStr = PD.GetDataAtPos(n + 4, 24);
+
+                        AddDataField(n, 28);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString()+" ID", idStr);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString() + " Slot", slotStr);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString() + " ???", unkStr);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString() + " ExtData", extdataStr);
+                        MarkParsed(n, 28, DataFieldIndex);
+                        n += 28;
+                    }
+
+                }
+                else
+                if (typeField == "bufficons")
+                {
+                    // SubOffset is counter to use, defaults to 1
+                    int counter;
+                    if (SubOffset < 1)
+                        counter = 1;
+                    else
+                        counter = SubOffset ;
+
+                    var n = Offset;
+                    var c = 0;
+                    while ((n <= PD.RawBytes.Count - 2) && (c < counter))
+                    {
+                        c++;
+                        UInt16 iconVal = PD.GetUInt16AtPos(n);
+                        string iconStr = "0x" + iconVal.ToString("X4") + " => " + DataLookups.NLU(DataLookups.LU_Buffs).GetValue(iconVal);
+
+                        AddDataField(n, 2);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), iconStr);
+                        MarkParsed(n, 2, DataFieldIndex);
+                        n += 2;
+                    }
+
+                }
+                else
+                if (typeField == "bufftimers")
+                {
+                    // SubOffset is counter to use, defaults to 1
+                    int counter;
+                    if (SubOffset < 1)
+                        counter = 1;
+                    else
+                        counter = SubOffset;
+
+                    var n = Offset;
+                    var c = 0;
+                    while ((n <= PD.RawBytes.Count - 4) && (c < counter))
+                    {
+                        c++;
+                        Int32 timerVal = PD.GetInt32AtPos(n);
+                        string timerStr ;
+                        if (timerVal == 0)
+                            timerStr = "0x" + timerVal.ToString("X8") + " => Not defined";
+                        else
+                        if (timerVal == 0x7FFFFFFF)
+                            timerStr = "0x" + timerVal.ToString("X8") + " => Always";
+                        else
+                            timerStr = "0x" + timerVal.ToString("X8") + " => " + MSToString((uint)timerVal);
+
+                        AddDataField(n, 4);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), timerStr);
+                        MarkParsed(n, 4, DataFieldIndex);
+                        n += 4;
+                    }
+
+                }
+                else
+                if (typeField == "buffs")
+                {
+                    // SubOffset is counter to use, defaults to 1
+                    // SubOffsetRange is the starting offset for the timers, defaults to right after the icons
+                    int counter;
+                    int timerOffset;
+                    if (SubOffset < 1)
+                        counter = 1;
+                    else
+                        counter = SubOffset;
+
+                    if (SubOffsetRange < 1)
+                        timerOffset = Offset + (counter * 2);
+                    else
+                        timerOffset = SubOffsetRange;
+
+                    var n = Offset;
+                    var t = timerOffset;
+                    var c = 0;
+                    while ((n <= PD.RawBytes.Count - 2) && (t <= PD.RawBytes.Count - 4) && (c < counter))
+                    {
+                        c++;
+
+                        UInt16 iconVal = PD.GetUInt16AtPos(n);
+                        string iconStr = "0x" + iconVal.ToString("X4") + " => " + DataLookups.NLU(DataLookups.LU_Buffs).GetValue(iconVal);
+
+                        AddDataField(n, 2);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString()+" Icon", iconStr);
+                        MarkParsed(n, 2, DataFieldIndex);
+
+                        Int32 timerVal = PD.GetInt32AtPos(t);
+                        string timerStr;
+                        if (timerVal == 0)
+                            timerStr = "0x" + timerVal.ToString("X8") + " => Not defined";
+                        else
+                        if (timerVal == 0x7FFFFFFF)
+                            timerStr = "0x" + timerVal.ToString("X8") + " => Always";
+                        else
+                            timerStr = "0x" + timerVal.ToString("X8") + " => " + MSToString((uint)timerVal);
+
+                        // AddDataField(t, 4);
+                        AddParseLineToView(DataFieldIndex, "0x" + t.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString()+" Timer", timerStr);
+                        MarkParsed(t, 4, DataFieldIndex);
+                        n += 2;
+                        t += 4;
+                    }
+
+                }
+                else
+                if (typeField == "jobpointentries")
+                {
+                    // SubOffset is counter to use, defaults to "until end of packet"
+                    int counter;
+                    if (SubOffset < 1)
+                        counter = (PD.RawBytes.Count - Offset) / 4 ;
+                    else
+                        counter = SubOffset;
+
+                    var n = Offset;
+                    var c = 0;
+                    while ((n <= PD.RawBytes.Count - 4) && (c < counter))
+                    {
+                        c++;
+                        string d = "";
+                        UInt16 jpVal = PD.GetUInt16AtPos(n);
+                        UInt16 jp2Val = PD.GetUInt16AtPos(n+2);
+                        var jpUnkVal = PD.GetBitsAtPos(n + 2, 0, 10);
+                        var jpLevelVal = PD.GetBitsAtPos(n + 3, 2, 6);
+
+                        d += "ID: 0x" + jpVal.ToString("X4") + " => " + DataLookups.NLU(DataLookups.LU_JobPoint).GetValue(jpVal) + " + ";
+                        d += "Para: 0x" + jp2Val.ToString("X4") + " => ";
+                        d += "Level: " + jpLevelVal.ToString() + " - ";
+                        d += "Next?: " + jpUnkVal.ToString() +" (0x" + jpUnkVal.ToString("X")+")";
+
+                        AddDataField(n, 4);
+                        if ((jpVal != 0) && (jp2Val != 0))
+                            AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                        MarkParsed(n, 4, DataFieldIndex);
+                        n += 4;
+                    }
+
+                }
+                else
+                if (typeField == "shopitems")
+                {
+                    // SubOffset is counter to use, defaults to "until end of packet"
+                    int counter;
+                    if (SubOffset < 1)
+                        counter = (PD.RawBytes.Count - Offset) / 12;
+                    else
+                        counter = SubOffset;
+
+                    var n = Offset;
+                    var c = 0;
+                    while ((n <= PD.RawBytes.Count - 12) && (c < counter))
+                    {
+                        c++;
+                        string d = "";
+                        UInt32 gilVal = PD.GetUInt32AtPos(n);
+                        UInt16 itemVal = PD.GetUInt16AtPos(n + 4);
+                        byte slotVal = PD.GetByteAtPos(n + 6);
+                        byte unkVal = PD.GetByteAtPos(n + 7);
+                        UInt16 skillVal = PD.GetUInt16AtPos(n + 8);
+                        UInt16 rankVal = PD.GetUInt16AtPos(n + 10);
+
+                        d += "Item: 0x" + itemVal.ToString("X4") + "  ";
+                        d += "Gil: " + gilVal.ToString().PadLeft(7) + "  ";
+                        d += "Skill: 0x" + skillVal.ToString("X4") + "  ";
+                        d += "Rank: 0x" + rankVal.ToString("X4") + "  ";
+                        d += "Slot: " + slotVal.ToString().PadRight(2) + "  " ;
+                        d += "???: 0x" + unkVal.ToString("X2");
+                        d += " => " + DataLookups.NLU(DataLookups.LU_Item).GetValue(itemVal);
+
+                        AddDataField(n, 12);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                        MarkParsed(n, 12, DataFieldIndex);
+                        n += 12;
+                    }
+
+                }
+                else
+                if (typeField == "guildshopitems")
+                {
+                    int counter = 30 ;
+                    var n = Offset;
+                    var c = 0;
+                    while ((n <= PD.RawBytes.Count - 8) && (c < counter))
+                    {
+                        c++;
+                        string d = "";
+                        UInt32 gilVal = PD.GetUInt32AtPos(n + 4);
+                        UInt16 itemVal = PD.GetUInt16AtPos(n);
+                        byte stockVal = PD.GetByteAtPos(n + 2);
+                        byte stockmaxVal = PD.GetByteAtPos(n + 3);
+
+                        d += "Item: 0x" + itemVal.ToString("X4") + "  ";
+                        d += "Gil: " + gilVal.ToString().PadLeft(7) + "  ";
+                        d += "Stock: " + stockVal.ToString() + " / " + stockmaxVal.ToString() ;
+                        d += " => " + DataLookups.NLU(DataLookups.LU_Item).GetValue(itemVal);
+
+                        AddDataField(n, 8);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                        MarkParsed(n, 8, DataFieldIndex);
+                        n += 8;
+                    }
+
+                }
+                else
+                if (typeField == "jobpoints")
+                {
+                    var cpVal = PD.GetUInt16AtPos(Offset);
+                    var jpVal = PD.GetUInt16AtPos(Offset + 2);
+                    var spentVal = PD.GetUInt16AtPos(Offset + 4);
+                    string d = "";
+                    d += cpVal.ToString() + " CP  ";
+                    d += jpVal.ToString() + " JP  ";
+                    d += spentVal.ToString() + " Spent JP  ";
+
+                    AddDataField(Offset, 6);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    MarkParsed(Offset, 6, DataFieldIndex);
+                }
+                else
+                if (typeField == "roequest")
+                {
+                    var idVal = PD.GetBitsAtPos(Offset,0,12);
+                    var progressVal = PD.GetBitsAtPos(Offset+1, 4, 20);
+                    var maxVal = DataLookups.NLU(DataLookups.LU_RoE).GetExtra((UInt64)idVal);
+                    if (maxVal == "")
+                        maxVal = "???";
+                    string d = "";
+                    d += "ID; 0x" + idVal.ToString("X3") + " => " + DataLookups.NLU(DataLookups.LU_RoE).GetValue((UInt64)idVal)+"  " ;
+                    d += "Progress; " + progressVal.ToString() + " / " + maxVal ;
+
+                    AddDataField(Offset, 4);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    MarkParsed(Offset, 4, DataFieldIndex);
+                }
+                else
+                if (typeField == "packet-in-0x028")
+                {
+                    // This packet is too complex to do the normal way (for now)
+                    Parse_Packet_In_0x028(PD,ref DataFieldIndex);
+                }
                 else
                 {
                     // Unknown field type

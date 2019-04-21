@@ -60,6 +60,7 @@ namespace PacketViewerLogViewer.Packets
         public static string LU_Mounts = "mounts";
         public static string LU_RoE = "roe";
         public static string LU_CraftRanks = "craftranks";
+        public static string LU_Buffs = "buffs";
 
         public static DataLookupList NullList = new DataLookupList();
         public static DataLookupEntry NullEntry = new DataLookupEntry();
