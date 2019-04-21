@@ -340,6 +340,20 @@ namespace PacketViewerLogViewer
             }
         }
 
+        private bool ValueInStringList(int searchValue, string searchList)
+        {
+            if ((searchList == null) || (searchList == string.Empty))
+                return false;
+            var searchStrings = searchList.Split(',').ToList();
+            foreach(string s in searchStrings)
+            {
+                if (DataLookups.TryFieldParse(s.Trim(' '), out int n))
+                    if (n == searchValue)
+                        return true;
+            }
+            return false;
+        }
+
         public void ParseToDataGridView(DataGridView DGV,string ActiveSwitchBlock)
         {
             byte DataFieldIndex = 0; // header is considered 0
@@ -571,26 +585,19 @@ namespace PacketViewerLogViewer
                     if (AllowAutoSwitchBlock)
                     {
                         // switchblock;checkpos;checkval;blockname
-                        // Compares BYTE value at checkpos, if checkval matches, activate blockname as current block
+                        // Compares value at Offset, if posVal matches a value in the description field, activate blockname as current block
 
-                        int switchTargetValue = 0;
-                        if (DataLookups.TryFieldParse(descriptionField, out switchTargetValue))
+                        int posVal = (int)PD.GetBitsAtPos(Offset, SubOffset, SubOffsetRange);
+                        // Switchval seems valid, next compare it
+                        if (ValueInStringList(posVal, descriptionField))
                         {
-                            int posVal = 0;
-                            posVal = (int)PD.GetBitsAtPos(Offset,SubOffset,SubOffsetRange);
-
-                            // Switchval seems valid, next compare it
-                            if (posVal == switchTargetValue)
-                            {
-                                ActiveSwitchBlock = nameField;
-                                AllowAutoSwitchBlock = false;
-                                // Debug Info
-                                AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "Switch", "Activate Block: " + ActiveSwitchBlock);
-                                LastSwitchedBlock = ActiveSwitchBlock;
-                                continue;
-                            }
+                            ActiveSwitchBlock = nameField;
+                            AllowAutoSwitchBlock = false;
+                            // Debug Info
+                            AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "Switch", "Activate Block: " + ActiveSwitchBlock);
+                            LastSwitchedBlock = ActiveSwitchBlock;
+                            continue;
                         }
-
                     }
                 }
                 else

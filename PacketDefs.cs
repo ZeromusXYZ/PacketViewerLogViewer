@@ -426,7 +426,16 @@ namespace PacketViewerLogViewer.Packets
             int Offset = 0;
             while ((Offset / 8) < 15)
             {
-                var encodedChar = GetBitsAtPos(pos + (Offset / 8), (Offset % 8), 6);
+                byte encodedChar = 0;
+                byte bitMask = 0b00100000;
+                for (int bit = 0; bit < 6; bit++)
+                {
+                    bool isSet = GetBitAtPos(pos + ((Offset+bit) / 8), 7 - ((Offset+bit) % 8));
+                    if (isSet)
+                        encodedChar += bitMask;
+                    bitMask >>= 1;
+                }
+                // GetBitsAtPos(pos + (Offset / 8), (Offset % 8), 6);
                 if ((encodedChar >= Encoded6BitKey.Length) || (encodedChar < 0))
                     break;
                 var c = Encoded6BitKey[encodedChar];

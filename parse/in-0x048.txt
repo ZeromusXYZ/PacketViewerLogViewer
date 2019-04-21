@@ -12,22 +12,7 @@ byte;$07;Slot 4 List Offset
 
 switchblock;$04;Begining of List;$FE
 switchblock;$04;End of List;$FF
-switchblock;$04;LinkShell Data;$00
-switchblock;$04;LinkShell Data;$01
-switchblock;$04;LinkShell Data;$02
-switchblock;$04;LinkShell Data;$03
-switchblock;$04;LinkShell Data;$04
-switchblock;$04;LinkShell Data;$05
-switchblock;$04;LinkShell Data;$06
-switchblock;$04;LinkShell Data;$07
-switchblock;$04;LinkShell Data;$08
-switchblock;$04;LinkShell Data;$09
-switchblock;$04;LinkShell Data;$0A
-switchblock;$04;LinkShell Data;$0B
-switchblock;$04;LinkShell Data;$0C
-switchblock;$04;LinkShell Data;$0D
-switchblock;$04;LinkShell Data;$0E
-switchblock;$04;LinkShell Data;$0F
+switchblock;$04;LinkShell Data;$00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0A,$0B,$0C,$0D,$0E,$0F
 rem;Concierge should not be able to hold more than 16 entries, so above code should be enough
 
 [[Begining of List]]
