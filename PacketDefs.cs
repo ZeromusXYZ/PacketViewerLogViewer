@@ -590,6 +590,67 @@ namespace PacketViewerLogViewer.Packets
             return true;
         }
 
+        public bool MatchesSearch(SearchParameters p)
+        {
+            if ((PacketLogType == PacketLogTypes.Incoming) && (!p.SearchIncoming))
+                return false;
+            if ((PacketLogType == PacketLogTypes.Outgoing) && (!p.SearchOutgoing))
+                return false;
+
+            bool res = true;
+
+            if ((res) && (p.SearchByPacketID))
+            {
+                res = false;
+                if (PacketID == p.SearchPacketID)
+                    res = true;
+            }
+
+            if ((res) && (p.SearchBySync))
+            {
+                res = false;
+                if (PacketSync == p.SearchSync)
+                    res = true;
+            }
+
+            if ((res) && (p.SearchByByte))
+            {
+                res = false;
+                if (RawBytes.IndexOf(p.SearchByte) >= 0)
+                    res = true;
+            }
+
+            if ((res) && (p.SearchByUInt16))
+            {
+                res = false;
+                for (int i = 0; i < RawBytes.Count - 2; i++)
+                {
+                    var n = GetUInt16AtPos(i);
+                    if (n == p.SearchUInt16)
+                    {
+                        res = true;
+                        break;
+                    }
+                }
+            }
+
+            if ((res) && (p.SearchByUInt32))
+            {
+                res = false;
+                for (int i = 0; i < RawBytes.Count - 4; i++)
+                {
+                    var n = GetUInt32AtPos(i);
+                    if (n == p.SearchUInt32)
+                    {
+                        res = true;
+                        break;
+                    }
+                }
+            }
+
+            return res;
+        }
+
     }
 
     public class PacketListFilter
@@ -790,7 +851,7 @@ namespace PacketViewerLogViewer.Packets
             PacketDataList.Clear();
         }
 
-         public bool LoadFromFile(string fileName)
+        public bool LoadFromFile(string fileName)
         {
             if (!File.Exists(fileName))
                 return false;
@@ -1146,6 +1207,22 @@ namespace PacketViewerLogViewer.Packets
             }
             return c;
         }
+
+        public int SearchFrom(PacketList Original, SearchParameters p)
+        {
+            int c = 0;
+            Clear();
+            foreach (PacketData pd in Original.PacketDataList)
+            {
+                if (pd.MatchesSearch(p))
+                {
+                    PacketDataList.Add(pd);
+                    c++;
+                }
+            }
+            return c;
+        }
+
 
         public void BuildVirtualTimeStamps()
         {

@@ -87,6 +87,7 @@ namespace PacketViewerLogViewer
             tp.lbPackets.DrawItem += lbPackets_DrawItem;
             tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
             tcPackets.TabPages.Add(tp);
+            tcPackets.SelectedTab = tp;
             tp.Text = MakeTabName(openLogFileDialog.FileName);
 
             tp.PLLoaded.Clear();
@@ -493,7 +494,7 @@ namespace PacketViewerLogViewer
 
         private void UpdatePacketDetails(PacketTabPage tp, PacketData pd, string SwitchBlockName)
         {
-            if (tp == null)
+            if ((tp == null) || (pd == null))
                 return;
             tp.CurrentSync = pd.PacketSync;
             lInfo.Text = pd.OriginalHeaderText;
@@ -690,6 +691,8 @@ namespace PacketViewerLogViewer
                 tp.lbPackets.DrawItem += lbPackets_DrawItem;
                 tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
                 tcPackets.TabPages.Add(tp);
+                tcPackets.SelectedTab = tp;
+                tp.lbPackets.Focus();
             }
             return tp;
         }
@@ -828,11 +831,113 @@ namespace PacketViewerLogViewer
 
         private void FindNext()
         {
-            MessageBox.Show("Not yet implemented", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            var tp = GetCurrentPacketTabPage();
+
+            if ((tp == null) || (tp.lbPackets.Items.Count <= 0))
+            {
+                MessageBox.Show("Nothing to search in !", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var startIndex = tp.lbPackets.SelectedIndex;
+            if ((startIndex < 0) && (startIndex >= tp.lbPackets.Items.Count))
+                startIndex = -1;
+            int i = startIndex + 1 ;
+            for(int c = 0;c < tp.lbPackets.Items.Count-1;c++)
+            {
+                var pd = tp.PL.GetPacket(i);
+                if (pd.MatchesSearch(searchParameters))
+                {
+                    // Select index
+                    tp.lbPackets.SelectedIndex = i;
+                    // Move to center
+                    var iHeight = tp.lbPackets.ItemHeight;
+                    if (iHeight <= 0)
+                        iHeight = 8;
+                    var iCount = tp.lbPackets.Size.Height / iHeight;
+                    var tPos = i - (iCount / 2);
+                    if (tPos < 0)
+                        tPos = 0;
+                    tp.lbPackets.TopIndex = tPos;
+                    tp.lbPackets.Focus();
+                    // We're done
+                    return;
+                }
+                i++;
+                if (i >= tp.lbPackets.Items.Count)
+                    i = 0;
+            }
+            MessageBox.Show("No matches found !", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
         private void FindAsNewTab()
         {
-            MessageBox.Show("Not yet implemented", "Search to Tab", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            var tp = GetCurrentPacketTabPage();
+
+            if ((tp == null) || (tp.lbPackets.Items.Count <= 0))
+            {
+                MessageBox.Show("Nothing to search in !", "Search as New Tab", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            PacketTabPage newtp = new PacketTabPage();
+            newtp.lbPackets.DrawItem += lbPackets_DrawItem;
+            newtp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
+            tcPackets.TabPages.Add(newtp);
+            tcPackets.SelectedTab = newtp;
+            newtp.Text = "*" + tp.Text;
+            newtp.LoadedFileTitle = "Search Result";
+
+            var count = newtp.PLLoaded.SearchFrom(tp.PL, searchParameters);
+
+            if (count <= 0)
+            {
+                MessageBox.Show("No matches found !", "Search as New Tab", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                newtp.PL.CopyFrom(newtp.PLLoaded);
+                FillListBox(newtp.lbPackets, newtp.PL);
+            }
+        }
+
+        private void MmFileNew_Click(object sender, EventArgs e)
+        {
+
+            if ((!Clipboard.ContainsText()) || (Clipboard.GetText() == string.Empty))
+            {
+                MessageBox.Show("Nothing to paste", "Paste from Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            try
+            {
+                PacketTabPage tp = new PacketTabPage();
+                tp.lbPackets.DrawItem += lbPackets_DrawItem;
+                tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
+                tcPackets.TabPages.Add(tp);
+                tp.Text = "Clipboard";
+                tp.LoadedFileTitle = "Paste from Clipboard";
+                tcPackets.SelectedTab = tp;
+
+                var cText = Clipboard.GetText().Replace("\r", "");
+                List<string> clipText = new List<string>();
+                clipText.AddRange(cText.Split((char)10).ToList());
+
+                if (!tp.PLLoaded.LoadFromStringList(clipText, PacketLogFileFormats.Unknown, PacketLogTypes.Unknown))
+                {
+                    MessageBox.Show("Error loading data from clipboard", "Clipboard Paste Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    tp.PLLoaded.Clear();
+                    return;
+                }
+                Text = defaultTitle + " - " + tp.LoadedFileTitle;
+                tp.PL.CopyFrom(tp.PLLoaded);
+                FillListBox(tp.lbPackets, tp.PL);
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Paste Failed, Exception: " + x.Message, "Paste from Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
     }
 }

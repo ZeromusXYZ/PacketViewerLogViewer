@@ -143,6 +143,8 @@ namespace PacketViewerLogViewer
                 {
                     hasData = true;
                     searchParameters.SearchByByte = true;
+                    searchParameters.SearchByUInt16 = false;
+                    searchParameters.SearchByUInt32 = false;
                     searchParameters.SearchByte = (byte)nValue;
                     eValue.ForeColor = Color.Navy;
                 }
@@ -150,7 +152,9 @@ namespace PacketViewerLogViewer
                 if ((nValue >= 0) && (nValue <= 0xFFFF) && (rbUInt16.Checked))
                 {
                     hasData = true;
+                    searchParameters.SearchByByte = false;
                     searchParameters.SearchByUInt16 = true;
+                    searchParameters.SearchByUInt32 = false;
                     searchParameters.SearchUInt16 = (UInt16)nValue;
                     eValue.ForeColor = Color.RoyalBlue;
                 }
@@ -158,6 +162,8 @@ namespace PacketViewerLogViewer
                 if ((nValue >= 0) && (nValue <= 0xFFFFFFFF) && (rbUInt32.Checked))
                 {
                     hasData = true;
+                    searchParameters.SearchByByte = false;
+                    searchParameters.SearchByUInt16 = false;
                     searchParameters.SearchByUInt32 = true;
                     searchParameters.SearchUInt32 = (UInt32)nValue;
                     eValue.ForeColor = Color.Blue;
@@ -180,49 +186,6 @@ namespace PacketViewerLogViewer
             btnFindNext.Enabled = isValid && hasData;
             btnAsNewTab.Enabled = isValid && hasData;
             isValidating = false;
-        }
-    }
-
-    public class SearchParameters
-    {
-        public bool SearchIncoming { get; set; }
-        public bool SearchOutgoing { get; set; }
-        public bool SearchByPacketID { get; set; }
-        public UInt16 SearchPacketID { get; set; }
-        public bool SearchBySync { get; set; }
-        public UInt16 SearchSync { get; set; }
-        public bool SearchByByte { get; set; }
-        public byte SearchByte { get; set; }
-        public bool SearchByUInt16 { get; set; }
-        public UInt16 SearchUInt16 { get; set; }
-        public bool SearchByUInt32 { get; set; }
-        public UInt32 SearchUInt32 { get; set; }
-
-        public void Clear()
-        {
-            SearchIncoming = false;
-            SearchOutgoing = false;
-            SearchByPacketID = false;
-            SearchBySync = false;
-            SearchByByte = false;
-            SearchByUInt16 = false;
-            SearchByUInt32 = false;
-        }
-
-        public void CopyFrom(SearchParameters p)
-        {
-            SearchIncoming = p.SearchIncoming;
-            SearchOutgoing = p.SearchOutgoing;
-            SearchByPacketID = p.SearchByPacketID;
-            SearchPacketID = p.SearchPacketID;
-            SearchBySync = p.SearchBySync;
-            SearchSync = p.SearchSync;
-            SearchByByte = p.SearchByByte;
-            SearchByte = p.SearchByte;
-            SearchByUInt16 = p.SearchByUInt16;
-            SearchUInt16 = p.SearchUInt16;
-            SearchByUInt32 = p.SearchByUInt32;
-            SearchUInt32 = p.SearchUInt32;
         }
     }
 

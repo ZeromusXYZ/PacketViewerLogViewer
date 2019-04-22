@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,7 +37,7 @@
             this.mmAddFromClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileS1 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mmFileS2 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileClose = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.mmSearch = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,6 +68,8 @@
             this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.mmFileS3 = new System.Windows.Forms.ToolStripSeparator();
+            this.mmFilePasteNew = new System.Windows.Forms.ToolStripMenuItem();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -104,10 +106,12 @@
             this.mmFileOpen,
             this.mmFileAppend,
             this.mmAddFromClipboard,
+            this.mmFilePasteNew,
             this.mmFileS1,
             this.mmFileSettings,
-            this.toolStripMenuItem2,
+            this.mmFileS2,
             this.mmFileClose,
+            this.mmFileS3,
             this.mmFileExit});
             this.mmFile.Name = "mmFile";
             this.mmFile.Size = new System.Drawing.Size(37, 20);
@@ -151,10 +155,10 @@
             this.mmFileSettings.Text = "Settings ...";
             this.mmFileSettings.Click += new System.EventHandler(this.mmFileSettings_Click);
             // 
-            // toolStripMenuItem2
+            // mmFileS2
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(244, 6);
+            this.mmFileS2.Name = "mmFileS2";
+            this.mmFileS2.Size = new System.Drawing.Size(244, 6);
             // 
             // mmFileClose
             // 
@@ -388,19 +392,21 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dGV.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dGV.Location = new System.Drawing.Point(6, 29);
+            this.dGV.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
+            this.dGV.Location = new System.Drawing.Point(3, 32);
             this.dGV.Name = "dGV";
-            this.dGV.ReadOnly = true;
             this.dGV.RowHeadersVisible = false;
+            this.dGV.RowHeadersWidth = 8;
             this.dGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dGV.Size = new System.Drawing.Size(712, 293);
             this.dGV.TabIndex = 2;
@@ -457,6 +463,18 @@
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
             // 
+            // mmFileS3
+            // 
+            this.mmFileS3.Name = "mmFileS3";
+            this.mmFileS3.Size = new System.Drawing.Size(244, 6);
+            // 
+            // mmFilePasteNew
+            // 
+            this.mmFilePasteNew.Name = "mmFilePasteNew";
+            this.mmFilePasteNew.Size = new System.Drawing.Size(247, 22);
+            this.mmFilePasteNew.Text = "New Tab from Clipboard";
+            this.mmFilePasteNew.Click += new System.EventHandler(this.MmFileNew_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -501,7 +519,7 @@
         private System.Windows.Forms.ToolStripMenuItem mmAddFromClipboard;
         private System.Windows.Forms.ToolStripSeparator mmFileS1;
         private System.Windows.Forms.ToolStripMenuItem mmFileSettings;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator mmFileS2;
         private System.Windows.Forms.ToolStripMenuItem mmFileExit;
         private System.Windows.Forms.ToolStripMenuItem mmSearch;
         private System.Windows.Forms.ToolStripMenuItem mmSearchSearch;
@@ -532,6 +550,8 @@
         private System.Windows.Forms.RichTextBox rtInfo;
         private System.Windows.Forms.TabControl tcPackets;
         private System.Windows.Forms.TabPage tpPackets1;
+        private System.Windows.Forms.ToolStripSeparator mmFileS3;
+        private System.Windows.Forms.ToolStripMenuItem mmFilePasteNew;
     }
 }
 
