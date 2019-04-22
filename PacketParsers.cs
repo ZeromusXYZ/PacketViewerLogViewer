@@ -1518,4 +1518,48 @@ namespace PacketViewerLogViewer
         }
 
     }
+
+    public class SearchParameters
+    {
+        public bool SearchIncoming { get; set; }
+        public bool SearchOutgoing { get; set; }
+        public bool SearchByPacketID { get; set; }
+        public UInt16 SearchPacketID { get; set; }
+        public bool SearchBySync { get; set; }
+        public UInt16 SearchSync { get; set; }
+        public bool SearchByByte { get; set; }
+        public byte SearchByte { get; set; }
+        public bool SearchByUInt16 { get; set; }
+        public UInt16 SearchUInt16 { get; set; }
+        public bool SearchByUInt32 { get; set; }
+        public UInt32 SearchUInt32 { get; set; }
+
+        public void Clear()
+        {
+            SearchIncoming = false;
+            SearchOutgoing = false;
+            SearchByPacketID = false;
+            SearchBySync = false;
+            SearchByByte = false;
+            SearchByUInt16 = false;
+            SearchByUInt32 = false;
+        }
+
+        public void CopyFrom(SearchParameters p)
+        {
+            SearchIncoming = p.SearchIncoming;
+            SearchOutgoing = p.SearchOutgoing;
+            SearchByPacketID = p.SearchByPacketID;
+            SearchPacketID = p.SearchPacketID;
+            SearchBySync = p.SearchBySync;
+            SearchSync = p.SearchSync;
+            SearchByByte = p.SearchByByte;
+            SearchByte = p.SearchByte;
+            SearchByUInt16 = p.SearchByUInt16;
+            SearchUInt16 = p.SearchUInt16;
+            SearchByUInt32 = p.SearchByUInt32;
+            SearchUInt32 = p.SearchUInt32;
+        }
+    }
+
 }

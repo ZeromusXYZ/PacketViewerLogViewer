@@ -77,14 +77,14 @@ namespace PacketViewerLogViewer.Packets
             NullEntry.Extra = "";
         }
 
-        public static bool TryFieldParse(string field, out UInt64 res)
+        public static bool TryFieldParse(string field, out int res)
         {
             bool result = false ;
             if (field.StartsWith("0x"))
             {
                 try
                 {
-                    res = UInt64.Parse(field.Substring(2, field.Length - 2), NumberStyles.HexNumber);
+                    res = int.Parse(field.Substring(2, field.Length - 2), NumberStyles.HexNumber);
                     result = true;
                 }
                 catch
@@ -97,7 +97,7 @@ namespace PacketViewerLogViewer.Packets
             {
                 try
                 {
-                    res = UInt64.Parse(field.Substring(1, field.Length - 1), NumberStyles.HexNumber);
+                    res = int.Parse(field.Substring(1, field.Length - 1), NumberStyles.HexNumber);
                     result = true;
                 }
                 catch
@@ -109,7 +109,7 @@ namespace PacketViewerLogViewer.Packets
             {
                 try
                 {
-                    res = UInt64.Parse(field);
+                    res = int.Parse(field);
                     result = true;
                 }
                 catch
@@ -120,7 +120,7 @@ namespace PacketViewerLogViewer.Packets
             return result;
         }
 
-        public static bool TryFieldParse(string field, out int res)
+        public static bool TryFieldParse(string field, out long res)
         {
             bool result = false;
             bool isNegatice = field.StartsWith("-");
@@ -169,6 +169,50 @@ namespace PacketViewerLogViewer.Packets
         }
 
 
+        public static bool TryFieldParseUInt64(string field, out UInt64 res)
+        {
+            bool result = false;
+            if (field.StartsWith("0x"))
+            {
+                try
+                {
+                    res = UInt64.Parse(field.Substring(2, field.Length - 2), NumberStyles.HexNumber);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            else
+            if (field.StartsWith("$"))
+            {
+                try
+                {
+                    res = UInt64.Parse(field.Substring(1, field.Length - 1), NumberStyles.HexNumber);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            else
+            {
+                try
+                {
+                    res = UInt64.Parse(field);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            return result;
+        }
+
+
 
         static void LoadLookupFile(string fileName)
         {
@@ -186,14 +230,14 @@ namespace PacketViewerLogViewer.Packets
                 string[] fields = line.Split(';');
                 if (fields.Length > 1)
                 {
-                    if (TryFieldParse(fields[0], out UInt64 newID))
+                    if (TryFieldParse(fields[0], out int newID))
                     {
                         DataLookupEntry dle = new DataLookupEntry();
-                        dle.ID = newID;
+                        dle.ID = (UInt64)newID;
                         dle.Val = fields[1];
                         if (fields.Length > 2)
                             dle.Extra = fields[2];
-                        dll.data.Add(newID,dle);
+                        dll.data.Add((UInt64)newID,dle);
                     }
                 }
             }
