@@ -260,13 +260,16 @@ namespace PacketViewerLogViewer
             DGV.ColumnCount = 3;
 
             DGV.Columns[columnOffset].HeaderText = "Pos";
-            DGV.Columns[columnOffset].Width = 72;
+            DGV.Columns[columnOffset].Width = 88;
 
             DGV.Columns[columnVAR].HeaderText = "Name";
-            DGV.Columns[columnVAR].Width = 128;
+            DGV.Columns[columnVAR].Width = 192;
 
             DGV.Columns[columnDATA].HeaderText = "Data";
-            DGV.Columns[columnDATA].Width = DGV.Width - DGV.Columns[columnOffset].Width - DGV.Columns[columnVAR].Width - 20 ;
+            var dataWidth = DGV.Width - DGV.Columns[columnOffset].Width - DGV.Columns[columnVAR].Width - 20;
+            if (dataWidth < 128)
+                dataWidth = 128;
+            DGV.Columns[columnDATA].Width = dataWidth;
 
             //DGV.Columns[columnSize].HeaderText = "Size";
             //DGV.Columns[columnSize].Width = 32;
@@ -338,8 +341,47 @@ namespace PacketViewerLogViewer
             return false;
         }
 
+        private string BitFlagsToString(string lookupname,UInt64 value,string concatString)
+        {
+            string res = "";
+            if (concatString == "")
+                concatString = " ";
+            UInt64 bitmask = 0x1;
+            for(UInt64 i = 0; i < 64;i++)
+            {
+                if ((value & bitmask) != 0)
+                {
+                    string item = "";
+                    if (lookupname != "")
+                        item = DataLookups.NLU(lookupname).GetValue(i);
+                    if (item == "")
+                        item = "Bit" + i.ToString();
+                    if (res != "")
+                        res += concatString;
+                    res += item;
+                }
+                bitmask <<= 1;
+            }
+            if (res == "")
+                res = "No bits set";
+            return res;
+        }
+
         private int Parse_Packet_In_0x028(PacketData PD,ref byte DataFieldIndex)
         {
+            int BitOffset = 0 ;
+
+            void AddField(ref byte AddDataFieldIndex, int BitSize,string name, string data)
+            {
+                AddDataFieldEx((BitOffset / 8), (BitSize / 8), ref AddDataFieldIndex);
+                var posStr = "0x" + (BitOffset / 8).ToString("X") + ":" + (BitOffset % 8).ToString();
+                if (BitSize > 1)
+                    posStr += "-" + BitSize.ToString();
+                AddParseLineToView(AddDataFieldIndex, posStr, GetDataColor(AddDataFieldIndex), name, data);
+                MarkParsed((BitOffset / 8), (BitSize / 8), AddDataFieldIndex);
+                BitOffset += BitSize;
+            }
+
             int bytesUsed = 0;
 
             if ((PD.PacketLogType != PacketLogTypes.Incoming) || (PD.PacketID != 0x028))
@@ -350,6 +392,7 @@ namespace PacketViewerLogViewer
             var pSize = PD.GetByteAtPos(0x04);
             var pActor = PD.GetUInt32AtPos(0x05);
             var pTargetCount = PD.GetBitsAtPos(0x09, 0, 10);
+
             // First group contains info about the size instead of actual data ?
             // The bit offset is a pain to work with however >.>
 
@@ -361,190 +404,112 @@ namespace PacketViewerLogViewer
             AddDataFieldEx(0x04, 1, ref DataFieldIndex);
             AddParseLineToView(DataFieldIndex, "0x04", GetDataColor(DataFieldIndex), "Info Size", pSize.ToString());
             MarkParsed(0x04, 1, DataFieldIndex);
+
             AddDataFieldEx(0x05, 4, ref DataFieldIndex);
             AddParseLineToView(DataFieldIndex, "0x05", GetDataColor(DataFieldIndex), "Actor", "0x" + pActor.ToString("X8") + " - " + pActor.ToString());
             MarkParsed(0x05, 4, DataFieldIndex);
+
             AddDataFieldEx(0x09, 1, ref DataFieldIndex);
             AddParseLineToView(DataFieldIndex, "0x09", GetDataColor(DataFieldIndex), "Target Count", pTargetCount.ToString());
             MarkParsed(0x09, 1, DataFieldIndex);
+
             AddDataFieldEx(0x0A, 1, ref DataFieldIndex);
-            AddParseLineToView(DataFieldIndex, "0x0A", GetDataColor(DataFieldIndex), "Action Category", pActionCategory.ToString() + " => ");
+            AddParseLineToView(DataFieldIndex, "0x0A:2-4", GetDataColor(DataFieldIndex), "Action Category", pActionCategory.ToString() + " => " + DataLookups.NLU(DataLookups.LU_ActionCategory).GetValue((UInt64)pActionCategory));
             MarkParsed(0x0A, 1, DataFieldIndex);
 
-            // TODO: add the rest
+            AddDataFieldEx(0x0B, 1, ref DataFieldIndex);
+            AddParseLineToView(DataFieldIndex, "0x0A:6-16", GetDataColor(DataFieldIndex), "Action ID", pActionID.ToString());
+            MarkParsed(0x0B, 1, DataFieldIndex);
 
-            /*
-              AddSGRow(SG, $A, 'Action Cat', IntToStr(pActionCategory) + ' - ' +
-                ActionCategoryToStr(pActionCategory), 1);
-              AddSGRow(SG, $A, 'Action ID', IntToStr(pActionID), 2);
-              AddSGRow(SG, $C, 'Unknown1', IntToStr(pUnknown1), 2);
-              AddSGRow(SG, $E, 'Recast', IntToStr(pRecast), 4);
+            AddDataFieldEx(0x0C, 2, ref DataFieldIndex);
+            AddParseLineToView(DataFieldIndex, "0x0C:6-16", GetDataColor(DataFieldIndex), "_unknown1", pUnknown1.ToString());
+            MarkParsed(0x0C, 2, DataFieldIndex);
 
-              FirstTargetOffset ;= 150; // $12;6
-              LastBit ;= PD.RawSize * 8;
+            AddDataFieldEx(0x0E, 5, ref DataFieldIndex);
+            AddParseLineToView(DataFieldIndex, "0x0E:6-32", GetDataColor(DataFieldIndex), "Recast", pRecast.ToString());
+            MarkParsed(0x0E, 5, DataFieldIndex);
 
-              Offset ;= FirstTargetOffset;
-              pTargetCountLoopCounter ;= 0;
+            int FirstTargetBitOffset = 150; // (0x012:6)
+            int LastBit = PD.RawBytes.Count * 8;
+            BitOffset = FirstTargetBitOffset;
+            int pTargetCountLoopCounter = 0;
 
-              While (Offset < LastBit) and (pTargetCountLoopCounter < pTargetCount) Do
-              Begin
-                pTargetCountLoopCounter ;= pTargetCountLoopCounter + 1;
+            while ((BitOffset < LastBit) && (pTargetCountLoopCounter < pTargetCount))
+            {
+                pTargetCountLoopCounter++;
 
-                pActionTargetID ;= PD.GetBitsAtPos(Offset, 32);
-                AddSGRow(SG, (Offset div 8), '#' + IntToStr(pTargetCountLoopCounter) +
-                  ' ; Target ID', '0x' + IntToHex(pActionTargetID, 8) + ' - ' +
-                  IntToStr(pActionTargetID), 4);
-                Offset ;= Offset + 32;
+                var pActionTargetID = PD.GetBitsAtBitPos(BitOffset, 32);
+                AddField(ref DataFieldIndex, 32, "#" + pTargetCountLoopCounter + " : Target ID", "0x" + pActionTargetID.ToString("X8") + " - " + pActionTargetID.ToString());
 
-                pActionTargetIDSize ;= PD.GetBitsAtPos(Offset, 4);
-                AddSGRow(SG, (Offset div 8), '#' + IntToStr(pTargetCountLoopCounter) +
-                  ' ; Count', IntToStr(pActionTargetIDSize), 1);
-                Offset ;= Offset + 4;
+                var pActionTargetIDSize = PD.GetBitsAtBitPos(BitOffset, 4);
+                AddField(ref DataFieldIndex, 4, "#" + pTargetCountLoopCounter + " : Effect Count", pActionTargetIDSize.ToString());
 
-                tTargetEffectLoopCounter ;= 0;
-                While (Offset < LastBit) and
-                  (tTargetEffectLoopCounter < pActionTargetIDSize) Do
-                Begin
-                  tTargetEffectLoopCounter ;= tTargetEffectLoopCounter + 1;
+                int tTargetEffectLoopCounter = 0;
 
-                  tReaction ;= PD.GetBitsAtPos(Offset, 5);
-                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                    IntToStr(pActionTargetIDSize) + ' ; Reaction',
-                    IntToStr(tReaction) + ' - ' + ActionReactionToStr(tReaction), 1);
-                  Offset ;= Offset + 5;
+                while ((BitOffset < LastBit) && (tTargetEffectLoopCounter < pActionTargetIDSize))
+                {
+                    tTargetEffectLoopCounter++;
 
-                  tAnimation ;= PD.GetBitsAtPos(Offset, 12);
-                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                    IntToStr(pActionTargetIDSize) + ' ; Animation',
-                    '0x' + IntToHex(tAnimation, 4) + ' - ' + IntToStr(tAnimation), 2);
-                  Offset ;= Offset + 12;
+                    var thisLoopName = "  #" + pTargetCountLoopCounter + " " + tTargetEffectLoopCounter + "/" + pActionTargetIDSize.ToString() + " ";
 
-                  tSpecialEffect ;= PD.GetBitsAtPos(Offset, 7);
-                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                    IntToStr(pActionTargetIDSize) + ' ; SpecialEffect',
-                    '0x' + IntToHex(tSpecialEffect, 2) + ' - ' +
-                    IntToStr(tSpecialEffect), 2);
-                  Offset ;= Offset + 7;
+                    var tReaction = PD.GetBitsAtBitPos(BitOffset, 5);
+                    AddField(ref DataFieldIndex, 5, thisLoopName + "Reaction", "0x"+tReaction.ToString("X") + " => " + BitFlagsToString(DataLookups.LU_ActionReaction,(UInt64)tReaction," + "));
 
-                  tKnockback ;= PD.GetBitsAtPos(Offset, 3);
-                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                    IntToStr(pActionTargetIDSize) + ' ; Knockback',
-                    '0x' + IntToHex(tKnockback, 2) + ' - ' + IntToStr(tKnockback), 1);
-                  Offset ;= Offset + 3;
+                    var tAnimation = PD.GetBitsAtBitPos(BitOffset, 12);
+                    AddField(ref DataFieldIndex, 12, thisLoopName + "Animation", "0x"+ tAnimation.ToString("X3") + " - " + tAnimation.ToString());
 
-                  tParam ;= PD.GetBitsAtPos(Offset, 17);
-                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                    IntToStr(pActionTargetIDSize) + ' ; Param', '0x' + IntToHex(tParam, 3) +
-                    ' - ' + IntToStr(tParam), 3);
-                  Offset ;= Offset + 17;
+                    var tSpecialEffect = PD.GetBitsAtBitPos(BitOffset, 7);
+                    AddField(ref DataFieldIndex, 7, thisLoopName + "SpecialEffect", "0x" + tSpecialEffect.ToString("X2") + " - " + tSpecialEffect.ToString());
 
-                  tMessageID ;= PD.GetBitsAtPos(Offset, 10);
-                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                    IntToStr(pActionTargetIDSize) + ' ; MessageID',
-                    '0x' + IntToHex(tMessageID, 3) + ' - ' + IntToStr(tMessageID), 2);
-                  Offset ;= Offset + 10;
+                    var tKnockBack = PD.GetBitsAtBitPos(BitOffset, 3);
+                    AddField(ref DataFieldIndex, 3, thisLoopName + "KnockBack", tKnockBack.ToString());
 
-                  tUnknown ;= PD.GetBitsAtPos(Offset, 31);
-                  AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                    ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                    IntToStr(pActionTargetIDSize) + ' ; ??? 31bits',
-                    '0x' + IntToHex(tUnknown, 8) + ' - ' + IntToStr(tUnknown), 2);
-                  Offset ;= Offset + 31;
+                    var tParam = PD.GetBitsAtBitPos(BitOffset, 17);
+                    AddField(ref DataFieldIndex, 17, thisLoopName + "Param", "0x" + tParam.ToString("X5") + " - " + tParam.ToString());
 
-                  // Has additional effect ?
-                  If (PD.GetBitsAtPos(Offset, 1) <> 0) Then
-                  Begin
-                    // Yes
-                    Offset ;= Offset + 1;
+                    var tMessageID = PD.GetBitsAtBitPos(BitOffset, 10);
+                    AddField(ref DataFieldIndex, 10, thisLoopName + "MessageID", "0x" + tMessageID.ToString("X3") + " - " + tMessageID.ToString());
 
-                    tAdditionalEffect ;= PD.GetBitsAtPos(Offset, 10);
-                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                      IntToStr(pActionTargetIDSize) + ' ; Added Effect',
-                      '0x' + IntToHex(tAdditionalEffect, 2) + ' - ' +
-                      IntToStr(tAdditionalEffect), 2);
-                    Offset ;= Offset + 10;
+                    var tUnknown = PD.GetBitsAtBitPos(BitOffset, 31);
+                    AddField(ref DataFieldIndex, 31, thisLoopName + "??? 31 Bits", "0x" + tUnknown.ToString("X8") + " - " + tUnknown.ToString());
 
-                    tAddEffectParam ;= PD.GetBitsAtPos(Offset, 17);
-                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                      IntToStr(pActionTargetIDSize) + ' ; Effect Param',
-                      '0x' + IntToHex(tAddEffectParam, 5) + ' - ' +
-                      IntToStr(tAddEffectParam), 3);
-                    Offset ;= Offset + 17;
+                    var hasAdditionalEffect = PD.GetBitAtPos(BitOffset / 8, BitOffset % 8);
+                    AddField(ref DataFieldIndex, 1, thisLoopName + "Has Additional Effect", hasAdditionalEffect.ToString());
 
-                    tAddEffectMessage ;= PD.GetBitsAtPos(Offset, 10);
-                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                      IntToStr(pActionTargetIDSize) + ' ; Effect Msg',
-                      '0x' + IntToHex(tAddEffectMessage, 2) + ' - ' +
-                      IntToStr(tAddEffectMessage), 2);
-                    Offset ;= Offset + 10;
-                  End
-                  Else
-                  Begin
-                    // No ? Let's just go the next bit
-                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                      IntToStr(pActionTargetIDSize) + ' ; Added Effect', 'NO', 1);
-                    Offset ;= Offset + 1;
-                  End;
+                    if (hasAdditionalEffect)
+                    {
+                        var tAdditionalEffect = PD.GetBitsAtBitPos(BitOffset, 10);
+                        AddField(ref DataFieldIndex, 10, "  " + thisLoopName + "Added Effect", "0x" + tAdditionalEffect.ToString("X3") + " - " + tAdditionalEffect.ToString());
 
-                  // Has spike effect ?
-                  If (PD.GetBitsAtPos(Offset, 1) <> 0) Then
-                  Begin
-                    // Yes
-                    Offset ;= Offset + 1;
+                        var tAddEffectParam = PD.GetBitsAtBitPos(BitOffset, 17);
+                        AddField(ref DataFieldIndex, 17, "  " + thisLoopName + "Effect Param", "0x" + tAddEffectParam.ToString("X5") + " - " + tAddEffectParam.ToString());
 
-                    tAdditionalEffect ;= PD.GetBitsAtPos(Offset, 10);
-                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                      IntToStr(pActionTargetIDSize) + ' ; Spike Effect',
-                      '0x' + IntToHex(tAdditionalEffect, 2) + ' - ' +
-                      IntToStr(tAdditionalEffect), 2);
-                    Offset ;= Offset + 10;
+                        var tAddEffectMessage = PD.GetBitsAtBitPos(BitOffset, 10);
+                        AddField(ref DataFieldIndex, 10, "  " + thisLoopName + "Effect MsgID", "0x" + tAddEffectMessage.ToString("X3") + " - " + tAddEffectMessage.ToString());
+                    }
 
-                    tAddEffectParam ;= PD.GetBitsAtPos(Offset, 14);
-                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                      IntToStr(pActionTargetIDSize) + ' ; Spike Param',
-                      '0x' + IntToHex(tAddEffectParam, 4) + ' - ' +
-                      IntToStr(tAddEffectParam), 2);
-                    Offset ;= Offset + 14;
+                    var hasSpikesEffect = PD.GetBitAtPos(BitOffset / 8, BitOffset % 8);
+                    AddField(ref DataFieldIndex, 1, thisLoopName + "Has Spikes Effect", hasSpikesEffect.ToString());
 
-                    tAddEffectMessage ;= PD.GetBitsAtPos(Offset, 10);
-                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                      IntToStr(pActionTargetIDSize) + ' ; Spike Msg',
-                      '0x' + IntToHex(tAddEffectMessage, 2) + ' - ' +
-                      IntToStr(tAddEffectMessage), 2);
-                    Offset ;= Offset + 10;
-                  End
-                  Else
-                  Begin
-                    // No ? Let's just go the next bit
-                    AddSGRow(SG, (Offset div 8), ' #' + IntToStr(pTargetCountLoopCounter) +
-                      ' ' + IntToStr(tTargetEffectLoopCounter) + '/' +
-                      IntToStr(pActionTargetIDSize) + ' ; Spikes Effect', 'NO', 1);
-                    Offset ;= Offset + 1;
-                  End;
+                    if (hasSpikesEffect)
+                    {
+                        var tSpikesEffect = PD.GetBitsAtBitPos(BitOffset, 10);
+                        AddField(ref DataFieldIndex, 10, "  " + thisLoopName + "Spike Effect", "0x" + tSpikesEffect.ToString("X3") + " - " + tSpikesEffect.ToString());
 
-                End; // tTargetEffectLoopCounter
+                        var tSpikesParam = PD.GetBitsAtBitPos(BitOffset, 14);
+                        AddField(ref DataFieldIndex, 14, "  " + thisLoopName + "Spike Param", "0x" + tSpikesParam.ToString("X4") + " - " + tSpikesParam.ToString());
 
-              End; // pTargetCountLoopCounter
+                        var tSpikesMessage = PD.GetBitsAtBitPos(BitOffset, 10);
+                        AddField(ref DataFieldIndex, 10, "  " + thisLoopName + "Spike MsgID", "0x" + tSpikesMessage.ToString("X3") + " - " + tSpikesMessage.ToString());
+                    }
 
-              If (Offset mod 8) > 0 Then
-                Result ;= (Offset div 8) + 1
-              else
-                Result ;= Offset div 8;
-            End;
-            */
+                }
+            }
+            if ((BitOffset % 8) > 0)
+                bytesUsed = (BitOffset / 8) + 1;
+            else
+                bytesUsed = (BitOffset / 8);
+
             return bytesUsed;
         }
 
@@ -1505,7 +1470,13 @@ namespace PacketViewerLogViewer
                 if (typeField == "packet-in-0x028")
                 {
                     // This packet is too complex to do the normal way (for now)
-                    Parse_Packet_In_0x028(PD,ref DataFieldIndex);
+                    var bytesfor0x028 = Parse_Packet_In_0x028(PD,ref DataFieldIndex);
+                    // Mark any byts that didn't get marked as parsed, as parsed
+                    for (int i = 0; i < bytesfor0x028; i++)
+                    {
+                        if (ParsedBytes[i] == 0)
+                            ParsedBytes[i] = 0xFF;
+                    }
                 }
                 else
                 {

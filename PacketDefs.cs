@@ -383,9 +383,9 @@ namespace PacketViewerLogViewer.Packets
             return res;
         }
 
-        public Int64 GetBitsAtPos(int BitOffset, int BitsSize)
+        public Int64 GetBitsAtBitPos(int BitOffset, int BitsSize)
         {
-            return GetBitsAtPos(BitOffset / 8, BitOffset % 8);
+            return GetBitsAtPos(BitOffset / 8, BitOffset % 8, BitsSize);
         }
 
         public string GetPackedString16AtPos(int pos, char[] Encoded6BitKey)

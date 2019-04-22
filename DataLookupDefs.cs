@@ -61,6 +61,8 @@ namespace PacketViewerLogViewer.Packets
         public static string LU_RoE = "roe";
         public static string LU_CraftRanks = "craftranks";
         public static string LU_Buffs = "buffs";
+        public static string LU_ActionCategory = "actioncategory";
+        public static string LU_ActionReaction = "actionreaction";
 
         public static DataLookupList NullList = new DataLookupList();
         public static DataLookupEntry NullEntry = new DataLookupEntry();
