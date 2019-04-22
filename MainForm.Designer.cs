@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,11 +44,11 @@
             this.mmSearchSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mmSearchNext = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFilter = new System.Windows.Forms.ToolStripMenuItem();
-            this.mmFilterEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.mmFilterReset = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFilterApply = new System.Windows.Forms.ToolStripMenuItem();
             this.MMFilterApplyItem = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.mmFilterEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.mmFilterReset = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideo = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoOpenLink = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoSaveLinkData = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,7 +117,7 @@
             // 
             this.mmFileOpen.Name = "mmFileOpen";
             this.mmFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
-            this.mmFileOpen.Size = new System.Drawing.Size(199, 22);
+            this.mmFileOpen.Size = new System.Drawing.Size(247, 22);
             this.mmFileOpen.Text = "Open ...";
             this.mmFileOpen.Click += new System.EventHandler(this.mmFileOpen_Click);
             // 
@@ -126,7 +126,7 @@
             this.mmFileAppend.Name = "mmFileAppend";
             this.mmFileAppend.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
-            this.mmFileAppend.Size = new System.Drawing.Size(199, 22);
+            this.mmFileAppend.Size = new System.Drawing.Size(247, 22);
             this.mmFileAppend.Text = "Append ...";
             this.mmFileAppend.Click += new System.EventHandler(this.mmFileAppend_Click);
             // 
@@ -142,25 +142,25 @@
             // mmFileS1
             // 
             this.mmFileS1.Name = "mmFileS1";
-            this.mmFileS1.Size = new System.Drawing.Size(196, 6);
+            this.mmFileS1.Size = new System.Drawing.Size(244, 6);
             // 
             // mmFileSettings
             // 
             this.mmFileSettings.Name = "mmFileSettings";
-            this.mmFileSettings.Size = new System.Drawing.Size(199, 22);
+            this.mmFileSettings.Size = new System.Drawing.Size(247, 22);
             this.mmFileSettings.Text = "Settings ...";
             this.mmFileSettings.Click += new System.EventHandler(this.mmFileSettings_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(196, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(244, 6);
             // 
             // mmFileClose
             // 
             this.mmFileClose.Name = "mmFileClose";
             this.mmFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.mmFileClose.Size = new System.Drawing.Size(199, 22);
+            this.mmFileClose.Size = new System.Drawing.Size(247, 22);
             this.mmFileClose.Text = "Close";
             this.mmFileClose.Click += new System.EventHandler(this.mmFileClose_Click);
             // 
@@ -168,7 +168,7 @@
             // 
             this.mmFileExit.Name = "mmFileExit";
             this.mmFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.mmFileExit.Size = new System.Drawing.Size(199, 22);
+            this.mmFileExit.Size = new System.Drawing.Size(247, 22);
             this.mmFileExit.Text = "E&xit";
             this.mmFileExit.Click += new System.EventHandler(this.mmFileExit_Click);
             // 
@@ -177,7 +177,6 @@
             this.mmSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmSearchSearch,
             this.mmSearchNext});
-            this.mmSearch.Enabled = false;
             this.mmSearch.Name = "mmSearch";
             this.mmSearch.Size = new System.Drawing.Size(54, 20);
             this.mmSearch.Text = "&Search";
@@ -186,15 +185,17 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
             this.mmSearchSearch.Text = "Search ...";
+            this.mmSearchSearch.Click += new System.EventHandler(this.MmSearchSearch_Click);
             // 
             // mmSearchNext
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
             this.mmSearchNext.Text = "Search next";
+            this.mmSearchNext.Click += new System.EventHandler(this.MmSearchNext_Click);
             // 
             // mmFilter
             // 
@@ -207,39 +208,39 @@
             this.mmFilter.Size = new System.Drawing.Size(45, 20);
             this.mmFilter.Text = "Fi&lter";
             // 
-            // mmFilterEdit
-            // 
-            this.mmFilterEdit.Name = "mmFilterEdit";
-            this.mmFilterEdit.Size = new System.Drawing.Size(180, 22);
-            this.mmFilterEdit.Text = "Edit ...";
-            this.mmFilterEdit.Click += new System.EventHandler(this.MmFilterEdit_Click);
-            // 
-            // mmFilterReset
-            // 
-            this.mmFilterReset.Name = "mmFilterReset";
-            this.mmFilterReset.Size = new System.Drawing.Size(180, 22);
-            this.mmFilterReset.Text = "Reset";
-            this.mmFilterReset.Click += new System.EventHandler(this.MmFilterReset_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
-            // 
             // mmFilterApply
             // 
             this.mmFilterApply.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MMFilterApplyItem});
             this.mmFilterApply.Name = "mmFilterApply";
-            this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterApply.Size = new System.Drawing.Size(106, 22);
             this.mmFilterApply.Text = "Apply";
             this.mmFilterApply.DropDownOpening += new System.EventHandler(this.MmFilterApply_DropDownOpening);
             // 
             // MMFilterApplyItem
             // 
             this.MMFilterApplyItem.Name = "MMFilterApplyItem";
-            this.MMFilterApplyItem.Size = new System.Drawing.Size(177, 6);
+            this.MMFilterApplyItem.Size = new System.Drawing.Size(57, 6);
             this.MMFilterApplyItem.Click += new System.EventHandler(this.MMFilterApplyItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(103, 6);
+            // 
+            // mmFilterEdit
+            // 
+            this.mmFilterEdit.Name = "mmFilterEdit";
+            this.mmFilterEdit.Size = new System.Drawing.Size(106, 22);
+            this.mmFilterEdit.Text = "Edit ...";
+            this.mmFilterEdit.Click += new System.EventHandler(this.MmFilterEdit_Click);
+            // 
+            // mmFilterReset
+            // 
+            this.mmFilterReset.Name = "mmFilterReset";
+            this.mmFilterReset.Size = new System.Drawing.Size(106, 22);
+            this.mmFilterReset.Text = "Reset";
+            this.mmFilterReset.Click += new System.EventHandler(this.MmFilterReset_Click);
             // 
             // mmVideo
             // 
@@ -356,7 +357,7 @@
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(324, 466);
+            this.lbPackets.Size = new System.Drawing.Size(326, 466);
             this.lbPackets.TabIndex = 0;
             this.lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
@@ -387,11 +388,11 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));

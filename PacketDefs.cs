@@ -224,8 +224,8 @@ namespace PacketViewerLogViewer.Packets
         {
             if ((pos > (RawBytes.Count - 1)) || ((bit < 0) || (bit > 7)))
                 return false;
-            byte b = RawBytes[pos];
-            byte bitmask = (byte)(0x01 << bit);
+            byte b = RawBytes[(int)pos];
+            byte bitmask = (byte)(0x01 << (int)bit);
             return ((b & bitmask) != 0);
         }
 
@@ -689,11 +689,11 @@ namespace PacketViewerLogViewer.Packets
                             }
                             break;
                         case "out":
-                            if (DataLookups.TryFieldParse(f1, out int nout))
+                            if (DataLookups.TryFieldParse(f1, out long nout))
                                 AddOutFilterValueToList((UInt16)nout);
                             break;
                         case "in":
-                            if (DataLookups.TryFieldParse(f1, out int nin))
+                            if (DataLookups.TryFieldParse(f1, out long nin))
                                 AddInFilterValueToList((UInt16)nin);
                             break;
                     }

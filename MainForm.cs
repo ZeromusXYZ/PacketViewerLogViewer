@@ -18,7 +18,7 @@ namespace PacketViewerLogViewer
     {
         public static Form thisMainForm ;
 
-        const string versionString = "0.0.1";
+        const string versionString = "0.1.0";
         string defaultTitle = "";
         const string urlGitHub = "https://github.com/ZeromusXYZ/PVLV";
         const string urlVideoLAN = "https://www.videolan.org/";
@@ -27,11 +27,14 @@ namespace PacketViewerLogViewer
         //PacketList PL; // Filtered File Data Displayed
         PacketParser PP;
         // private UInt16 CurrentSync;
+        SearchParameters searchParameters;
 
         public MainForm()
         {
             InitializeComponent();
             thisMainForm = this;
+            searchParameters = new SearchParameters();
+            searchParameters.Clear();
         }
 
         private void mmFileExit_Click(object sender, EventArgs e)
@@ -786,6 +789,50 @@ namespace PacketViewerLogViewer
             {
                 // Do nothing
             }
+        }
+
+        private void MmSearchSearch_Click(object sender, EventArgs e)
+        {
+            var tp = GetCurrentPacketTabPage();
+            if (tp == null)
+                return;
+            using (SearchForm SearchDlg = new SearchForm())
+            {
+                SearchDlg.searchParameters.CopyFrom(this.searchParameters);
+                var res = SearchDlg.ShowDialog();
+                if ((res == DialogResult.OK) || (res == DialogResult.Retry))
+                {
+                    searchParameters.CopyFrom(SearchDlg.searchParameters);
+                    if (res == DialogResult.OK)
+                        FindNext();
+                    else
+                    if (res == DialogResult.Retry)
+                        FindAsNewTab();
+                }
+            }
+        }
+
+        private void MmSearchNext_Click(object sender, EventArgs e)
+        {
+            var tp = GetCurrentPacketTabPage();
+            if (tp == null)
+                return;
+            if ((searchParameters.SearchIncoming == false) && (searchParameters.SearchOutgoing == false))
+            {
+                MmSearchSearch_Click(null, null);
+                return;
+            }
+            else
+                FindNext();
+        }
+
+        private void FindNext()
+        {
+            MessageBox.Show("Not yet implemented", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+        private void FindAsNewTab()
+        {
+            MessageBox.Show("Not yet implemented", "Search to Tab", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

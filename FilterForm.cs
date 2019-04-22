@@ -86,7 +86,7 @@ namespace PacketViewerLogViewer
             Filter.FilterOutList.Clear();
             foreach (string line in lbOut.Items)
             {
-                int n = ValForID(line);
+                long n = ValForID(line);
                 Filter.AddOutFilterValueToList((UInt16)n);
             }
 
@@ -101,21 +101,21 @@ namespace PacketViewerLogViewer
             Filter.FilterInList.Clear();
             foreach (string line in lbIn.Items)
             {
-                int n = ValForID(line);
+                var n = ValForID(line);
                 Filter.AddInFilterValueToList((UInt16)n);
             }
         }
 
-        private int ValForID(string s)
+        private long ValForID(string s)
         {
             if (s == string.Empty)
                 return 0;
-            int res = 0;
+            long res = 0;
             char[] splitchars = new char[1] { '-' };
             var fields = s.Split(splitchars,2);
             if (fields.Length >= 1)
             {
-                if (DataLookups.TryFieldParse(fields[0].Trim(' '),out int n))
+                if (DataLookups.TryFieldParse(fields[0].Trim(' '),out long n))
                     res = n;
             }
             return res;
