@@ -20,7 +20,7 @@ namespace PacketViewerLogViewer
 
         const string versionString = "0.0.1";
         string defaultTitle = "";
-        const string urlGitHub = "https://github.com/ZeromusXYZ/PacketViewerLogViewer";
+        const string urlGitHub = "https://github.com/ZeromusXYZ/PVLV";
         const string urlVideoLAN = "https://www.videolan.org/";
 
         //PacketList PLLoaded; // File Loaded

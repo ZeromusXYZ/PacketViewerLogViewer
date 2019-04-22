@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("PacketViewerLogViewer")]
 [assembly: AssemblyDescription("Tool to view packet logs")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PVLV")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCompany("ZeromusXYZ")]
+[assembly: AssemblyProduct("PacketViewerLogViewer")]
+[assembly: AssemblyCopyright("Copyright © 2018-2019, No Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
