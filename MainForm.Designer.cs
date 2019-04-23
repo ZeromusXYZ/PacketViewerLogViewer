@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
@@ -35,10 +36,12 @@
             this.mmFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileAppend = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAddFromClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.mmFilePasteNew = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileS1 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileS2 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.mmFileS3 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.mmSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mmSearchSearch = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,8 +71,19 @@
             this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.mmFileS3 = new System.Windows.Forms.ToolStripSeparator();
-            this.mmFilePasteNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPacketList = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showOnlyThisTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideThisTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.showOnlyOutgoingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showOnlyIncomingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.resetAllFiltersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editParserForThisPacketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportPacketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.pmShowPacketName = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -82,6 +96,7 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).BeginInit();
+            this.pmPacketList.SuspendLayout();
             this.SuspendLayout();
             // 
             // MM
@@ -143,6 +158,13 @@
             this.mmAddFromClipboard.Text = "Add from clipboard";
             this.mmAddFromClipboard.Click += new System.EventHandler(this.MmAddFromClipboard_Click);
             // 
+            // mmFilePasteNew
+            // 
+            this.mmFilePasteNew.Name = "mmFilePasteNew";
+            this.mmFilePasteNew.Size = new System.Drawing.Size(247, 22);
+            this.mmFilePasteNew.Text = "New Tab from Clipboard";
+            this.mmFilePasteNew.Click += new System.EventHandler(this.MmFileNew_Click);
+            // 
             // mmFileS1
             // 
             this.mmFileS1.Name = "mmFileS1";
@@ -168,6 +190,11 @@
             this.mmFileClose.Text = "Close";
             this.mmFileClose.Click += new System.EventHandler(this.mmFileClose_Click);
             // 
+            // mmFileS3
+            // 
+            this.mmFileS3.Name = "mmFileS3";
+            this.mmFileS3.Size = new System.Drawing.Size(244, 6);
+            // 
             // mmFileExit
             // 
             this.mmFileExit.Name = "mmFileExit";
@@ -189,7 +216,7 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
             this.mmSearchSearch.Text = "Search ...";
             this.mmSearchSearch.Click += new System.EventHandler(this.MmSearchSearch_Click);
             // 
@@ -197,7 +224,7 @@
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
             this.mmSearchNext.Text = "Search next";
             this.mmSearchNext.Click += new System.EventHandler(this.MmSearchNext_Click);
             // 
@@ -356,12 +383,13 @@
             this.lbPackets.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbPackets.ContextMenuStrip = this.pmPacketList;
             this.lbPackets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lbPackets.FormattingEnabled = true;
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(326, 466);
+            this.lbPackets.Size = new System.Drawing.Size(328, 466);
             this.lbPackets.TabIndex = 0;
             this.lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
@@ -463,17 +491,92 @@
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
             // 
-            // mmFileS3
+            // pmPacketList
             // 
-            this.mmFileS3.Name = "mmFileS3";
-            this.mmFileS3.Size = new System.Drawing.Size(244, 6);
+            this.pmPacketList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pmShowPacketName,
+            this.toolStripSeparator4,
+            this.showOnlyThisTypeToolStripMenuItem,
+            this.hideThisTypeToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.showOnlyOutgoingToolStripMenuItem,
+            this.showOnlyIncomingToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.resetAllFiltersToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.editParserForThisPacketToolStripMenuItem,
+            this.exportPacketToolStripMenuItem});
+            this.pmPacketList.Name = "pmPacketList";
+            this.pmPacketList.Size = new System.Drawing.Size(208, 226);
+            this.pmPacketList.Opening += new System.ComponentModel.CancelEventHandler(this.pmPacketList_Opening);
             // 
-            // mmFilePasteNew
+            // showOnlyThisTypeToolStripMenuItem
             // 
-            this.mmFilePasteNew.Name = "mmFilePasteNew";
-            this.mmFilePasteNew.Size = new System.Drawing.Size(247, 22);
-            this.mmFilePasteNew.Text = "New Tab from Clipboard";
-            this.mmFilePasteNew.Click += new System.EventHandler(this.MmFileNew_Click);
+            this.showOnlyThisTypeToolStripMenuItem.Name = "showOnlyThisTypeToolStripMenuItem";
+            this.showOnlyThisTypeToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.showOnlyThisTypeToolStripMenuItem.Text = "Show only this type";
+            // 
+            // hideThisTypeToolStripMenuItem
+            // 
+            this.hideThisTypeToolStripMenuItem.Name = "hideThisTypeToolStripMenuItem";
+            this.hideThisTypeToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.hideThisTypeToolStripMenuItem.Text = "Hide this type";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(204, 6);
+            // 
+            // showOnlyOutgoingToolStripMenuItem
+            // 
+            this.showOnlyOutgoingToolStripMenuItem.Name = "showOnlyOutgoingToolStripMenuItem";
+            this.showOnlyOutgoingToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.showOnlyOutgoingToolStripMenuItem.Text = "Show only Outgoing";
+            // 
+            // showOnlyIncomingToolStripMenuItem
+            // 
+            this.showOnlyIncomingToolStripMenuItem.Name = "showOnlyIncomingToolStripMenuItem";
+            this.showOnlyIncomingToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.showOnlyIncomingToolStripMenuItem.Text = "Show only Incoming";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(204, 6);
+            // 
+            // resetAllFiltersToolStripMenuItem
+            // 
+            this.resetAllFiltersToolStripMenuItem.Name = "resetAllFiltersToolStripMenuItem";
+            this.resetAllFiltersToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.resetAllFiltersToolStripMenuItem.Text = "Reset all filters";
+            // 
+            // editParserForThisPacketToolStripMenuItem
+            // 
+            this.editParserForThisPacketToolStripMenuItem.Name = "editParserForThisPacketToolStripMenuItem";
+            this.editParserForThisPacketToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.editParserForThisPacketToolStripMenuItem.Text = "Edit parser for this packet";
+            // 
+            // exportPacketToolStripMenuItem
+            // 
+            this.exportPacketToolStripMenuItem.Name = "exportPacketToolStripMenuItem";
+            this.exportPacketToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.exportPacketToolStripMenuItem.Text = "Export packet";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(204, 6);
+            // 
+            // pmShowPacketName
+            // 
+            this.pmShowPacketName.Name = "pmShowPacketName";
+            this.pmShowPacketName.Size = new System.Drawing.Size(207, 22);
+            this.pmShowPacketName.Text = "This packet type is";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(204, 6);
             // 
             // MainForm
             // 
@@ -505,6 +608,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).EndInit();
+            this.pmPacketList.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -552,6 +656,19 @@
         private System.Windows.Forms.TabPage tpPackets1;
         private System.Windows.Forms.ToolStripSeparator mmFileS3;
         private System.Windows.Forms.ToolStripMenuItem mmFilePasteNew;
+        private System.Windows.Forms.ContextMenuStrip pmPacketList;
+        private System.Windows.Forms.ToolStripMenuItem pmShowPacketName;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem showOnlyThisTypeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hideThisTypeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem showOnlyOutgoingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showOnlyIncomingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem resetAllFiltersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem editParserForThisPacketToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportPacketToolStripMenuItem;
     }
 }
 

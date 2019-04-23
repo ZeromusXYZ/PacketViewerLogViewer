@@ -84,6 +84,7 @@ namespace PacketViewerLogViewer
                 return;
 
             PacketTabPage tp = new PacketTabPage();
+            tp.ContextMenuStrip = pmPacketList ;
             tp.lbPackets.DrawItem += lbPackets_DrawItem;
             tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
             tcPackets.TabPages.Add(tp);
@@ -688,6 +689,7 @@ namespace PacketViewerLogViewer
             if (tp == null)
             {
                 tp = new PacketTabPage();
+                tp.ContextMenuStrip = pmPacketList;
                 tp.lbPackets.DrawItem += lbPackets_DrawItem;
                 tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
                 tcPackets.TabPages.Add(tp);
@@ -881,6 +883,7 @@ namespace PacketViewerLogViewer
             }
 
             PacketTabPage newtp = new PacketTabPage();
+            newtp.ContextMenuStrip = pmPacketList;
             newtp.lbPackets.DrawItem += lbPackets_DrawItem;
             newtp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
             tcPackets.TabPages.Add(newtp);
@@ -912,6 +915,7 @@ namespace PacketViewerLogViewer
             try
             {
                 PacketTabPage tp = new PacketTabPage();
+                tp.ContextMenuStrip = pmPacketList;
                 tp.lbPackets.DrawItem += lbPackets_DrawItem;
                 tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
                 tcPackets.TabPages.Add(tp);
@@ -938,6 +942,12 @@ namespace PacketViewerLogViewer
                 MessageBox.Show("Paste Failed, Exception: " + x.Message, "Paste from Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+        }
+
+        private void pmPacketList_Opening(object sender, CancelEventArgs e)
+        {
+            //
+            pmShowPacketName.Text = sender.ToString();
         }
     }
 }
