@@ -83,12 +83,7 @@ namespace PacketViewerLogViewer
             if (openLogFileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
-            PacketTabPage tp = new PacketTabPage();
-            tp.ContextMenuStrip = pmPacketList ;
-            tp.lbPackets.DrawItem += lbPackets_DrawItem;
-            tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
-            tcPackets.TabPages.Add(tp);
-            tcPackets.SelectedTab = tp;
+            PacketTabPage tp = CreateNewPacketsTabPage();
             tp.Text = MakeTabName(openLogFileDialog.FileName);
 
             tp.PLLoaded.Clear();
@@ -102,9 +97,10 @@ namespace PacketViewerLogViewer
             Text = defaultTitle + " - " + openLogFileDialog.FileName;
             tp.LoadedFileTitle = openLogFileDialog.FileName;
             tp.PL.CopyFrom(tp.PLLoaded);
-            FillListBox(tp.lbPackets, tp.PL);
+            tp.FillListBox();
         }
 
+        /*
         private void FillListBox(ListBox lb, PacketList pList, UInt16 GotTolastSync = 0)
         {
             int GotoIndex = -1;
@@ -179,6 +175,7 @@ namespace PacketViewerLogViewer
             }
             Application.UseWaitCursor = false;
         }
+        */
 
         public void lbPackets_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -239,101 +236,6 @@ namespace PacketViewerLogViewer
             */
         }
 
-        public void lbPackets_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            ListBox lb = (sender as ListBox);
-            if (!(lb.Parent is PacketTabPage))
-                return;
-            PacketTabPage tp = (lb.Parent as PacketTabPage);
-            PacketData pd = null;
-            if ((e.Index >= 0) && (e.Index < tp.PL.Count()))
-            {
-                pd = tp.PL.GetPacket(e.Index);
-            }
-            else
-            {
-                // Draw the background of the ListBox control for each item.
-                e.DrawBackground();
-                return;
-            }
-
-            bool barOn = (tp.CurrentSync == pd.PacketSync);
-            bool isSelected = (e.Index == lb.SelectedIndex);
-            Color textCol;
-            Color backCol;
-            Color barCol;
-
-            // Determine the color of the brush to draw each item based 
-            // on the index of the item to draw.
-            switch (pd.PacketLogType)
-            {
-                case PacketLogTypes.Incoming:
-                    textCol = Properties.Settings.Default.ColFontIN;
-                    if (isSelected)
-                    {
-                        backCol = Properties.Settings.Default.ColSelectIN;
-                        textCol = Properties.Settings.Default.ColSelectedFontIN;
-                    }
-                    else
-                    if (barOn)
-                        backCol = Properties.Settings.Default.ColSyncIN;
-                    else
-                        backCol = Properties.Settings.Default.ColBackIN;
-                    barCol = Properties.Settings.Default.ColBarIN ;
-                    break;
-                case PacketLogTypes.Outgoing:
-                    textCol = Properties.Settings.Default.ColFontOUT;
-                    if (isSelected)
-                    {
-                        backCol = Properties.Settings.Default.ColSelectOUT;
-                        textCol = Properties.Settings.Default.ColSelectedFontOUT;
-                    }
-                    else
-                    if (barOn)
-                        backCol = Properties.Settings.Default.ColSyncOUT;
-                    else
-                        backCol = Properties.Settings.Default.ColBackOUT;
-                    barCol = Properties.Settings.Default.ColBarOUT;
-                    break;
-                default:
-                    textCol = Properties.Settings.Default.ColFontUNK;
-                    if (isSelected)
-                    {
-                        backCol = Properties.Settings.Default.ColSelectUNK;
-                        textCol = Properties.Settings.Default.ColSelectedFontUNK;
-                    }
-                    else
-                    if (barOn)
-                        backCol = Properties.Settings.Default.ColSyncUNK;
-                    else
-                        backCol = Properties.Settings.Default.ColBackUNK;
-                    barCol = Properties.Settings.Default.ColBarUNK;
-                    break;
-            }
-
-            // Define the colors of our brushes.
-            Brush textBrush = new SolidBrush(textCol);
-            Brush backBrush = new SolidBrush(backCol);
-            Brush barBrush = new SolidBrush(barCol);
-
-            // Draw the background of the ListBox control for each item.
-            e.Graphics.FillRectangle(backBrush, e.Bounds);
-
-            // Draw the current item text based on the current Font 
-            // and the custom brush settings.
-            e.Graphics.DrawString(lb.Items[e.Index].ToString(),
-                e.Font, textBrush, e.Bounds, StringFormat.GenericDefault);
-            if (barOn)
-            {
-                var barSize = 8;
-                if (isSelected)
-                    barSize = 16;
-                e.Graphics.FillRectangle(barBrush, new Rectangle(e.Bounds.Right - barSize, e.Bounds.Top, barSize, e.Bounds.Height));
-            }
-            // If the ListBox has focus, draw a focus rectangle around the selected item.
-            e.DrawFocusRectangle();
-        }
-
         private void mmFileAppend_Click(object sender, EventArgs e)
         {
             openLogFileDialog.Title = "Append log file";
@@ -352,7 +254,7 @@ namespace PacketViewerLogViewer
             }
             Text = defaultTitle + " - " + tp.LoadedFileTitle;
             tp.PL.CopyFrom(tp.PLLoaded);
-            FillListBox(tp.lbPackets,tp.PL);
+            tp.FillListBox();
         }
 
         private void RawDataToRichText(PacketParser pp, RichTextBox rt)
@@ -674,7 +576,7 @@ namespace PacketViewerLogViewer
                 }
                 Text = defaultTitle + " - " + tp.LoadedFileTitle;
                 tp.PL.CopyFrom(tp.PLLoaded);
-                FillListBox(tp.lbPackets, tp.PL);
+                tp.FillListBox();
             }
             catch (Exception x)
             {
@@ -683,18 +585,22 @@ namespace PacketViewerLogViewer
 
         }
 
+        private PacketTabPage CreateNewPacketsTabPage()
+        {
+            PacketTabPage tp = new PacketTabPage(this);
+            tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
+            tcPackets.TabPages.Add(tp);
+            tcPackets.SelectedTab = tp;
+            tp.lbPackets.Focus();
+            return tp;
+        }
+
         private PacketTabPage GetCurrentOrNewPacketTabPage()
         {
             PacketTabPage tp = GetCurrentPacketTabPage();
             if (tp == null)
             {
-                tp = new PacketTabPage();
-                tp.ContextMenuStrip = pmPacketList;
-                tp.lbPackets.DrawItem += lbPackets_DrawItem;
-                tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
-                tcPackets.TabPages.Add(tp);
-                tcPackets.SelectedTab = tp;
-                tp.lbPackets.Focus();
+                tp = CreateNewPacketsTabPage();
             }
             return tp;
         }
@@ -728,7 +634,8 @@ namespace PacketViewerLogViewer
                     UInt16 lastSync = tp.CurrentSync;
                     tp.PL.Filter.CopyFrom(filterDlg.Filter);
                     tp.PL.FilterFrom(tp.PLLoaded);
-                    FillListBox(tp.lbPackets, tp.PL,lastSync);
+                    tp.FillListBox(lastSync);
+                    tp.CenterListBox();
 
                 }
             }
@@ -742,7 +649,8 @@ namespace PacketViewerLogViewer
                 UInt16 lastSync = tp.CurrentSync;
                 tp.PL.Filter.Clear();
                 tp.PL.CopyFrom(tp.PLLoaded);
-                FillListBox(tp.lbPackets, tp.PL,lastSync);
+                tp.FillListBox(lastSync);
+                tp.CenterListBox();
             }
 
         }
@@ -764,7 +672,8 @@ namespace PacketViewerLogViewer
                 UInt16 lastSync = tp.CurrentSync;
                 tp.PL.Filter.LoadFromFile(Application.StartupPath + Path.DirectorySeparatorChar + "filter" + Path.DirectorySeparatorChar + mITem.Text + ".pfl");
                 tp.PL.FilterFrom(tp.PLLoaded);
-                FillListBox(tp.lbPackets, tp.PL,lastSync);
+                tp.FillListBox(lastSync);
+                tp.CenterListBox();
             }
         }
 
@@ -882,12 +791,7 @@ namespace PacketViewerLogViewer
                 return;
             }
 
-            PacketTabPage newtp = new PacketTabPage();
-            newtp.ContextMenuStrip = pmPacketList;
-            newtp.lbPackets.DrawItem += lbPackets_DrawItem;
-            newtp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
-            tcPackets.TabPages.Add(newtp);
-            tcPackets.SelectedTab = newtp;
+            PacketTabPage newtp = CreateNewPacketsTabPage();
             newtp.Text = "*" + tp.Text;
             newtp.LoadedFileTitle = "Search Result";
 
@@ -900,11 +804,11 @@ namespace PacketViewerLogViewer
             else
             {
                 newtp.PL.CopyFrom(newtp.PLLoaded);
-                FillListBox(newtp.lbPackets, newtp.PL);
+                newtp.FillListBox();
             }
         }
 
-        private void MmFileNew_Click(object sender, EventArgs e)
+        private void MmFilePasteNew_Click(object sender, EventArgs e)
         {
 
             if ((!Clipboard.ContainsText()) || (Clipboard.GetText() == string.Empty))
@@ -914,11 +818,7 @@ namespace PacketViewerLogViewer
             }
             try
             {
-                PacketTabPage tp = new PacketTabPage();
-                tp.ContextMenuStrip = pmPacketList;
-                tp.lbPackets.DrawItem += lbPackets_DrawItem;
-                tp.lbPackets.SelectedIndexChanged += lbPackets_SelectedIndexChanged;
-                tcPackets.TabPages.Add(tp);
+                PacketTabPage tp = CreateNewPacketsTabPage();
                 tp.Text = "Clipboard";
                 tp.LoadedFileTitle = "Paste from Clipboard";
                 tcPackets.SelectedTab = tp;
@@ -935,7 +835,7 @@ namespace PacketViewerLogViewer
                 }
                 Text = defaultTitle + " - " + tp.LoadedFileTitle;
                 tp.PL.CopyFrom(tp.PLLoaded);
-                FillListBox(tp.lbPackets, tp.PL);
+                tp.FillListBox();
             }
             catch (Exception x)
             {
@@ -944,10 +844,5 @@ namespace PacketViewerLogViewer
 
         }
 
-        private void pmPacketList_Opening(object sender, CancelEventArgs e)
-        {
-            //
-            pmShowPacketName.Text = sender.ToString();
-        }
     }
 }

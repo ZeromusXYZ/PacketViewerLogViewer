@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +64,19 @@
             this.tcPackets = new System.Windows.Forms.TabControl();
             this.tpPackets1 = new System.Windows.Forms.TabPage();
             this.lbPackets = new System.Windows.Forms.ListBox();
+            this.pmPacketList = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.pmPLShowPacketName = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLS1 = new System.Windows.Forms.ToolStripSeparator();
+            this.pmPLShowOnly = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLHideThis = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLS2 = new System.Windows.Forms.ToolStripSeparator();
+            this.pmPLShowOutOnly = new System.Windows.Forms.ToolStripMenuItem();
+            this.plPLShowInOnly = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLS3 = new System.Windows.Forms.ToolStripSeparator();
+            this.pmPLResetFilters = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLS4 = new System.Windows.Forms.ToolStripSeparator();
+            this.pmPLEditParser = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLExportPacket = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dGV = new System.Windows.Forms.DataGridView();
             this.cbShowBlock = new System.Windows.Forms.ComboBox();
@@ -71,19 +84,6 @@
             this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.pmPacketList = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.showOnlyThisTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hideThisTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.showOnlyOutgoingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showOnlyIncomingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.resetAllFiltersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editParserForThisPacketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportPacketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.pmShowPacketName = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -91,12 +91,12 @@
             this.splitContainer1.SuspendLayout();
             this.tcPackets.SuspendLayout();
             this.tpPackets1.SuspendLayout();
+            this.pmPacketList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).BeginInit();
-            this.pmPacketList.SuspendLayout();
             this.SuspendLayout();
             // 
             // MM
@@ -163,7 +163,7 @@
             this.mmFilePasteNew.Name = "mmFilePasteNew";
             this.mmFilePasteNew.Size = new System.Drawing.Size(247, 22);
             this.mmFilePasteNew.Text = "New Tab from Clipboard";
-            this.mmFilePasteNew.Click += new System.EventHandler(this.MmFileNew_Click);
+            this.mmFilePasteNew.Click += new System.EventHandler(this.MmFilePasteNew_Click);
             // 
             // mmFileS1
             // 
@@ -389,10 +389,95 @@
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(328, 466);
+            this.lbPackets.Size = new System.Drawing.Size(332, 466);
             this.lbPackets.TabIndex = 0;
-            this.lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
+            // 
+            // pmPacketList
+            // 
+            this.pmPacketList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pmPLShowPacketName,
+            this.pmPLS1,
+            this.pmPLShowOnly,
+            this.pmPLHideThis,
+            this.pmPLS2,
+            this.pmPLShowOutOnly,
+            this.plPLShowInOnly,
+            this.pmPLS3,
+            this.pmPLResetFilters,
+            this.pmPLS4,
+            this.pmPLEditParser,
+            this.pmPLExportPacket});
+            this.pmPacketList.Name = "pmPacketList";
+            this.pmPacketList.Size = new System.Drawing.Size(208, 226);
+            // 
+            // pmPLShowPacketName
+            // 
+            this.pmPLShowPacketName.Name = "pmPLShowPacketName";
+            this.pmPLShowPacketName.Size = new System.Drawing.Size(207, 22);
+            this.pmPLShowPacketName.Text = "This packet type is";
+            // 
+            // pmPLS1
+            // 
+            this.pmPLS1.Name = "pmPLS1";
+            this.pmPLS1.Size = new System.Drawing.Size(204, 6);
+            // 
+            // pmPLShowOnly
+            // 
+            this.pmPLShowOnly.Name = "pmPLShowOnly";
+            this.pmPLShowOnly.Size = new System.Drawing.Size(207, 22);
+            this.pmPLShowOnly.Text = "Show only this type";
+            // 
+            // pmPLHideThis
+            // 
+            this.pmPLHideThis.Name = "pmPLHideThis";
+            this.pmPLHideThis.Size = new System.Drawing.Size(207, 22);
+            this.pmPLHideThis.Text = "Hide this type";
+            // 
+            // pmPLS2
+            // 
+            this.pmPLS2.Name = "pmPLS2";
+            this.pmPLS2.Size = new System.Drawing.Size(204, 6);
+            // 
+            // pmPLShowOutOnly
+            // 
+            this.pmPLShowOutOnly.Name = "pmPLShowOutOnly";
+            this.pmPLShowOutOnly.Size = new System.Drawing.Size(207, 22);
+            this.pmPLShowOutOnly.Text = "Show only Outgoing";
+            // 
+            // plPLShowInOnly
+            // 
+            this.plPLShowInOnly.Name = "plPLShowInOnly";
+            this.plPLShowInOnly.Size = new System.Drawing.Size(207, 22);
+            this.plPLShowInOnly.Text = "Show only Incoming";
+            // 
+            // pmPLS3
+            // 
+            this.pmPLS3.Name = "pmPLS3";
+            this.pmPLS3.Size = new System.Drawing.Size(204, 6);
+            // 
+            // pmPLResetFilters
+            // 
+            this.pmPLResetFilters.Name = "pmPLResetFilters";
+            this.pmPLResetFilters.Size = new System.Drawing.Size(207, 22);
+            this.pmPLResetFilters.Text = "Reset all filters";
+            // 
+            // pmPLS4
+            // 
+            this.pmPLS4.Name = "pmPLS4";
+            this.pmPLS4.Size = new System.Drawing.Size(204, 6);
+            // 
+            // pmPLEditParser
+            // 
+            this.pmPLEditParser.Name = "pmPLEditParser";
+            this.pmPLEditParser.Size = new System.Drawing.Size(207, 22);
+            this.pmPLEditParser.Text = "Edit parser for this packet";
+            // 
+            // pmPLExportPacket
+            // 
+            this.pmPLExportPacket.Name = "pmPLExportPacket";
+            this.pmPLExportPacket.Size = new System.Drawing.Size(207, 22);
+            this.pmPLExportPacket.Text = "Export packet";
             // 
             // splitContainer2
             // 
@@ -420,11 +505,11 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -491,93 +576,6 @@
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
             // 
-            // pmPacketList
-            // 
-            this.pmPacketList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pmShowPacketName,
-            this.toolStripSeparator4,
-            this.showOnlyThisTypeToolStripMenuItem,
-            this.hideThisTypeToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.showOnlyOutgoingToolStripMenuItem,
-            this.showOnlyIncomingToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.resetAllFiltersToolStripMenuItem,
-            this.toolStripSeparator3,
-            this.editParserForThisPacketToolStripMenuItem,
-            this.exportPacketToolStripMenuItem});
-            this.pmPacketList.Name = "pmPacketList";
-            this.pmPacketList.Size = new System.Drawing.Size(208, 226);
-            this.pmPacketList.Opening += new System.ComponentModel.CancelEventHandler(this.pmPacketList_Opening);
-            // 
-            // showOnlyThisTypeToolStripMenuItem
-            // 
-            this.showOnlyThisTypeToolStripMenuItem.Name = "showOnlyThisTypeToolStripMenuItem";
-            this.showOnlyThisTypeToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.showOnlyThisTypeToolStripMenuItem.Text = "Show only this type";
-            // 
-            // hideThisTypeToolStripMenuItem
-            // 
-            this.hideThisTypeToolStripMenuItem.Name = "hideThisTypeToolStripMenuItem";
-            this.hideThisTypeToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.hideThisTypeToolStripMenuItem.Text = "Hide this type";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(204, 6);
-            // 
-            // showOnlyOutgoingToolStripMenuItem
-            // 
-            this.showOnlyOutgoingToolStripMenuItem.Name = "showOnlyOutgoingToolStripMenuItem";
-            this.showOnlyOutgoingToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.showOnlyOutgoingToolStripMenuItem.Text = "Show only Outgoing";
-            // 
-            // showOnlyIncomingToolStripMenuItem
-            // 
-            this.showOnlyIncomingToolStripMenuItem.Name = "showOnlyIncomingToolStripMenuItem";
-            this.showOnlyIncomingToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.showOnlyIncomingToolStripMenuItem.Text = "Show only Incoming";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(204, 6);
-            // 
-            // resetAllFiltersToolStripMenuItem
-            // 
-            this.resetAllFiltersToolStripMenuItem.Name = "resetAllFiltersToolStripMenuItem";
-            this.resetAllFiltersToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.resetAllFiltersToolStripMenuItem.Text = "Reset all filters";
-            // 
-            // editParserForThisPacketToolStripMenuItem
-            // 
-            this.editParserForThisPacketToolStripMenuItem.Name = "editParserForThisPacketToolStripMenuItem";
-            this.editParserForThisPacketToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.editParserForThisPacketToolStripMenuItem.Text = "Edit parser for this packet";
-            // 
-            // exportPacketToolStripMenuItem
-            // 
-            this.exportPacketToolStripMenuItem.Name = "exportPacketToolStripMenuItem";
-            this.exportPacketToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.exportPacketToolStripMenuItem.Text = "Export packet";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(204, 6);
-            // 
-            // pmShowPacketName
-            // 
-            this.pmShowPacketName.Name = "pmShowPacketName";
-            this.pmShowPacketName.Size = new System.Drawing.Size(207, 22);
-            this.pmShowPacketName.Text = "This packet type is";
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(204, 6);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -601,6 +599,7 @@
             this.splitContainer1.ResumeLayout(false);
             this.tcPackets.ResumeLayout(false);
             this.tpPackets1.ResumeLayout(false);
+            this.pmPacketList.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -608,7 +607,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).EndInit();
-            this.pmPacketList.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -657,18 +655,18 @@
         private System.Windows.Forms.ToolStripSeparator mmFileS3;
         private System.Windows.Forms.ToolStripMenuItem mmFilePasteNew;
         private System.Windows.Forms.ContextMenuStrip pmPacketList;
-        private System.Windows.Forms.ToolStripMenuItem pmShowPacketName;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem showOnlyThisTypeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem hideThisTypeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem showOnlyOutgoingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showOnlyIncomingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem resetAllFiltersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem editParserForThisPacketToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportPacketToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pmPLShowPacketName;
+        private System.Windows.Forms.ToolStripSeparator pmPLS1;
+        private System.Windows.Forms.ToolStripMenuItem pmPLShowOnly;
+        private System.Windows.Forms.ToolStripMenuItem pmPLHideThis;
+        private System.Windows.Forms.ToolStripSeparator pmPLS2;
+        private System.Windows.Forms.ToolStripMenuItem pmPLShowOutOnly;
+        private System.Windows.Forms.ToolStripMenuItem plPLShowInOnly;
+        private System.Windows.Forms.ToolStripSeparator pmPLS3;
+        private System.Windows.Forms.ToolStripMenuItem pmPLResetFilters;
+        private System.Windows.Forms.ToolStripSeparator pmPLS4;
+        private System.Windows.Forms.ToolStripMenuItem pmPLEditParser;
+        private System.Windows.Forms.ToolStripMenuItem pmPLExportPacket;
     }
 }
 

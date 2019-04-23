@@ -10,6 +10,9 @@ using System.Data.Sql;
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using PacketViewerLogViewer;
+using System.ComponentModel;
+using System.Drawing;
+using System.Diagnostics;
 
 namespace PacketViewerLogViewer.Packets
 {
@@ -1270,6 +1273,7 @@ namespace PacketViewerLogViewer.Packets
 
     class PacketTabPage: System.Windows.Forms.TabPage
     {
+        private Form ownerMainForm;
         public PacketList PLLoaded; // File Loaded
         public PacketList PL; // Filtered File Data Displayed
         // public PacketParser PP;
@@ -1277,19 +1281,393 @@ namespace PacketViewerLogViewer.Packets
         public string LoadedFileTitle ;
 
         public ListBox lbPackets;
+        // Popup Menu Controls
+        public ContextMenuStrip pmPL;
+        public ToolStripMenuItem pmPLShowPacketName;
+        public ToolStripSeparator pmPLS1;
+        public ToolStripMenuItem pmPLShowOnly;
+        public ToolStripMenuItem pmPLHideThis;
+        public ToolStripSeparator pmPLS2;
+        public ToolStripMenuItem pmPLShowOutOnly;
+        public ToolStripMenuItem pmPLShowInOnly;
+        public ToolStripSeparator pmPLS3;
+        public ToolStripMenuItem pmPLResetFilters;
+        public ToolStripSeparator pmPLS4;
+        public ToolStripMenuItem pmPLEditParser;
+        public ToolStripMenuItem pmPLExportPacket;
 
-        public PacketTabPage()
+        public PacketTabPage(Form mainForm)
         {
+            ownerMainForm = mainForm;
+            // Create base controls
             PLLoaded = new PacketList();
             PL = new PacketList();
             lbPackets = new ListBox();
+
+            // Set ListBox Position
             lbPackets.Parent = this;
             lbPackets.Location = new System.Drawing.Point(0, 0);
             lbPackets.Size = new System.Drawing.Size(this.Width, this.Height);
             lbPackets.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbPackets.DrawMode = DrawMode.OwnerDrawFixed;
+            lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
+            // Add the SelectedIndexChanged for this from MainForm/process creating it, as it's too complex to handle internally
+            // lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged); 
+
+            // Title to use on main program as "Filename"
             LoadedFileTitle = "Packets";
+
+            // Create Popup Menu
+            pmPL = new ContextMenuStrip();
+            pmPL.Opening += new CancelEventHandler(PmPL_Opening);
+
+            lbPackets.ContextMenuStrip = pmPL;
+
+            pmPLShowPacketName = new ToolStripMenuItem("Show packet name");
+            pmPL.Items.Add(pmPLShowPacketName);
+
+            pmPLS1 = new ToolStripSeparator();
+            pmPL.Items.Add(pmPLS1);
+
+            pmPLShowOnly = new ToolStripMenuItem("Show this type only");
+            pmPLShowOnly.Click += new EventHandler(PmPLShowOnly_Click);
+            pmPL.Items.Add(pmPLShowOnly);
+
+            pmPLHideThis = new ToolStripMenuItem("Hide this type");
+            pmPLHideThis.Click += new EventHandler(PmPLHideThis_Click);
+            pmPL.Items.Add(pmPLHideThis);
+
+            pmPLS2 = new ToolStripSeparator();
+            pmPL.Items.Add(pmPLS2);
+
+            pmPLShowOutOnly = new ToolStripMenuItem("Show only Outgoing");
+            pmPLShowOutOnly.Enabled = false;
+            pmPL.Items.Add(pmPLShowOutOnly);
+
+            pmPLShowInOnly = new ToolStripMenuItem("Show only Incoming");
+            pmPLShowInOnly.Enabled = false;
+            pmPL.Items.Add(pmPLShowInOnly);
+
+            pmPLS3 = new ToolStripSeparator();
+            pmPL.Items.Add(pmPLS3);
+
+            pmPLResetFilters = new ToolStripMenuItem("Reset all filters");
+            pmPLResetFilters.Enabled = false;
+            pmPL.Items.Add(pmPLResetFilters);
+
+            pmPLS4 = new ToolStripSeparator();
+            pmPL.Items.Add(pmPLS4);
+
+            pmPLEditParser = new ToolStripMenuItem("Edit this parser");
+            pmPLEditParser.Click += new EventHandler(PmPLEditParser_Click);
+            pmPL.Items.Add(pmPLEditParser);
+
+            pmPLExportPacket = new ToolStripMenuItem("Export Packet");
+            pmPLExportPacket.Enabled = false;
+            pmPL.Items.Add(pmPLExportPacket);
+
+            // Init misc stuff
             CurrentSync = 0xFFFF;
+        }
+
+        public PacketData GetSelectedPacket()
+        {
+            if ((lbPackets.SelectedIndex < 0) || (lbPackets.SelectedIndex >= PL.Count()))
+                return null;
+            return PL.GetPacket(lbPackets.SelectedIndex);
+        }
+
+        public void lbPackets_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            ListBox lb = (sender as ListBox);
+            if (!(lb.Parent is PacketTabPage))
+                return;
+            PacketTabPage tp = (lb.Parent as PacketTabPage);
+            PacketData pd = null;
+            if ((e.Index >= 0) && (e.Index < tp.PL.Count()))
+            {
+                pd = tp.PL.GetPacket(e.Index);
+            }
+            else
+            {
+                // Draw the background of the ListBox control for each item.
+                e.DrawBackground();
+                return;
+            }
+
+            bool barOn = (tp.CurrentSync == pd.PacketSync);
+            bool isSelected = (e.Index == lb.SelectedIndex);
+            Color textCol;
+            Color backCol;
+            Color barCol;
+
+            // Determine the color of the brush to draw each item based 
+            // on the index of the item to draw.
+            switch (pd.PacketLogType)
+            {
+                case PacketLogTypes.Incoming:
+                    textCol = Properties.Settings.Default.ColFontIN;
+                    if (isSelected)
+                    {
+                        backCol = Properties.Settings.Default.ColSelectIN;
+                        textCol = Properties.Settings.Default.ColSelectedFontIN;
+                    }
+                    else
+                    if (barOn)
+                        backCol = Properties.Settings.Default.ColSyncIN;
+                    else
+                        backCol = Properties.Settings.Default.ColBackIN;
+                    barCol = Properties.Settings.Default.ColBarIN;
+                    break;
+                case PacketLogTypes.Outgoing:
+                    textCol = Properties.Settings.Default.ColFontOUT;
+                    if (isSelected)
+                    {
+                        backCol = Properties.Settings.Default.ColSelectOUT;
+                        textCol = Properties.Settings.Default.ColSelectedFontOUT;
+                    }
+                    else
+                    if (barOn)
+                        backCol = Properties.Settings.Default.ColSyncOUT;
+                    else
+                        backCol = Properties.Settings.Default.ColBackOUT;
+                    barCol = Properties.Settings.Default.ColBarOUT;
+                    break;
+                default:
+                    textCol = Properties.Settings.Default.ColFontUNK;
+                    if (isSelected)
+                    {
+                        backCol = Properties.Settings.Default.ColSelectUNK;
+                        textCol = Properties.Settings.Default.ColSelectedFontUNK;
+                    }
+                    else
+                    if (barOn)
+                        backCol = Properties.Settings.Default.ColSyncUNK;
+                    else
+                        backCol = Properties.Settings.Default.ColBackUNK;
+                    barCol = Properties.Settings.Default.ColBarUNK;
+                    break;
+            }
+
+            // Define the colors of our brushes.
+            Brush textBrush = new SolidBrush(textCol);
+            Brush backBrush = new SolidBrush(backCol);
+            Brush barBrush = new SolidBrush(barCol);
+
+            // Draw the background of the ListBox control for each item.
+            e.Graphics.FillRectangle(backBrush, e.Bounds);
+
+            // Draw the current item text based on the current Font 
+            // and the custom brush settings.
+            e.Graphics.DrawString(lb.Items[e.Index].ToString(),
+                e.Font, textBrush, e.Bounds, StringFormat.GenericDefault);
+            if (barOn)
+            {
+                var barSize = 8;
+                if (isSelected)
+                    barSize = 16;
+                e.Graphics.FillRectangle(barBrush, new Rectangle(e.Bounds.Right - barSize, e.Bounds.Top, barSize, e.Bounds.Height));
+            }
+            // If the ListBox has focus, draw a focus rectangle around the selected item.
+            e.DrawFocusRectangle();
+        }
+
+        public void CenterListBox()
+        {
+            // Move to center
+            var iHeight = lbPackets.ItemHeight;
+            if (iHeight <= 0)
+                iHeight = 8;
+            var iCount = lbPackets.Size.Height / iHeight;
+            var tPos = lbPackets.SelectedIndex - (iCount / 2);
+            if (tPos < 0)
+                tPos = 0;
+            lbPackets.TopIndex = tPos;
+        }
+
+        public void FillListBox(UInt16 GotTolastSync = 0)
+        {
+            int GotoIndex = -1;
+            Application.UseWaitCursor = true;
+            using (LoadingForm loadform = new LoadingForm(ownerMainForm))
+            {
+                try
+                {
+                    Random rand = new Random();
+                    switch (rand.Next(100))
+                    {
+                        case 0:
+                            loadform.BackColor = Color.DarkRed;
+                            loadform.Text = "Sacrificing Taru-Taru's ...";
+                            break;
+                        case 1:
+                            loadform.Text = "That's a lot of data ...";
+                            break;
+                        case 2:
+                            loadform.Text = "Burning circles, please wait ...";
+                            break;
+                        case 3:
+                            loadform.Text = "I'm bored ...";
+                            break;
+                        case 4:
+                            loadform.Text = "Camping Shikigami Weapon, come back tomorrow ...";
+                            break;
+                        default:
+                            loadform.Text = "Populating Listbox, please wait ...";
+                            break;
+                    }
+                    loadform.Show();
+                    loadform.pb.Minimum = 0;
+                    loadform.pb.Maximum = PL.Count();
+                    lbPackets.Items.Clear();
+                    for (int i = 0; i < PL.Count(); i++)
+                    {
+                        PacketData pd = PL.GetPacket(i);
+                        switch (pd.PacketLogType)
+                        {
+                            case PacketLogTypes.Outgoing:
+                                lbPackets.Items.Add("=> " + pd.HeaderText);
+                                break;
+                            case PacketLogTypes.Incoming:
+                                lbPackets.Items.Add("<= " + pd.HeaderText);
+                                break;
+                            default:
+                                lbPackets.Items.Add("?? " + pd.HeaderText);
+                                break;
+                        }
+                        if ((GotoIndex < 0) && (GotTolastSync > 0) && (pd.PacketSync >= GotTolastSync))
+                        {
+                            GotoIndex = lbPackets.Items.Count - 1 ;
+                        }
+                        loadform.pb.Value = i;
+                        if ((i % 50) == 0)
+                            loadform.pb.Refresh();
+                    }
+                    if (GotoIndex >= 0)
+                    {
+                        lbPackets.SelectedIndex = GotoIndex;
+                    }
+                    loadform.Hide();
+                }
+                catch
+                {
+
+                }
+            }
+            Application.UseWaitCursor = false;
+        }
+
+
+        private void PmPL_Opening(object sender, CancelEventArgs e)
+        {
+            var PD = GetSelectedPacket();
+            if (PD == null)
+            {
+                e.Cancel = true;
+                return;
+            }
+            pmPLShowPacketName.Text = PD.PacketLogType.ToString() + " - 0x" + PD.PacketID.ToString("X3");
+            string ParserFileName ;
+            switch (PD.PacketLogType)
+            {
+                case PacketLogTypes.Incoming:
+                    ParserFileName = "parse" + Path.DirectorySeparatorChar+ "in-0x" + PD.PacketID.ToString("X3") + ".txt";
+                    pmPLEditParser.Text = "Edit " + ParserFileName;
+                    pmPLEditParser.Visible = true;
+                    break;
+                case PacketLogTypes.Outgoing:
+                    ParserFileName = "parse" + Path.DirectorySeparatorChar + "out-0x" + PD.PacketID.ToString("X3") + ".txt";
+                    pmPLEditParser.Text = "Edit " + ParserFileName ;
+                    pmPLEditParser.Visible = true;
+                    break;
+                default:
+                    ParserFileName = "" ;
+                    pmPLEditParser.Text = "";
+                    pmPLEditParser.Visible = false;
+                    break;
+            }
+            pmPLEditParser.Tag = ParserFileName;
+            pmPLShowOnly.Enabled = (PD.PacketLogType != PacketLogTypes.Unknown);
+            pmPLHideThis.Enabled = (PD.PacketLogType != PacketLogTypes.Unknown);
+
+
+        }
+
+        private void PmPLEditParser_Click(object sender, EventArgs e)
+        {
+            if ((pmPLEditParser.Tag == null) || ((string)pmPLEditParser.Tag == string.Empty))
+                return;
+            string editFile = Application.StartupPath + Path.DirectorySeparatorChar + (string)pmPLEditParser.Tag;
+            if (File.Exists(editFile))
+            {
+                Process.Start(editFile);
+            }
+            else
+            {
+                // Create new one ?
+            }
+        }
+
+        private void PmPLShowOnly_Click(object sender, EventArgs e)
+        {
+            var PD = GetSelectedPacket();
+            if (PD == null)
+                return;
+
+            switch (PD.PacketLogType)
+            {
+                case PacketLogTypes.Incoming:
+                    PL.Filter.Clear();
+                    PL.Filter.FilterInType = FilterType.ShowPackets;
+                    PL.Filter.FilterInList.Add(PD.PacketID);
+                    PL.Filter.FilterOutType = FilterType.AllowNone;
+                    break;
+                case PacketLogTypes.Outgoing:
+                    PL.Filter.Clear();
+                    PL.Filter.FilterOutType = FilterType.ShowPackets;
+                    PL.Filter.FilterOutList.Add(PD.PacketID);
+                    PL.Filter.FilterInType = FilterType.AllowNone;
+                    break;
+                default:
+                    return;
+            }
+            var lastSync = CurrentSync;
+            PL.FilterFrom(PLLoaded);
+            FillListBox(lastSync);
+            CenterListBox();
+        }
+
+        private void PmPLHideThis_Click(object sender, EventArgs e)
+        {
+            var PD = GetSelectedPacket();
+            if (PD == null)
+                return;
+
+            switch (PD.PacketLogType)
+            {
+                case PacketLogTypes.Incoming:
+                    if (PL.Filter.FilterInType != FilterType.HidePackets)
+                    {
+                        PL.Filter.FilterInType = FilterType.HidePackets;
+                        PL.Filter.FilterInList.Clear();
+                    }
+                    PL.Filter.FilterInList.Add(PD.PacketID);
+                    break;
+                case PacketLogTypes.Outgoing:
+                    if (PL.Filter.FilterOutType != FilterType.HidePackets)
+                    {
+                        PL.Filter.FilterOutType = FilterType.HidePackets;
+                        PL.Filter.FilterOutList.Clear();
+                    }
+                    PL.Filter.FilterOutList.Add(PD.PacketID);
+                    break;
+                default:
+                    return;
+            }
+            var lastSync = CurrentSync;
+            PL.FilterFrom(PLLoaded);
+            FillListBox(lastSync);
+            CenterListBox();
         }
 
 
