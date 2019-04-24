@@ -1273,7 +1273,7 @@ namespace PacketViewerLogViewer.Packets
 
     class PacketTabPage: System.Windows.Forms.TabPage
     {
-        private Form ownerMainForm;
+        private MainForm ownerMainForm;
         public PacketList PLLoaded; // File Loaded
         public PacketList PL; // Filtered File Data Displayed
         // public PacketParser PP;
@@ -1296,7 +1296,7 @@ namespace PacketViewerLogViewer.Packets
         public ToolStripMenuItem pmPLEditParser;
         public ToolStripMenuItem pmPLExportPacket;
 
-        public PacketTabPage(Form mainForm)
+        public PacketTabPage(MainForm mainForm)
         {
             ownerMainForm = mainForm;
 
@@ -1599,15 +1599,7 @@ namespace PacketViewerLogViewer.Packets
         {
             if ((pmPLEditParser.Tag == null) || ((string)pmPLEditParser.Tag == string.Empty))
                 return;
-            string editFile = Application.StartupPath + Path.DirectorySeparatorChar + (string)pmPLEditParser.Tag;
-            if (File.Exists(editFile))
-            {
-                Process.Start(editFile);
-            }
-            else
-            {
-                // Create new one ?
-            }
+            ownerMainForm.OpenParseEditor((string)pmPLEditParser.Tag);
         }
 
         private void PmPLShowOnly_Click(object sender, EventArgs e)

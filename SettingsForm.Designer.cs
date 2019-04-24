@@ -61,6 +61,7 @@
             this.btnSelectedFontOUT = new System.Windows.Forms.Button();
             this.btnSelectedFontUNK = new System.Windows.Forms.Button();
             this.btnDefault = new System.Windows.Forms.Button();
+            this.cbUseExternalEditor = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -458,6 +459,16 @@
             this.btnDefault.UseVisualStyleBackColor = true;
             this.btnDefault.Click += new System.EventHandler(this.btnDefault_Click);
             // 
+            // cbUseExternalEditor
+            // 
+            this.cbUseExternalEditor.AutoSize = true;
+            this.cbUseExternalEditor.Location = new System.Drawing.Point(12, 166);
+            this.cbUseExternalEditor.Name = "cbUseExternalEditor";
+            this.cbUseExternalEditor.Size = new System.Drawing.Size(276, 17);
+            this.cbUseExternalEditor.TabIndex = 12;
+            this.cbUseExternalEditor.Text = "Use Default External Text Editor for editing parse files";
+            this.cbUseExternalEditor.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.btnOK;
@@ -466,6 +477,7 @@
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(568, 279);
             this.ControlBox = false;
+            this.Controls.Add(this.cbUseExternalEditor);
             this.Controls.Add(this.btnDefault);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btnCancel);
@@ -481,6 +493,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -519,5 +532,6 @@
         private System.Windows.Forms.Button btnSelectedFontOUT;
         private System.Windows.Forms.Button btnSelectedFontUNK;
         private System.Windows.Forms.Button btnDefault;
+        private System.Windows.Forms.CheckBox cbUseExternalEditor;
     }
 }

@@ -881,5 +881,46 @@ namespace PacketViewerLogViewer
                 }
             }
         }
+
+        public void OpenParseEditor(string parseFileName)
+        {
+            string editFile = Application.StartupPath + Path.DirectorySeparatorChar + parseFileName;
+            if (!File.Exists(editFile))
+            {
+                if (MessageBox.Show("Parser \"" + parseFileName + "\" doesn't exists, create one ?", "Edit Parse File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+
+                var s = "file;" + Path.GetFileNameWithoutExtension(parseFileName) + ";unnamed package";
+                s += "\r\n\r\n";
+                s += "rem;insert your parser fields here";
+                try
+                {
+                    File.WriteAllText(editFile, s);
+                }
+                catch
+                {
+                    MessageBox.Show("Failed to create new parser file", "Edit Parse File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            if (Properties.Settings.Default.ExternalParseEditor)
+            {
+                Process.Start(editFile);
+            }
+            else
+            {
+                // Open in-app editor
+                MessageBox.Show("Internal editor not implemented yet");
+            }
+        }
+
+        private void RtInfo_SelectionChanged(object sender, EventArgs e)
+        {
+            var firstPos = rtInfo.SelectionStart;
+            var lastPos = rtInfo.SelectionStart + rtInfo.SelectionLength;
+            if ((firstPos < 0) || (lastPos < firstPos))
+                return;
+
+        }
     }
 }
