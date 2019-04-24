@@ -1341,18 +1341,18 @@ namespace PacketViewerLogViewer.Packets
             pmPL.Items.Add(pmPLS2);
 
             pmPLShowOutOnly = new ToolStripMenuItem("Show only Outgoing");
-            pmPLShowOutOnly.Enabled = false;
+            pmPLShowOutOnly.Click += new EventHandler(PmPLShowOutgoingOnly_Click);
             pmPL.Items.Add(pmPLShowOutOnly);
 
             pmPLShowInOnly = new ToolStripMenuItem("Show only Incoming");
-            pmPLShowInOnly.Enabled = false;
+            pmPLShowInOnly.Click += new EventHandler(PmPLShowIncomingOnly_Click);
             pmPL.Items.Add(pmPLShowInOnly);
 
             pmPLS3 = new ToolStripSeparator();
             pmPL.Items.Add(pmPLS3);
 
             pmPLResetFilters = new ToolStripMenuItem("Reset all filters");
-            pmPLResetFilters.Enabled = false;
+            pmPLResetFilters.Click += new EventHandler(PmPLResetFilter_Click);
             pmPL.Items.Add(pmPLResetFilters);
 
             pmPLS4 = new ToolStripSeparator();
@@ -1363,7 +1363,7 @@ namespace PacketViewerLogViewer.Packets
             pmPL.Items.Add(pmPLEditParser);
 
             pmPLExportPacket = new ToolStripMenuItem("Export Packet");
-            pmPLExportPacket.Enabled = false;
+            pmPLExportPacket.Click += new EventHandler(PmPLExport_Click);
             pmPL.Items.Add(pmPLExportPacket);
 
             // Init misc stuff
@@ -1670,6 +1670,95 @@ namespace PacketViewerLogViewer.Packets
             CenterListBox();
         }
 
+        private void PmPLShowIncomingOnly_Click(object sender, EventArgs e)
+        {
+            var PD = GetSelectedPacket();
+            if (PD == null)
+                return;
+
+            if ((PL.Filter.FilterInType == FilterType.AllowNone) || (PL.Filter.FilterInType == FilterType.HidePackets))
+            {
+                PL.Filter.FilterInType = FilterType.Off;
+            }
+            PL.Filter.FilterOutType = FilterType.AllowNone;
+
+            var lastSync = CurrentSync;
+            PL.FilterFrom(PLLoaded);
+            FillListBox(lastSync);
+            CenterListBox();
+        }
+
+        private void PmPLShowOutgoingOnly_Click(object sender, EventArgs e)
+        {
+            var PD = GetSelectedPacket();
+            if (PD == null)
+                return;
+
+            if ((PL.Filter.FilterOutType == FilterType.AllowNone) || (PL.Filter.FilterOutType == FilterType.HidePackets))
+            {
+                PL.Filter.FilterOutType = FilterType.Off;
+            }
+            PL.Filter.FilterInType = FilterType.AllowNone;
+
+            var lastSync = CurrentSync;
+            PL.FilterFrom(PLLoaded);
+            FillListBox(lastSync);
+            CenterListBox();
+        }
+
+        private void PmPLResetFilter_Click(object sender, EventArgs e)
+        {
+            var PD = GetSelectedPacket();
+            if (PD == null)
+                return;
+
+            PL.Filter.Clear();
+            var lastSync = CurrentSync;
+            PL.FilterFrom(PLLoaded);
+            FillListBox(lastSync);
+            CenterListBox();
+        }
+
+        private void PmPLExport_Click(object sender, EventArgs e)
+        {
+            var PD = GetSelectedPacket();
+            if (PD == null)
+                return;
+
+            string exportName = "";
+            switch(PD.PacketLogType)
+            {
+                case PacketLogTypes.Incoming:
+                    exportName += "i";
+                    break;
+                case PacketLogTypes.Outgoing:
+                    exportName += "o";
+                    break;
+                default:
+                    exportName += "u";
+                    break;
+            }
+            exportName += PD.PacketID.ToString("X3");
+
+            using (var saveDlg = new SaveFileDialog())
+            {
+                saveDlg.FileName = exportName;
+                saveDlg.CheckPathExists = true;
+                if (saveDlg.ShowDialog() != DialogResult.OK)
+                    return;
+                exportName = saveDlg.FileName;
+            }
+
+            try
+            {
+                File.WriteAllBytes(exportName,PD.RawBytes.ToArray());
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Error saving raw packet " + exportName + "\r\nException: " + x.Message);
+            }
+
+        }
 
     }
 

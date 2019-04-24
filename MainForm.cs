@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using PacketViewerLogViewer.Packets;
 using System.IO;
+using PacketViewerLogViewer.ClipboardHelper;
 
 namespace PacketViewerLogViewer
 {
@@ -200,23 +201,24 @@ namespace PacketViewerLogViewer
 
         private void cbOriginalData_CheckedChanged(object sender, EventArgs e)
         {
-            if (!(tcPackets.SelectedTab is PacketTabPage))
+            PacketTabPage tp = GetCurrentPacketTabPage();
+            if (tp == null)
             {
                 rtInfo.SelectionColor = rtInfo.ForeColor;
                 rtInfo.SelectionBackColor = rtInfo.BackColor;
                 rtInfo.Text = "Please select open a list first";
                 return;
             }
-            PacketTabPage tp = (tcPackets.SelectedTab as PacketTabPage);
-            ListBox lb = tp.lbPackets ;
-            if ((lb.SelectedIndex < 0) || (lb.SelectedIndex >= tp.PL.Count()))
+
+            PacketData pd = tp.GetSelectedPacket();
+            if (pd == null)
             {
                 rtInfo.SelectionColor = rtInfo.ForeColor;
                 rtInfo.SelectionBackColor = rtInfo.BackColor;
                 rtInfo.Text = "Please select a valid item from the list";
                 return;
             }
-            PacketData pd = tp.PL.GetPacket(lb.SelectedIndex);
+
             UpdatePacketDetails(tp,pd, "-");
         }
 
@@ -844,5 +846,42 @@ namespace PacketViewerLogViewer
 
         }
 
+        private void BtnCopyRawSource_Click(object sender, EventArgs e)
+        {
+            PacketTabPage tp = GetCurrentPacketTabPage();
+            if (tp == null)
+            {
+                MessageBox.Show("No Packet List selected", "Copy", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            PacketData pd = tp.GetSelectedPacket();
+            if (pd == null)
+            {
+                MessageBox.Show("No Packet selected", "Copy", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string cliptext = "";
+            foreach(string s in pd.RawText)
+            {
+                // re-add the linefeeds
+                if (cliptext != string.Empty)
+                    cliptext += "\n";
+                cliptext += s;
+            }
+            try
+            {
+                // Because nothing is ever as simple as >.>
+                // Clipboard.SetText(s);
+                // Helper will (try to) prevent errors when copying to clipboard because of threading issues
+                var cliphelp = new SetClipboardHelper(DataFormats.Text, cliptext);
+                cliphelp.DontRetryWorkOnFailed = false;
+                cliphelp.Go();
+            }
+            catch
+            {
+            }
+        }
     }
 }

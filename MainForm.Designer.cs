@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,6 +84,7 @@
             this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.btnCopyRawSource = new System.Windows.Forms.Button();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -216,7 +217,7 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
             this.mmSearchSearch.Text = "Search ...";
             this.mmSearchSearch.Click += new System.EventHandler(this.MmSearchSearch_Click);
             // 
@@ -224,7 +225,7 @@
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
             this.mmSearchNext.Text = "Search next";
             this.mmSearchNext.Click += new System.EventHandler(this.MmSearchNext_Click);
             // 
@@ -244,7 +245,7 @@
             this.mmFilterApply.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MMFilterApplyItem});
             this.mmFilterApply.Name = "mmFilterApply";
-            this.mmFilterApply.Size = new System.Drawing.Size(106, 22);
+            this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
             this.mmFilterApply.Text = "Apply";
             this.mmFilterApply.DropDownOpening += new System.EventHandler(this.MmFilterApply_DropDownOpening);
             // 
@@ -257,19 +258,19 @@
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(103, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
             // 
             // mmFilterEdit
             // 
             this.mmFilterEdit.Name = "mmFilterEdit";
-            this.mmFilterEdit.Size = new System.Drawing.Size(106, 22);
+            this.mmFilterEdit.Size = new System.Drawing.Size(180, 22);
             this.mmFilterEdit.Text = "Edit ...";
             this.mmFilterEdit.Click += new System.EventHandler(this.MmFilterEdit_Click);
             // 
             // mmFilterReset
             // 
             this.mmFilterReset.Name = "mmFilterReset";
-            this.mmFilterReset.Size = new System.Drawing.Size(106, 22);
+            this.mmFilterReset.Size = new System.Drawing.Size(180, 22);
             this.mmFilterReset.Text = "Reset";
             this.mmFilterReset.Click += new System.EventHandler(this.MmFilterReset_Click);
             // 
@@ -389,7 +390,7 @@
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(332, 466);
+            this.lbPackets.Size = new System.Drawing.Size(334, 466);
             this.lbPackets.TabIndex = 0;
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
             // 
@@ -409,7 +410,7 @@
             this.pmPLEditParser,
             this.pmPLExportPacket});
             this.pmPacketList.Name = "pmPacketList";
-            this.pmPacketList.Size = new System.Drawing.Size(208, 226);
+            this.pmPacketList.Size = new System.Drawing.Size(208, 204);
             // 
             // pmPLShowPacketName
             // 
@@ -495,6 +496,7 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.btnCopyRawSource);
             this.splitContainer2.Panel2.Controls.Add(this.rtInfo);
             this.splitContainer2.Panel2.Controls.Add(this.cbOriginalData);
             this.splitContainer2.Size = new System.Drawing.Size(730, 487);
@@ -505,11 +507,11 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -575,6 +577,17 @@
             this.openLogFileDialog.Filter = "Log files|*.log;*.txt;*.sqlite|Packet Viewer Log Files|*.log|Packeteer Log Files|" +
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
+            // 
+            // btnCopyRawSource
+            // 
+            this.btnCopyRawSource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopyRawSource.Location = new System.Drawing.Point(598, 132);
+            this.btnCopyRawSource.Name = "btnCopyRawSource";
+            this.btnCopyRawSource.Size = new System.Drawing.Size(120, 21);
+            this.btnCopyRawSource.TabIndex = 3;
+            this.btnCopyRawSource.Text = "Copy Source";
+            this.btnCopyRawSource.UseVisualStyleBackColor = true;
+            this.btnCopyRawSource.Click += new System.EventHandler(this.BtnCopyRawSource_Click);
             // 
             // MainForm
             // 
@@ -667,6 +680,7 @@
         private System.Windows.Forms.ToolStripSeparator pmPLS4;
         private System.Windows.Forms.ToolStripMenuItem pmPLEditParser;
         private System.Windows.Forms.ToolStripMenuItem pmPLExportPacket;
+        private System.Windows.Forms.Button btnCopyRawSource;
     }
 }
 
