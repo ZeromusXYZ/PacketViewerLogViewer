@@ -146,6 +146,12 @@
     </Compile>
     <Compile Include="ClipboardHelper.cs" />
     <Compile Include="DataLookupDefs.cs" />
+    <Compile Include="ParseEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ParseEditorForm.Designer.cs">
+      <DependentUpon>ParseEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,6 +194,9 @@
     </Compile>
     <EmbeddedResource Include="AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ParseEditorForm.resx">
+      <DependentUpon>ParseEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>

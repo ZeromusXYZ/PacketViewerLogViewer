@@ -17,7 +17,7 @@ namespace PacketViewerLogViewer
 
     public partial class MainForm : Form
     {
-        public static Form thisMainForm ;
+        public static MainForm thisMainForm ;
 
         const string versionString = "0.1.0";
         string defaultTitle = "";
@@ -26,7 +26,7 @@ namespace PacketViewerLogViewer
 
         //PacketList PLLoaded; // File Loaded
         //PacketList PL; // Filtered File Data Displayed
-        PacketParser PP;
+        public PacketParser PP;
         // private UInt16 CurrentSync;
         SearchParameters searchParameters;
 
@@ -320,7 +320,7 @@ namespace PacketViewerLogViewer
             rtInfo.ReadOnly = true;
         }
 
-        private void UpdatePacketDetails(PacketTabPage tp, PacketData pd, string SwitchBlockName)
+        public void UpdatePacketDetails(PacketTabPage tp, PacketData pd, string SwitchBlockName, bool dontReloadParser = false)
         {
             if ((tp == null) || (pd == null))
                 return;
@@ -328,7 +328,12 @@ namespace PacketViewerLogViewer
             lInfo.Text = pd.OriginalHeaderText;
             rtInfo.Clear();
 
-            PP = new PacketParser(pd.PacketID, pd.PacketLogType);
+            if (dontReloadParser == false)
+            {
+                PP = new PacketParser(pd.PacketID, pd.PacketLogType);
+            }
+            if (PP == null)
+                return;
             PP.AssignPacket(pd);
             PP.ParseToDataGridView(dGV,SwitchBlockName);
             if (PP.SwitchBlocks.Count > 0)
@@ -531,7 +536,7 @@ namespace PacketViewerLogViewer
             return tp;
         }
 
-        private PacketTabPage GetCurrentPacketTabPage()
+        public PacketTabPage GetCurrentPacketTabPage()
         {
             if (!(tcPackets.SelectedTab is PacketTabPage))
             {
@@ -910,7 +915,10 @@ namespace PacketViewerLogViewer
             else
             {
                 // Open in-app editor
-                MessageBox.Show("Internal editor not implemented yet");
+                var editDlg = new ParseEditorForm();
+                editDlg.LoadFromFile(editFile);
+                editDlg.Show();
+                //MessageBox.Show("Internal editor not implemented yet");
             }
         }
 

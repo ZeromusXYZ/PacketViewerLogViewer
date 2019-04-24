@@ -663,7 +663,6 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.ComboBox cbShowBlock;
         private System.Windows.Forms.Label lInfo;
-        private System.Windows.Forms.DataGridView dGV;
         private System.Windows.Forms.CheckBox cbOriginalData;
         private System.Windows.Forms.OpenFileDialog openLogFileDialog;
         private System.Windows.Forms.ToolStripMenuItem mmFileClose;
@@ -686,6 +685,7 @@
         private System.Windows.Forms.ToolStripMenuItem pmPLEditParser;
         private System.Windows.Forms.ToolStripMenuItem pmPLExportPacket;
         private System.Windows.Forms.Button btnCopyRawSource;
+        public System.Windows.Forms.DataGridView dGV;
     }
 }
 

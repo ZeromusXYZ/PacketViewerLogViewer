@@ -1271,7 +1271,7 @@ namespace PacketViewerLogViewer.Packets
 
     } // End PacketList
 
-    class PacketTabPage: System.Windows.Forms.TabPage
+    public class PacketTabPage: System.Windows.Forms.TabPage
     {
         private MainForm ownerMainForm;
         public PacketList PLLoaded; // File Loaded
