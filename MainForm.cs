@@ -101,83 +101,6 @@ namespace PacketViewerLogViewer
             tp.FillListBox();
         }
 
-        /*
-        private void FillListBox(ListBox lb, PacketList pList, UInt16 GotTolastSync = 0)
-        {
-            int GotoIndex = -1;
-            Application.UseWaitCursor = true;
-            using (LoadingForm loadform = new LoadingForm(this))
-            {
-                try
-                {
-                    Random rand = new Random();
-                    if (rand.Next(100) >= 95)
-                    {
-                        switch (rand.Next(5))
-                        {
-                            case 0:
-                                loadform.Text = "That's a lot of data, please wait ...";
-                                break;
-                            case 1:
-                                loadform.Text = "Burning circles, please wait ...";
-                                break;
-                            case 2:
-                                loadform.Text = "I'm bored, please wait ...";
-                                break;
-                            case 3:
-                                loadform.Text = "Camping NM, please wait ...";
-                                break;
-                            default:
-                                loadform.Text = "Sacrificing Taru-Taru's, please wait ...";
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        loadform.Text = "Populating Listbox, please wait ...";
-                    }
-                    loadform.Show();
-                    loadform.pb.Minimum = 0;
-                    loadform.pb.Maximum = pList.Count();
-                    lb.Items.Clear();
-                    for (int i = 0; i < pList.Count(); i++)
-                    {
-                        PacketData pd = pList.GetPacket(i);
-                        switch (pd.PacketLogType)
-                        {
-                            case PacketLogTypes.Outgoing:
-                                lb.Items.Add("=> " + pd.HeaderText);
-                                break;
-                            case PacketLogTypes.Incoming:
-                                lb.Items.Add("<= " + pd.HeaderText);
-                                break;
-                            default:
-                                lb.Items.Add("?? " + pd.HeaderText);
-                                break;
-                        }
-                        if ((GotoIndex < 0) && (GotTolastSync > 0) && (pd.PacketSync == GotTolastSync))
-                        {
-                            GotoIndex = lb.Items.Count - 1;
-                        }
-                        loadform.pb.Value = i;
-                        if ((i % 50) == 0)
-                            loadform.pb.Refresh();
-                    }
-                    if (GotoIndex >= 0)
-                    {
-                        lb.SelectedIndex = GotoIndex;
-                    }
-                    loadform.Hide();
-                }
-                catch
-                {
-
-                }
-            }
-            Application.UseWaitCursor = false;
-        }
-        */
-
         public void lbPackets_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListBox lb = (sender as ListBox);
@@ -537,6 +460,7 @@ namespace PacketViewerLogViewer
             }
             if (res.Length > 15)
                 res = res.Substring(0, 13)+"...";
+            res += "  ";
             return res ;
         }
 
@@ -881,6 +805,80 @@ namespace PacketViewerLogViewer
             }
             catch
             {
+            }
+        }
+
+        private void TcPackets_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            // Source: https://social.technet.microsoft.com/wiki/contents/articles/50957.c-winform-tabcontrol-with-add-and-close-button.aspx
+            // Adapted to using resources and without the add button
+            try
+            {
+                TabControl tabControl = (sender as TabControl);
+                var tabPage = tabControl.TabPages[e.Index];
+                var tabRect = tabControl.GetTabRect(e.Index);
+                tabRect.Inflate(-2, -2);
+                var closeImage = Properties.Resources.close_icon;
+                if ((tabControl.Alignment == TabAlignment.Top) || (tabControl.Alignment == TabAlignment.Bottom))
+                {
+                    // for tabs at the top/bottom
+                    e.Graphics.DrawImage(closeImage,
+                        (tabRect.Right - closeImage.Width),
+                        tabRect.Top + (tabRect.Height - closeImage.Height) / 2);
+                    TextRenderer.DrawText(e.Graphics, tabPage.Text, tabPage.Font,
+                        tabRect, tabPage.ForeColor, TextFormatFlags.Left);
+                }
+                else 
+                if (tabControl.Alignment == TabAlignment.Left)
+                {
+                    // for tabs to the left
+                    e.Graphics.DrawImage(closeImage,
+                        tabRect.Left + (tabRect.Width - closeImage.Width) / 2,
+                        tabRect.Top);
+                    var tSize = e.Graphics.MeasureString(tabPage.Text, tabPage.Font);
+                    e.Graphics.TranslateTransform(tabRect.Width, tabRect.Bottom);
+                    e.Graphics.RotateTransform(-90);
+                    e.Graphics.DrawString(tabPage.Text, tabPage.Font, Brushes.Black, 0, -tabRect.Width - (tSize.Height / -4), StringFormat.GenericDefault);
+                }
+                else
+                {
+                    // If you want it on the right as well, you code it >.>
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        private void TcPackets_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Process MouseDown event only till (tabControl.TabPages.Count - 1) excluding the last TabPage
+            TabControl tabControl = (sender as TabControl);
+            for (var i = 0; i < tabControl.TabPages.Count; i++)
+            {
+                var tabRect = tabControl.GetTabRect(i);
+                tabRect.Inflate(-2, -2);
+                var closeImage = Properties.Resources.close_icon;
+                Rectangle imageRect;
+                if ((tabControl.Alignment == TabAlignment.Top) || (tabControl.Alignment == TabAlignment.Bottom))
+                {
+                    imageRect = new Rectangle(
+                        (tabRect.Right - closeImage.Width),
+                        tabRect.Top + (tabRect.Height - closeImage.Height) / 2,
+                        closeImage.Width,
+                        closeImage.Height);
+                }
+                else
+                {
+                    imageRect = new Rectangle(
+                        tabRect.Left + (tabRect.Width - closeImage.Width) / 2,
+                        tabRect.Top,
+                        closeImage.Width,
+                        closeImage.Height);
+                }
+                if (imageRect.Contains(e.Location))
+                {
+                    tabControl.TabPages.RemoveAt(i);
+                    break;
+                }
             }
         }
     }

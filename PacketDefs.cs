@@ -1299,6 +1299,7 @@ namespace PacketViewerLogViewer.Packets
         public PacketTabPage(Form mainForm)
         {
             ownerMainForm = mainForm;
+
             // Create base controls
             PLLoaded = new PacketList();
             PL = new PacketList();
@@ -1309,6 +1310,7 @@ namespace PacketViewerLogViewer.Packets
             lbPackets.Location = new System.Drawing.Point(0, 0);
             lbPackets.Size = new System.Drawing.Size(this.Width, this.Height);
             lbPackets.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lbPackets.Font = new Font("Consolas", 9); // Add fixedsized font (to override the tab page itself)
             lbPackets.DrawMode = DrawMode.OwnerDrawFixed;
             lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
             // Add the SelectedIndexChanged for this from MainForm/process creating it, as it's too complex to handle internally

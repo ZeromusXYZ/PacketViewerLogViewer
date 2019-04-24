@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,10 +81,10 @@
             this.dGV = new System.Windows.Forms.DataGridView();
             this.cbShowBlock = new System.Windows.Forms.ComboBox();
             this.lInfo = new System.Windows.Forms.Label();
+            this.btnCopyRawSource = new System.Windows.Forms.Button();
             this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.btnCopyRawSource = new System.Windows.Forms.Button();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -217,7 +217,7 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
             this.mmSearchSearch.Text = "Search ...";
             this.mmSearchSearch.Click += new System.EventHandler(this.MmSearchSearch_Click);
             // 
@@ -225,7 +225,7 @@
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
             this.mmSearchNext.Text = "Search next";
             this.mmSearchNext.Click += new System.EventHandler(this.MmSearchNext_Click);
             // 
@@ -245,7 +245,7 @@
             this.mmFilterApply.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MMFilterApplyItem});
             this.mmFilterApply.Name = "mmFilterApply";
-            this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterApply.Size = new System.Drawing.Size(106, 22);
             this.mmFilterApply.Text = "Apply";
             this.mmFilterApply.DropDownOpening += new System.EventHandler(this.MmFilterApply_DropDownOpening);
             // 
@@ -258,19 +258,19 @@
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(103, 6);
             // 
             // mmFilterEdit
             // 
             this.mmFilterEdit.Name = "mmFilterEdit";
-            this.mmFilterEdit.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterEdit.Size = new System.Drawing.Size(106, 22);
             this.mmFilterEdit.Text = "Edit ...";
             this.mmFilterEdit.Click += new System.EventHandler(this.MmFilterEdit_Click);
             // 
             // mmFilterReset
             // 
             this.mmFilterReset.Name = "mmFilterReset";
-            this.mmFilterReset.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterReset.Size = new System.Drawing.Size(106, 22);
             this.mmFilterReset.Text = "Reset";
             this.mmFilterReset.Click += new System.EventHandler(this.MmFilterReset_Click);
             // 
@@ -359,6 +359,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcPackets.Controls.Add(this.tpPackets1);
+            this.tcPackets.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.tcPackets.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tcPackets.HotTrack = true;
             this.tcPackets.Location = new System.Drawing.Point(0, 0);
             this.tcPackets.Multiline = true;
@@ -366,15 +368,17 @@
             this.tcPackets.SelectedIndex = 0;
             this.tcPackets.Size = new System.Drawing.Size(347, 484);
             this.tcPackets.TabIndex = 1;
+            this.tcPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TcPackets_DrawItem);
             this.tcPackets.SelectedIndexChanged += new System.EventHandler(this.TcPackets_SelectedIndexChanged);
+            this.tcPackets.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TcPackets_MouseDown);
             // 
             // tpPackets1
             // 
             this.tpPackets1.Controls.Add(this.lbPackets);
-            this.tpPackets1.Location = new System.Drawing.Point(25, 4);
+            this.tpPackets1.Location = new System.Drawing.Point(24, 4);
             this.tpPackets1.Name = "tpPackets1";
             this.tpPackets1.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPackets1.Size = new System.Drawing.Size(318, 476);
+            this.tpPackets1.Size = new System.Drawing.Size(319, 476);
             this.tpPackets1.TabIndex = 0;
             this.tpPackets1.Text = "Packets";
             this.tpPackets1.UseVisualStyleBackColor = true;
@@ -390,7 +394,7 @@
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(334, 466);
+            this.lbPackets.Size = new System.Drawing.Size(319, 480);
             this.lbPackets.TabIndex = 0;
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
             // 
@@ -507,11 +511,11 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle8;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -548,6 +552,17 @@
             this.lInfo.TabIndex = 0;
             this.lInfo.Text = "Info";
             // 
+            // btnCopyRawSource
+            // 
+            this.btnCopyRawSource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopyRawSource.Location = new System.Drawing.Point(598, 132);
+            this.btnCopyRawSource.Name = "btnCopyRawSource";
+            this.btnCopyRawSource.Size = new System.Drawing.Size(120, 21);
+            this.btnCopyRawSource.TabIndex = 3;
+            this.btnCopyRawSource.Text = "Copy Source";
+            this.btnCopyRawSource.UseVisualStyleBackColor = true;
+            this.btnCopyRawSource.Click += new System.EventHandler(this.BtnCopyRawSource_Click);
+            // 
             // rtInfo
             // 
             this.rtInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -577,17 +592,6 @@
             this.openLogFileDialog.Filter = "Log files|*.log;*.txt;*.sqlite|Packet Viewer Log Files|*.log|Packeteer Log Files|" +
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
-            // 
-            // btnCopyRawSource
-            // 
-            this.btnCopyRawSource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyRawSource.Location = new System.Drawing.Point(598, 132);
-            this.btnCopyRawSource.Name = "btnCopyRawSource";
-            this.btnCopyRawSource.Size = new System.Drawing.Size(120, 21);
-            this.btnCopyRawSource.TabIndex = 3;
-            this.btnCopyRawSource.Text = "Copy Source";
-            this.btnCopyRawSource.UseVisualStyleBackColor = true;
-            this.btnCopyRawSource.Click += new System.EventHandler(this.BtnCopyRawSource_Click);
             // 
             // MainForm
             // 

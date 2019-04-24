@@ -698,6 +698,8 @@
     <Content Include="parse\parserinfo.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Res\5657.close.png" />
+    <Content Include="Res\5700.add.png" />
     <Content Include="Res\ffxi-found-it!.ico" />
     <Content Include="lookup\roe.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
