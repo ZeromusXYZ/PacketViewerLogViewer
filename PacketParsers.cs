@@ -19,7 +19,7 @@ namespace PacketViewerLogViewer
         public Color FieldColor;
     }
 
-    class PacketParser
+    public class PacketParser
     {
         List<Color> DataColors = new List<Color>();
 
@@ -29,7 +29,7 @@ namespace PacketViewerLogViewer
         const int columnSize = 3;
         public UInt16 ThisPacketID { get; set; }
         PacketLogTypes ThisPacketLogType { get; set; }
-        List<string> RawParseData = new List<string>();
+        public List<string> RawParseData = new List<string>();
         public List<byte> ParsedBytes = new List<byte>();
         public List<ParsedViewLine> ParsedView = new List<ParsedViewLine>();
         public List<byte> SelectedFields = new List<byte>();

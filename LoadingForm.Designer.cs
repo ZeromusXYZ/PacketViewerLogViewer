@@ -40,11 +40,13 @@
             this.pb.Name = "pb";
             this.pb.Size = new System.Drawing.Size(360, 20);
             this.pb.TabIndex = 0;
+            this.pb.Value = 35;
             // 
             // LoadingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(384, 41);
             this.Controls.Add(this.pb);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

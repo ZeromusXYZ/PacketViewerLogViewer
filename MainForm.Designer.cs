@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
@@ -35,10 +36,12 @@
             this.mmFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileAppend = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAddFromClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.mmFilePasteNew = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileS1 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileS2 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.mmFileS3 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.mmSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mmSearchSearch = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,15 +64,27 @@
             this.tcPackets = new System.Windows.Forms.TabControl();
             this.tpPackets1 = new System.Windows.Forms.TabPage();
             this.lbPackets = new System.Windows.Forms.ListBox();
+            this.pmPacketList = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.pmPLShowPacketName = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLS1 = new System.Windows.Forms.ToolStripSeparator();
+            this.pmPLShowOnly = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLHideThis = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLS2 = new System.Windows.Forms.ToolStripSeparator();
+            this.pmPLShowOutOnly = new System.Windows.Forms.ToolStripMenuItem();
+            this.plPLShowInOnly = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLS3 = new System.Windows.Forms.ToolStripSeparator();
+            this.pmPLResetFilters = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLS4 = new System.Windows.Forms.ToolStripSeparator();
+            this.pmPLEditParser = new System.Windows.Forms.ToolStripMenuItem();
+            this.pmPLExportPacket = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dGV = new System.Windows.Forms.DataGridView();
             this.cbShowBlock = new System.Windows.Forms.ComboBox();
             this.lInfo = new System.Windows.Forms.Label();
+            this.btnCopyRawSource = new System.Windows.Forms.Button();
             this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.mmFileS3 = new System.Windows.Forms.ToolStripSeparator();
-            this.mmFilePasteNew = new System.Windows.Forms.ToolStripMenuItem();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -77,6 +92,7 @@
             this.splitContainer1.SuspendLayout();
             this.tcPackets.SuspendLayout();
             this.tpPackets1.SuspendLayout();
+            this.pmPacketList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -143,6 +159,13 @@
             this.mmAddFromClipboard.Text = "Add from clipboard";
             this.mmAddFromClipboard.Click += new System.EventHandler(this.MmAddFromClipboard_Click);
             // 
+            // mmFilePasteNew
+            // 
+            this.mmFilePasteNew.Name = "mmFilePasteNew";
+            this.mmFilePasteNew.Size = new System.Drawing.Size(247, 22);
+            this.mmFilePasteNew.Text = "New Tab from Clipboard";
+            this.mmFilePasteNew.Click += new System.EventHandler(this.MmFilePasteNew_Click);
+            // 
             // mmFileS1
             // 
             this.mmFileS1.Name = "mmFileS1";
@@ -168,6 +191,11 @@
             this.mmFileClose.Text = "Close";
             this.mmFileClose.Click += new System.EventHandler(this.mmFileClose_Click);
             // 
+            // mmFileS3
+            // 
+            this.mmFileS3.Name = "mmFileS3";
+            this.mmFileS3.Size = new System.Drawing.Size(244, 6);
+            // 
             // mmFileExit
             // 
             this.mmFileExit.Name = "mmFileExit";
@@ -189,7 +217,7 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
             this.mmSearchSearch.Text = "Search ...";
             this.mmSearchSearch.Click += new System.EventHandler(this.MmSearchSearch_Click);
             // 
@@ -197,7 +225,7 @@
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
             this.mmSearchNext.Text = "Search next";
             this.mmSearchNext.Click += new System.EventHandler(this.MmSearchNext_Click);
             // 
@@ -331,6 +359,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcPackets.Controls.Add(this.tpPackets1);
+            this.tcPackets.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.tcPackets.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tcPackets.HotTrack = true;
             this.tcPackets.Location = new System.Drawing.Point(0, 0);
             this.tcPackets.Multiline = true;
@@ -338,15 +368,17 @@
             this.tcPackets.SelectedIndex = 0;
             this.tcPackets.Size = new System.Drawing.Size(347, 484);
             this.tcPackets.TabIndex = 1;
+            this.tcPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TcPackets_DrawItem);
             this.tcPackets.SelectedIndexChanged += new System.EventHandler(this.TcPackets_SelectedIndexChanged);
+            this.tcPackets.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TcPackets_MouseDown);
             // 
             // tpPackets1
             // 
             this.tpPackets1.Controls.Add(this.lbPackets);
-            this.tpPackets1.Location = new System.Drawing.Point(25, 4);
+            this.tpPackets1.Location = new System.Drawing.Point(24, 4);
             this.tpPackets1.Name = "tpPackets1";
             this.tpPackets1.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPackets1.Size = new System.Drawing.Size(318, 476);
+            this.tpPackets1.Size = new System.Drawing.Size(319, 476);
             this.tpPackets1.TabIndex = 0;
             this.tpPackets1.Text = "Packets";
             this.tpPackets1.UseVisualStyleBackColor = true;
@@ -356,15 +388,101 @@
             this.lbPackets.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbPackets.ContextMenuStrip = this.pmPacketList;
             this.lbPackets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lbPackets.FormattingEnabled = true;
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(326, 466);
+            this.lbPackets.Size = new System.Drawing.Size(319, 480);
             this.lbPackets.TabIndex = 0;
-            this.lbPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbPackets_DrawItem);
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
+            // 
+            // pmPacketList
+            // 
+            this.pmPacketList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pmPLShowPacketName,
+            this.pmPLS1,
+            this.pmPLShowOnly,
+            this.pmPLHideThis,
+            this.pmPLS2,
+            this.pmPLShowOutOnly,
+            this.plPLShowInOnly,
+            this.pmPLS3,
+            this.pmPLResetFilters,
+            this.pmPLS4,
+            this.pmPLEditParser,
+            this.pmPLExportPacket});
+            this.pmPacketList.Name = "pmPacketList";
+            this.pmPacketList.Size = new System.Drawing.Size(208, 204);
+            // 
+            // pmPLShowPacketName
+            // 
+            this.pmPLShowPacketName.Name = "pmPLShowPacketName";
+            this.pmPLShowPacketName.Size = new System.Drawing.Size(207, 22);
+            this.pmPLShowPacketName.Text = "This packet type is";
+            // 
+            // pmPLS1
+            // 
+            this.pmPLS1.Name = "pmPLS1";
+            this.pmPLS1.Size = new System.Drawing.Size(204, 6);
+            // 
+            // pmPLShowOnly
+            // 
+            this.pmPLShowOnly.Name = "pmPLShowOnly";
+            this.pmPLShowOnly.Size = new System.Drawing.Size(207, 22);
+            this.pmPLShowOnly.Text = "Show only this type";
+            // 
+            // pmPLHideThis
+            // 
+            this.pmPLHideThis.Name = "pmPLHideThis";
+            this.pmPLHideThis.Size = new System.Drawing.Size(207, 22);
+            this.pmPLHideThis.Text = "Hide this type";
+            // 
+            // pmPLS2
+            // 
+            this.pmPLS2.Name = "pmPLS2";
+            this.pmPLS2.Size = new System.Drawing.Size(204, 6);
+            // 
+            // pmPLShowOutOnly
+            // 
+            this.pmPLShowOutOnly.Name = "pmPLShowOutOnly";
+            this.pmPLShowOutOnly.Size = new System.Drawing.Size(207, 22);
+            this.pmPLShowOutOnly.Text = "Show only Outgoing";
+            // 
+            // plPLShowInOnly
+            // 
+            this.plPLShowInOnly.Name = "plPLShowInOnly";
+            this.plPLShowInOnly.Size = new System.Drawing.Size(207, 22);
+            this.plPLShowInOnly.Text = "Show only Incoming";
+            // 
+            // pmPLS3
+            // 
+            this.pmPLS3.Name = "pmPLS3";
+            this.pmPLS3.Size = new System.Drawing.Size(204, 6);
+            // 
+            // pmPLResetFilters
+            // 
+            this.pmPLResetFilters.Name = "pmPLResetFilters";
+            this.pmPLResetFilters.Size = new System.Drawing.Size(207, 22);
+            this.pmPLResetFilters.Text = "Reset all filters";
+            // 
+            // pmPLS4
+            // 
+            this.pmPLS4.Name = "pmPLS4";
+            this.pmPLS4.Size = new System.Drawing.Size(204, 6);
+            // 
+            // pmPLEditParser
+            // 
+            this.pmPLEditParser.Name = "pmPLEditParser";
+            this.pmPLEditParser.Size = new System.Drawing.Size(207, 22);
+            this.pmPLEditParser.Text = "Edit parser for this packet";
+            // 
+            // pmPLExportPacket
+            // 
+            this.pmPLExportPacket.Name = "pmPLExportPacket";
+            this.pmPLExportPacket.Size = new System.Drawing.Size(207, 22);
+            this.pmPLExportPacket.Text = "Export packet";
             // 
             // splitContainer2
             // 
@@ -382,6 +500,7 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.btnCopyRawSource);
             this.splitContainer2.Panel2.Controls.Add(this.rtInfo);
             this.splitContainer2.Panel2.Controls.Add(this.cbOriginalData);
             this.splitContainer2.Size = new System.Drawing.Size(730, 487);
@@ -433,6 +552,17 @@
             this.lInfo.TabIndex = 0;
             this.lInfo.Text = "Info";
             // 
+            // btnCopyRawSource
+            // 
+            this.btnCopyRawSource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopyRawSource.Location = new System.Drawing.Point(598, 132);
+            this.btnCopyRawSource.Name = "btnCopyRawSource";
+            this.btnCopyRawSource.Size = new System.Drawing.Size(120, 21);
+            this.btnCopyRawSource.TabIndex = 3;
+            this.btnCopyRawSource.Text = "Copy Source";
+            this.btnCopyRawSource.UseVisualStyleBackColor = true;
+            this.btnCopyRawSource.Click += new System.EventHandler(this.BtnCopyRawSource_Click);
+            // 
             // rtInfo
             // 
             this.rtInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -443,6 +573,7 @@
             this.rtInfo.Size = new System.Drawing.Size(712, 125);
             this.rtInfo.TabIndex = 2;
             this.rtInfo.Text = resources.GetString("rtInfo.Text");
+            this.rtInfo.SelectionChanged += new System.EventHandler(this.RtInfo_SelectionChanged);
             // 
             // cbOriginalData
             // 
@@ -462,18 +593,6 @@
             this.openLogFileDialog.Filter = "Log files|*.log;*.txt;*.sqlite|Packet Viewer Log Files|*.log|Packeteer Log Files|" +
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
-            // 
-            // mmFileS3
-            // 
-            this.mmFileS3.Name = "mmFileS3";
-            this.mmFileS3.Size = new System.Drawing.Size(244, 6);
-            // 
-            // mmFilePasteNew
-            // 
-            this.mmFilePasteNew.Name = "mmFilePasteNew";
-            this.mmFilePasteNew.Size = new System.Drawing.Size(247, 22);
-            this.mmFilePasteNew.Text = "New Tab from Clipboard";
-            this.mmFilePasteNew.Click += new System.EventHandler(this.MmFileNew_Click);
             // 
             // MainForm
             // 
@@ -498,6 +617,7 @@
             this.splitContainer1.ResumeLayout(false);
             this.tcPackets.ResumeLayout(false);
             this.tpPackets1.ResumeLayout(false);
+            this.pmPacketList.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -543,7 +663,6 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.ComboBox cbShowBlock;
         private System.Windows.Forms.Label lInfo;
-        private System.Windows.Forms.DataGridView dGV;
         private System.Windows.Forms.CheckBox cbOriginalData;
         private System.Windows.Forms.OpenFileDialog openLogFileDialog;
         private System.Windows.Forms.ToolStripMenuItem mmFileClose;
@@ -552,6 +671,21 @@
         private System.Windows.Forms.TabPage tpPackets1;
         private System.Windows.Forms.ToolStripSeparator mmFileS3;
         private System.Windows.Forms.ToolStripMenuItem mmFilePasteNew;
+        private System.Windows.Forms.ContextMenuStrip pmPacketList;
+        private System.Windows.Forms.ToolStripMenuItem pmPLShowPacketName;
+        private System.Windows.Forms.ToolStripSeparator pmPLS1;
+        private System.Windows.Forms.ToolStripMenuItem pmPLShowOnly;
+        private System.Windows.Forms.ToolStripMenuItem pmPLHideThis;
+        private System.Windows.Forms.ToolStripSeparator pmPLS2;
+        private System.Windows.Forms.ToolStripMenuItem pmPLShowOutOnly;
+        private System.Windows.Forms.ToolStripMenuItem plPLShowInOnly;
+        private System.Windows.Forms.ToolStripSeparator pmPLS3;
+        private System.Windows.Forms.ToolStripMenuItem pmPLResetFilters;
+        private System.Windows.Forms.ToolStripSeparator pmPLS4;
+        private System.Windows.Forms.ToolStripMenuItem pmPLEditParser;
+        private System.Windows.Forms.ToolStripMenuItem pmPLExportPacket;
+        private System.Windows.Forms.Button btnCopyRawSource;
+        public System.Windows.Forms.DataGridView dGV;
     }
 }
 

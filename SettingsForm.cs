@@ -20,6 +20,7 @@ namespace PacketViewerLogViewer
         private void btnOK_Click(object sender, EventArgs e)
         {
             SaveButtonsIntoColorSettings();
+            Properties.Settings.Default.ExternalParseEditor = cbUseExternalEditor.Checked ;
             DialogResult = DialogResult.OK;
         }
 
@@ -31,6 +32,7 @@ namespace PacketViewerLogViewer
         private void SettingsForm_Load(object sender, EventArgs e)
         {
             LoadColorSettingsIntoButtons();
+            cbUseExternalEditor.Checked = Properties.Settings.Default.ExternalParseEditor;
         }
 
         private void LoadColorSettingsIntoButtons()
