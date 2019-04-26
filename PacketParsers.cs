@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
 using PacketViewerLogViewer.Packets;
+using Vanadiel.Time;
 
 namespace PacketViewerLogViewer
 {
@@ -229,16 +230,16 @@ namespace PacketViewerLogViewer
 
         private string UnixUInt32ToVanaTime(UInt32 v)
         {
-            const UInt64 VTIME_BASEDATE = 1009810800;
+            // const UInt64 VTIME_BASEDATE = 1009810800;
             // unix epoch - 1009810800 = se epoch (in earth seconds)
-            const UInt64 VTIME_YEAR = 518400; // 360 * GameDay
-            const UInt64 VTIME_MONTH = 43200; // 30 * GameDay
-            const UInt64 VTIME_WEEK = 11520; // 8 * GameDay
-            const UInt64 VTIME_DAY = 1440; // 24 hours * GameHour
-            const UInt64 VTIME_HOUR = 60; // 60 minutes
+            const UInt64 VTIME_YEAR  = 518400; // 360 * GameDay
+            const UInt64 VTIME_MONTH = 43200;  // 30 * GameDay
+            const UInt64 VTIME_WEEK  = 11520;  // 8 * GameDay
+            const UInt64 VTIME_DAY   = 1440;   // 24 hours * GameHour
+            const UInt64 VTIME_HOUR  = 60;     // 60 minutes
             const UInt64 VTIME_FIRSTYEAR = 886;
 
-            var VanaDate = v + VTIME_BASEDATE;
+            var VanaDate = v ;
             var vYear = VanaDate / VTIME_YEAR;
             var vMonth = ((VanaDate / VTIME_MONTH) % 12) + 1;
             var vDay = ((VanaDate / VTIME_DAY) % 30) + 1;
@@ -935,7 +936,7 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetUInt32AtPos(Offset);
                     AddDataField(Offset,4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, MSToString(d));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, MSToString(d) + " ("+d.ToString()+")");
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -943,7 +944,7 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetUInt32AtPos(Offset);
                     AddDataField(Offset,4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, FramesToString(d));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, FramesToString(d) + " (" + d.ToString() + ")");
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -951,7 +952,9 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetUInt32AtPos(Offset);
                     AddDataField(Offset,4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, UnixUInt32ToDateTime(d).ToString() + " => " + UnixUInt32ToVanaTime(d));
+                    var vt = new VanadielTime();
+                    vt.FromVanadielIntTime((int)d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, vt.LocalEarthTime.ToString("yyyy-MM-dd HH:mm:ss") + " ("+ d.ToString() +") => " + vt.ToString());
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else

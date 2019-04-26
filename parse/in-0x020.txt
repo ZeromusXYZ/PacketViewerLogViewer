@@ -9,18 +9,16 @@ byte;$10;Status
 data24;$11;ExtData
 data3;$29;_junk?
 
-switchblock;$12:0-8;Gardening-Mode;64
+switchblock;$12;Gardening-Mode;64
 
 [[Gardening-Mode]]
 byte;$11;Growth Stage
 byte;$12;Pot Status;Enabled
-data1;$12;Pot Status;Enabled
-info;$13;Crystal Types;0=NONE 1=unk 2=ICE 3=unk 4=unk 5=unk 6=unk 7=LIGHT 8=DARK
-bits:garden_crystals;$13:0-8;Crystal Fed 1
-bits:garden_crystals;$14:0-8;Crystal Fed 2
-bits:garden_seed;$15:0-8;Seed Type
-bit;$16:0;  Bit0;Examined
+byte:garden_crystals;$13;Crystal Fed 1
+byte:garden_crystals;$14;Crystal Fed 2
+byte:garden_seed;$15;Seed Type
+byte;$16;State?;
+bit;$16:0;  Bit0 - Examined;
 vanatime;$1D;Time Planted
-ms;$1D;Timestamp;
-ms;$21;Time offset?;
+vanatime;$21;Next Phase;
 [[]]
