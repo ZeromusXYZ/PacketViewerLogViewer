@@ -241,7 +241,7 @@ namespace PacketViewerLogViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ExternalParseEditor {
             get {
                 return ((bool)(this["ExternalParseEditor"]));

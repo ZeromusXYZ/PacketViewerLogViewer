@@ -30,6 +30,9 @@ namespace PacketViewerLogViewer
         // private UInt16 CurrentSync;
         SearchParameters searchParameters;
 
+        const string InfoGridHeader = "     |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F    | 0123456789ABCDEF\n" +
+                "-----+----------------------------------------------------  -+------------------\n";
+
         public MainForm()
         {
             InitializeComponent();
@@ -250,10 +253,10 @@ namespace PacketViewerLogViewer
                 }
             }
 
+            rtInfo.Enabled = false;
             rtInfo.Clear();
             SetColorGrid();
-            rtInfo.AppendText("     |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F    | 0123456789ABCDEF\r\n" + 
-                "-----+----------------------------------------------------  -+------------------\r\n");
+            rtInfo.AppendText(InfoGridHeader);
             int addCharCount = 0;
             byte lastFieldIndex = 0;
             for (int i = 0; i < pp.PD.RawBytes.Count; i += 0x10)
@@ -318,6 +321,7 @@ namespace PacketViewerLogViewer
                 rtInfo.AppendText("\r\n");
             }
             rtInfo.ReadOnly = true;
+            rtInfo.Enabled = true;
         }
 
         public void UpdatePacketDetails(PacketTabPage tp, PacketData pd, string SwitchBlockName, bool dontReloadParser = false)
@@ -924,13 +928,103 @@ namespace PacketViewerLogViewer
             }
         }
 
+        /*
+        private int InfoByteByPos(int pos,PacketParser pp)
+        {
+            string s = InfoGridHeader;
+            int addCharCount = 0;
+            for (int i = 0; i < pp.PD.RawBytes.Count; i += 0x10)
+            {
+                s += i.ToString("X").PadLeft(4, ' ') + " | " ;
+
+                for (int i2 = 0; i2 < 0x10; i2++)
+                {
+                    var thisByteStartPos = s.Length;
+
+                    if ((i + i2) < pp.ParsedBytes.Count)
+                    {
+                        s += "XX" ;
+                        addCharCount++;
+                    }
+                    else
+                    {
+                        s += "  " ;
+                    }
+
+                    s += " " ;
+                    if ((i2 % 0x4) == 0x3)
+                        s += " " ;
+
+                    var thisByteEndPos = s.Length;
+                    if ((pos >= thisByteStartPos) && (pos <= thisByteEndPos))
+                        return (i + i2);
+                }
+
+                if (addCharCount > 0)
+                {
+                    s += "  | " ;
+                    for (int c = 0; (c < 0x10) && ((i + c) < pp.ParsedBytes.Count); c++)
+                    {
+                        s += "Y" ;
+                    }
+                    addCharCount = 0;
+                }
+                s += "\n" ;
+            }
+
+            return -1 ;
+        }
+        */
+
         private void RtInfo_SelectionChanged(object sender, EventArgs e)
         {
+            /*
+            if ((rtInfo.Enabled == false) || (dGV.Enabled == false))
+                return;
+            // Doesn't work on original data as we can't predict it's layout
+            if (cbOriginalData.Checked == true)
+                return;
+            if (PP == null)
+                return;
+            // Get selection
             var firstPos = rtInfo.SelectionStart;
             var lastPos = rtInfo.SelectionStart + rtInfo.SelectionLength;
             if ((firstPos < 0) || (lastPos < firstPos))
                 return;
 
+            rtInfo.Enabled = false;
+            dGV.Enabled = false;
+            try
+            {
+                var firstSelected = InfoByteByPos(firstPos, PP);
+                var lastSelected = InfoByteByPos(lastPos, PP);
+                if ((firstSelected >= 0) && (lastSelected >= 0))
+                {
+                    List<int> selected = new List<int>();
+                    selected.Clear();
+                    for (int i = 0; i < PP.ParsedBytes.Count; i++)
+                    {
+                        if ((i >= firstSelected) && (i <= lastSelected))
+                            selected.Add(PP.ParsedBytes[i]);
+                    }
+
+                    for (int i = 0; i < PP.ParsedView.Count; i++)
+                    {
+                        var b = (selected.IndexOf(PP.ParsedView[i].FieldIndex) >= 0);
+                        dGV.Rows[i].Selected = b;
+                    }
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+            finally
+            {
+                dGV.Enabled = true;
+                rtInfo.Enabled = true;
+            }
+            */
         }
     }
 }

@@ -57,7 +57,7 @@
       <Value Profile="(Default)">White</Value>
     </Setting>
     <Setting Name="ExternalParseEditor" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
