@@ -80,6 +80,12 @@ namespace PacketViewerLogViewer.Packets
         public static bool TryFieldParse(string field, out int res)
         {
             bool result = false ;
+            bool isNegatice = field.StartsWith("-");
+            if (isNegatice)
+                field = field.TrimStart('-');
+            if (field.StartsWith("+"))
+                field = field.TrimStart('+');
+
             if (field.StartsWith("0x"))
             {
                 try
@@ -106,6 +112,19 @@ namespace PacketViewerLogViewer.Packets
                 }
             }
             else
+            if ( (field.EndsWith("h")) || (field.EndsWith("H")))
+            {
+                try
+                {
+                    res = int.Parse(field.Substring(0, field.Length - 2), NumberStyles.HexNumber);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            else
             {
                 try
                 {
@@ -117,6 +136,8 @@ namespace PacketViewerLogViewer.Packets
                     res = 0;
                 }
             }
+            if (isNegatice)
+                res *= -1;
             return result;
         }
 
@@ -126,11 +147,14 @@ namespace PacketViewerLogViewer.Packets
             bool isNegatice = field.StartsWith("-");
             if (isNegatice)
                 field = field.TrimStart('-');
+            if (field.StartsWith("+"))
+                field = field.TrimStart('+');
+
             if (field.StartsWith("0x"))
             {
                 try
                 {
-                    res = int.Parse(field.Substring(2, field.Length - 2), NumberStyles.HexNumber);
+                    res = long.Parse(field.Substring(2, field.Length - 2), NumberStyles.HexNumber);
                     result = true;
                 }
                 catch
@@ -143,7 +167,20 @@ namespace PacketViewerLogViewer.Packets
             {
                 try
                 {
-                    res = int.Parse(field.Substring(1, field.Length - 1), NumberStyles.HexNumber);
+                    res = long.Parse(field.Substring(1, field.Length - 1), NumberStyles.HexNumber);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            else
+            if ((field.EndsWith("h")) || (field.EndsWith("H")))
+            {
+                try
+                {
+                    res = long.Parse(field.Substring(0, field.Length - 2), NumberStyles.HexNumber);
                     result = true;
                 }
                 catch
@@ -155,7 +192,7 @@ namespace PacketViewerLogViewer.Packets
             {
                 try
                 {
-                    res = int.Parse(field);
+                    res = long.Parse(field);
                     result = true;
                 }
                 catch

@@ -18,7 +18,7 @@ type[:lookup];offset[;name[;description]]
 
 - type are some pre-defined types in the log viewer
 - offset is the byte-offset within the raw data (including the header)
-  This can be in decimal format or hex format (C or Pascal)  10 = 0xA = 0x0A = $A = $0A
+  This can be in decimal format or hex format (C or Pascal)  10 = 0xA = 0x0A = $A = $0A = Ah = 0Ah
 - name is what you want to show in the row header (optional, if ommited will display your type and offset instead)
 - description is not used at this time (might use this for flags in the future)
 - lookup is the name of the lookupfile to use for getting names of values, not all field types support this
@@ -87,6 +87,9 @@ description: more visually appealing way of displaying a uint32 that is used as 
 
 typename: frames
 description: more visually appealing way of displaying a uint32 that is used as a timestamp in frames (60 second)
+
+typename: vanatime
+description: more visually appealing way of displaying a int32 as Vanad'diel seconds that is used as a timestamp
 
 typename: bitflaglist  [:lookup]
 description: checks X amount of bits if they are set. Displays a line for every bit

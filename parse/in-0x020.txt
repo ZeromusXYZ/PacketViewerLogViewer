@@ -6,10 +6,9 @@ uint16:items;$0C;Item
 byte:containers;$0E;Bag
 byte;$0F;Index
 byte;$10;Status
-data24;$11;ExtData
-data3;$29;_junk?
 
 switchblock;$12;Gardening-Mode;64
+showblock;0;Default
 
 [[Gardening-Mode]]
 byte;$11;Growth Stage
@@ -21,4 +20,9 @@ byte;$16;State?;
 bit;$16:0;  Bit0 - Examined;
 vanatime;$1D;Time Planted
 vanatime;$21;Next Phase;
+[[]]
+
+[[Default]]
+data24;$11;ExtData
+data3;$29;_junk?
 [[]]

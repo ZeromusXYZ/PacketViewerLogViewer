@@ -772,10 +772,26 @@ namespace PacketViewerLogViewer
                             ActiveSwitchBlock = nameField;
                             AllowAutoSwitchBlock = false;
                             // Debug Info
-                            AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "Switch", "Activate Block: " + ActiveSwitchBlock);
+                            AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "SwitchBlock", "Activate Block: " + ActiveSwitchBlock);
                             LastSwitchedBlock = ActiveSwitchBlock;
                             continue;
                         }
+                    }
+                }
+                else
+                if (typeField == "showblock")
+                {
+                    // showblock;0;;blockname
+                    // Forcefull enable a switchblock if none is set yet
+                    if (AllowAutoSwitchBlock)
+                    {
+
+                        ActiveSwitchBlock = nameField;
+                        AllowAutoSwitchBlock = false;
+                        // Debug Info
+                        AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "ShowBlock", "Activate Block: " + ActiveSwitchBlock);
+                        LastSwitchedBlock = ActiveSwitchBlock;
+                        continue;
                     }
                 }
                 else
