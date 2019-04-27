@@ -279,7 +279,6 @@
             this.mmVideo.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmVideoOpenLink,
             this.mmVideoSaveLinkData});
-            this.mmVideo.Enabled = false;
             this.mmVideo.Name = "mmVideo";
             this.mmVideo.Size = new System.Drawing.Size(49, 20);
             this.mmVideo.Text = "Video";
@@ -289,6 +288,7 @@
             this.mmVideoOpenLink.Name = "mmVideoOpenLink";
             this.mmVideoOpenLink.Size = new System.Drawing.Size(183, 22);
             this.mmVideoOpenLink.Text = "Open video link ...";
+            this.mmVideoOpenLink.Click += new System.EventHandler(this.MmVideoOpenLink_Click);
             // 
             // mmVideoSaveLinkData
             // 

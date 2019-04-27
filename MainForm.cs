@@ -1026,5 +1026,12 @@ namespace PacketViewerLogViewer
             }
             */
         }
+
+        private void MmVideoOpenLink_Click(object sender, EventArgs e)
+        {
+            var videoLink = new VideoLinkForm();
+            videoLink.Show();
+            videoLink.BringToFront();
+        }
     }
 }
