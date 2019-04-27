@@ -336,6 +336,7 @@ namespace PacketViewerLogViewer
                 return;
             PP.AssignPacket(pd);
             PP.ParseToDataGridView(dGV,SwitchBlockName);
+            cbShowBlock.Enabled = false;
             if (PP.SwitchBlocks.Count > 0)
             {
                 cbShowBlock.Items.Clear();
@@ -364,6 +365,7 @@ namespace PacketViewerLogViewer
                     //break;
                 }
             }
+            cbShowBlock.Enabled = true;
 
             if (cbOriginalData.Checked)
             {
@@ -412,11 +414,11 @@ namespace PacketViewerLogViewer
             var sw = cbShowBlock.SelectedIndex;
             if (sw >= 0)
             {
-                UpdatePacketDetails(tp,pd, cbShowBlock.Items[sw].ToString());
+                UpdatePacketDetails(tp,pd, cbShowBlock.Items[sw].ToString(),true);
             }
             else
             {
-                UpdatePacketDetails(tp,pd, "-");
+                UpdatePacketDetails(tp,pd, "-",true);
             }
             cbShowBlock.Enabled = true;
             tp.lbPackets.Invalidate();

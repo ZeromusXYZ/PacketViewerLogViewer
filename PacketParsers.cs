@@ -524,6 +524,8 @@ namespace PacketViewerLogViewer
                 AddDataFieldEx(StartPos, FieldByteSize, ref DataFieldIndex);
             }
 
+            ParsedView.Clear();
+
             // Fixed Header Info, Always 4 bytes, always listed
             switch (PD.PacketLogType)
             {
