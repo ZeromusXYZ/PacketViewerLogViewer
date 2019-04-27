@@ -3,6 +3,7 @@ file;in-0x056;Quest/Mission Log;Updates your quest and mission log on zone and w
 uint32;$24;Type
 
 rem; these first 2 are actually 0x0100 and 0x0108, but as there is no overlap, I'm just going to use byte switches for the blocks
+rem; if need's be, we can always change this to a bits-wise check to cover more than one byte
 switchblock;$24;Current Coalition Quests;$00
 switchblock;$24;Completed Coalition Quests;$08
 switchblock;$24;Completed Campaign Missions;$30
@@ -30,6 +31,7 @@ switchblock;$24;Completed Abyssea Quests;$E8
 switchblock;$24;Current Adoulin Quests;$F0
 switchblock;$24;Completed Adoulin Quests;$F8
 switchblock;$24;Current Missions;$FF
+showblock;$24;Raw Data
 
 
 rem;0x0030
@@ -196,4 +198,6 @@ uint32;$20; Rhapsodies of Vana'diel
 [[]]
 
 rem;end of list
+[[Raw Data]]
 data32;$04;Raw Quest Flags
+[[]]

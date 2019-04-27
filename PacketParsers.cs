@@ -220,43 +220,18 @@ namespace PacketViewerLogViewer
             }
         }
 
-        private DateTime UnixUInt32ToDateTime(UInt32 v)
-        {
-            const UInt64 VTIME_BASEDATE = 1009810800;
-            DateTime res = new DateTime(1970, 1, 1);
-            res = res.AddSeconds(VTIME_BASEDATE + v);
-            return res;
-        }
-
-        private string UnixUInt32ToVanaTime(UInt32 v)
-        {
-            // const UInt64 VTIME_BASEDATE = 1009810800;
-            // unix epoch - 1009810800 = se epoch (in earth seconds)
-            const UInt64 VTIME_YEAR  = 518400; // 360 * GameDay
-            const UInt64 VTIME_MONTH = 43200;  // 30 * GameDay
-            const UInt64 VTIME_WEEK  = 11520;  // 8 * GameDay
-            const UInt64 VTIME_DAY   = 1440;   // 24 hours * GameHour
-            const UInt64 VTIME_HOUR  = 60;     // 60 minutes
-            const UInt64 VTIME_FIRSTYEAR = 886;
-
-            var VanaDate = v ;
-            var vYear = VanaDate / VTIME_YEAR;
-            var vMonth = ((VanaDate / VTIME_MONTH) % 12) + 1;
-            var vDay = ((VanaDate / VTIME_DAY) % 30) + 1;
-            var vDoW = (VanaDate % VTIME_WEEK) / VTIME_DAY ;
-            var vHour = (VanaDate % VTIME_DAY) / VTIME_HOUR ;
-            var vMinute = VanaDate % VTIME_HOUR ;
-
-            return VanaDoW((byte)vDoW) + " - " + (vYear + VTIME_FIRSTYEAR).ToString() + "/" +
-                vMonth.ToString("00") + "/" + vDay.ToString("00") + " - " + vHour.ToString("00") + ":" +
-                vMinute.ToString("00") + "  (0x" + v.ToString("X8") + " - " + v.ToString() + ")";
-        }
-
         private string Lookup(string lookupName,UInt64 value)
         {
             if (lookupName == string.Empty)
                 return "";
             return DataLookups.NLU(lookupName).GetValue(value) + " <= " ;
+        }
+
+        private string Lookup(string lookupName, UInt64 value, string evalString)
+        {
+            if (lookupName == string.Empty)
+                return "";
+            return DataLookups.NLU(lookupName,evalString).GetValue(value) + " <= ";
         }
 
         public void ToGridView(DataGridView DGV)
@@ -638,6 +613,7 @@ namespace PacketViewerLogViewer
                 string nameField = "";
                 string descriptionField = "";
                 string lookupField = "";
+                string lookupOffsetEvalString = "";
                 int lookupFieldOffset = 0;
                 if (fields.Length > 2)
                 {
@@ -670,7 +646,8 @@ namespace PacketViewerLogViewer
                     lookupField = lookupFields[1];
                     if (lookupFields.Length > 2)
                     {
-                        if (DataLookups.TryFieldParse(lookupFields[2], out int lookupoffsetres))
+                        lookupOffsetEvalString = lookupFields[2];
+                        if (DataLookups.TryFieldParse(lookupOffsetEvalString, out int lookupoffsetres))
                             lookupFieldOffset = lookupoffsetres;
                     }
                 }
@@ -812,7 +789,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "byte")
                 {
                     var d = PD.GetByteAtPos(Offset);
-                    var l = Lookup(lookupField,(UInt64)(d + lookupFieldOffset));
+                    var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
                     AddDataField(Offset,1);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " - 0x" + d.ToString("X2") + " - " + ByteToBits(d) + " - '" + (char)d + "'");
                     MarkParsed(Offset, 1, DataFieldIndex);
@@ -829,7 +806,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "bits")
                 {
                     var d = PD.GetBitsAtPos(Offset, SubOffset, SubOffsetRange);
-                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
+                    var l = Lookup(lookupField, (UInt64)(d),lookupOffsetEvalString);
                     var firstbit = (Offset * 8) + SubOffset;
                     var lastbit = firstbit + SubOffsetRange;
                     var firstbyte = firstbit / 8;
@@ -843,7 +820,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "uint16")
                 {
                     var d = PD.GetUInt16AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
+                    var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
                     AddDataField(Offset,2);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")");
                     MarkParsed(Offset, 2, DataFieldIndex);
@@ -852,7 +829,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "int16")
                 {
                     var d = PD.GetInt16AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
+                    var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
                     AddDataField(Offset,2);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")");
                     MarkParsed(Offset, 2, DataFieldIndex);
@@ -861,7 +838,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "uint32")
                 {
                     var d = PD.GetUInt32AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
+                    var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
                     AddDataField(Offset,4);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")");
                     MarkParsed(Offset, 4, DataFieldIndex);
@@ -870,7 +847,7 @@ namespace PacketViewerLogViewer
                 if (typeField == "int32")
                 {
                     var d = PD.GetInt32AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)(d + lookupFieldOffset));
+                    var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
                     AddDataField(Offset,4);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")");
                     MarkParsed(Offset, 4, DataFieldIndex);

@@ -23,7 +23,11 @@ type[:lookup];offset[;name[;description]]
 - description is not used at this time (might use this for flags in the future)
 - lookup is the name of the lookupfile to use for getting names of values, not all field types support this
 
-currently supported types:
+
+--------------------------------
+About Fields
+--------------------------------
+currently supported field types:
 
 typename: file , rem , comment
 description: nothing at all
@@ -114,6 +118,49 @@ description: Shows info about incomming packet 0x028 (has no color coding)
   depending on conditional bit flags (would be too complex to script)
   Does nothing if it's not used in the correct packet parser
 
-
 If there is unused byte data left in the packet, the log viewer will generate a list of the bytes at the end of all parsed fields.
 It will try to generate either uint32's or byte's depending on the unused size.
+
+
+--------------------------------
+About Blocks
+--------------------------------
+You can mark a parse block using double brackets [[ name ]]
+A block is closed by making a empty named block like [[]]
+Blocks are usefull for multi-purpose packets that have some kind of flag inside of them
+to indicates what that packet is for. It is usefull to change the parse format
+depending on what type the packet is for. A good example would be packet in-0x063 "Set Update"
+that can contain a lot of different information.
+You will need to use switchblock or showblock to enable the fields inside a block.
+switchblock can be evaluated as a value simular to the "byte" or "bits" fields
+
+Syntax:
+switchblock;offsettocompare;blocknametoswitch;ValueToCompareAgainst
+showblock;unused;blocknametoswitch
+[[blocknametoswitch]]
+...
+[[]]
+
+Example:
+
+	switchblock;0x10:0-4;My Info;7
+	showblock;0;Default
+
+	[[My Info]]
+	uint32;0x11;My Value
+	...
+	[[]]
+
+	[[Default]]
+	data15;0x11;Raw Data
+	[[]]
+
+Result if byte 0x10 is 0x27
+	0x11 | My Value | "some uint32 value"
+
+Result if byte 0x10 is 0x31
+	0x11 | Raw Data | "array of 15 bytes as hex"
+
+If you would remove showblock and the brackets for the Default block, 
+you would always show the Raw Data example field, 
+and also the My Value field if the My Info switchblock is triggered

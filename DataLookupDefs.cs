@@ -20,7 +20,7 @@ namespace PacketViewerLogViewer.Packets
     {
         public Dictionary<UInt64, DataLookupEntry> data = new Dictionary<UInt64, DataLookupEntry>();
 
-        public string GetValue(UInt64 ID)
+        public virtual string GetValue(UInt64 ID)
         {
             DataLookupEntry res;
             if (data.TryGetValue(ID, out res))
@@ -28,12 +28,30 @@ namespace PacketViewerLogViewer.Packets
             return "";
         }
 
-        public string GetExtra(UInt64 ID)
+        public virtual string GetExtra(UInt64 ID)
         {
             DataLookupEntry res;
             if (data.TryGetValue(ID, out res))
                 return res.Extra;
             return "";
+        }
+    }
+
+    public class DataLookupListSpecialMath : DataLookupList
+    {
+        public string EvalString { get; set; }
+
+        public override string GetValue(UInt64 ID)
+        {
+            try
+            {
+                var s = EvalString.Replace("?", ID.ToString());
+                return DataLookups.EvalUInt64(s).ToString();
+            }
+            catch
+            {
+                return "MATH-ERROR" ;
+            }
         }
     }
 
@@ -66,6 +84,7 @@ namespace PacketViewerLogViewer.Packets
 
         public static DataLookupList NullList = new DataLookupList();
         public static DataLookupEntry NullEntry = new DataLookupEntry();
+        public static DataLookupListSpecialMath MathList = new DataLookupListSpecialMath();
 
         // lookupname, id, lookupresult
         static public Dictionary<string, DataLookupList> LookupLists = new Dictionary<string, DataLookupList>();
@@ -116,7 +135,7 @@ namespace PacketViewerLogViewer.Packets
             {
                 try
                 {
-                    res = int.Parse(field.Substring(0, field.Length - 2), NumberStyles.HexNumber);
+                    res = int.Parse(field.Substring(0, field.Length - 1), NumberStyles.HexNumber);
                     result = true;
                 }
                 catch
@@ -180,7 +199,7 @@ namespace PacketViewerLogViewer.Packets
             {
                 try
                 {
-                    res = long.Parse(field.Substring(0, field.Length - 2), NumberStyles.HexNumber);
+                    res = long.Parse(field.Substring(0, field.Length - 1), NumberStyles.HexNumber);
                     result = true;
                 }
                 catch
@@ -235,6 +254,19 @@ namespace PacketViewerLogViewer.Packets
                 }
             }
             else
+            if ((field.EndsWith("h")) || (field.EndsWith("H")))
+            {
+                try
+                {
+                    res = UInt64.Parse(field.Substring(0, field.Length - 1), NumberStyles.HexNumber);
+                    result = true;
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            else
             {
                 try
                 {
@@ -249,7 +281,17 @@ namespace PacketViewerLogViewer.Packets
             return result;
         }
 
+        static public Double EvalDouble(String expression)
+        {
+            System.Data.DataTable table = new System.Data.DataTable();
+            return Convert.ToDouble(table.Compute(expression, string.Empty));
+        }
 
+        static public UInt64 EvalUInt64(String expression)
+        {
+            System.Data.DataTable table = new System.Data.DataTable();
+            return Convert.ToUInt64(table.Compute(expression, string.Empty));
+        }
 
         static void LoadLookupFile(string fileName)
         {
@@ -294,11 +336,21 @@ namespace PacketViewerLogViewer.Packets
             }
         }
 
-        public static DataLookupList NLU(string lookupName)
+        public static DataLookupList NLU(string lookupName,string LookupOffsetString = "")
         {
-            DataLookupList res;
-            if (LookupLists.TryGetValue(lookupName, out res))
-                return res;
+            if ((LookupOffsetString != string.Empty) && (lookupName.ToLower() == "@math"))
+            {
+                if (LookupOffsetString.IndexOf("?") < 0)
+                    LookupOffsetString = "? " + LookupOffsetString;
+                MathList.EvalString = LookupOffsetString;
+                return MathList;
+            }
+            else
+            {
+                DataLookupList res;
+                if (LookupLists.TryGetValue(lookupName, out res))
+                    return res;
+            }
             return NullList;
         }
 
