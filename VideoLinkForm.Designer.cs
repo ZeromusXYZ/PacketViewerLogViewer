@@ -34,7 +34,6 @@
             this.btnPlay = new System.Windows.Forms.Button();
             this.tb = new System.Windows.Forms.TrackBar();
             this.lVideoPosition = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.media)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tb)).BeginInit();
             this.SuspendLayout();
@@ -111,24 +110,11 @@
             this.lVideoPosition.Text = "Time";
             this.lVideoPosition.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.DimGray;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Yellow;
-            this.label1.Location = new System.Drawing.Point(41, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 25);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "label1";
-            // 
             // VideoLinkForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 411);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.lVideoPosition);
             this.Controls.Add(this.tb);
             this.Controls.Add(this.btnPlay);
@@ -153,6 +139,5 @@
         private System.Windows.Forms.TrackBar tb;
         private System.Windows.Forms.Label lVideoPosition;
         public Vlc.DotNet.Forms.VlcControl media;
-        private System.Windows.Forms.Label label1;
     }
 }

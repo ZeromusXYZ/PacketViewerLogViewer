@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using PacketViewerLogViewer.Packets;
+using PacketViewerLogViewer.YoutubeVideoHelper;
 using Microsoft.Win32;
 
 namespace PacketViewerLogViewer
@@ -116,7 +117,7 @@ namespace PacketViewerLogViewer
                 long vOffset = 0;
 
                 string[] sl = File.ReadAllLines(LinkFileName);
-                foreach(string s in sl)
+                foreach (string s in sl)
                 {
                     var fields = s.Split(';');
                     if (fields.Length < 2)
@@ -140,11 +141,32 @@ namespace PacketViewerLogViewer
 
                 videoOffset = TimeSpan.FromMilliseconds(vOffset);
 
-                media.SetMedia(new Uri("file://" + vFile));
+                if (File.Exists(vFile))
+                {
+                    media.SetMedia(new Uri("file://" + vFile));
+                }
+                else
+                if ( (vFile.ToLower().StartsWith("http")) && (vFile.ToLower().IndexOf("youtube.com") >= 0) )
+                {
+                    // Experimental youtube support
+                    var videos = YoutubeHelper.GetVideoURLs(vFile);
+                    if (videos.Count > 0)
+                        media.SetMedia(new Uri(videos[0]));
+                    else
+                        vFile = "";
+                }
+                else
+                {
+                    vFile = "";
+                }
                 LinkVideoFileName = vFile;
-                media.VlcMediaPlayer.Play();
-                media.VlcMediaPlayer.Pause();
-                media.VlcMediaPlayer.NextFrame();
+                if (vFile != string.Empty)
+                {
+
+                    media.VlcMediaPlayer.Play();
+                    media.VlcMediaPlayer.Pause();
+                    media.VlcMediaPlayer.NextFrame();
+                }
             }
             catch
             {
