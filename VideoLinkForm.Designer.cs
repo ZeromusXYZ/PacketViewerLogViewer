@@ -32,8 +32,11 @@
             this.btnOpen = new System.Windows.Forms.Button();
             this.openVideoDlg = new System.Windows.Forms.OpenFileDialog();
             this.btnPlay = new System.Windows.Forms.Button();
-            this.btnPause = new System.Windows.Forms.Button();
+            this.tb = new System.Windows.Forms.TrackBar();
+            this.lVideoPosition = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.media)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tb)).BeginInit();
             this.SuspendLayout();
             // 
             // media
@@ -41,21 +44,26 @@
             this.media.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.media.BackColor = System.Drawing.Color.Black;
+            this.media.BackColor = System.Drawing.Color.DimGray;
+            this.media.ForeColor = System.Drawing.Color.Black;
             this.media.Location = new System.Drawing.Point(12, 12);
             this.media.Name = "media";
-            this.media.Size = new System.Drawing.Size(680, 358);
+            this.media.Size = new System.Drawing.Size(560, 314);
             this.media.Spu = -1;
             this.media.TabIndex = 0;
-            this.media.Text = "vlcControl1";
+            this.media.Text = "Video";
             this.media.VlcLibDirectory = null;
             this.media.VlcMediaplayerOptions = null;
             this.media.VlcLibDirectoryNeeded += new System.EventHandler<Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs>(this.Media_VlcLibDirectoryNeeded);
+            this.media.LengthChanged += new System.EventHandler<Vlc.DotNet.Core.VlcMediaPlayerLengthChangedEventArgs>(this.Media_LengthChanged);
+            this.media.Paused += new System.EventHandler<Vlc.DotNet.Core.VlcMediaPlayerPausedEventArgs>(this.Media_Paused);
+            this.media.Playing += new System.EventHandler<Vlc.DotNet.Core.VlcMediaPlayerPlayingEventArgs>(this.Media_Playing);
+            this.media.PositionChanged += new System.EventHandler<Vlc.DotNet.Core.VlcMediaPlayerPositionChangedEventArgs>(this.Media_PositionChanged);
             // 
             // btnOpen
             // 
             this.btnOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOpen.Location = new System.Drawing.Point(12, 376);
+            this.btnOpen.Location = new System.Drawing.Point(12, 332);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 1;
@@ -71,7 +79,7 @@
             // btnPlay
             // 
             this.btnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPlay.Location = new System.Drawing.Point(93, 376);
+            this.btnPlay.Location = new System.Drawing.Point(93, 332);
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(75, 23);
             this.btnPlay.TabIndex = 2;
@@ -79,39 +87,72 @@
             this.btnPlay.UseVisualStyleBackColor = true;
             this.btnPlay.Click += new System.EventHandler(this.BtnPlay_Click);
             // 
-            // btnPause
+            // tb
             // 
-            this.btnPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPause.Location = new System.Drawing.Point(174, 376);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(75, 23);
-            this.btnPause.TabIndex = 3;
-            this.btnPause.Text = "Pause | |";
-            this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.BtnPause_Click);
+            this.tb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb.LargeChange = 60000;
+            this.tb.Location = new System.Drawing.Point(12, 361);
+            this.tb.Name = "tb";
+            this.tb.Size = new System.Drawing.Size(560, 45);
+            this.tb.SmallChange = 5000;
+            this.tb.TabIndex = 4;
+            this.tb.TickFrequency = 10000;
+            this.tb.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.tb.Scroll += new System.EventHandler(this.Tb_Scroll);
+            // 
+            // lVideoPosition
+            // 
+            this.lVideoPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lVideoPosition.Location = new System.Drawing.Point(280, 337);
+            this.lVideoPosition.Name = "lVideoPosition";
+            this.lVideoPosition.Size = new System.Drawing.Size(292, 18);
+            this.lVideoPosition.TabIndex = 5;
+            this.lVideoPosition.Text = "Time";
+            this.lVideoPosition.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.DimGray;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Yellow;
+            this.label1.Location = new System.Drawing.Point(41, 32);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(70, 25);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "label1";
             // 
             // VideoLinkForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 411);
-            this.Controls.Add(this.btnPause);
+            this.ClientSize = new System.Drawing.Size(584, 411);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lVideoPosition);
+            this.Controls.Add(this.tb);
             this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.media);
             this.Name = "VideoLinkForm";
             this.Text = "VideoLinkForm";
+            this.Deactivate += new System.EventHandler(this.VideoLinkForm_Deactivate);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VideoLinkForm_FormClosing);
+            this.Load += new System.EventHandler(this.VideoLinkForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.media)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tb)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private Vlc.DotNet.Forms.VlcControl media;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.OpenFileDialog openVideoDlg;
         private System.Windows.Forms.Button btnPlay;
-        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.TrackBar tb;
+        private System.Windows.Forms.Label lVideoPosition;
+        public Vlc.DotNet.Forms.VlcControl media;
+        private System.Windows.Forms.Label label1;
     }
 }

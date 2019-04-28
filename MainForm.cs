@@ -122,6 +122,10 @@ namespace PacketViewerLogViewer
             UpdatePacketDetails(tp,pd, "-");
             cbShowBlock.Enabled = true;
             lb.Invalidate();
+            if (tp.videoLink != null)
+            {
+                tp.videoLink.MoveToDateTime(pd.VirtualTimeStamp);
+            }
         }
 
 
@@ -1029,9 +1033,36 @@ namespace PacketViewerLogViewer
 
         private void MmVideoOpenLink_Click(object sender, EventArgs e)
         {
-            var videoLink = new VideoLinkForm();
-            videoLink.Show();
-            videoLink.BringToFront();
+            if (VideoLinkForm.GetVLCLibPath() == string.Empty)
+            {
+                MessageBox.Show("VideoLAN VLC needs to be installed on your PC to use the video linking feature", "libvlc not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            VideoLinkForm videoLink = null ;
+            try
+            {
+                PacketTabPage thisTP = GetCurrentPacketTabPage();
+                if ((thisTP != null) && (thisTP.videoLink != null))
+                {
+                    // MessageBox.Show("You already have a video link open for this packet", "Video Link Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    thisTP.videoLink.BringToFront();
+                    return;
+                }
+                // Create our virtualtime stamps now
+                if (thisTP != null)
+                    thisTP.PL.BuildVirtualTimeStamps();
+                videoLink = new VideoLinkForm();
+                videoLink.sourceTP = thisTP;
+                videoLink.Show();
+                videoLink.BringToFront();
+            }
+            catch (Exception x)
+            {
+                if (videoLink != null)
+                    videoLink.Dispose();
+                MessageBox.Show("Could not create video link, likely libvlc not correcty installed !\r\n"+x.Message, "Video Link Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
     }
 }

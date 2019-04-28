@@ -836,11 +836,13 @@ namespace PacketViewerLogViewer.Packets
         protected List<PacketData> PacketDataList { get; set; }
 
         public PacketListFilter Filter ;
+        public DateTime firstPacketTime;
 
         public PacketList()
         {
             PacketDataList = new List<PacketData>();
             Filter = new PacketListFilter();
+            firstPacketTime = new DateTime(0);
         }
 
         ~PacketList()
@@ -852,12 +854,14 @@ namespace PacketViewerLogViewer.Packets
         public void Clear()
         {
             PacketDataList.Clear();
+            firstPacketTime = new DateTime(0);
         }
 
         public bool LoadFromFile(string fileName)
         {
             if (!File.Exists(fileName))
                 return false;
+
             PacketLogTypes packetType = PacketLogTypes.Unknown;
             PacketLogFileFormats logType = PacketLogFileFormats.Unknown;
             var fn = fileName.ToLower();
@@ -1067,6 +1071,8 @@ namespace PacketViewerLogViewer.Packets
                     return false;
                 }
             }
+            if (PacketDataList.Count > 0)
+                firstPacketTime = PacketDataList[0].TimeStamp;
             Application.UseWaitCursor = false;
             return true;
         }
@@ -1140,8 +1146,9 @@ namespace PacketViewerLogViewer.Packets
                     return false;
                 }
             }
+            if (PacketDataList.Count > 0)
+                firstPacketTime = PacketDataList[0].TimeStamp;
             return true;
-
         }
 
         public int Count()
@@ -1168,6 +1175,8 @@ namespace PacketViewerLogViewer.Packets
                 PacketDataList.Add(pd);
                 c++;
             }
+            if (PacketDataList.Count > 0)
+                firstPacketTime = PacketDataList[0].TimeStamp;
             return c;
         }
 
@@ -1208,6 +1217,8 @@ namespace PacketViewerLogViewer.Packets
                     c++;
                 }
             }
+            if (PacketDataList.Count > 0)
+                firstPacketTime = PacketDataList[0].TimeStamp;
             return c;
         }
 
@@ -1223,9 +1234,33 @@ namespace PacketViewerLogViewer.Packets
                     c++;
                 }
             }
+            if (PacketDataList.Count > 0)
+                firstPacketTime = PacketDataList[0].TimeStamp;
             return c;
         }
 
+        public int FindPacketIndexByDateTime(DateTime dt,int searchStartLocation = 0)
+        {
+            if (PacketDataList.Count <= 0)
+                return -1;
+            int i = searchStartLocation ;
+            if ((i < 0) || (i >= PacketDataList.Count))
+                i = 0;
+            var lastCheckTime = PacketDataList[i].VirtualTimeStamp;
+            for(int c = 0;c < PacketDataList.Count; c++)
+            {
+                if ((dt > lastCheckTime) && (dt <= PacketDataList[i].VirtualTimeStamp))
+                //if (dt <= PacketDataList[i].VirtualTimeStamp)
+                   return i;
+
+                // Next
+                lastCheckTime = PacketDataList[i].VirtualTimeStamp;
+                i++;
+                if (i >= PacketDataList.Count)
+                    i = 0;
+            }
+            return -1;
+        }
 
         public void BuildVirtualTimeStamps()
         {
@@ -1234,7 +1269,7 @@ namespace PacketViewerLogViewer.Packets
                 return;
 
             int i = 0;
-            float divider = 0.0f;
+            int divider = 0 ;
             DateTime FirstOfGroupTime = GetPacket(0).TimeStamp;
             int FirstOfGroupIndex = 0;
             DateTime LastTimeStamp = FirstOfGroupTime;
@@ -1242,18 +1277,23 @@ namespace PacketViewerLogViewer.Packets
             while (i < PacketDataList.Count)
             {
                 PacketData thisPacket = GetPacket(i);
+                thisPacket.VirtualTimeStamp = thisPacket.TimeStamp;
                 if (thisPacket.TimeStamp == LastTimeStamp)
                 {
                     // Same packet Group
-                    divider += 1.0f;
+                    divider++;
                 }
-                if ((thisPacket.TimeStamp != LastTimeStamp) || (i >= PacketDataList.Count))
+                if ( ((thisPacket.TimeStamp != LastTimeStamp) || (i >= PacketDataList.Count)) )
                 {
                     // Last packet of the group
-                    for(int n = 1; n < (divider - 1); n++)
+                    TimeSpan oneStepTime = TimeSpan.Zero;
+                    if (divider > 0)
+                        oneStepTime = TimeSpan.FromMilliseconds(1000 / divider);
+                    TimeSpan stepTime = oneStepTime;
+                    for (int n = 0; n <= divider; n++)
                     {
-                        TimeSpan stepTime = new TimeSpan(0, 0, 0, 0, (1000 / (int)Math.Round(divider * n)));
                         GetPacket(FirstOfGroupIndex + n).VirtualTimeStamp = FirstOfGroupTime + stepTime;
+                        stepTime += oneStepTime ;
                     }
 
                     if (i < (PacketDataList.Count - 1))
@@ -1261,6 +1301,7 @@ namespace PacketViewerLogViewer.Packets
                         // If not the last one
                         FirstOfGroupIndex = i + 1;
                         FirstOfGroupTime = GetPacket(i + 1).TimeStamp;
+                        divider = 0;
                     }
                 }
                 LastTimeStamp = thisPacket.TimeStamp;
@@ -1279,6 +1320,7 @@ namespace PacketViewerLogViewer.Packets
         // public PacketParser PP;
         public UInt16 CurrentSync;
         public string LoadedFileTitle ;
+        public VideoLinkForm videoLink ;
 
         public ListBox lbPackets;
         // Popup Menu Controls
@@ -1304,6 +1346,7 @@ namespace PacketViewerLogViewer.Packets
             PLLoaded = new PacketList();
             PL = new PacketList();
             lbPackets = new ListBox();
+            videoLink = null;
 
             // Set ListBox Position
             lbPackets.Parent = this;
