@@ -209,7 +209,7 @@
     <Compile Include="VideoLinkForm.Designer.cs">
       <DependentUpon>VideoLinkForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="YoutubeHelper.cs" />
+    <Compile Include="PVLVHelper.cs" />
     <EmbeddedResource Include="AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </EmbeddedResource>

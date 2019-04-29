@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using PacketViewerLogViewer.Packets;
-using PacketViewerLogViewer.YoutubeVideoHelper;
+using PacketViewerLogViewer.PVLVHelper;
 using Microsoft.Win32;
 
 namespace PacketViewerLogViewer
@@ -69,11 +69,13 @@ namespace PacketViewerLogViewer
         {
             if (openVideoDlg.ShowDialog() != DialogResult.OK)
                 return;
-            media.SetMedia(new Uri("file://" + openVideoDlg.FileName));
-            LinkVideoFileName = openVideoDlg.FileName;
-            media.VlcMediaPlayer.Play();
-            media.VlcMediaPlayer.Pause();
-            media.VlcMediaPlayer.NextFrame();
+            if (LoadVideoFromLocalFile(openVideoDlg.FileName))
+            {
+                LinkVideoFileName = openVideoDlg.FileName;
+                media.VlcMediaPlayer.Play();
+                media.VlcMediaPlayer.Pause();
+                media.VlcMediaPlayer.NextFrame();
+            }
         }
 
         private void BtnPlay_Click(object sender, EventArgs e)
@@ -103,8 +105,37 @@ namespace PacketViewerLogViewer
             Text = "Video - " + sourceTP.LoadedFileTitle;
             sourceTP.videoLink = this;
             LoadVideoLinkFile();
-
             
+        }
+
+        public bool LoadVideoFromLocalFile(string filename)
+        {
+            media.SetMedia(new Uri("file://" + filename));
+            return true;
+        }
+
+        public bool LoadVideoFromYoutube(string URL)
+        {
+            try
+            {
+                // Experimental youtube support
+                var videos = YoutubeHelper.GetVideoURLs(URL);
+                /*
+                cbVideoStreams.Items.Clear();
+                foreach (YoutubeHelperVideoLink l in videos)
+                {
+                    cbVideoStreams.Items.Add(l.QualityName);
+                }
+                */
+                if (videos.Count <= 0)
+                    return false;
+                media.SetMedia(new Uri(videos[0].VideoURL));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool LoadVideoLinkFile()
@@ -156,19 +187,39 @@ namespace PacketViewerLogViewer
 
                 videoOffset = TimeSpan.FromMilliseconds(vOffset);
 
+                // If a file is provided, try to expand it to it's full path
+                if (vFile != string.Empty)
+                {
+                    if (!File.Exists(vFile))
+                    {
+                        var s = Path.GetFullPath(vFile);
+                        if (File.Exists(s))
+                        {
+                            vFile = s;
+                        }
+                        else
+                        {
+                            s = Path.GetFullPath(Path.GetDirectoryName(LinkFileName) + Path.DirectorySeparatorChar + vFile);
+                            if (File.Exists(s))
+                            {
+                                vFile = s;
+                            }
+                        }
+                    }
+                }
+
+                    
+
                 if (File.Exists(vFile))
                 {
-                    media.SetMedia(new Uri("file://" + vFile));
+                    if (!LoadVideoFromLocalFile(vFile))
+                        vFile = string.Empty;
                 }
                 else
-                if ( (vYT.ToLower().StartsWith("http")) && (vYT.ToLower().IndexOf("youtube.com") >= 0) )
+                if ((vYT.ToLower().StartsWith("http://")) || (vYT.ToLower().StartsWith("https://")))
                 {
-                    // Experimental youtube support
-                    var videos = YoutubeHelper.GetVideoURLs(vYT);
-                    if (videos.Count > 0)
-                        media.SetMedia(new Uri(videos[0]));
-                    else
-                        vYT = "";
+                    if (!LoadVideoFromYoutube(vYT))
+                        vYT = string.Empty;
                 }
                 else
                 {
@@ -192,7 +243,9 @@ namespace PacketViewerLogViewer
                 LinkYoutubeURL = string.Empty;
             }
 
-
+            eYoutubeURL.Text = LinkYoutubeURL;
+            if (LinkYoutubeURL != string.Empty)
+                eYoutubeURL.ReadOnly = true;
 
             return true;
         }
@@ -202,13 +255,16 @@ namespace PacketViewerLogViewer
             //if ((LinkFileName == string.Empty) || (LinkVideoFileName == string.Empty))
             //    return false;
 
+            string relVideo = string.Empty ;
+            if ((LinkFileName != string.Empty) && (LinkVideoFileName != string.Empty))
+                relVideo = Helper.MakeRelative(Path.GetDirectoryName(LinkFileName), LinkVideoFileName);
             try
             {
                 List<string> sl = new List<string>();
                 sl.Add("rem;PacketViewerLogViewer Video Link File");
-                sl.Add("video;" + LinkVideoFileName);
+                sl.Add("video;" + relVideo);
                 sl.Add("youtube;" + LinkYoutubeURL);
-                sl.Add("offset;" + videoOffset.ToString());
+                sl.Add("offset;" + videoOffset.TotalMilliseconds.ToString());
                 File.WriteAllLines(LinkFileName, sl);
                 return true;
             }
@@ -225,6 +281,14 @@ namespace PacketViewerLogViewer
             {
                 sourceTP.videoLink = null;
                 sourceTP = null;
+            }
+            try
+            {
+                media.Stop();
+            }
+            catch
+            {
+
             }
         }
 
@@ -339,9 +403,19 @@ namespace PacketViewerLogViewer
             catch { }
         }
 
-        private void BtnSave_Click(object sender, EventArgs e)
+        private void BtnTestYT_Click(object sender, EventArgs e)
         {
-            SaveVideoLinkFile();
+            Application.UseWaitCursor = true;
+            var s = eYoutubeURL.Text;
+            if (LoadVideoFromYoutube(s))
+            {
+                LinkYoutubeURL = s;
+            }
+            else
+            {
+                MessageBox.Show("Link does not seem valid, or could not access the page.", "Test Youtube Link", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            Application.UseWaitCursor = false;
         }
     }
 }
