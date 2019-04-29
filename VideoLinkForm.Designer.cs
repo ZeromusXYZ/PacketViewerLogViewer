@@ -34,6 +34,7 @@
             this.btnPlay = new System.Windows.Forms.Button();
             this.tb = new System.Windows.Forms.TrackBar();
             this.lVideoPosition = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.media)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tb)).BeginInit();
             this.SuspendLayout();
@@ -110,11 +111,23 @@
             this.lVideoPosition.Text = "Time";
             this.lVideoPosition.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSave.Location = new System.Drawing.Point(199, 332);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 6;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            // 
             // VideoLinkForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 411);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.lVideoPosition);
             this.Controls.Add(this.tb);
             this.Controls.Add(this.btnPlay);
@@ -139,5 +152,6 @@
         private System.Windows.Forms.TrackBar tb;
         private System.Windows.Forms.Label lVideoPosition;
         public Vlc.DotNet.Forms.VlcControl media;
+        private System.Windows.Forms.Button btnSave;
     }
 }

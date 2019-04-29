@@ -19,6 +19,7 @@ namespace PacketViewerLogViewer
         public PacketTabPage sourceTP { get; set; }
         private string LinkFileName;
         private string LinkVideoFileName;
+        private string LinkYoutubeURL;
         private bool blockPositionUpdates = false;
         private TimeSpan videoOffset = TimeSpan.Zero;
         // TODO: check if the offset actually works and a way to set it
@@ -114,9 +115,18 @@ namespace PacketViewerLogViewer
             try
             {
                 string vFile = string.Empty;
+                string vYT = string.Empty;
                 long vOffset = 0;
 
-                string[] sl = File.ReadAllLines(LinkFileName);
+                string[] sl;
+                if (File.Exists(LinkFileName))
+                {
+                    sl = File.ReadAllLines(LinkFileName);
+                }
+                else
+                {
+                    sl = new string[0];
+                }
                 foreach (string s in sl)
                 {
                     var fields = s.Split(';');
@@ -125,6 +135,11 @@ namespace PacketViewerLogViewer
                     if (fields[0].ToLower() == "video")
                     {
                         vFile = fields[1];
+                    }
+                    else
+                    if (fields[0].ToLower() == "youtube")
+                    {
+                        vYT = fields[1];
                     }
                     else
                     if (fields[0].ToLower() == "offset")
@@ -146,21 +161,23 @@ namespace PacketViewerLogViewer
                     media.SetMedia(new Uri("file://" + vFile));
                 }
                 else
-                if ( (vFile.ToLower().StartsWith("http")) && (vFile.ToLower().IndexOf("youtube.com") >= 0) )
+                if ( (vYT.ToLower().StartsWith("http")) && (vYT.ToLower().IndexOf("youtube.com") >= 0) )
                 {
                     // Experimental youtube support
-                    var videos = YoutubeHelper.GetVideoURLs(vFile);
+                    var videos = YoutubeHelper.GetVideoURLs(vYT);
                     if (videos.Count > 0)
                         media.SetMedia(new Uri(videos[0]));
                     else
-                        vFile = "";
+                        vYT = "";
                 }
                 else
                 {
                     vFile = "";
+                    vYT = "";
                 }
                 LinkVideoFileName = vFile;
-                if (vFile != string.Empty)
+                LinkYoutubeURL = vYT;
+                if ((vFile != string.Empty) || (vYT != string.Empty))
                 {
 
                     media.VlcMediaPlayer.Play();
@@ -172,6 +189,7 @@ namespace PacketViewerLogViewer
             {
                 LinkFileName = string.Empty;
                 LinkVideoFileName = string.Empty;
+                LinkYoutubeURL = string.Empty;
             }
 
 
@@ -181,17 +199,15 @@ namespace PacketViewerLogViewer
 
         public bool SaveVideoLinkFile()
         {
-            if ((LinkFileName == string.Empty) || (LinkVideoFileName == string.Empty))
-                return false;
-
-            if (!File.Exists(LinkVideoFileName))
-                return false;
+            //if ((LinkFileName == string.Empty) || (LinkVideoFileName == string.Empty))
+            //    return false;
 
             try
             {
                 List<string> sl = new List<string>();
                 sl.Add("rem;PacketViewerLogViewer Video Link File");
                 sl.Add("video;" + LinkVideoFileName);
+                sl.Add("youtube;" + LinkYoutubeURL);
                 sl.Add("offset;" + videoOffset.ToString());
                 File.WriteAllLines(LinkFileName, sl);
                 return true;
@@ -321,6 +337,11 @@ namespace PacketViewerLogViewer
                 });
             }
             catch { }
+        }
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            SaveVideoLinkFile();
         }
     }
 }
