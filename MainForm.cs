@@ -17,7 +17,7 @@ namespace PacketViewerLogViewer
 
     public partial class MainForm : Form
     {
-        public static MainForm thisMainForm ;
+        public static MainForm thisMainForm;
 
         const string versionString = "0.1.0";
         string defaultTitle = "";
@@ -33,7 +33,9 @@ namespace PacketViewerLogViewer
         const string InfoGridHeader = "     |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F    | 0123456789ABCDEF\n" +
                 "-----+----------------------------------------------------  -+------------------\n";
 
-        public MainForm()
+        private List<string> ExpectedLogFileRoots = new List<string>() { "packetviewer", "logs", "packetdb", "wireshark", "packeteer" };
+
+    public MainForm()
         {
             InitializeComponent();
             thisMainForm = this;
@@ -88,6 +90,7 @@ namespace PacketViewerLogViewer
                 return;
 
             PacketTabPage tp = CreateNewPacketsTabPage();
+            tp.ProjectFolder = MakeProjectDirectoryLogFileName(openLogFileDialog.FileName);
             tp.Text = MakeTabName(openLogFileDialog.FileName);
 
             tp.PLLoaded.Clear();
@@ -102,6 +105,11 @@ namespace PacketViewerLogViewer
             tp.LoadedFileTitle = openLogFileDialog.FileName;
             tp.PL.CopyFrom(tp.PLLoaded);
             tp.FillListBox();
+            UpdateStatusBarAndTitle(tp);
+            if ( Properties.Settings.Default.AutoOpenVideoForm && (File.Exists(Path.ChangeExtension(tp.LoadedFileTitle,".pvlvvl"))) )
+            {
+                MmVideoOpenLink_Click(null, null);
+            }
         }
 
         public void lbPackets_SelectedIndexChanged(object sender, EventArgs e)
@@ -177,6 +185,7 @@ namespace PacketViewerLogViewer
             PacketTabPage tp = GetCurrentOrNewPacketTabPage();
             tp.Text = "Multi";
             tp.LoadedFileTitle = "Multiple Sources";
+            tp.ProjectFolder = string.Empty;
 
             if (!tp.PLLoaded.LoadFromFile(openLogFileDialog.FileName))
             {
@@ -187,6 +196,7 @@ namespace PacketViewerLogViewer
             Text = defaultTitle + " - " + tp.LoadedFileTitle;
             tp.PL.CopyFrom(tp.PLLoaded);
             tp.FillListBox();
+            UpdateStatusBarAndTitle(tp);
         }
 
         private void RawDataToRichText(PacketParser pp, RichTextBox rt)
@@ -457,10 +467,12 @@ namespace PacketViewerLogViewer
             string res ;
             string fn = System.IO.Path.GetFileNameWithoutExtension(filename);
             string fnl = fn.ToLower();
-            if ((fnl == "full") || (fnl == "incoming") || (fnl == "outgoing"))
+            string fel = System.IO.Path.GetExtension(filename).ToLower();
+            if ((fnl == "full") || (fnl == "incoming") || (fnl == "outgoing") || (fel == ".sqlite"))
             {
                 string ldir = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename)).ToLower();
-                if ((ldir == "packetviewer") || (ldir == "logs"))
+                if (ExpectedLogFileRoots.IndexOf(ldir) >= 0)
+                //if ((ldir == "packetviewer") || (ldir == "logs") || (ldir == "packetdb") || (ldir == "wireshark") || (ldir == "packeteer"))
                 {
                     res = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(filename)));
                 }
@@ -473,19 +485,83 @@ namespace PacketViewerLogViewer
             {
                 res = fn;
             }
-            if (res.Length > 15)
-                res = res.Substring(0, 13)+"...";
+            if (res.Length > 20)
+                res = res.Substring(0, 16)+"...";
             res += "  ";
             return res ;
+        }
+
+        private string MakeProjectDirectoryLogFileName(string filename)
+        {
+            string res ;
+            string fnl = System.IO.Path.GetFileNameWithoutExtension(filename).ToLower();
+            string fel = System.IO.Path.GetExtension(filename).ToLower();
+            if ((fnl == "full") || (fnl == "incoming") || (fnl == "outgoing") || (fel == ".sqlite"))
+            {
+                string ldir = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename)).ToLower();
+                // Expected "root" folders of where logs might be stored
+                if (ExpectedLogFileRoots.IndexOf(ldir) >= 0)
+                // if ((ldir == "packetviewer") || (ldir == "logs") || (ldir == "packetdb") || (ldir == "wireshark") || (ldir == "packeteer"))
+                {
+                    res = System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(filename));
+                }
+                else
+                {
+                    res = System.IO.Path.GetDirectoryName(filename);
+                }
+            }
+            else
+            {
+                res = System.IO.Path.GetDirectoryName(filename);
+            }
+
+            if (!res.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                res += Path.DirectorySeparatorChar;
+
+            return res;
+        }
+
+        public void UpdateStatusBarAndTitle(PacketTabPage tp)
+        {
+            if (tp == null)
+            {
+                sbProjectInfo.Text = "Not a project";
+                sbExtraInfo.Text = "";
+                return;
+            }
+
+            Text = defaultTitle + " - " + tp.LoadedFileTitle;
+            if (tp.ProjectFolder != string.Empty)
+                sbProjectInfo.Text = "Project Folder: " + tp.ProjectFolder;
+            else
+                sbProjectInfo.Text = "Not a project";
+
+            if (tp.videoLink != null)
+            {
+                if (File.Exists(tp.videoLink.LinkVideoFileName))
+                    sbExtraInfo.Text = "Video Linked";
+                else
+                if (tp.videoLink.LinkYoutubeURL != string.Empty)
+                    sbExtraInfo.Text = "Youtube Linked";
+                else
+                    sbExtraInfo.Text = "Video Link Unused";
+            }
+            else
+            {
+                sbExtraInfo.Text = "";
+            }
         }
 
         private void TcPackets_SelectedIndexChanged(object sender, EventArgs e)
         {
             TabControl tc = (sender as TabControl);
             if (!(tc.SelectedTab is PacketTabPage))
+            {
+                UpdateStatusBarAndTitle(null);
                 return;
+            }
             PacketTabPage tp = (tc.SelectedTab as PacketTabPage);
-            Text = defaultTitle + " - " + tp.LoadedFileTitle ;
+            UpdateStatusBarAndTitle(tp);
             PacketData pd = tp.PL.GetPacket(tp.lbPackets.SelectedIndex);
             cbShowBlock.Enabled = false;
             UpdatePacketDetails(tp, pd, "-");
@@ -508,6 +584,7 @@ namespace PacketViewerLogViewer
 
                 tp.Text = "Clipboard";
                 tp.LoadedFileTitle = "Paste from Clipboard";
+                tp.ProjectFolder = string.Empty;
 
                 if (!tp.PLLoaded.LoadFromStringList(clipText, PacketLogFileFormats.Unknown, PacketLogTypes.Unknown))
                 {
@@ -518,6 +595,7 @@ namespace PacketViewerLogViewer
                 Text = defaultTitle + " - " + tp.LoadedFileTitle;
                 tp.PL.CopyFrom(tp.PLLoaded);
                 tp.FillListBox();
+                UpdateStatusBarAndTitle(tp);
             }
             catch (Exception x)
             {
@@ -747,6 +825,7 @@ namespace PacketViewerLogViewer
                 newtp.PL.CopyFrom(newtp.PLLoaded);
                 newtp.FillListBox();
             }
+            UpdateStatusBarAndTitle(newtp);
         }
 
         private void MmFilePasteNew_Click(object sender, EventArgs e)
@@ -762,6 +841,7 @@ namespace PacketViewerLogViewer
                 PacketTabPage tp = CreateNewPacketsTabPage();
                 tp.Text = "Clipboard";
                 tp.LoadedFileTitle = "Paste from Clipboard";
+                tp.ProjectFolder = string.Empty;
                 tcPackets.SelectedTab = tp;
 
                 var cText = Clipboard.GetText().Replace("\r", "");
@@ -777,6 +857,7 @@ namespace PacketViewerLogViewer
                 Text = defaultTitle + " - " + tp.LoadedFileTitle;
                 tp.PL.CopyFrom(tp.PLLoaded);
                 tp.FillListBox();
+                UpdateStatusBarAndTitle(tp);
             }
             catch (Exception x)
             {
@@ -1055,6 +1136,7 @@ namespace PacketViewerLogViewer
                 videoLink.sourceTP = thisTP;
                 videoLink.Show();
                 videoLink.BringToFront();
+                UpdateStatusBarAndTitle(thisTP);
             }
             catch (Exception x)
             {

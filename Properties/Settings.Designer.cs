@@ -250,5 +250,29 @@ namespace PacketViewerLogViewer.Properties {
                 this["ExternalParseEditor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int AutoLoadVideo {
+            get {
+                return ((int)(this["AutoLoadVideo"]));
+            }
+            set {
+                this["AutoLoadVideo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoOpenVideoForm {
+            get {
+                return ((bool)(this["AutoOpenVideoForm"]));
+            }
+            set {
+                this["AutoOpenVideoForm"] = value;
+            }
+        }
     }
 }

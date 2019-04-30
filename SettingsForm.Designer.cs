@@ -62,13 +62,19 @@
             this.btnSelectedFontUNK = new System.Windows.Forms.Button();
             this.btnDefault = new System.Windows.Forms.Button();
             this.cbUseExternalEditor = new System.Windows.Forms.CheckBox();
+            this.gbAutoLoadVideo = new System.Windows.Forms.GroupBox();
+            this.cbAutoOpenVideoForm = new System.Windows.Forms.CheckBox();
+            this.rbAutoLoadVideoYoutube = new System.Windows.Forms.RadioButton();
+            this.rbAutoLoadVideoLocalOnly = new System.Windows.Forms.RadioButton();
+            this.rbAutoLoadVideoNever = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
+            this.gbAutoLoadVideo.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 244);
+            this.btnOK.Location = new System.Drawing.Point(12, 263);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -78,8 +84,9 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(93, 244);
+            this.btnCancel.Location = new System.Drawing.Point(93, 263);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -451,7 +458,8 @@
             // 
             // btnDefault
             // 
-            this.btnDefault.Location = new System.Drawing.Point(190, 244);
+            this.btnDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnDefault.Location = new System.Drawing.Point(190, 263);
             this.btnDefault.Name = "btnDefault";
             this.btnDefault.Size = new System.Drawing.Size(75, 23);
             this.btnDefault.TabIndex = 11;
@@ -462,12 +470,74 @@
             // cbUseExternalEditor
             // 
             this.cbUseExternalEditor.AutoSize = true;
-            this.cbUseExternalEditor.Location = new System.Drawing.Point(12, 166);
+            this.cbUseExternalEditor.Location = new System.Drawing.Point(18, 166);
             this.cbUseExternalEditor.Name = "cbUseExternalEditor";
             this.cbUseExternalEditor.Size = new System.Drawing.Size(276, 17);
             this.cbUseExternalEditor.TabIndex = 12;
             this.cbUseExternalEditor.Text = "Use Default External Text Editor for editing parse files";
             this.cbUseExternalEditor.UseVisualStyleBackColor = true;
+            // 
+            // gbAutoLoadVideo
+            // 
+            this.gbAutoLoadVideo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbAutoLoadVideo.Controls.Add(this.cbAutoOpenVideoForm);
+            this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoYoutube);
+            this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoLocalOnly);
+            this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoNever);
+            this.gbAutoLoadVideo.Location = new System.Drawing.Point(12, 189);
+            this.gbAutoLoadVideo.Name = "gbAutoLoadVideo";
+            this.gbAutoLoadVideo.Size = new System.Drawing.Size(544, 49);
+            this.gbAutoLoadVideo.TabIndex = 13;
+            this.gbAutoLoadVideo.TabStop = false;
+            this.gbAutoLoadVideo.Text = "Auto-Load Video";
+            // 
+            // cbAutoOpenVideoForm
+            // 
+            this.cbAutoOpenVideoForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAutoOpenVideoForm.AutoSize = true;
+            this.cbAutoOpenVideoForm.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbAutoOpenVideoForm.Checked = true;
+            this.cbAutoOpenVideoForm.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbAutoOpenVideoForm.Location = new System.Drawing.Point(357, 20);
+            this.cbAutoOpenVideoForm.Name = "cbAutoOpenVideoForm";
+            this.cbAutoOpenVideoForm.Size = new System.Drawing.Size(181, 17);
+            this.cbAutoOpenVideoForm.TabIndex = 3;
+            this.cbAutoOpenVideoForm.Text = "Auto-open video window on load";
+            this.cbAutoOpenVideoForm.UseVisualStyleBackColor = true;
+            // 
+            // rbAutoLoadVideoYoutube
+            // 
+            this.rbAutoLoadVideoYoutube.AutoSize = true;
+            this.rbAutoLoadVideoYoutube.Location = new System.Drawing.Point(184, 19);
+            this.rbAutoLoadVideoYoutube.Name = "rbAutoLoadVideoYoutube";
+            this.rbAutoLoadVideoYoutube.Size = new System.Drawing.Size(126, 17);
+            this.rbAutoLoadVideoYoutube.TabIndex = 2;
+            this.rbAutoLoadVideoYoutube.Text = "also for Youtube links";
+            this.rbAutoLoadVideoYoutube.UseVisualStyleBackColor = true;
+            // 
+            // rbAutoLoadVideoLocalOnly
+            // 
+            this.rbAutoLoadVideoLocalOnly.AutoSize = true;
+            this.rbAutoLoadVideoLocalOnly.Checked = true;
+            this.rbAutoLoadVideoLocalOnly.Location = new System.Drawing.Point(66, 20);
+            this.rbAutoLoadVideoLocalOnly.Name = "rbAutoLoadVideoLocalOnly";
+            this.rbAutoLoadVideoLocalOnly.Size = new System.Drawing.Size(112, 17);
+            this.rbAutoLoadVideoLocalOnly.TabIndex = 1;
+            this.rbAutoLoadVideoLocalOnly.TabStop = true;
+            this.rbAutoLoadVideoLocalOnly.Text = "for Local Files only";
+            this.rbAutoLoadVideoLocalOnly.UseVisualStyleBackColor = true;
+            // 
+            // rbAutoLoadVideoNever
+            // 
+            this.rbAutoLoadVideoNever.AutoSize = true;
+            this.rbAutoLoadVideoNever.Location = new System.Drawing.Point(6, 19);
+            this.rbAutoLoadVideoNever.Name = "rbAutoLoadVideoNever";
+            this.rbAutoLoadVideoNever.Size = new System.Drawing.Size(54, 17);
+            this.rbAutoLoadVideoNever.TabIndex = 0;
+            this.rbAutoLoadVideoNever.Text = "Never";
+            this.rbAutoLoadVideoNever.UseVisualStyleBackColor = true;
+            this.rbAutoLoadVideoNever.CheckedChanged += new System.EventHandler(this.RbAutoLoadVideoNever_CheckedChanged);
             // 
             // SettingsForm
             // 
@@ -475,8 +545,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(568, 279);
+            this.ClientSize = new System.Drawing.Size(568, 298);
             this.ControlBox = false;
+            this.Controls.Add(this.gbAutoLoadVideo);
             this.Controls.Add(this.cbUseExternalEditor);
             this.Controls.Add(this.btnDefault);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -492,6 +563,8 @@
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.gbAutoLoadVideo.ResumeLayout(false);
+            this.gbAutoLoadVideo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -533,5 +606,10 @@
         private System.Windows.Forms.Button btnSelectedFontUNK;
         private System.Windows.Forms.Button btnDefault;
         private System.Windows.Forms.CheckBox cbUseExternalEditor;
+        private System.Windows.Forms.GroupBox gbAutoLoadVideo;
+        private System.Windows.Forms.CheckBox cbAutoOpenVideoForm;
+        private System.Windows.Forms.RadioButton rbAutoLoadVideoYoutube;
+        private System.Windows.Forms.RadioButton rbAutoLoadVideoLocalOnly;
+        private System.Windows.Forms.RadioButton rbAutoLoadVideoNever;
     }
 }

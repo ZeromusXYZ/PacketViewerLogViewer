@@ -1321,6 +1321,7 @@ namespace PacketViewerLogViewer.Packets
         public UInt16 CurrentSync;
         public string LoadedFileTitle ;
         public VideoLinkForm videoLink ;
+        public string ProjectFolder;
 
         public ListBox lbPackets;
         // Popup Menu Controls
@@ -1361,6 +1362,7 @@ namespace PacketViewerLogViewer.Packets
 
             // Title to use on main program as "Filename"
             LoadedFileTitle = "Packets";
+            ProjectFolder = string.Empty;
 
             // Create Popup Menu
             pmPL = new ContextMenuStrip();

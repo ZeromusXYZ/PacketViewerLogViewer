@@ -21,6 +21,13 @@ namespace PacketViewerLogViewer
         {
             SaveButtonsIntoColorSettings();
             Properties.Settings.Default.ExternalParseEditor = cbUseExternalEditor.Checked ;
+            Properties.Settings.Default.AutoOpenVideoForm = cbAutoOpenVideoForm.Checked;
+            if (rbAutoLoadVideoNever.Checked)
+                Properties.Settings.Default.AutoLoadVideo = 0;
+            if (rbAutoLoadVideoLocalOnly.Checked)
+                Properties.Settings.Default.AutoLoadVideo = 1;
+            if (rbAutoLoadVideoYoutube.Checked)
+                Properties.Settings.Default.AutoLoadVideo = 2;
             DialogResult = DialogResult.OK;
         }
 
@@ -33,6 +40,10 @@ namespace PacketViewerLogViewer
         {
             LoadColorSettingsIntoButtons();
             cbUseExternalEditor.Checked = Properties.Settings.Default.ExternalParseEditor;
+            cbAutoOpenVideoForm.Checked = Properties.Settings.Default.AutoOpenVideoForm;
+            rbAutoLoadVideoLocalOnly.Checked = (Properties.Settings.Default.AutoLoadVideo == 1);
+            rbAutoLoadVideoYoutube.Checked = (Properties.Settings.Default.AutoLoadVideo == 2);
+            rbAutoLoadVideoNever.Checked = (!rbAutoLoadVideoLocalOnly.Checked && !rbAutoLoadVideoYoutube.Checked);
         }
 
         private void LoadColorSettingsIntoButtons()
@@ -96,6 +107,12 @@ namespace PacketViewerLogViewer
             {
                 btn.BackColor = colorDlg.Color;
             }
+        }
+
+        private void RbAutoLoadVideoNever_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbAutoLoadVideoNever.Checked)
+                cbAutoOpenVideoForm.Checked = false;
         }
     }
 }

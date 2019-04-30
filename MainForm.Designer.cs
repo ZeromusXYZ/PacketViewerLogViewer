@@ -85,6 +85,9 @@
             this.rtInfo = new System.Windows.Forms.RichTextBox();
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.statusBar = new System.Windows.Forms.StatusStrip();
+            this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sbExtraInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -98,6 +101,7 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).BeginInit();
+            this.statusBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // MM
@@ -595,11 +599,44 @@
     "*.txt|PacketDB Files|*.sqlite|All Files|*.*";
             this.openLogFileDialog.SupportMultiDottedExtensions = true;
             // 
+            // statusBar
+            // 
+            this.statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sbExtraInfo,
+            this.sbProjectInfo});
+            this.statusBar.Location = new System.Drawing.Point(0, 487);
+            this.statusBar.Name = "statusBar";
+            this.statusBar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.statusBar.Size = new System.Drawing.Size(1084, 24);
+            this.statusBar.TabIndex = 4;
+            this.statusBar.Text = "statusStrip1";
+            // 
+            // sbProjectInfo
+            // 
+            this.sbProjectInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.sbProjectInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.sbProjectInfo.Name = "sbProjectInfo";
+            this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
+            this.sbProjectInfo.Text = "Project: none";
+            // 
+            // sbExtraInfo
+            // 
+            this.sbExtraInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.sbExtraInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.sbExtraInfo.Name = "sbExtraInfo";
+            this.sbExtraInfo.Size = new System.Drawing.Size(20, 19);
+            this.sbExtraInfo.Text = "...";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1084, 511);
+            this.Controls.Add(this.statusBar);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.MM);
             this.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -626,6 +663,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGV)).EndInit();
+            this.statusBar.ResumeLayout(false);
+            this.statusBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -687,6 +726,9 @@
         private System.Windows.Forms.ToolStripMenuItem pmPLExportPacket;
         private System.Windows.Forms.Button btnCopyRawSource;
         public System.Windows.Forms.DataGridView dGV;
+        private System.Windows.Forms.StatusStrip statusBar;
+        private System.Windows.Forms.ToolStripStatusLabel sbProjectInfo;
+        private System.Windows.Forms.ToolStripStatusLabel sbExtraInfo;
     }
 }
 

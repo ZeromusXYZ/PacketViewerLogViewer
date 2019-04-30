@@ -37,6 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.eYoutubeURL = new System.Windows.Forms.TextBox();
             this.btnTestYT = new System.Windows.Forms.Button();
+            this.cbStayOnTop = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.media)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tb)).BeginInit();
             this.SuspendLayout();
@@ -141,11 +142,24 @@
             this.btnTestYT.UseVisualStyleBackColor = true;
             this.btnTestYT.Click += new System.EventHandler(this.BtnTestYT_Click);
             // 
+            // cbStayOnTop
+            // 
+            this.cbStayOnTop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbStayOnTop.AutoSize = true;
+            this.cbStayOnTop.Location = new System.Drawing.Point(96, 336);
+            this.cbStayOnTop.Name = "cbStayOnTop";
+            this.cbStayOnTop.Size = new System.Drawing.Size(80, 17);
+            this.cbStayOnTop.TabIndex = 10;
+            this.cbStayOnTop.Text = "Stay on top";
+            this.cbStayOnTop.UseVisualStyleBackColor = true;
+            this.cbStayOnTop.CheckedChanged += new System.EventHandler(this.CbStayOnTop_CheckedChanged);
+            // 
             // VideoLinkForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 411);
+            this.Controls.Add(this.cbStayOnTop);
             this.Controls.Add(this.btnTestYT);
             this.Controls.Add(this.eYoutubeURL);
             this.Controls.Add(this.label1);
@@ -155,6 +169,7 @@
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.media);
             this.Name = "VideoLinkForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "VideoLinkForm";
             this.Deactivate += new System.EventHandler(this.VideoLinkForm_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VideoLinkForm_FormClosing);
@@ -176,5 +191,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox eYoutubeURL;
         private System.Windows.Forms.Button btnTestYT;
+        private System.Windows.Forms.CheckBox cbStayOnTop;
     }
 }

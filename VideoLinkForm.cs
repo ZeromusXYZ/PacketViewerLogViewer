@@ -17,11 +17,11 @@ namespace PacketViewerLogViewer
     public partial class VideoLinkForm : Form
     {
         public PacketTabPage sourceTP { get; set; }
-        private string LinkFileName;
-        private string LinkVideoFileName;
-        private string LinkYoutubeURL;
+        public string LinkFileName;
+        public string LinkVideoFileName;
+        public string LinkYoutubeURL;
         private bool blockPositionUpdates = false;
-        private TimeSpan videoOffset = TimeSpan.Zero;
+        public TimeSpan videoOffset = TimeSpan.Zero;
         // TODO: check if the offset actually works and a way to set it
         // TODO: add something to set offset
         // TODO: add mute and auto-load options
@@ -416,6 +416,11 @@ namespace PacketViewerLogViewer
                 MessageBox.Show("Link does not seem valid, or could not access the page.", "Test Youtube Link", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             Application.UseWaitCursor = false;
+        }
+
+        private void CbStayOnTop_CheckedChanged(object sender, EventArgs e)
+        {
+            TopMost = cbStayOnTop.Checked;
         }
     }
 }
