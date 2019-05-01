@@ -497,8 +497,6 @@
             this.cbAutoOpenVideoForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbAutoOpenVideoForm.AutoSize = true;
             this.cbAutoOpenVideoForm.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbAutoOpenVideoForm.Checked = true;
-            this.cbAutoOpenVideoForm.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbAutoOpenVideoForm.Location = new System.Drawing.Point(357, 20);
             this.cbAutoOpenVideoForm.Name = "cbAutoOpenVideoForm";
             this.cbAutoOpenVideoForm.Size = new System.Drawing.Size(181, 17);

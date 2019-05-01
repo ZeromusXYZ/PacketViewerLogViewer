@@ -13,6 +13,7 @@ using PacketViewerLogViewer;
 using System.ComponentModel;
 using System.Drawing;
 using System.Diagnostics;
+using PacketViewerLogViewer.PVLVHelper;
 
 namespace PacketViewerLogViewer.Packets
 {
@@ -1319,9 +1320,13 @@ namespace PacketViewerLogViewer.Packets
         public PacketList PL; // Filtered File Data Displayed
         // public PacketParser PP;
         public UInt16 CurrentSync;
-        public string LoadedFileTitle ;
+        public string LoadedLogFile ;
         public VideoLinkForm videoLink ;
         public string ProjectFolder;
+        public string Tags;
+        public string LinkVideoFileName;
+        public string LinkYoutubeURL;
+        public TimeSpan LinkVideoOffset;
 
         public ListBox lbPackets;
         // Popup Menu Controls
@@ -1348,6 +1353,9 @@ namespace PacketViewerLogViewer.Packets
             PL = new PacketList();
             lbPackets = new ListBox();
             videoLink = null;
+            ProjectFolder = string.Empty ;
+            LinkVideoFileName = string.Empty;
+            LinkYoutubeURL = string.Empty;
 
             // Set ListBox Position
             lbPackets.Parent = this;
@@ -1361,8 +1369,9 @@ namespace PacketViewerLogViewer.Packets
             // lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged); 
 
             // Title to use on main program as "Filename"
-            LoadedFileTitle = "Packets";
+            LoadedLogFile = "?Packets";
             ProjectFolder = string.Empty;
+            Tags = string.Empty;
 
             // Create Popup Menu
             pmPL = new ContextMenuStrip();
@@ -1797,6 +1806,114 @@ namespace PacketViewerLogViewer.Packets
                 MessageBox.Show("Error saving raw packet " + exportName + "\r\nException: " + x.Message);
             }
 
+        }
+
+        public bool LoadProjectFile(string fromLogFile)
+        {
+            var ProjectFile = string.Empty;
+            if ((fromLogFile != null) && (fromLogFile != string.Empty))
+                ProjectFolder = Helper.MakeProjectDirectoryFromLogFileName(fromLogFile);
+
+            ProjectFile = ProjectFolder + Path.GetFileName(ProjectFolder.TrimEnd('\\')) + ".pvlv" ;
+
+            try
+            {
+                string[] sl;
+                if (File.Exists(ProjectFile))
+                {
+                    sl = File.ReadAllLines(ProjectFile);
+                }
+                else
+                {
+                    sl = new string[0];
+                }
+                foreach (string s in sl)
+                {
+                    var fields = s.Split(';');
+                    if (fields.Length < 2)
+                        continue;
+                    if (fields[0].ToLower() == "packetlog")
+                    {
+                        LoadedLogFile = Helper.TryMakeFullPath(ProjectFolder,fields[1]);
+                    }
+                    else
+                    if (fields[0].ToLower() == "video")
+                    {
+                        LinkVideoFileName = Helper.TryMakeFullPath(ProjectFolder, fields[1]);
+                    }
+                    else
+                    if (fields[0].ToLower() == "youtube")
+                    {
+                        LinkYoutubeURL = fields[1];
+                    }
+                    else
+                    if (fields[0].ToLower() == "offset")
+                    {
+                        if (DataLookups.TryFieldParse(fields[1], out int n))
+                            LinkVideoOffset = TimeSpan.FromMilliseconds(n);
+                    }
+                    else
+                    if (fields[0].ToLower() == "tags")
+                    {
+                        Tags = fields[1];
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                }
+
+
+                if ((LoadedLogFile.StartsWith("?") == false) && (fromLogFile.ToLower() != LoadedLogFile.ToLower()) )
+                {
+                    MessageBox.Show("Loaded Project points to a different Log file\r\nOpened: " + fromLogFile + " \r\nFound: " + LoadedLogFile+"\r\n\r\nUsing new file", "Project Loading Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    LoadedLogFile = fromLogFile;
+                }
+
+            }
+            catch
+            {
+                LoadedLogFile = string.Empty;
+                LinkVideoFileName = string.Empty;
+                LinkVideoOffset = TimeSpan.Zero;
+                LinkYoutubeURL = string.Empty;
+            }
+
+            return true;
+        }
+
+        public bool SaveProjectFile()
+        {
+            if ((ProjectFolder == null) || (ProjectFolder == string.Empty))
+                return false;
+
+            var ProjectFile = ProjectFolder + Path.GetFileName(ProjectFolder.TrimEnd('\\')) + ".pvlv" ;
+
+            string relVideo = string.Empty;
+            if ((LinkVideoFileName != null) && (LinkVideoFileName != string.Empty))
+                relVideo = Helper.MakeRelative(ProjectFolder, LinkVideoFileName);
+
+            string relLogFile = string.Empty;
+            if ((LoadedLogFile != null) && (LoadedLogFile != string.Empty))
+                relLogFile = Helper.MakeRelative(ProjectFolder, LoadedLogFile);
+
+            try
+            {
+                List<string> sl = new List<string>();
+                sl.Add("rem;PacketViewerLogViewer Project File");
+                sl.Add("packetlog;" + relLogFile);
+                sl.Add("tags;" + Tags);
+                sl.Add("video;" + relVideo);
+                sl.Add("youtube;" + LinkYoutubeURL);
+                sl.Add("offset;" + LinkVideoOffset.TotalMilliseconds.ToString());
+                File.WriteAllLines(ProjectFile, sl);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
     }

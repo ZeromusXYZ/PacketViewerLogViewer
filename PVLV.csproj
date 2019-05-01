@@ -162,6 +162,12 @@
     <Compile Include="ParseEditorForm.Designer.cs">
       <DependentUpon>ParseEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProjectInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectInfoForm.Designer.cs">
+      <DependentUpon>ProjectInfoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ParseEditorForm.resx">
       <DependentUpon>ParseEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectInfoForm.resx">
+      <DependentUpon>ProjectInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>

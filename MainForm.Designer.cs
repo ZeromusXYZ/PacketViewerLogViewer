@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,9 +52,9 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFilterEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFilterReset = new System.Windows.Forms.ToolStripMenuItem();
-            this.mmVideo = new System.Windows.Forms.ToolStripMenuItem();
+            this.mmExtra = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoOpenLink = new System.Windows.Forms.ToolStripMenuItem();
-            this.mmVideoSaveLinkData = new System.Windows.Forms.ToolStripMenuItem();
+            this.mmVideoBuildProject = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutGithub = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutVideoLAN = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,8 +86,8 @@
             this.cbOriginalData = new System.Windows.Forms.CheckBox();
             this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.statusBar = new System.Windows.Forms.StatusStrip();
-            this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbExtraInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -111,7 +111,7 @@
             this.mmFile,
             this.mmSearch,
             this.mmFilter,
-            this.mmVideo,
+            this.mmExtra,
             this.mmAbout});
             this.MM.Location = new System.Drawing.Point(0, 0);
             this.MM.Name = "MM";
@@ -278,27 +278,29 @@
             this.mmFilterReset.Text = "Reset";
             this.mmFilterReset.Click += new System.EventHandler(this.MmFilterReset_Click);
             // 
-            // mmVideo
+            // mmExtra
             // 
-            this.mmVideo.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mmExtra.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmVideoOpenLink,
-            this.mmVideoSaveLinkData});
-            this.mmVideo.Name = "mmVideo";
-            this.mmVideo.Size = new System.Drawing.Size(49, 20);
-            this.mmVideo.Text = "Video";
+            this.mmVideoBuildProject});
+            this.mmExtra.Name = "mmExtra";
+            this.mmExtra.Size = new System.Drawing.Size(44, 20);
+            this.mmExtra.Text = "E&xtra";
             // 
             // mmVideoOpenLink
             // 
             this.mmVideoOpenLink.Name = "mmVideoOpenLink";
-            this.mmVideoOpenLink.Size = new System.Drawing.Size(183, 22);
-            this.mmVideoOpenLink.Text = "Open video link ...";
+            this.mmVideoOpenLink.Size = new System.Drawing.Size(208, 22);
+            this.mmVideoOpenLink.Text = "Open or Add video link ...";
             this.mmVideoOpenLink.Click += new System.EventHandler(this.MmVideoOpenLink_Click);
             // 
-            // mmVideoSaveLinkData
+            // mmVideoBuildProject
             // 
-            this.mmVideoSaveLinkData.Name = "mmVideoSaveLinkData";
-            this.mmVideoSaveLinkData.Size = new System.Drawing.Size(183, 22);
-            this.mmVideoSaveLinkData.Text = "Save Video Link Data";
+            this.mmVideoBuildProject.Enabled = false;
+            this.mmVideoBuildProject.Name = "mmVideoBuildProject";
+            this.mmVideoBuildProject.Size = new System.Drawing.Size(208, 22);
+            this.mmVideoBuildProject.Text = "Build Project File ...";
+            this.mmVideoBuildProject.Click += new System.EventHandler(this.MmVideoBuildProject_Click);
             // 
             // mmAbout
             // 
@@ -339,7 +341,9 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 24);
             this.splitContainer1.Name = "splitContainer1";
@@ -352,7 +356,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1084, 487);
+            this.splitContainer1.Size = new System.Drawing.Size(1084, 508);
             this.splitContainer1.SplitterDistance = 350;
             this.splitContainer1.TabIndex = 3;
             // 
@@ -370,10 +374,11 @@
             this.tcPackets.Multiline = true;
             this.tcPackets.Name = "tcPackets";
             this.tcPackets.SelectedIndex = 0;
-            this.tcPackets.Size = new System.Drawing.Size(347, 484);
+            this.tcPackets.Size = new System.Drawing.Size(347, 505);
             this.tcPackets.TabIndex = 1;
             this.tcPackets.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TcPackets_DrawItem);
             this.tcPackets.SelectedIndexChanged += new System.EventHandler(this.TcPackets_SelectedIndexChanged);
+            this.tcPackets.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.TcPackets_ControlRemoved);
             this.tcPackets.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TcPackets_MouseDown);
             // 
             // tpPackets1
@@ -382,7 +387,7 @@
             this.tpPackets1.Location = new System.Drawing.Point(24, 4);
             this.tpPackets1.Name = "tpPackets1";
             this.tpPackets1.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPackets1.Size = new System.Drawing.Size(319, 476);
+            this.tpPackets1.Size = new System.Drawing.Size(319, 497);
             this.tpPackets1.TabIndex = 0;
             this.tpPackets1.Text = "Packets";
             this.tpPackets1.UseVisualStyleBackColor = true;
@@ -398,7 +403,7 @@
             this.lbPackets.ItemHeight = 14;
             this.lbPackets.Location = new System.Drawing.Point(0, 0);
             this.lbPackets.Name = "lbPackets";
-            this.lbPackets.Size = new System.Drawing.Size(319, 480);
+            this.lbPackets.Size = new System.Drawing.Size(319, 494);
             this.lbPackets.TabIndex = 0;
             this.lbPackets.SelectedIndexChanged += new System.EventHandler(this.lbPackets_SelectedIndexChanged);
             // 
@@ -507,19 +512,19 @@
             this.splitContainer2.Panel2.Controls.Add(this.btnCopyRawSource);
             this.splitContainer2.Panel2.Controls.Add(this.rtInfo);
             this.splitContainer2.Panel2.Controls.Add(this.cbOriginalData);
-            this.splitContainer2.Size = new System.Drawing.Size(730, 487);
-            this.splitContainer2.SplitterDistance = 328;
+            this.splitContainer2.Size = new System.Drawing.Size(730, 508);
+            this.splitContainer2.SplitterDistance = 349;
             this.splitContainer2.TabIndex = 0;
             // 
             // dGV
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -531,7 +536,7 @@
             this.dGV.RowHeadersVisible = false;
             this.dGV.RowHeadersWidth = 8;
             this.dGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dGV.Size = new System.Drawing.Size(712, 293);
+            this.dGV.Size = new System.Drawing.Size(712, 314);
             this.dGV.TabIndex = 2;
             this.dGV.SelectionChanged += new System.EventHandler(this.dGV_SelectionChanged);
             // 
@@ -604,22 +609,11 @@
             this.statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sbExtraInfo,
             this.sbProjectInfo});
-            this.statusBar.Location = new System.Drawing.Point(0, 487);
+            this.statusBar.Location = new System.Drawing.Point(0, 534);
             this.statusBar.Name = "statusBar";
-            this.statusBar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusBar.Size = new System.Drawing.Size(1084, 24);
             this.statusBar.TabIndex = 4;
             this.statusBar.Text = "statusStrip1";
-            // 
-            // sbProjectInfo
-            // 
-            this.sbProjectInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.sbProjectInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.sbProjectInfo.Name = "sbProjectInfo";
-            this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
-            this.sbProjectInfo.Text = "Project: none";
             // 
             // sbExtraInfo
             // 
@@ -631,18 +625,29 @@
             this.sbExtraInfo.Size = new System.Drawing.Size(20, 19);
             this.sbExtraInfo.Text = "...";
             // 
+            // sbProjectInfo
+            // 
+            this.sbProjectInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.sbProjectInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.sbProjectInfo.Name = "sbProjectInfo";
+            this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
+            this.sbProjectInfo.Text = "Project: none";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1084, 511);
+            this.ClientSize = new System.Drawing.Size(1084, 558);
             this.Controls.Add(this.statusBar);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.MM);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MM;
-            this.MinimumSize = new System.Drawing.Size(400, 300);
+            this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Packet Viewer Log Viewer";
@@ -690,9 +695,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem mmFilterApply;
         private System.Windows.Forms.ToolStripSeparator MMFilterApplyItem;
-        private System.Windows.Forms.ToolStripMenuItem mmVideo;
+        private System.Windows.Forms.ToolStripMenuItem mmExtra;
         private System.Windows.Forms.ToolStripMenuItem mmVideoOpenLink;
-        private System.Windows.Forms.ToolStripMenuItem mmVideoSaveLinkData;
+        private System.Windows.Forms.ToolStripMenuItem mmVideoBuildProject;
         private System.Windows.Forms.ToolStripMenuItem mmAbout;
         private System.Windows.Forms.ToolStripMenuItem mmAboutGithub;
         private System.Windows.Forms.ToolStripMenuItem mmAboutVideoLAN;

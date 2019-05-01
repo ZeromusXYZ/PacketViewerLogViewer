@@ -11,6 +11,7 @@ using System.Diagnostics;
 using PacketViewerLogViewer.Packets;
 using System.IO;
 using PacketViewerLogViewer.ClipboardHelper;
+using PacketViewerLogViewer.PVLVHelper;
 
 namespace PacketViewerLogViewer
 {
@@ -32,8 +33,6 @@ namespace PacketViewerLogViewer
 
         const string InfoGridHeader = "     |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F    | 0123456789ABCDEF\n" +
                 "-----+----------------------------------------------------  -+------------------\n";
-
-        private List<string> ExpectedLogFileRoots = new List<string>() { "packetviewer", "logs", "packetdb", "wireshark", "packeteer" };
 
     public MainForm()
         {
@@ -90,8 +89,9 @@ namespace PacketViewerLogViewer
                 return;
 
             PacketTabPage tp = CreateNewPacketsTabPage();
-            tp.ProjectFolder = MakeProjectDirectoryLogFileName(openLogFileDialog.FileName);
-            tp.Text = MakeTabName(openLogFileDialog.FileName);
+            tp.LoadProjectFile(openLogFileDialog.FileName);
+            //tp.ProjectFolder = Helper.MakeProjectDirectoryFromLogFileName(openLogFileDialog.FileName);
+            tp.Text = Helper.MakeTabName(openLogFileDialog.FileName);
 
             tp.PLLoaded.Clear();
             tp.PLLoaded.Filter.Clear();
@@ -102,11 +102,11 @@ namespace PacketViewerLogViewer
                 return;
             }
             Text = defaultTitle + " - " + openLogFileDialog.FileName;
-            tp.LoadedFileTitle = openLogFileDialog.FileName;
+            tp.LoadedLogFile = openLogFileDialog.FileName;
             tp.PL.CopyFrom(tp.PLLoaded);
             tp.FillListBox();
             UpdateStatusBarAndTitle(tp);
-            if ( Properties.Settings.Default.AutoOpenVideoForm && (File.Exists(Path.ChangeExtension(tp.LoadedFileTitle,".pvlvvl"))) )
+            if ( Properties.Settings.Default.AutoOpenVideoForm && (File.Exists(Path.ChangeExtension(tp.LoadedLogFile,".pvlvvl"))) )
             {
                 MmVideoOpenLink_Click(null, null);
             }
@@ -184,7 +184,7 @@ namespace PacketViewerLogViewer
 
             PacketTabPage tp = GetCurrentOrNewPacketTabPage();
             tp.Text = "Multi";
-            tp.LoadedFileTitle = "Multiple Sources";
+            tp.LoadedLogFile = "?Multiple Sources";
             tp.ProjectFolder = string.Empty;
 
             if (!tp.PLLoaded.LoadFromFile(openLogFileDialog.FileName))
@@ -193,7 +193,7 @@ namespace PacketViewerLogViewer
                 tp.PLLoaded.Clear();
                 return;
             }
-            Text = defaultTitle + " - " + tp.LoadedFileTitle;
+            Text = defaultTitle + " - " + tp.LoadedLogFile;
             tp.PL.CopyFrom(tp.PLLoaded);
             tp.FillListBox();
             UpdateStatusBarAndTitle(tp);
@@ -462,64 +462,6 @@ namespace PacketViewerLogViewer
             RawDataToRichText(PP, rtInfo);
         }
 
-        private string MakeTabName(string filename)
-        {
-            string res ;
-            string fn = System.IO.Path.GetFileNameWithoutExtension(filename);
-            string fnl = fn.ToLower();
-            string fel = System.IO.Path.GetExtension(filename).ToLower();
-            if ((fnl == "full") || (fnl == "incoming") || (fnl == "outgoing") || (fel == ".sqlite"))
-            {
-                string ldir = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename)).ToLower();
-                if (ExpectedLogFileRoots.IndexOf(ldir) >= 0)
-                //if ((ldir == "packetviewer") || (ldir == "logs") || (ldir == "packetdb") || (ldir == "wireshark") || (ldir == "packeteer"))
-                {
-                    res = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(filename)));
-                }
-                else
-                {
-                    res = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename));
-                }
-            }
-            else
-            {
-                res = fn;
-            }
-            if (res.Length > 20)
-                res = res.Substring(0, 16)+"...";
-            res += "  ";
-            return res ;
-        }
-
-        private string MakeProjectDirectoryLogFileName(string filename)
-        {
-            string res ;
-            string fnl = System.IO.Path.GetFileNameWithoutExtension(filename).ToLower();
-            string fel = System.IO.Path.GetExtension(filename).ToLower();
-            if ((fnl == "full") || (fnl == "incoming") || (fnl == "outgoing") || (fel == ".sqlite"))
-            {
-                string ldir = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename)).ToLower();
-                // Expected "root" folders of where logs might be stored
-                if (ExpectedLogFileRoots.IndexOf(ldir) >= 0)
-                // if ((ldir == "packetviewer") || (ldir == "logs") || (ldir == "packetdb") || (ldir == "wireshark") || (ldir == "packeteer"))
-                {
-                    res = System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(filename));
-                }
-                else
-                {
-                    res = System.IO.Path.GetDirectoryName(filename);
-                }
-            }
-            else
-            {
-                res = System.IO.Path.GetDirectoryName(filename);
-            }
-
-            if (!res.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                res += Path.DirectorySeparatorChar;
-
-            return res;
-        }
 
         public void UpdateStatusBarAndTitle(PacketTabPage tp)
         {
@@ -530,7 +472,10 @@ namespace PacketViewerLogViewer
                 return;
             }
 
-            Text = defaultTitle + " - " + tp.LoadedFileTitle;
+            var t = tp.LoadedLogFile;
+            if (t.StartsWith("?"))
+                t = t.TrimStart('?');
+            Text = defaultTitle + " - " + t;
             if (tp.ProjectFolder != string.Empty)
                 sbProjectInfo.Text = "Project Folder: " + tp.ProjectFolder;
             else
@@ -583,7 +528,7 @@ namespace PacketViewerLogViewer
                 clipText.AddRange(cText.Split((char)10).ToList());
 
                 tp.Text = "Clipboard";
-                tp.LoadedFileTitle = "Paste from Clipboard";
+                tp.LoadedLogFile = "?Paste from Clipboard";
                 tp.ProjectFolder = string.Empty;
 
                 if (!tp.PLLoaded.LoadFromStringList(clipText, PacketLogFileFormats.Unknown, PacketLogTypes.Unknown))
@@ -592,7 +537,7 @@ namespace PacketViewerLogViewer
                     tp.PLLoaded.Clear();
                     return;
                 }
-                Text = defaultTitle + " - " + tp.LoadedFileTitle;
+                Text = defaultTitle + " - " + tp.LoadedLogFile;
                 tp.PL.CopyFrom(tp.PLLoaded);
                 tp.FillListBox();
                 UpdateStatusBarAndTitle(tp);
@@ -812,7 +757,7 @@ namespace PacketViewerLogViewer
 
             PacketTabPage newtp = CreateNewPacketsTabPage();
             newtp.Text = "*" + tp.Text;
-            newtp.LoadedFileTitle = "Search Result";
+            newtp.LoadedLogFile = "Search Result";
 
             var count = newtp.PLLoaded.SearchFrom(tp.PL, searchParameters);
 
@@ -840,7 +785,7 @@ namespace PacketViewerLogViewer
             {
                 PacketTabPage tp = CreateNewPacketsTabPage();
                 tp.Text = "Clipboard";
-                tp.LoadedFileTitle = "Paste from Clipboard";
+                tp.LoadedLogFile = "?Paste from Clipboard";
                 tp.ProjectFolder = string.Empty;
                 tcPackets.SelectedTab = tp;
 
@@ -854,7 +799,7 @@ namespace PacketViewerLogViewer
                     tp.PLLoaded.Clear();
                     return;
                 }
-                Text = defaultTitle + " - " + tp.LoadedFileTitle;
+                Text = defaultTitle + " - " + tp.LoadedLogFile;
                 tp.PL.CopyFrom(tp.PLLoaded);
                 tp.FillListBox();
                 UpdateStatusBarAndTitle(tp);
@@ -1145,6 +1090,26 @@ namespace PacketViewerLogViewer
                 MessageBox.Show("Could not create video link, likely libvlc not correcty installed !\r\n"+x.Message, "Video Link Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+        }
+
+        private void MmVideoBuildProject_Click(object sender, EventArgs e)
+        {
+            using (var projectDlg = new ProjectInfoForm())
+            {
+                projectDlg.LoadFromPacketTapPage(GetCurrentPacketTabPage());
+                projectDlg.ShowDialog();
+            }
+        }
+
+        private void TcPackets_ControlRemoved(object sender, ControlEventArgs e)
+        {
+            
+            if (e.Control is PacketTabPage)
+            {
+                PacketTabPage tp = (e.Control as PacketTabPage);
+                tp.SaveProjectFile();
+            }
+
         }
     }
 }

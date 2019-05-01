@@ -75,6 +75,8 @@ namespace PacketViewerLogViewer.PVLVHelper
 
     static class Helper
     {
+        private static List<string> ExpectedLogFileRoots = new List<string>() { "packetviewer", "logs", "packetdb", "wireshark", "packeteer" };
+
         // Source: https://stackoverflow.com/questions/275689/how-to-get-relative-path-from-absolute-path
         /// <summary>
         /// Creates a relative path from one file
@@ -154,6 +156,311 @@ namespace PacketViewerLogViewer.PVLVHelper
             return newPath;
         }
 
+        public static string TryMakeFullPath(string ProjectDirectory, string fileName)
+        {
+            string res = fileName ;
+            if (!ProjectDirectory.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                ProjectDirectory += Path.DirectorySeparatorChar;
+
+            // If a file is provided, try to expand it to it's full path
+            if (!File.Exists(fileName))
+            {
+                var s = Path.GetFullPath(fileName);
+                if (File.Exists(s))
+                {
+                    res = s;
+                }
+                else
+                {
+                    s = Path.GetFullPath(ProjectDirectory + fileName);
+                    if (File.Exists(s))
+                    {
+                        res = s;
+                    }
+                }
+            }
+            return res;
+        }
+
+        public static string MakeTabName(string filename)
+        {
+            string res;
+            string fn = System.IO.Path.GetFileNameWithoutExtension(filename);
+            string fnl = fn.ToLower();
+            string fel = System.IO.Path.GetExtension(filename).ToLower();
+            if ((fnl == "full") || (fnl == "incoming") || (fnl == "outgoing") || (fel == ".sqlite"))
+            {
+                string ldir = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename)).ToLower();
+                if (ExpectedLogFileRoots.IndexOf(ldir) >= 0)
+                //if ((ldir == "packetviewer") || (ldir == "logs") || (ldir == "packetdb") || (ldir == "wireshark") || (ldir == "packeteer"))
+                {
+                    res = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(filename)));
+                }
+                else
+                {
+                    res = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename));
+                }
+            }
+            else
+            {
+                res = fn;
+            }
+            if (res.Length > 20)
+                res = res.Substring(0, 16) + "...";
+            res += "  ";
+            return res;
+        }
+
+        public static string MakeProjectDirectoryFromLogFileName(string filename)
+        {
+            string res;
+            string fnl = System.IO.Path.GetFileNameWithoutExtension(filename).ToLower();
+            string fel = System.IO.Path.GetExtension(filename).ToLower();
+            if ((fnl == "full") || (fnl == "incoming") || (fnl == "outgoing") || (fel == ".sqlite"))
+            {
+                string ldir = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(filename)).ToLower();
+                // Expected "root" folders of where logs might be stored
+                if (ExpectedLogFileRoots.IndexOf(ldir) >= 0)
+                // if ((ldir == "packetviewer") || (ldir == "logs") || (ldir == "packetdb") || (ldir == "wireshark") || (ldir == "packeteer"))
+                {
+                    res = System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(filename));
+                }
+                else
+                {
+                    res = System.IO.Path.GetDirectoryName(filename);
+                }
+            }
+            else
+            {
+                res = System.IO.Path.GetDirectoryName(filename);
+            }
+
+            if (!res.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                res += Path.DirectorySeparatorChar;
+
+            return res;
+        }
+
+
+
+    }
+
+    // Might need this later at some point
+    // Source: https://gist.github.com/yasirkula/d0ec0c07b138748e5feaecbd93b6223c
+    public static class FileDownloader
+    {
+        private const string GOOGLE_DRIVE_DOMAIN = "drive.google.com";
+        private const string GOOGLE_DRIVE_DOMAIN2 = "https://drive.google.com";
+
+        // Normal example: FileDownloader.DownloadFileFromURLToPath( "http://example.com/file/download/link", @"C:\file.txt" );
+        // Drive example: FileDownloader.DownloadFileFromURLToPath( "http://drive.google.com/file/d/FILEID/view?usp=sharing", @"C:\file.txt" );
+        public static FileInfo DownloadFileFromURLToPath(string url, string path)
+        {
+            if (url.StartsWith(GOOGLE_DRIVE_DOMAIN) || url.StartsWith(GOOGLE_DRIVE_DOMAIN2))
+                return DownloadGoogleDriveFileFromURLToPath(url, path);
+            else
+                return DownloadFileFromURLToPath(url, path, null);
+        }
+
+        private static FileInfo DownloadFileFromURLToPath(string url, string path, WebClient webClient)
+        {
+            try
+            {
+                if (webClient == null)
+                {
+                    using (webClient = new WebClient())
+                    {
+                        webClient.DownloadFile(url, path);
+                        return new FileInfo(path);
+                    }
+                }
+                else
+                {
+                    webClient.DownloadFile(url, path);
+                    return new FileInfo(path);
+                }
+            }
+            catch (WebException)
+            {
+                return null;
+            }
+        }
+
+        // Downloading large files from Google Drive prompts a warning screen and
+        // requires manual confirmation. Consider that case and try to confirm the download automatically
+        // if warning prompt occurs
+        private static FileInfo DownloadGoogleDriveFileFromURLToPath(string url, string path)
+        {
+            // You can comment the statement below if the provided url is guaranteed to be in the following format:
+            // https://drive.google.com/uc?id=FILEID&export=download
+            url = GetGoogleDriveDownloadLinkFromUrl(url);
+
+            using (CookieAwareWebClient webClient = new CookieAwareWebClient())
+            {
+                FileInfo downloadedFile;
+
+                // Sometimes Drive returns an NID cookie instead of a download_warning cookie at first attempt,
+                // but works in the second attempt
+                for (int i = 0; i < 2; i++)
+                {
+                    downloadedFile = DownloadFileFromURLToPath(url, path, webClient);
+                    if (downloadedFile == null)
+                        return null;
+
+                    // Confirmation page is around 50KB, shouldn't be larger than 60KB
+                    if (downloadedFile.Length > 60000)
+                        return downloadedFile;
+
+                    // Downloaded file might be the confirmation page, check it
+                    string content;
+                    using (var reader = downloadedFile.OpenText())
+                    {
+                        // Confirmation page starts with <!DOCTYPE html>, which can be preceeded by a newline
+                        char[] header = new char[20];
+                        int readCount = reader.ReadBlock(header, 0, 20);
+                        if (readCount < 20 || !(new string(header).Contains("<!DOCTYPE html>")))
+                            return downloadedFile;
+
+                        content = reader.ReadToEnd();
+                    }
+
+                    int linkIndex = content.LastIndexOf("href=\"/uc?");
+                    if (linkIndex < 0)
+                        return downloadedFile;
+
+                    linkIndex += 6;
+                    int linkEnd = content.IndexOf('"', linkIndex);
+                    if (linkEnd < 0)
+                        return downloadedFile;
+
+                    url = "https://drive.google.com" + content.Substring(linkIndex, linkEnd - linkIndex).Replace("&amp;", "&");
+                }
+
+                downloadedFile = DownloadFileFromURLToPath(url, path, webClient);
+
+                return downloadedFile;
+            }
+        }
+
+        // Handles 3 kinds of links (they can be preceeded by https://):
+        // - drive.google.com/open?id=FILEID
+        // - drive.google.com/file/d/FILEID/view?usp=sharing
+        // - drive.google.com/uc?id=FILEID&export=download
+        public static string GetGoogleDriveDownloadLinkFromUrl(string url)
+        {
+            int index = url.IndexOf("id=");
+            int closingIndex;
+            if (index > 0)
+            {
+                index += 3;
+                closingIndex = url.IndexOf('&', index);
+                if (closingIndex < 0)
+                    closingIndex = url.Length;
+            }
+            else
+            {
+                index = url.IndexOf("file/d/");
+                if (index < 0) // url is not in any of the supported forms
+                    return string.Empty;
+
+                index += 7;
+
+                closingIndex = url.IndexOf('/', index);
+                if (closingIndex < 0)
+                {
+                    closingIndex = url.IndexOf('?', index);
+                    if (closingIndex < 0)
+                        closingIndex = url.Length;
+                }
+            }
+
+            return string.Format("https://drive.google.com/uc?id={0}&export=download", url.Substring(index, closingIndex - index));
+        }
+    }
+
+    // Web client used for Google Drive
+    public class CookieAwareWebClient : WebClient
+    {
+        private class CookieContainer
+        {
+            Dictionary<string, string> _cookies;
+
+            public string this[Uri url]
+            {
+                get
+                {
+                    string cookie;
+                    if (_cookies.TryGetValue(url.Host, out cookie))
+                        return cookie;
+
+                    return null;
+                }
+                set
+                {
+                    _cookies[url.Host] = value;
+                }
+            }
+
+            public CookieContainer()
+            {
+                _cookies = new Dictionary<string, string>();
+            }
+        }
+
+        private CookieContainer cookies;
+
+        public CookieAwareWebClient() : base()
+        {
+            cookies = new CookieContainer();
+        }
+
+        protected override WebRequest GetWebRequest(Uri address)
+        {
+            WebRequest request = base.GetWebRequest(address);
+
+            if (request is HttpWebRequest)
+            {
+                string cookie = cookies[address];
+                if (cookie != null)
+                    ((HttpWebRequest)request).Headers.Set("cookie", cookie);
+            }
+
+            return request;
+        }
+
+        protected override WebResponse GetWebResponse(WebRequest request, IAsyncResult result)
+        {
+            WebResponse response = base.GetWebResponse(request, result);
+
+            string[] cookies = response.Headers.GetValues("Set-Cookie");
+            if (cookies != null && cookies.Length > 0)
+            {
+                string cookie = "";
+                foreach (string c in cookies)
+                    cookie += c;
+
+                this.cookies[response.ResponseUri] = cookie;
+            }
+
+            return response;
+        }
+
+        protected override WebResponse GetWebResponse(WebRequest request)
+        {
+            WebResponse response = base.GetWebResponse(request);
+
+            string[] cookies = response.Headers.GetValues("Set-Cookie");
+            if (cookies != null && cookies.Length > 0)
+            {
+                string cookie = "";
+                foreach (string c in cookies)
+                    cookie += c;
+
+                this.cookies[response.ResponseUri] = cookie;
+            }
+
+            return response;
+        }
     }
 
 }

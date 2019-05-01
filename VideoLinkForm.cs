@@ -94,15 +94,15 @@ namespace PacketViewerLogViewer
                 Text = "Video not attached to a packet list";
                 return;
             }
-            if (!File.Exists(sourceTP.LoadedFileTitle))
+            if (!File.Exists(sourceTP.LoadedLogFile))
             {
                 MessageBox.Show("Can only link video to complete log files", "Video Link", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Text = "Video not attached to a packet list";
                 sourceTP = null;
                 return;
             }
-            LinkFileName = Path.ChangeExtension(sourceTP.LoadedFileTitle, ".pvlvvl"); // Packet Viewer Log Viewer Video Link
-            Text = "Video - " + sourceTP.LoadedFileTitle;
+            LinkFileName = Path.ChangeExtension(sourceTP.LoadedLogFile, ".pvlvvl"); // Packet Viewer Log Viewer Video Link
+            Text = "Video - " + sourceTP.LoadedLogFile;
             sourceTP.videoLink = this;
             LoadVideoLinkFile();
             
@@ -247,6 +247,13 @@ namespace PacketViewerLogViewer
             if (LinkYoutubeURL != string.Empty)
                 eYoutubeURL.ReadOnly = true;
 
+
+            if (sourceTP != null)
+            {
+                sourceTP.LinkVideoFileName = LinkVideoFileName;
+                sourceTP.LinkYoutubeURL = LinkYoutubeURL;
+            }
+
             return true;
         }
 
@@ -308,7 +315,13 @@ namespace PacketViewerLogViewer
         {
             lVideoPosition.Text = "Time: " + MediaTimeToString(pos) + " / " + MediaTimeToString(max);
 
-            tb.Value = (int)pos;
+            var p = pos;
+            if (p < 0)
+                p = 0;
+            if (p > max)
+                p = max;
+            tb.Maximum = (int)max;
+            tb.Value = (int)p;
 
             if ((sourceTP != null) && (updatePacketList))
             {
