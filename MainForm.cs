@@ -82,27 +82,33 @@ namespace PacketViewerLogViewer
             Application.UseWaitCursor = false;
         }
 
+
+
         private void mmFileOpen_Click(object sender, EventArgs e)
         {
             openLogFileDialog.Title = "Open log file";
             if (openLogFileDialog.ShowDialog() != DialogResult.OK)
                 return;
+            TryOpenLogFile(openLogFileDialog.FileName);
+        }
 
+        private void TryOpenLogFile(string logFile)
+        {
             PacketTabPage tp = CreateNewPacketsTabPage();
-            tp.LoadProjectFile(openLogFileDialog.FileName);
-            //tp.ProjectFolder = Helper.MakeProjectDirectoryFromLogFileName(openLogFileDialog.FileName);
-            tp.Text = Helper.MakeTabName(openLogFileDialog.FileName);
+            tp.LoadProjectFile(logFile);
+            //tp.ProjectFolder = Helper.MakeProjectDirectoryFromLogFileName(logFile);
+            tp.Text = Helper.MakeTabName(logFile);
 
             tp.PLLoaded.Clear();
             tp.PLLoaded.Filter.Clear();
-            if (!tp.PLLoaded.LoadFromFile(openLogFileDialog.FileName))
+            if (!tp.PLLoaded.LoadFromFile(logFile))
             {
-                MessageBox.Show("Error loading file: " + openLogFileDialog.FileName, "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error loading file: " + logFile, "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tp.PLLoaded.Clear();
                 return;
             }
-            Text = defaultTitle + " - " + openLogFileDialog.FileName;
-            tp.LoadedLogFile = openLogFileDialog.FileName;
+            Text = defaultTitle + " - " + logFile;
+            tp.LoadedLogFile = logFile;
             tp.PL.CopyFrom(tp.PLLoaded);
             tp.FillListBox();
             UpdateStatusBarAndTitle(tp);
@@ -1110,6 +1116,21 @@ namespace PacketViewerLogViewer
                 tp.SaveProjectFile();
             }
 
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            // Handle arguments
+            var args = Environment.GetCommandLineArgs().ToList();
+            args.RemoveAt(0);
+            foreach (string arg in args)
+            {
+                if (File.Exists(arg))
+                {
+                    // open log
+                    TryOpenLogFile(arg);
+                }
+            }
         }
     }
 }
