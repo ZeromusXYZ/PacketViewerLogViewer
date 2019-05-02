@@ -17,15 +17,10 @@ namespace PacketViewerLogViewer
     public partial class VideoLinkForm : Form
     {
         public PacketTabPage sourceTP { get; set; }
-        public string LinkFileName;
-        public string LinkVideoFileName;
-        public string LinkYoutubeURL;
         private bool blockPositionUpdates = false;
-        public TimeSpan videoOffset = TimeSpan.Zero;
         // TODO: check if the offset actually works and a way to set it
         // TODO: add something to set offset
-        // TODO: add mute and auto-load options
-        // TODO: add "follow packets" checkbox
+        // TODO: add mute options
 
         public VideoLinkForm()
         {
@@ -71,7 +66,8 @@ namespace PacketViewerLogViewer
                 return;
             if (LoadVideoFromLocalFile(openVideoDlg.FileName))
             {
-                LinkVideoFileName = openVideoDlg.FileName;
+                if (sourceTP != null)
+                    sourceTP.LinkVideoFileName = openVideoDlg.FileName;
                 media.VlcMediaPlayer.Play();
                 media.VlcMediaPlayer.Pause();
                 media.VlcMediaPlayer.NextFrame();
@@ -88,10 +84,12 @@ namespace PacketViewerLogViewer
 
         private void VideoLinkForm_Load(object sender, EventArgs e)
         {
-            LinkFileName = string.Empty;
             if (sourceTP == null)
             {
                 Text = "Video not attached to a packet list";
+                btnSetOffset.Enabled = false;
+                cbFollowPacketList.Checked = false;
+                cbFollowPacketList.Enabled = false;
                 return;
             }
             if (!File.Exists(sourceTP.LoadedLogFile))
@@ -101,10 +99,9 @@ namespace PacketViewerLogViewer
                 sourceTP = null;
                 return;
             }
-            LinkFileName = Path.ChangeExtension(sourceTP.LoadedLogFile, ".pvlvvl"); // Packet Viewer Log Viewer Video Link
             Text = "Video - " + sourceTP.LoadedLogFile;
             sourceTP.videoLink = this;
-            LoadVideoLinkFile();
+            LoadVideoFromProjectFile();
             
         }
 
@@ -138,97 +135,32 @@ namespace PacketViewerLogViewer
             }
         }
 
-        public bool LoadVideoLinkFile()
+        public bool LoadVideoFromProjectFile()
         {
-            if (LinkFileName == string.Empty)
+            if (sourceTP == null)
                 return false;
 
             try
-            {
-                string vFile = string.Empty;
-                string vYT = string.Empty;
-                long vOffset = 0;
+            { 
 
-                string[] sl;
-                if (File.Exists(LinkFileName))
+                if (File.Exists(sourceTP.LinkVideoFileName))
                 {
-                    sl = File.ReadAllLines(LinkFileName);
+                    if (!LoadVideoFromLocalFile(sourceTP.LinkVideoFileName))
+                        sourceTP.LinkVideoFileName = string.Empty;
+                }
+                else
+                if ((sourceTP.LinkYoutubeURL.ToLower().StartsWith("http://")) || (sourceTP.LinkYoutubeURL.ToLower().StartsWith("https://")))
+                {
+                    if (!LoadVideoFromYoutube(sourceTP.LinkYoutubeURL))
+                        sourceTP.LinkYoutubeURL = string.Empty;
                 }
                 else
                 {
-                    sl = new string[0];
-                }
-                foreach (string s in sl)
-                {
-                    var fields = s.Split(';');
-                    if (fields.Length < 2)
-                        continue;
-                    if (fields[0].ToLower() == "video")
-                    {
-                        vFile = fields[1];
-                    }
-                    else
-                    if (fields[0].ToLower() == "youtube")
-                    {
-                        vYT = fields[1];
-                    }
-                    else
-                    if (fields[0].ToLower() == "offset")
-                    {
-                        if (DataLookups.TryFieldParse(fields[1], out int n))
-                            vOffset = n;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
+                    sourceTP.LinkVideoFileName = string.Empty;
+                    sourceTP.LinkYoutubeURL = string.Empty;
                 }
 
-                videoOffset = TimeSpan.FromMilliseconds(vOffset);
-
-                // If a file is provided, try to expand it to it's full path
-                if (vFile != string.Empty)
-                {
-                    if (!File.Exists(vFile))
-                    {
-                        var s = Path.GetFullPath(vFile);
-                        if (File.Exists(s))
-                        {
-                            vFile = s;
-                        }
-                        else
-                        {
-                            s = Path.GetFullPath(Path.GetDirectoryName(LinkFileName) + Path.DirectorySeparatorChar + vFile);
-                            if (File.Exists(s))
-                            {
-                                vFile = s;
-                            }
-                        }
-                    }
-                }
-
-                    
-
-                if (File.Exists(vFile))
-                {
-                    if (!LoadVideoFromLocalFile(vFile))
-                        vFile = string.Empty;
-                }
-                else
-                if ((vYT.ToLower().StartsWith("http://")) || (vYT.ToLower().StartsWith("https://")))
-                {
-                    if (!LoadVideoFromYoutube(vYT))
-                        vYT = string.Empty;
-                }
-                else
-                {
-                    vFile = "";
-                    vYT = "";
-                }
-                LinkVideoFileName = vFile;
-                LinkYoutubeURL = vYT;
-                if ((vFile != string.Empty) || (vYT != string.Empty))
+                if ((sourceTP.LinkVideoFileName != string.Empty) || (sourceTP.LinkYoutubeURL != string.Empty))
                 {
 
                     media.VlcMediaPlayer.Play();
@@ -238,52 +170,19 @@ namespace PacketViewerLogViewer
             }
             catch
             {
-                LinkFileName = string.Empty;
-                LinkVideoFileName = string.Empty;
-                LinkYoutubeURL = string.Empty;
+                sourceTP.LinkVideoFileName = string.Empty;
+                sourceTP.LinkYoutubeURL = string.Empty;
             }
 
-            eYoutubeURL.Text = LinkYoutubeURL;
-            if (LinkYoutubeURL != string.Empty)
+            eYoutubeURL.Text = sourceTP.LinkYoutubeURL;
+            if (sourceTP.LinkYoutubeURL != string.Empty)
                 eYoutubeURL.ReadOnly = true;
-
-
-            if (sourceTP != null)
-            {
-                sourceTP.LinkVideoFileName = LinkVideoFileName;
-                sourceTP.LinkYoutubeURL = LinkYoutubeURL;
-            }
 
             return true;
         }
 
-        public bool SaveVideoLinkFile()
-        {
-            //if ((LinkFileName == string.Empty) || (LinkVideoFileName == string.Empty))
-            //    return false;
-
-            string relVideo = string.Empty ;
-            if ((LinkFileName != string.Empty) && (LinkVideoFileName != string.Empty))
-                relVideo = Helper.MakeRelative(Path.GetDirectoryName(LinkFileName), LinkVideoFileName);
-            try
-            {
-                List<string> sl = new List<string>();
-                sl.Add("rem;PacketViewerLogViewer Video Link File");
-                sl.Add("video;" + relVideo);
-                sl.Add("youtube;" + LinkYoutubeURL);
-                sl.Add("offset;" + videoOffset.TotalMilliseconds.ToString());
-                File.WriteAllLines(LinkFileName, sl);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         private void VideoLinkForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SaveVideoLinkFile();
             if (sourceTP != null)
             {
                 sourceTP.videoLink = null;
@@ -325,9 +224,9 @@ namespace PacketViewerLogViewer
 
             if ((sourceTP != null) && (updatePacketList))
             {
-                var start = sourceTP.PL.GetPacket(0).VirtualTimeStamp;
+                var start = sourceTP.PL.firstPacketTime;
                 var videopos = TimeSpan.FromMilliseconds(pos);
-                var off = start.Add(videopos).Add(videoOffset);
+                var off = start.Add(videopos).Add(sourceTP.LinkVideoOffset);
                 sourceTP.lbPackets.SelectedIndex = sourceTP.PL.FindPacketIndexByDateTime(off, sourceTP.lbPackets.SelectedIndex);
                 sourceTP.CenterListBox();
             }
@@ -342,7 +241,8 @@ namespace PacketViewerLogViewer
             {
                 Invoke((MethodInvoker)delegate
                 {
-                    UpdateTimeLabelAndList((long)(e.NewPosition * media.Length), media.Length, true);
+                    lWarningLabel.Visible = false;
+                    UpdateTimeLabelAndList((long)(e.NewPosition * media.Length), media.Length, cbFollowPacketList.Checked);
                 });
             }
             catch { }
@@ -368,7 +268,7 @@ namespace PacketViewerLogViewer
             blockPositionUpdates = true;
 
             media.Position = ((float)tb.Value / (float)tb.Maximum);
-            UpdateTimeLabelAndList(tb.Value, tb.Maximum, true);
+            UpdateTimeLabelAndList(tb.Value, tb.Maximum, cbFollowPacketList.Checked);
 
             blockPositionUpdates = false;
         }
@@ -380,9 +280,24 @@ namespace PacketViewerLogViewer
             blockPositionUpdates = true;
 
             TimeSpan off = findTime - sourceTP.PL.firstPacketTime ;
-            off = off.Subtract(videoOffset);
+            off = off.Subtract(sourceTP.LinkVideoOffset);
             UpdateTimeLabelAndList((int)off.TotalMilliseconds, tb.Maximum, false);
             media.Position = (float)(off.TotalMilliseconds / media.Length);
+            if (off.TotalMilliseconds < 0)
+            {
+                lWarningLabel.Text = "Negative Offset";
+                lWarningLabel.Visible = true;
+            }
+            else
+            if (off.TotalMilliseconds > tb.Maximum)
+            {
+                lWarningLabel.Text = "Out of video range";
+                lWarningLabel.Visible = true;
+            }
+            else
+            {
+                lWarningLabel.Visible = false;
+            }
 
             blockPositionUpdates = false;
         }
@@ -422,7 +337,8 @@ namespace PacketViewerLogViewer
             var s = eYoutubeURL.Text;
             if (LoadVideoFromYoutube(s))
             {
-                LinkYoutubeURL = s;
+                if (sourceTP != null)
+                    sourceTP.LinkYoutubeURL= s;
             }
             else
             {
@@ -434,6 +350,46 @@ namespace PacketViewerLogViewer
         private void CbStayOnTop_CheckedChanged(object sender, EventArgs e)
         {
             TopMost = cbStayOnTop.Checked;
+        }
+
+        private void BtnSetOffset_Click(object sender, EventArgs e)
+        {
+            if (sourceTP == null)
+            {
+                MessageBox.Show("Not linked to a packet log", "Set Offset", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            // Pause if we're still playing
+            if (media.State == Vlc.DotNet.Core.Interops.Signatures.MediaStates.Playing)
+                media.Pause();
+
+            var thisPacket = sourceTP.GetSelectedPacket();
+            if (thisPacket == null)
+            {
+                MessageBox.Show("No packet selected to offset to", "Set Offset", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            TimeSpan videoTime = TimeSpan.FromMilliseconds(media.Position * media.Length);
+            TimeSpan packetTime = thisPacket.VirtualTimeStamp - sourceTP.PL.firstPacketTime ;
+            var off = packetTime - videoTime;
+
+            if (MessageBox.Show("Set Link ?\r\n\r\n"+
+                "Current Offset: " + sourceTP.LinkVideoOffset.ToString() + "\r\n\r\n" +
+                "Packet Time: " + packetTime.ToString() + "\r\n" +
+                "Video Time: " +videoTime.ToString() + "\r\n\r\n" +
+                "Difference: " + off.ToString(),
+                "Set Offset", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                sourceTP.LinkVideoOffset = off;
+                cbFollowPacketList.Checked = true;
+            }
+
+        }
+
+        private void LVideoPosition_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

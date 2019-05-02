@@ -38,6 +38,9 @@
             this.eYoutubeURL = new System.Windows.Forms.TextBox();
             this.btnTestYT = new System.Windows.Forms.Button();
             this.cbStayOnTop = new System.Windows.Forms.CheckBox();
+            this.cbFollowPacketList = new System.Windows.Forms.CheckBox();
+            this.btnSetOffset = new System.Windows.Forms.Button();
+            this.lWarningLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.media)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tb)).BeginInit();
             this.SuspendLayout();
@@ -112,11 +115,12 @@
             this.lVideoPosition.TabIndex = 5;
             this.lVideoPosition.Text = "Time";
             this.lVideoPosition.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lVideoPosition.Click += new System.EventHandler(this.LVideoPosition_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(93, 14);
+            this.label1.Location = new System.Drawing.Point(179, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 13);
             this.label1.TabIndex = 7;
@@ -126,9 +130,9 @@
             // 
             this.eYoutubeURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.eYoutubeURL.Location = new System.Drawing.Point(174, 11);
+            this.eYoutubeURL.Location = new System.Drawing.Point(267, 11);
             this.eYoutubeURL.Name = "eYoutubeURL";
-            this.eYoutubeURL.Size = new System.Drawing.Size(317, 20);
+            this.eYoutubeURL.Size = new System.Drawing.Size(224, 20);
             this.eYoutubeURL.TabIndex = 8;
             // 
             // btnTestYT
@@ -146,6 +150,8 @@
             // 
             this.cbStayOnTop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbStayOnTop.AutoSize = true;
+            this.cbStayOnTop.Checked = true;
+            this.cbStayOnTop.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbStayOnTop.Location = new System.Drawing.Point(96, 336);
             this.cbStayOnTop.Name = "cbStayOnTop";
             this.cbStayOnTop.Size = new System.Drawing.Size(80, 17);
@@ -154,11 +160,50 @@
             this.cbStayOnTop.UseVisualStyleBackColor = true;
             this.cbStayOnTop.CheckedChanged += new System.EventHandler(this.CbStayOnTop_CheckedChanged);
             // 
+            // cbFollowPacketList
+            // 
+            this.cbFollowPacketList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbFollowPacketList.AutoSize = true;
+            this.cbFollowPacketList.Checked = true;
+            this.cbFollowPacketList.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbFollowPacketList.Location = new System.Drawing.Point(182, 336);
+            this.cbFollowPacketList.Name = "cbFollowPacketList";
+            this.cbFollowPacketList.Size = new System.Drawing.Size(98, 17);
+            this.cbFollowPacketList.TabIndex = 11;
+            this.cbFollowPacketList.Text = "Follow Packets";
+            this.cbFollowPacketList.UseVisualStyleBackColor = true;
+            // 
+            // btnSetOffset
+            // 
+            this.btnSetOffset.Location = new System.Drawing.Point(98, 9);
+            this.btnSetOffset.Name = "btnSetOffset";
+            this.btnSetOffset.Size = new System.Drawing.Size(75, 23);
+            this.btnSetOffset.TabIndex = 12;
+            this.btnSetOffset.Text = "Set Offset";
+            this.btnSetOffset.UseVisualStyleBackColor = true;
+            this.btnSetOffset.Click += new System.EventHandler(this.BtnSetOffset_Click);
+            // 
+            // lWarningLabel
+            // 
+            this.lWarningLabel.AutoSize = true;
+            this.lWarningLabel.BackColor = System.Drawing.Color.Maroon;
+            this.lWarningLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lWarningLabel.ForeColor = System.Drawing.Color.Yellow;
+            this.lWarningLabel.Location = new System.Drawing.Point(22, 48);
+            this.lWarningLabel.Name = "lWarningLabel";
+            this.lWarningLabel.Size = new System.Drawing.Size(68, 20);
+            this.lWarningLabel.TabIndex = 13;
+            this.lWarningLabel.Text = "Warning";
+            this.lWarningLabel.Visible = false;
+            // 
             // VideoLinkForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 411);
+            this.Controls.Add(this.lWarningLabel);
+            this.Controls.Add(this.btnSetOffset);
+            this.Controls.Add(this.cbFollowPacketList);
             this.Controls.Add(this.cbStayOnTop);
             this.Controls.Add(this.btnTestYT);
             this.Controls.Add(this.eYoutubeURL);
@@ -171,6 +216,7 @@
             this.Name = "VideoLinkForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "VideoLinkForm";
+            this.TopMost = true;
             this.Deactivate += new System.EventHandler(this.VideoLinkForm_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VideoLinkForm_FormClosing);
             this.Load += new System.EventHandler(this.VideoLinkForm_Load);
@@ -192,5 +238,8 @@
         private System.Windows.Forms.TextBox eYoutubeURL;
         private System.Windows.Forms.Button btnTestYT;
         private System.Windows.Forms.CheckBox cbStayOnTop;
+        public System.Windows.Forms.CheckBox cbFollowPacketList;
+        private System.Windows.Forms.Button btnSetOffset;
+        private System.Windows.Forms.Label lWarningLabel;
     }
 }

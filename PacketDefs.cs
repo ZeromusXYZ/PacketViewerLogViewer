@@ -904,7 +904,6 @@ namespace PacketViewerLogViewer.Packets
             // Add dummy blank lines to fix a bug of ignoring last packet if isn't finished by a blank line
             FileData.Add("");
 
-            // TODO: Loading Form
             Application.UseWaitCursor = true;
 
             using (LoadingForm loadform = new LoadingForm(MainForm.thisMainForm))

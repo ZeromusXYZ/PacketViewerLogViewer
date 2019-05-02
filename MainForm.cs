@@ -20,7 +20,6 @@ namespace PacketViewerLogViewer
     {
         public static MainForm thisMainForm;
 
-        const string versionString = "0.1.0";
         string defaultTitle = "";
         const string urlGitHub = "https://github.com/ZeromusXYZ/PVLV";
         const string urlVideoLAN = "https://www.videolan.org/";
@@ -34,7 +33,7 @@ namespace PacketViewerLogViewer
         const string InfoGridHeader = "     |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F    | 0123456789ABCDEF\n" +
                 "-----+----------------------------------------------------  -+------------------\n";
 
-    public MainForm()
+        public MainForm()
         {
             InitializeComponent();
             thisMainForm = this;
@@ -136,7 +135,7 @@ namespace PacketViewerLogViewer
             UpdatePacketDetails(tp,pd, "-");
             cbShowBlock.Enabled = true;
             lb.Invalidate();
-            if (tp.videoLink != null)
+            if ((tp.videoLink != null) && (tp.videoLink.cbFollowPacketList.Checked))
             {
                 tp.videoLink.MoveToDateTime(pd.VirtualTimeStamp);
             }
@@ -168,7 +167,6 @@ namespace PacketViewerLogViewer
 
         private void mmFileClose_Click(object sender, EventArgs e)
         {
-            Text = defaultTitle;
             if ((tcPackets.SelectedIndex >= 0) && (tcPackets.SelectedIndex < tcPackets.TabCount))
             {
                 tcPackets.TabPages.RemoveAt(tcPackets.SelectedIndex);
@@ -487,20 +485,13 @@ namespace PacketViewerLogViewer
             else
                 sbProjectInfo.Text = "Not a project";
 
-            if (tp.videoLink != null)
-            {
-                if (File.Exists(tp.videoLink.LinkVideoFileName))
-                    sbExtraInfo.Text = "Video Linked";
-                else
-                if (tp.videoLink.LinkYoutubeURL != string.Empty)
-                    sbExtraInfo.Text = "Youtube Linked";
-                else
-                    sbExtraInfo.Text = "Video Link Unused";
-            }
+            if (File.Exists(tp.LinkVideoFileName))
+                sbExtraInfo.Text = "Local Video Linked";
             else
-            {
+            if (tp.LinkYoutubeURL != string.Empty)
+                sbExtraInfo.Text = "Youtube Linked";
+            else
                 sbExtraInfo.Text = "";
-            }
         }
 
         private void TcPackets_SelectedIndexChanged(object sender, EventArgs e)
@@ -1109,17 +1100,19 @@ namespace PacketViewerLogViewer
 
         private void TcPackets_ControlRemoved(object sender, ControlEventArgs e)
         {
-            
             if (e.Control is PacketTabPage)
             {
                 PacketTabPage tp = (e.Control as PacketTabPage);
                 tp.SaveProjectFile();
+                if (tcPackets.TabCount <= 1)
+                    Text = defaultTitle;
             }
-
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
+            // Properly draw everything before we start
+            this.Refresh();
             // Handle arguments
             var args = Environment.GetCommandLineArgs().ToList();
             args.RemoveAt(0);
