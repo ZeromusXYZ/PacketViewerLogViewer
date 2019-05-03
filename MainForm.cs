@@ -1089,12 +1089,22 @@ namespace PacketViewerLogViewer
             }
         }
 
-        private void MmVideoBuildProject_Click(object sender, EventArgs e)
+        private void MmVideoViewProject_Click(object sender, EventArgs e)
         {
+            var tp = GetCurrentPacketTabPage();
+            if (tp == null)
+            {
+                MessageBox.Show("You need to open a log file first before you can view it's project settings", "View Project", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             using (var projectDlg = new ProjectInfoForm())
             {
-                projectDlg.LoadFromPacketTapPage(GetCurrentPacketTabPage());
-                projectDlg.ShowDialog();
+                projectDlg.LoadFromPacketTapPage(tp);
+                if (projectDlg.ShowDialog() == DialogResult.OK)
+                {
+                    projectDlg.ApplyPacketTapPage();
+                    tp.SaveProjectFile();
+                }
             }
         }
 

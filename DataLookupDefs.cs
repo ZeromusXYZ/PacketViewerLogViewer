@@ -85,6 +85,7 @@ namespace PacketViewerLogViewer.Packets
         public static DataLookupList NullList = new DataLookupList();
         public static DataLookupEntry NullEntry = new DataLookupEntry();
         public static DataLookupListSpecialMath MathList = new DataLookupListSpecialMath();
+        public static List<string> AllValues = new List<string>();
 
         // lookupname, id, lookupresult
         static public Dictionary<string, DataLookupList> LookupLists = new Dictionary<string, DataLookupList>();
@@ -317,6 +318,8 @@ namespace PacketViewerLogViewer.Packets
                         if (fields.Length > 2)
                             dle.Extra = fields[2];
                         dll.data.Add((UInt64)newID,dle);
+                        // for autocomplete
+                        AllValues.Add(dle.Val);
                     }
                 }
             }

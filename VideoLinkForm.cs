@@ -287,16 +287,19 @@ namespace PacketViewerLogViewer
             {
                 lWarningLabel.Text = "Negative Offset";
                 lWarningLabel.Visible = true;
+                media.Visible = false;
             }
             else
             if (off.TotalMilliseconds > tb.Maximum)
             {
                 lWarningLabel.Text = "Out of video range";
                 lWarningLabel.Visible = true;
+                media.Visible = false;
             }
             else
             {
                 lWarningLabel.Visible = false;
+                media.Visible = true;
             }
 
             blockPositionUpdates = false;
@@ -373,9 +376,10 @@ namespace PacketViewerLogViewer
             TimeSpan videoTime = TimeSpan.FromMilliseconds(media.Position * media.Length);
             TimeSpan packetTime = thisPacket.VirtualTimeStamp - sourceTP.PL.firstPacketTime ;
             var off = packetTime - videoTime;
+            var currentvloff = sourceTP.LinkVideoOffset;
 
             if (MessageBox.Show("Set Link ?\r\n\r\n"+
-                "Current Offset: " + sourceTP.LinkVideoOffset.ToString() + "\r\n\r\n" +
+                "Current Offset: " + currentvloff.ToString() + "\r\n\r\n" +
                 "Packet Time: " + packetTime.ToString() + "\r\n" +
                 "Video Time: " +videoTime.ToString() + "\r\n\r\n" +
                 "Difference: " + off.ToString(),
@@ -387,9 +391,6 @@ namespace PacketViewerLogViewer
 
         }
 
-        private void LVideoPosition_Click(object sender, EventArgs e)
-        {
 
-        }
     }
 }

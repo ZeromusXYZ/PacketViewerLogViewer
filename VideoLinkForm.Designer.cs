@@ -68,11 +68,11 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(12, 9);
+            this.btnOpen.Location = new System.Drawing.Point(93, 9);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 1;
-            this.btnOpen.Text = "Open";
+            this.btnOpen.Text = "Open Local";
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
             // 
@@ -115,12 +115,11 @@
             this.lVideoPosition.TabIndex = 5;
             this.lVideoPosition.Text = "Time";
             this.lVideoPosition.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.lVideoPosition.Click += new System.EventHandler(this.LVideoPosition_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(179, 14);
+            this.label1.Location = new System.Drawing.Point(211, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 13);
             this.label1.TabIndex = 7;
@@ -130,19 +129,19 @@
             // 
             this.eYoutubeURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.eYoutubeURL.Location = new System.Drawing.Point(267, 11);
+            this.eYoutubeURL.Location = new System.Drawing.Point(292, 11);
             this.eYoutubeURL.Name = "eYoutubeURL";
-            this.eYoutubeURL.Size = new System.Drawing.Size(224, 20);
+            this.eYoutubeURL.Size = new System.Drawing.Size(140, 20);
             this.eYoutubeURL.TabIndex = 8;
             // 
             // btnTestYT
             // 
             this.btnTestYT.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestYT.Location = new System.Drawing.Point(497, 9);
+            this.btnTestYT.Location = new System.Drawing.Point(438, 9);
             this.btnTestYT.Name = "btnTestYT";
-            this.btnTestYT.Size = new System.Drawing.Size(75, 23);
+            this.btnTestYT.Size = new System.Drawing.Size(134, 23);
             this.btnTestYT.TabIndex = 9;
-            this.btnTestYT.Text = "Test";
+            this.btnTestYT.Text = "Stream from Youtube";
             this.btnTestYT.UseVisualStyleBackColor = true;
             this.btnTestYT.Click += new System.EventHandler(this.BtnTestYT_Click);
             // 
@@ -175,7 +174,7 @@
             // 
             // btnSetOffset
             // 
-            this.btnSetOffset.Location = new System.Drawing.Point(98, 9);
+            this.btnSetOffset.Location = new System.Drawing.Point(12, 9);
             this.btnSetOffset.Name = "btnSetOffset";
             this.btnSetOffset.Size = new System.Drawing.Size(75, 23);
             this.btnSetOffset.TabIndex = 12;

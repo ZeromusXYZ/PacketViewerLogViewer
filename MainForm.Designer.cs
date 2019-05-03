@@ -54,7 +54,7 @@
             this.mmFilterReset = new System.Windows.Forms.ToolStripMenuItem();
             this.mmExtra = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoOpenLink = new System.Windows.Forms.ToolStripMenuItem();
-            this.mmVideoBuildProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.mmVideoViewProject = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutGithub = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutVideoLAN = new System.Windows.Forms.ToolStripMenuItem();
@@ -282,7 +282,7 @@
             // 
             this.mmExtra.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmVideoOpenLink,
-            this.mmVideoBuildProject});
+            this.mmVideoViewProject});
             this.mmExtra.Name = "mmExtra";
             this.mmExtra.Size = new System.Drawing.Size(44, 20);
             this.mmExtra.Text = "E&xtra";
@@ -294,13 +294,12 @@
             this.mmVideoOpenLink.Text = "Open or Add video link ...";
             this.mmVideoOpenLink.Click += new System.EventHandler(this.MmVideoOpenLink_Click);
             // 
-            // mmVideoBuildProject
+            // mmVideoViewProject
             // 
-            this.mmVideoBuildProject.Enabled = false;
-            this.mmVideoBuildProject.Name = "mmVideoBuildProject";
-            this.mmVideoBuildProject.Size = new System.Drawing.Size(208, 22);
-            this.mmVideoBuildProject.Text = "Build Project File ...";
-            this.mmVideoBuildProject.Click += new System.EventHandler(this.MmVideoBuildProject_Click);
+            this.mmVideoViewProject.Name = "mmVideoViewProject";
+            this.mmVideoViewProject.Size = new System.Drawing.Size(208, 22);
+            this.mmVideoViewProject.Text = "View Project Details";
+            this.mmVideoViewProject.Click += new System.EventHandler(this.MmVideoViewProject_Click);
             // 
             // mmAbout
             // 
@@ -698,7 +697,7 @@
         private System.Windows.Forms.ToolStripSeparator MMFilterApplyItem;
         private System.Windows.Forms.ToolStripMenuItem mmExtra;
         private System.Windows.Forms.ToolStripMenuItem mmVideoOpenLink;
-        private System.Windows.Forms.ToolStripMenuItem mmVideoBuildProject;
+        private System.Windows.Forms.ToolStripMenuItem mmVideoViewProject;
         private System.Windows.Forms.ToolStripMenuItem mmAbout;
         private System.Windows.Forms.ToolStripMenuItem mmAboutGithub;
         private System.Windows.Forms.ToolStripMenuItem mmAboutVideoLAN;

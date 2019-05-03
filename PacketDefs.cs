@@ -1322,9 +1322,10 @@ namespace PacketViewerLogViewer.Packets
         public string LoadedLogFile ;
         public VideoLinkForm videoLink ;
         public string ProjectFolder;
-        public string Tags;
+        public string ProjectTags;
         public string LinkVideoFileName;
         public string LinkYoutubeURL;
+        public string LinkPacketsDownloadURL;
         public TimeSpan LinkVideoOffset;
 
         public ListBox lbPackets;
@@ -1355,6 +1356,7 @@ namespace PacketViewerLogViewer.Packets
             ProjectFolder = string.Empty ;
             LinkVideoFileName = string.Empty;
             LinkYoutubeURL = string.Empty;
+            LinkPacketsDownloadURL = string.Empty;
 
             // Set ListBox Position
             lbPackets.Parent = this;
@@ -1370,7 +1372,7 @@ namespace PacketViewerLogViewer.Packets
             // Title to use on main program as "Filename"
             LoadedLogFile = "?Packets";
             ProjectFolder = string.Empty;
-            Tags = string.Empty;
+            ProjectTags = string.Empty;
 
             // Create Popup Menu
             pmPL = new ContextMenuStrip();
@@ -1852,9 +1854,14 @@ namespace PacketViewerLogViewer.Packets
                             LinkVideoOffset = TimeSpan.FromMilliseconds(n);
                     }
                     else
+                    if (fields[0].ToLower() == "packedsource")
+                    {
+                        LinkPacketsDownloadURL = fields[1];
+                    }
+                    else
                     if (fields[0].ToLower() == "tags")
                     {
-                        Tags = fields[1];
+                        ProjectTags = fields[1];
                     }
                     else
                     {
@@ -1866,7 +1873,7 @@ namespace PacketViewerLogViewer.Packets
 
                 if ((LoadedLogFile.StartsWith("?") == false) && (fromLogFile.ToLower() != LoadedLogFile.ToLower()) )
                 {
-                    MessageBox.Show("Loaded Project points to a different Log file\r\nOpened: " + fromLogFile + " \r\nFound: " + LoadedLogFile+"\r\n\r\nUsing new file", "Project Loading Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Loaded Project points to a different Log file\r\nOpened: " + fromLogFile + " \r\nExpected: " + LoadedLogFile+"\r\n\r\nUpdating to new file", "Project Loading Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     LoadedLogFile = fromLogFile;
                 }
 
@@ -1877,6 +1884,7 @@ namespace PacketViewerLogViewer.Packets
                 LinkVideoFileName = string.Empty;
                 LinkVideoOffset = TimeSpan.Zero;
                 LinkYoutubeURL = string.Empty;
+                LinkPacketsDownloadURL = string.Empty;
             }
 
             return true;
@@ -1902,10 +1910,11 @@ namespace PacketViewerLogViewer.Packets
                 List<string> sl = new List<string>();
                 sl.Add("rem;PacketViewerLogViewer Project File");
                 sl.Add("packetlog;" + relLogFile);
-                sl.Add("tags;" + Tags);
+                sl.Add("tags;" + ProjectTags);
                 sl.Add("video;" + relVideo);
                 sl.Add("youtube;" + LinkYoutubeURL);
                 sl.Add("offset;" + LinkVideoOffset.TotalMilliseconds.ToString());
+                sl.Add("packedsource;" + LinkPacketsDownloadURL);
                 File.WriteAllLines(ProjectFile, sl);
                 return true;
             }
