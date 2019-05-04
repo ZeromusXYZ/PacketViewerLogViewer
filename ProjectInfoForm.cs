@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PacketViewerLogViewer.Packets;
 using System.Diagnostics;
+using System.IO;
 
 namespace PacketViewerLogViewer
 {
@@ -77,6 +78,8 @@ namespace PacketViewerLogViewer
                 tSourceVideo.Text = tp.LinkVideoFileName;
                 tYoutubeURL.Text = tp.LinkYoutubeURL;
                 tPackedLogsURL.Text = tp.LinkPacketsDownloadURL;
+
+                gbProjectInfo.Text = "Project Information: " + tp.ProjectFile;
             }
         }
 
@@ -143,6 +146,53 @@ namespace PacketViewerLogViewer
         {
             if (tPackedLogsURL.Text != string.Empty)
                 Process.Start(tPackedLogsURL.Text);
+        }
+
+        private void ProjectInfo_TextChanged(object sender, EventArgs e)
+        {
+            bool res = true;
+            // Project Folder
+            if (Directory.Exists(tProjectFolder.Text.TrimEnd(Path.DirectorySeparatorChar)))
+            {
+                lProjectFolderOK.Text = "\x81";
+                lProjectFolderOK.ForeColor = Color.LimeGreen;
+            }
+            else
+            {
+                lProjectFolderOK.Text = "\xCE";
+                lProjectFolderOK.ForeColor = Color.Red;
+                res = false;
+            }
+
+            // Attached Log file
+            if (File.Exists(tOpenedLog.Text))
+            {
+                lOpenedLogOK.Text = "\x81";
+                lOpenedLogOK.ForeColor = Color.LimeGreen;
+            }
+            else
+            {
+                lOpenedLogOK.Text = "\xCE";
+                lOpenedLogOK.ForeColor = Color.Red;
+                res = false;
+            }
+
+            // Linked Local Video
+            if ( (tSourceVideo.Text == string.Empty) || (File.Exists(tSourceVideo.Text)) )
+            {
+                lVideoSourceOK.Text = "\x81";
+                lVideoSourceOK.ForeColor = Color.LimeGreen;
+            }
+            else
+            {
+                lVideoSourceOK.Text = "\xCE";
+                lVideoSourceOK.ForeColor = Color.Red;
+            }
+
+            btnDownloadSource.Enabled = (tPackedLogsURL.Text != string.Empty) && ( (tPackedLogsURL.Text.ToLower().StartsWith("http://")) || (tPackedLogsURL.Text.ToLower().StartsWith("https://")) );
+            btnDownloadYoutube.Enabled = (tYoutubeURL.Text != string.Empty) && ((tYoutubeURL.Text.ToLower().StartsWith("http://")) || (tYoutubeURL.Text.ToLower().StartsWith("https://"))); ;
+
+            btnSave.Enabled = res;
         }
     }
 }

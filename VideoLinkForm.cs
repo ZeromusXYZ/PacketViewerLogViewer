@@ -18,6 +18,7 @@ namespace PacketViewerLogViewer
     {
         public PacketTabPage sourceTP { get; set; }
         private bool blockPositionUpdates = false;
+        private bool closeOnStop = false;
         // TODO: check if the offset actually works and a way to set it
         // TODO: add something to set offset
         // TODO: add mute options
@@ -102,7 +103,6 @@ namespace PacketViewerLogViewer
             Text = "Video - " + sourceTP.LoadedLogFile;
             sourceTP.videoLink = this;
             LoadVideoFromProjectFile();
-            
         }
 
         public bool LoadVideoFromLocalFile(string filename)
@@ -188,9 +188,14 @@ namespace PacketViewerLogViewer
                 sourceTP.videoLink = null;
                 sourceTP = null;
             }
+
+            if (media.IsPlaying)
             try
             {
-                media.Stop();
+                e.Cancel = true;
+                closeOnStop = true;
+                closeFixTimer.Enabled = true;
+                media.ResetMedia();
             }
             catch
             {
@@ -200,6 +205,8 @@ namespace PacketViewerLogViewer
 
         private void Media_LengthChanged(object sender, Vlc.DotNet.Core.VlcMediaPlayerLengthChangedEventArgs e)
         {
+            if (closeOnStop)
+                return;
             try
             {
                 Invoke((MethodInvoker)delegate { 
@@ -234,6 +241,8 @@ namespace PacketViewerLogViewer
 
         private void Media_PositionChanged(object sender, Vlc.DotNet.Core.VlcMediaPlayerPositionChangedEventArgs e)
         {
+            if (closeOnStop)
+                return;
             if (blockPositionUpdates)
                 return;
             blockPositionUpdates = true;
@@ -314,6 +323,8 @@ namespace PacketViewerLogViewer
 
         private void Media_Paused(object sender, Vlc.DotNet.Core.VlcMediaPlayerPausedEventArgs e)
         {
+            if (closeOnStop)
+                return;
             try
             {
                 Invoke((MethodInvoker)delegate {
@@ -325,6 +336,8 @@ namespace PacketViewerLogViewer
 
         private void Media_Playing(object sender, Vlc.DotNet.Core.VlcMediaPlayerPlayingEventArgs e)
         {
+            if (closeOnStop)
+                return;
             try
             {
                 Invoke((MethodInvoker)delegate {
@@ -396,6 +409,60 @@ namespace PacketViewerLogViewer
             if (media.State == Vlc.DotNet.Core.Interops.Signatures.MediaStates.Playing)
                 media.Pause();
             media.VlcMediaPlayer.NextFrame();
+            long newPos = (long)(media.Position * media.Length);
+            UpdateTimeLabelAndList(newPos, media.Length, cbFollowPacketList.Checked);
+        }
+
+        private void BtnPrevFrame_Click(object sender, EventArgs e)
+        {
+            if (media.State == Vlc.DotNet.Core.Interops.Signatures.MediaStates.Playing)
+                media.Pause();
+            long newPos = (long)(media.Position * media.Length);
+            newPos -= 1000;
+            if (newPos < 0)
+                newPos = 0;
+            media.VlcMediaPlayer.Position = ((float)newPos / (float)media.Length);
+            UpdateTimeLabelAndList(newPos, media.Length, cbFollowPacketList.Checked);
+        }
+
+        private void Media_MediaChanged(object sender, Vlc.DotNet.Core.VlcMediaPlayerMediaChangedEventArgs e)
+        {
+            lWarningLabel.Visible = false;
+            if (closeOnStop)
+                Close();
+        }
+
+        private void BtnMute_Click(object sender, EventArgs e)
+        {
+            media.VlcMediaPlayer.Audio.IsMute = !media.VlcMediaPlayer.Audio.IsMute;
+            if (media.VlcMediaPlayer.Audio.IsMute)
+            {
+                btnMute.Text = "X ";
+            }
+            else
+            {
+                btnMute.Text = "X¯";
+            }
+
+        }
+
+        private void Media_Stopped(object sender, Vlc.DotNet.Core.VlcMediaPlayerStoppedEventArgs e)
+        {
+            if (!closeOnStop)
+                return;
+            try
+            {
+                Invoke((MethodInvoker)delegate {
+                    Close();
+                });
+            }
+            catch { }
+        }
+
+        private void CloseFixTimer_Tick(object sender, EventArgs e)
+        {
+            if (closeOnStop)
+                Close();
         }
     }
 }

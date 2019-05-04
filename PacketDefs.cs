@@ -1289,7 +1289,7 @@ namespace PacketViewerLogViewer.Packets
                     TimeSpan oneStepTime = TimeSpan.Zero;
                     if (divider > 0)
                         oneStepTime = TimeSpan.FromMilliseconds(1000 / divider);
-                    TimeSpan stepTime = oneStepTime;
+                    TimeSpan stepTime = TimeSpan.Zero;
                     for (int n = 0; n <= divider; n++)
                     {
                         GetPacket(FirstOfGroupIndex + n).VirtualTimeStamp = FirstOfGroupTime + stepTime;
