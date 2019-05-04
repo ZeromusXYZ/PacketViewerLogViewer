@@ -156,6 +156,7 @@
     </Compile>
     <Compile Include="ClipboardHelper.cs" />
     <Compile Include="DataLookupDefs.cs" />
+    <Compile Include="FileExtHelper.cs" />
     <Compile Include="ParseEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

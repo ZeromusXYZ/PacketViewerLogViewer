@@ -1322,6 +1322,7 @@ namespace PacketViewerLogViewer.Packets
         public string LoadedLogFile ;
         public VideoLinkForm videoLink ;
         public string ProjectFolder;
+        public string ProjectFile;
         public string ProjectTags;
         public string LinkVideoFileName;
         public string LinkYoutubeURL;
@@ -1809,20 +1810,20 @@ namespace PacketViewerLogViewer.Packets
 
         }
 
-        public bool LoadProjectFile(string fromLogFile)
+        public bool LoadProjectFile(string aProjectFile)
         {
-            var ProjectFile = string.Empty;
-            if ((fromLogFile != null) && (fromLogFile != string.Empty))
-                ProjectFolder = Helper.MakeProjectDirectoryFromLogFileName(fromLogFile);
-
-            ProjectFile = ProjectFolder + Path.GetFileName(ProjectFolder.TrimEnd('\\')) + ".pvlv" ;
-
+            LoadedLogFile = string.Empty;
+            LinkVideoFileName = string.Empty;
+            LinkVideoOffset = TimeSpan.Zero;
+            LinkYoutubeURL = string.Empty;
+            LinkPacketsDownloadURL = string.Empty;
+            ProjectFolder = Path.GetDirectoryName(aProjectFile).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
             try
             {
                 string[] sl;
-                if (File.Exists(ProjectFile))
+                if (File.Exists(aProjectFile))
                 {
-                    sl = File.ReadAllLines(ProjectFile);
+                    sl = File.ReadAllLines(aProjectFile);
                 }
                 else
                 {
@@ -1835,7 +1836,7 @@ namespace PacketViewerLogViewer.Packets
                         continue;
                     if (fields[0].ToLower() == "packetlog")
                     {
-                        LoadedLogFile = Helper.TryMakeFullPath(ProjectFolder,fields[1]);
+                        LoadedLogFile = Helper.TryMakeFullPath(ProjectFolder, fields[1]);
                     }
                     else
                     if (fields[0].ToLower() == "video")
@@ -1869,14 +1870,8 @@ namespace PacketViewerLogViewer.Packets
                     }
 
                 }
-
-
-                if ((LoadedLogFile.StartsWith("?") == false) && (fromLogFile.ToLower() != LoadedLogFile.ToLower()) )
-                {
-                    MessageBox.Show("Loaded Project points to a different Log file\r\nOpened: " + fromLogFile + " \r\nExpected: " + LoadedLogFile+"\r\n\r\nUpdating to new file", "Project Loading Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    LoadedLogFile = fromLogFile;
-                }
-
+                // Set on success
+                ProjectFile = aProjectFile;
             }
             catch
             {
@@ -1890,12 +1885,24 @@ namespace PacketViewerLogViewer.Packets
             return true;
         }
 
+        public bool LoadProjectFileFromLogFile(string fromLogFile)
+        {
+            if ((fromLogFile != null) && (fromLogFile != string.Empty))
+                ProjectFolder = Helper.MakeProjectDirectoryFromLogFileName(fromLogFile);
+
+            ProjectFile = ProjectFolder + Path.GetFileName(ProjectFolder.TrimEnd('\\')) + ".pvlv";
+
+            return LoadProjectFile(ProjectFile);
+        }
+
         public bool SaveProjectFile()
         {
             if ((ProjectFolder == null) || (ProjectFolder == string.Empty))
                 return false;
 
-            var ProjectFile = ProjectFolder + Path.GetFileName(ProjectFolder.TrimEnd('\\')) + ".pvlv" ;
+            // Generate Filename if needed
+            if ((ProjectFile == null) || (ProjectFile == string.Empty))
+                ProjectFile = ProjectFolder + Path.GetFileName(ProjectFolder.TrimEnd('\\')) + ".pvlv" ;
 
             string relVideo = string.Empty;
             if ((LinkVideoFileName != null) && (LinkVideoFileName != string.Empty))

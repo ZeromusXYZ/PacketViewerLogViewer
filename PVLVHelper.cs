@@ -158,26 +158,37 @@ namespace PacketViewerLogViewer.PVLVHelper
 
         public static string TryMakeFullPath(string ProjectDirectory, string fileName)
         {
+            if (fileName == string.Empty)
+                return fileName;
+
             string res = fileName ;
+
             if (!ProjectDirectory.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 ProjectDirectory += Path.DirectorySeparatorChar;
 
-            // If a file is provided, try to expand it to it's full path
-            if (!File.Exists(fileName))
+            try
             {
-                var s = Path.GetFullPath(fileName);
-                if (File.Exists(s))
+                // If a file is provided, try to expand it to it's full path
+                if (!File.Exists(fileName))
                 {
-                    res = s;
-                }
-                else
-                {
-                    s = Path.GetFullPath(ProjectDirectory + fileName);
+                    var s = Path.GetFullPath(fileName);
                     if (File.Exists(s))
                     {
                         res = s;
                     }
+                    else
+                    {
+                        s = Path.GetFullPath(ProjectDirectory + fileName);
+                        if (File.Exists(s))
+                        {
+                            res = s;
+                        }
+                    }
                 }
+            }
+            catch
+            {
+                res = fileName;
             }
             return res;
         }

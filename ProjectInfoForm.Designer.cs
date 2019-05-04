@@ -46,10 +46,10 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tTagBox = new System.Windows.Forms.TextBox();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.tagContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.btnAddTag = new System.Windows.Forms.Button();
+            this.tagContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.lTagLabel = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -238,16 +238,15 @@
             this.tTagBox.TabIndex = 0;
             this.tTagBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TTagBox_KeyDown);
             // 
-            // btnSave
+            // btnAddTag
             // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(12, 396);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(88, 23);
-            this.btnSave.TabIndex = 7;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            this.btnAddTag.Location = new System.Drawing.Point(153, 19);
+            this.btnAddTag.Name = "btnAddTag";
+            this.btnAddTag.Size = new System.Drawing.Size(71, 23);
+            this.btnAddTag.TabIndex = 1;
+            this.btnAddTag.Text = "Add Tag";
+            this.btnAddTag.UseVisualStyleBackColor = true;
+            this.btnAddTag.Click += new System.EventHandler(this.BtnAddTag_Click);
             // 
             // tagContainer
             // 
@@ -259,16 +258,6 @@
             this.tagContainer.Size = new System.Drawing.Size(40, 13);
             this.tagContainer.TabIndex = 2;
             // 
-            // btnAddTag
-            // 
-            this.btnAddTag.Location = new System.Drawing.Point(153, 19);
-            this.btnAddTag.Name = "btnAddTag";
-            this.btnAddTag.Size = new System.Drawing.Size(71, 23);
-            this.btnAddTag.TabIndex = 1;
-            this.btnAddTag.Text = "Add Tag";
-            this.btnAddTag.UseVisualStyleBackColor = true;
-            this.btnAddTag.Click += new System.EventHandler(this.BtnAddTag_Click);
-            // 
             // lTagLabel
             // 
             this.lTagLabel.AutoSize = true;
@@ -278,6 +267,17 @@
             this.lTagLabel.TabIndex = 0;
             this.lTagLabel.Text = "Tags:";
             this.lTagLabel.Click += new System.EventHandler(this.LTagLabel_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(12, 396);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(88, 23);
+            this.btnSave.TabIndex = 7;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // ProjectInfoForm
             // 
@@ -326,9 +326,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox tTagBox;
-        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.FlowLayoutPanel tagContainer;
         private System.Windows.Forms.Button btnAddTag;
         private System.Windows.Forms.Label lTagLabel;
+        public System.Windows.Forms.Button btnSave;
     }
 }

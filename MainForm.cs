@@ -12,6 +12,7 @@ using PacketViewerLogViewer.Packets;
 using System.IO;
 using PacketViewerLogViewer.ClipboardHelper;
 using PacketViewerLogViewer.PVLVHelper;
+using PacketViewerLogViewer.FileExtHelper;
 
 namespace PacketViewerLogViewer
 {
@@ -22,6 +23,7 @@ namespace PacketViewerLogViewer
 
         string defaultTitle = "";
         const string urlGitHub = "https://github.com/ZeromusXYZ/PVLV";
+        const string urlDiscord = "https://discord.gg/GhVfDtK";
         const string urlVideoLAN = "https://www.videolan.org/";
 
         //PacketList PLLoaded; // File Loaded
@@ -56,6 +58,11 @@ namespace PacketViewerLogViewer
             Process.Start(urlVideoLAN);
         }
 
+        private void MmAboutDiscord_Click(object sender, EventArgs e)
+        {
+            Process.Start(urlDiscord);
+        }
+
         private void mmAboutAbout_Click(object sender, EventArgs e)
         {
             using (AboutBoxForm ab = new AboutBoxForm())
@@ -64,8 +71,25 @@ namespace PacketViewerLogViewer
             }
         }
 
+        private void RegisterFileExt()
+        {
+            try
+            {
+                // Might also need to check
+                // HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\
+                FileAssociations.EnsureAssociationsSet();
+                //FileAssociations.EnsureURIAssociationsSet();
+            }
+            catch
+            {
+                // Set File or URI Association failed ?
+            }
+        }
+
+
         private void MainForm_Load(object sender, EventArgs e)
         {
+            RegisterFileExt();
             defaultTitle = Text;
             Application.UseWaitCursor = true;
             try
@@ -88,13 +112,60 @@ namespace PacketViewerLogViewer
             openLogFileDialog.Title = "Open log file";
             if (openLogFileDialog.ShowDialog() != DialogResult.OK)
                 return;
-            TryOpenLogFile(openLogFileDialog.FileName);
+            TryOpenFile(openLogFileDialog.FileName);
         }
 
-        private void TryOpenLogFile(string logFile)
+        private void TryOpenFile(string aFileName)
+        {
+            if (Path.GetExtension(aFileName).ToLower() == ".pvlv")
+            {
+                // Open Project File
+                TryOpenProjectFile(aFileName);
+            }
+            else
+            {
+                TryOpenLogFile(aFileName,true);
+            }
+        }
+
+        private void TryOpenProjectFile(string ProjectFile)
         {
             PacketTabPage tp = CreateNewPacketsTabPage();
-            tp.LoadProjectFile(logFile);
+            tp.LoadProjectFile(ProjectFile);
+            tp.Text = Helper.MakeTabName(ProjectFile);
+
+            using (var projectDlg = new ProjectInfoForm())
+            {
+                projectDlg.LoadFromPacketTapPage(tp);
+                projectDlg.btnSave.Text = "Open";
+                if (projectDlg.ShowDialog() == DialogResult.OK)
+                {
+                    projectDlg.ApplyPacketTapPage();
+                    tp.SaveProjectFile();
+                    TryOpenLogFile(tp.LoadedLogFile, false);
+                }
+                else
+                {
+                    tcPackets.TabPages.Remove(tp);
+                }
+            }
+
+        }
+
+        private void TryOpenLogFile(string logFile,bool alsoLoadProject)
+        {
+
+            PacketTabPage tp ;
+            if (alsoLoadProject)
+            {
+                tp = CreateNewPacketsTabPage();
+                tp.LoadProjectFileFromLogFile(logFile);
+            }
+            else
+            {
+                tp = GetCurrentPacketTabPage();
+            }
+            
             //tp.ProjectFolder = Helper.MakeProjectDirectoryFromLogFileName(logFile);
             tp.Text = Helper.MakeTabName(logFile);
 
@@ -1131,7 +1202,7 @@ namespace PacketViewerLogViewer
                 if (File.Exists(arg))
                 {
                     // open log
-                    TryOpenLogFile(arg);
+                    TryOpenFile(arg);
                 }
             }
         }

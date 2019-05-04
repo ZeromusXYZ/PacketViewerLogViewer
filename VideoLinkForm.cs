@@ -391,6 +391,11 @@ namespace PacketViewerLogViewer
 
         }
 
-
+        private void BtnNextFrame_Click(object sender, EventArgs e)
+        {
+            if (media.State == Vlc.DotNet.Core.Interops.Signatures.MediaStates.Playing)
+                media.Pause();
+            media.VlcMediaPlayer.NextFrame();
+        }
     }
 }
