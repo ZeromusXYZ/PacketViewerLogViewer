@@ -89,11 +89,12 @@ namespace PacketViewerLogViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            RegisterFileExt();
             defaultTitle = Text;
+            RegisterFileExt();
             Application.UseWaitCursor = true;
             try
             {
+                Directory.SetCurrentDirectory(Application.StartupPath);
                 DataLookups.LoadLookups();
             }
             catch (Exception x)
