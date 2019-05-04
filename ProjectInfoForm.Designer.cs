@@ -153,9 +153,9 @@
             // 
             this.btnDownloadSource.Location = new System.Drawing.Point(415, 71);
             this.btnDownloadSource.Name = "btnDownloadSource";
-            this.btnDownloadSource.Size = new System.Drawing.Size(75, 23);
+            this.btnDownloadSource.Size = new System.Drawing.Size(144, 23);
             this.btnDownloadSource.TabIndex = 11;
-            this.btnDownloadSource.Text = "Download";
+            this.btnDownloadSource.Text = "Open in browser";
             this.btnDownloadSource.UseVisualStyleBackColor = true;
             this.btnDownloadSource.Click += new System.EventHandler(this.BtnDownloadSource_Click);
             // 
@@ -163,18 +163,18 @@
             // 
             this.btnDownloadYoutube.Location = new System.Drawing.Point(415, 32);
             this.btnDownloadYoutube.Name = "btnDownloadYoutube";
-            this.btnDownloadYoutube.Size = new System.Drawing.Size(75, 23);
+            this.btnDownloadYoutube.Size = new System.Drawing.Size(144, 23);
             this.btnDownloadYoutube.TabIndex = 12;
-            this.btnDownloadYoutube.Text = "Download";
+            this.btnDownloadYoutube.Text = "Open in browser";
             this.btnDownloadYoutube.UseVisualStyleBackColor = true;
             this.btnDownloadYoutube.Click += new System.EventHandler(this.BtnDownloadYoutube_Click);
             // 
             // btnUploadToYoutube
             // 
             this.btnUploadToYoutube.Enabled = false;
-            this.btnUploadToYoutube.Location = new System.Drawing.Point(451, 108);
+            this.btnUploadToYoutube.Location = new System.Drawing.Point(443, 108);
             this.btnUploadToYoutube.Name = "btnUploadToYoutube";
-            this.btnUploadToYoutube.Size = new System.Drawing.Size(108, 23);
+            this.btnUploadToYoutube.Size = new System.Drawing.Size(116, 23);
             this.btnUploadToYoutube.TabIndex = 14;
             this.btnUploadToYoutube.Text = "Upload to Youtube";
             this.btnUploadToYoutube.UseVisualStyleBackColor = true;
