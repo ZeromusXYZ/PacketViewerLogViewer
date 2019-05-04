@@ -1207,5 +1207,24 @@ namespace PacketViewerLogViewer
                 }
             }
         }
+
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            // trying to add some file dropping
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.All;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            int i;
+            for (i = 0; i < s.Length; i++)
+            {
+                TryOpenFile(s[i]);
+            }
+        }
     }
 }
