@@ -835,6 +835,8 @@ namespace PacketViewerLogViewer.Packets
     public class PacketList
     {
         protected List<PacketData> PacketDataList { get; set; }
+        public List<UInt16> ContainsPacketsIn { get; set; }
+        public List<UInt16> ContainsPacketsOut { get; set; }
 
         public PacketListFilter Filter ;
         public DateTime firstPacketTime;
@@ -842,6 +844,8 @@ namespace PacketViewerLogViewer.Packets
         public PacketList()
         {
             PacketDataList = new List<PacketData>();
+            ContainsPacketsIn = new List<UInt16>();
+            ContainsPacketsOut = new List<UInt16>();
             Filter = new PacketListFilter();
             firstPacketTime = new DateTime(0);
         }
@@ -1034,6 +1038,17 @@ namespace PacketViewerLogViewer.Packets
                             if (PD.CompileData(logFileType))
                             {
                                 PacketDataList.Add(PD);
+                                if (PD.PacketLogType == PacketLogTypes.Outgoing)
+                                {
+                                    if (ContainsPacketsOut.IndexOf(PD.PacketID) < 0)
+                                        ContainsPacketsOut.Add(PD.PacketID);
+                                }
+                                else
+                                if (PD.PacketLogType == PacketLogTypes.Incoming)
+                                {
+                                    if (ContainsPacketsIn.IndexOf(PD.PacketID) < 0)
+                                        ContainsPacketsIn.Add(PD.PacketID);
+                                }
                             }
                             else
                             {
@@ -1126,7 +1141,20 @@ namespace PacketViewerLogViewer.Packets
                             pd.OriginalTimeString = "";
 
                             if (pd.CompileData(PacketLogFileFormats.PacketDB))
+                            {
                                 PacketDataList.Add(pd);
+                                if (pd.PacketLogType == PacketLogTypes.Outgoing)
+                                {
+                                    if (ContainsPacketsOut.IndexOf(pd.PacketID) < 0)
+                                        ContainsPacketsOut.Add(pd.PacketID);
+                                }
+                                else
+                                if (pd.PacketLogType == PacketLogTypes.Incoming)
+                                {
+                                    if (ContainsPacketsIn.IndexOf(pd.PacketID) < 0)
+                                        ContainsPacketsIn.Add(pd.PacketID);
+                                }
+                            }
 
                             c++;
                             if ((c % 100) == 0)
@@ -1914,6 +1942,21 @@ namespace PacketViewerLogViewer.Packets
 
             try
             {
+                string cin = string.Empty;
+                foreach(UInt16 n in PLLoaded.ContainsPacketsIn)
+                {
+                    if (cin != string.Empty)
+                        cin += ",";
+                    cin += n.ToString("X");
+                }
+                string cout = string.Empty;
+                foreach (UInt16 n in PLLoaded.ContainsPacketsOut)
+                {
+                    if (cout != string.Empty)
+                        cout += ",";
+                    cout += n.ToString("X");
+                }
+
                 List<string> sl = new List<string>();
                 sl.Add("rem;PacketViewerLogViewer Project File");
                 sl.Add("packetlog;" + relLogFile);
@@ -1922,6 +1965,8 @@ namespace PacketViewerLogViewer.Packets
                 sl.Add("youtube;" + LinkYoutubeURL);
                 sl.Add("offset;" + LinkVideoOffset.TotalMilliseconds.ToString());
                 sl.Add("packedsource;" + LinkPacketsDownloadURL);
+                sl.Add("cin;" + cin);
+                sl.Add("cout;" + cout);
                 File.WriteAllLines(ProjectFile, sl);
                 return true;
             }

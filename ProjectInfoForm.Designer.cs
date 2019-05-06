@@ -53,6 +53,7 @@
             this.tagContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.lTagLabel = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
+            this.btnCopySummary = new System.Windows.Forms.Button();
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
@@ -311,7 +312,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSave.Location = new System.Drawing.Point(12, 396);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(88, 23);
@@ -320,11 +321,23 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
+            // btnCopySummary
+            // 
+            this.btnCopySummary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopySummary.Location = new System.Drawing.Point(455, 396);
+            this.btnCopySummary.Name = "btnCopySummary";
+            this.btnCopySummary.Size = new System.Drawing.Size(116, 23);
+            this.btnCopySummary.TabIndex = 18;
+            this.btnCopySummary.Text = "Copy Summary";
+            this.btnCopySummary.UseVisualStyleBackColor = true;
+            this.btnCopySummary.Click += new System.EventHandler(this.BtnCopySummary_Click);
+            // 
             // ProjectInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(590, 431);
+            this.Controls.Add(this.btnCopySummary);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.gbProjectInfo);
             this.Controls.Add(this.gbOnlineFile);
@@ -374,5 +387,6 @@
         private System.Windows.Forms.Label lVideoSourceOK;
         private System.Windows.Forms.Label lOpenedLogOK;
         private System.Windows.Forms.Label lProjectFolderOK;
+        public System.Windows.Forms.Button btnCopySummary;
     }
 }

@@ -27,3 +27,6 @@ rem;Just add extra entries for more tags
 24;Campaign
 25;Wildskeeper Reive
 26;Reive
+27;Party
+28;Alliance
+29;Nation

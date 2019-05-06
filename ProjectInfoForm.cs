@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PacketViewerLogViewer.Packets;
 using System.Diagnostics;
 using System.IO;
+using PacketViewerLogViewer.ClipboardHelper;
 
 namespace PacketViewerLogViewer
 {
@@ -193,6 +194,32 @@ namespace PacketViewerLogViewer
             btnDownloadYoutube.Enabled = (tYoutubeURL.Text != string.Empty) && ((tYoutubeURL.Text.ToLower().StartsWith("http://")) || (tYoutubeURL.Text.ToLower().StartsWith("https://"))); ;
 
             btnSave.Enabled = res;
+        }
+
+        private void BtnCopySummary_Click(object sender, EventArgs e)
+        {
+            string cliptext = "";
+            cliptext += "Name: " + Path.GetFileNameWithoutExtension(tp.ProjectFile) + "\n" ;
+            if (tPackedLogsURL.Text != string.Empty)
+                cliptext += "Logs: <" + tPackedLogsURL.Text + ">\n";
+            if (tYoutubeURL.Text != string.Empty)
+                cliptext += "Video: " + tYoutubeURL.Text + "\n";
+            var t = VisualTagsToString();
+            if (t != string.Empty)
+                cliptext += "Tags: " + t + "\n";
+            try
+            {
+                // Because nothing is ever as simple as the next line >.>
+                // Clipboard.SetText(s);
+                // Helper will (try to) prevent errors when copying to clipboard because of threading issues
+                var cliphelp = new SetClipboardHelper(DataFormats.Text, cliptext);
+                cliphelp.DontRetryWorkOnFailed = false;
+                cliphelp.Go();
+            }
+            catch
+            {
+            }
+
         }
     }
 }

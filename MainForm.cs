@@ -142,8 +142,8 @@ namespace PacketViewerLogViewer
                 if (projectDlg.ShowDialog() == DialogResult.OK)
                 {
                     projectDlg.ApplyPacketTapPage();
-                    tp.SaveProjectFile();
                     TryOpenLogFile(tp.LoadedLogFile, false);
+                    tp.SaveProjectFile();
                 }
                 else
                 {
@@ -906,7 +906,7 @@ namespace PacketViewerLogViewer
             }
             try
             {
-                // Because nothing is ever as simple as >.>
+                // Because nothing is ever as simple as the next line >.>
                 // Clipboard.SetText(s);
                 // Helper will (try to) prevent errors when copying to clipboard because of threading issues
                 var cliphelp = new SetClipboardHelper(DataFormats.Text, cliptext);
