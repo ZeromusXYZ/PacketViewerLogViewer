@@ -79,7 +79,7 @@ namespace PacketViewerLogViewer
                 tYoutubeURL.Text = tp.LinkYoutubeURL;
                 tPackedLogsURL.Text = tp.LinkPacketsDownloadURL;
 
-                gbProjectInfo.Text = "Project Information: " + tp.ProjectFile;
+                gbProjectInfo.Text = "Project Information: " + Path.GetFileName(tp.ProjectFile);
             }
         }
 
