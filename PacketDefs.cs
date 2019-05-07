@@ -1269,6 +1269,8 @@ namespace PacketViewerLogViewer.Packets
 
         public int FindPacketIndexByDateTime(DateTime dt,int searchStartLocation = 0)
         {
+            // TODO: Make this function work 100% like intended
+
             if (PacketDataList.Count <= 0)
                 return -1;
             int i = searchStartLocation ;
@@ -1277,15 +1279,16 @@ namespace PacketViewerLogViewer.Packets
             var lastCheckTime = PacketDataList[i].VirtualTimeStamp;
             for(int c = 0;c < PacketDataList.Count; c++)
             {
-                if ((dt > lastCheckTime) && (dt <= PacketDataList[i].VirtualTimeStamp))
-                //if (dt <= PacketDataList[i].VirtualTimeStamp)
-                   return i;
-
                 // Next
                 lastCheckTime = PacketDataList[i].VirtualTimeStamp;
                 i++;
                 if (i >= PacketDataList.Count)
                     i = 0;
+
+                if ((lastCheckTime <= dt) && (dt < PacketDataList[i].VirtualTimeStamp))
+                //if (dt <= PacketDataList[i].VirtualTimeStamp)
+                   return i;
+
             }
             return -1;
         }
@@ -1545,8 +1548,27 @@ namespace PacketViewerLogViewer.Packets
 
             // Draw the current item text based on the current Font 
             // and the custom brush settings.
+            Rectangle textBounds = new Rectangle(e.Bounds.Left + (Properties.Resources.mini_unk_icon.Width * 2), e.Bounds.Top, e.Bounds.Width - (Properties.Resources.mini_unk_icon.Width * 2), e.Bounds.Height);
             e.Graphics.DrawString(lb.Items[e.Index].ToString(),
-                e.Font, textBrush, e.Bounds, StringFormat.GenericDefault);
+                e.Font, textBrush, textBounds, StringFormat.GenericDefault);
+
+            Rectangle icon1 = new Rectangle(e.Bounds.Left, e.Bounds.Top + ((e.Bounds.Height - Properties.Resources.mini_unk_icon.Height) / 2), Properties.Resources.mini_unk_icon.Width, Properties.Resources.mini_unk_icon.Height);
+            Rectangle icon2 = new Rectangle(e.Bounds.Left + e.Bounds.Height, e.Bounds.Top, e.Bounds.Height, e.Bounds.Height);
+            if (pd.PacketLogType == PacketLogTypes.Incoming)
+            {
+                e.Graphics.DrawImage(Properties.Resources.mini_in_icon, icon1);
+            }
+            else
+            if (pd.PacketLogType == PacketLogTypes.Outgoing)
+            {
+                e.Graphics.DrawImage(Properties.Resources.mini_out_icon, icon1);
+            }
+            else
+            {
+                e.Graphics.DrawImage(Properties.Resources.mini_unk_icon, icon1);
+            }
+            // e.Graphics.DrawImage(Properties.Resources.mini_unk_icon, icon2);
+
             if (barOn)
             {
                 var barSize = 8;
@@ -1609,6 +1631,7 @@ namespace PacketViewerLogViewer.Packets
                     for (int i = 0; i < PL.Count(); i++)
                     {
                         PacketData pd = PL.GetPacket(i);
+                        /*
                         switch (pd.PacketLogType)
                         {
                             case PacketLogTypes.Outgoing:
@@ -1621,6 +1644,8 @@ namespace PacketViewerLogViewer.Packets
                                 lbPackets.Items.Add("?? " + pd.HeaderText);
                                 break;
                         }
+                        */
+                        lbPackets.Items.Add(pd.HeaderText);
                         if ((GotoIndex < 0) && (GotTolastSync > 0) && (pd.PacketSync >= GotTolastSync))
                         {
                             GotoIndex = lbPackets.Items.Count - 1 ;

@@ -282,6 +282,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Res\mini_unk_icon.png" />
+    <None Include="Res\mini_out_icon.png" />
+    <None Include="Res\mini_in_icon.png" />
     <EmbeddedResource Include="FodyWeavers.xml" />
     <EmbeddedResource Include="costura32\e_sqlite3.dll" />
     <EmbeddedResource Include="costura64\e_sqlite3.dll" />
@@ -746,6 +749,24 @@
     </Content>
     <Content Include="Res\5657.close.png" />
     <Content Include="Res\5700.add.png" />
+    <None Include="Res\Fairytale_left.png" />
+    <None Include="Res\Fairytale_right_blue.png" />
+    <None Include="Res\Fairytale_history.png" />
+    <None Include="Res\Fairytale_apply.png" />
+    <None Include="Res\Fairytale_button_cancel.png" />
+    <None Include="Res\Fairytale_editcopy.png" />
+    <None Include="Res\Fairytale_filenew2.png" />
+    <None Include="Res\Fairytale_filenew3.png" />
+    <None Include="Res\Fairytale_fileopen.png" />
+    <None Include="Res\Fairytale_player_eject.png" />
+    <None Include="Res\Fairytale_player_end.png" />
+    <None Include="Res\Fairytale_player_fwd.png" />
+    <None Include="Res\Fairytale_player_pause.png" />
+    <None Include="Res\Fairytale_player_play.png" />
+    <None Include="Res\Fairytale_player_rec.png" />
+    <None Include="Res\Fairytale_player_rev.png" />
+    <None Include="Res\Fairytale_player_start.png" />
+    <None Include="Res\Fairytale_player_stop.png" />
     <Content Include="Res\ffxi-found-it!.ico" />
     <Content Include="lookup\roe.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

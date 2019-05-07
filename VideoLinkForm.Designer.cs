@@ -29,8 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoLinkForm));
             this.media = new Vlc.DotNet.Forms.VlcControl();
             this.btnOpen = new System.Windows.Forms.Button();
+            this.IL = new System.Windows.Forms.ImageList(this.components);
             this.openVideoDlg = new System.Windows.Forms.OpenFileDialog();
             this.btnPlay = new System.Windows.Forms.Button();
             this.tb = new System.Windows.Forms.TrackBar();
@@ -75,13 +77,34 @@
             // 
             // btnOpen
             // 
+            this.btnOpen.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnOpen.ImageIndex = 3;
+            this.btnOpen.ImageList = this.IL;
             this.btnOpen.Location = new System.Drawing.Point(12, 10);
             this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(75, 23);
+            this.btnOpen.Size = new System.Drawing.Size(89, 23);
             this.btnOpen.TabIndex = 1;
             this.btnOpen.Text = "Open Local";
+            this.btnOpen.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
+            // 
+            // IL
+            // 
+            this.IL.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("IL.ImageStream")));
+            this.IL.TransparentColor = System.Drawing.Color.Transparent;
+            this.IL.Images.SetKeyName(0, "Fairytale_player_play.png");
+            this.IL.Images.SetKeyName(1, "Fairytale_player_pause.png");
+            this.IL.Images.SetKeyName(2, "Fairytale_player_stop.png");
+            this.IL.Images.SetKeyName(3, "Fairytale_player_eject.png");
+            this.IL.Images.SetKeyName(4, "Fairytale_player_end.png");
+            this.IL.Images.SetKeyName(5, "Fairytale_player_fwd.png");
+            this.IL.Images.SetKeyName(6, "Fairytale_player_rev.png");
+            this.IL.Images.SetKeyName(7, "Fairytale_player_start.png");
+            this.IL.Images.SetKeyName(8, "Fairytale_player_rec.png");
+            this.IL.Images.SetKeyName(9, "Fairytale_apply.png");
+            this.IL.Images.SetKeyName(10, "Fairytale_history.png");
+            this.IL.Images.SetKeyName(11, "Fairytale_button_cancel.png");
             // 
             // openVideoDlg
             // 
@@ -91,11 +114,14 @@
             // btnPlay
             // 
             this.btnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPlay.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnPlay.ImageIndex = 0;
+            this.btnPlay.ImageList = this.IL;
             this.btnPlay.Location = new System.Drawing.Point(12, 332);
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(75, 23);
+            this.btnPlay.Size = new System.Drawing.Size(89, 23);
             this.btnPlay.TabIndex = 2;
-            this.btnPlay.Text = "Play  >";
+            this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
             this.btnPlay.Click += new System.EventHandler(this.BtnPlay_Click);
             // 
@@ -116,9 +142,9 @@
             // lVideoPosition
             // 
             this.lVideoPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lVideoPosition.Location = new System.Drawing.Point(324, 335);
+            this.lVideoPosition.Location = new System.Drawing.Point(321, 335);
             this.lVideoPosition.Name = "lVideoPosition";
-            this.lVideoPosition.Size = new System.Drawing.Size(208, 18);
+            this.lVideoPosition.Size = new System.Drawing.Size(211, 18);
             this.lVideoPosition.TabIndex = 5;
             this.lVideoPosition.Text = "Time";
             this.lVideoPosition.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -126,7 +152,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(262, 15);
+            this.label1.Location = new System.Drawing.Point(282, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 13);
             this.label1.TabIndex = 7;
@@ -136,9 +162,9 @@
             // 
             this.eYoutubeURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.eYoutubeURL.Location = new System.Drawing.Point(343, 12);
+            this.eYoutubeURL.Location = new System.Drawing.Point(363, 12);
             this.eYoutubeURL.Name = "eYoutubeURL";
-            this.eYoutubeURL.Size = new System.Drawing.Size(166, 20);
+            this.eYoutubeURL.Size = new System.Drawing.Size(146, 20);
             this.eYoutubeURL.TabIndex = 8;
             // 
             // btnTestYT
@@ -157,7 +183,7 @@
             this.cbStayOnTop.AutoSize = true;
             this.cbStayOnTop.Checked = true;
             this.cbStayOnTop.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbStayOnTop.Location = new System.Drawing.Point(174, 13);
+            this.cbStayOnTop.Location = new System.Drawing.Point(196, 14);
             this.cbStayOnTop.Name = "cbStayOnTop";
             this.cbStayOnTop.Size = new System.Drawing.Size(80, 17);
             this.cbStayOnTop.TabIndex = 10;
@@ -171,7 +197,7 @@
             this.cbFollowPacketList.AutoSize = true;
             this.cbFollowPacketList.Checked = true;
             this.cbFollowPacketList.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFollowPacketList.Location = new System.Drawing.Point(220, 336);
+            this.cbFollowPacketList.Location = new System.Drawing.Point(217, 336);
             this.cbFollowPacketList.Name = "cbFollowPacketList";
             this.cbFollowPacketList.Size = new System.Drawing.Size(98, 17);
             this.cbFollowPacketList.TabIndex = 11;
@@ -180,11 +206,15 @@
             // 
             // btnSetOffset
             // 
-            this.btnSetOffset.Location = new System.Drawing.Point(93, 10);
+            this.btnSetOffset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSetOffset.ImageIndex = 10;
+            this.btnSetOffset.ImageList = this.IL;
+            this.btnSetOffset.Location = new System.Drawing.Point(107, 10);
             this.btnSetOffset.Name = "btnSetOffset";
-            this.btnSetOffset.Size = new System.Drawing.Size(75, 23);
+            this.btnSetOffset.Size = new System.Drawing.Size(83, 23);
             this.btnSetOffset.TabIndex = 12;
             this.btnSetOffset.Text = "Set Offset";
+            this.btnSetOffset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSetOffset.UseVisualStyleBackColor = true;
             this.btnSetOffset.Click += new System.EventHandler(this.BtnSetOffset_Click);
             // 
@@ -203,22 +233,28 @@
             // btnNextFrame
             // 
             this.btnNextFrame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnNextFrame.Location = new System.Drawing.Point(160, 332);
+            this.btnNextFrame.ImageIndex = 4;
+            this.btnNextFrame.ImageList = this.IL;
+            this.btnNextFrame.Location = new System.Drawing.Point(162, 332);
             this.btnNextFrame.Name = "btnNextFrame";
-            this.btnNextFrame.Size = new System.Drawing.Size(45, 23);
+            this.btnNextFrame.Size = new System.Drawing.Size(49, 23);
             this.btnNextFrame.TabIndex = 14;
-            this.btnNextFrame.Text = "||>";
+            this.btnNextFrame.Text = " ";
             this.btnNextFrame.UseVisualStyleBackColor = true;
             this.btnNextFrame.Click += new System.EventHandler(this.BtnNextFrame_Click);
             // 
             // btnPrevFrame
             // 
             this.btnPrevFrame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPrevFrame.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPrevFrame.ImageIndex = 6;
+            this.btnPrevFrame.ImageList = this.IL;
             this.btnPrevFrame.Location = new System.Drawing.Point(109, 332);
             this.btnPrevFrame.Name = "btnPrevFrame";
-            this.btnPrevFrame.Size = new System.Drawing.Size(45, 23);
+            this.btnPrevFrame.Size = new System.Drawing.Size(47, 23);
             this.btnPrevFrame.TabIndex = 15;
-            this.btnPrevFrame.Text = "<< 1";
+            this.btnPrevFrame.Text = "1s";
+            this.btnPrevFrame.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnPrevFrame.UseVisualStyleBackColor = true;
             this.btnPrevFrame.Click += new System.EventHandler(this.BtnPrevFrame_Click);
             // 
@@ -290,5 +326,6 @@
         private System.Windows.Forms.Button btnPrevFrame;
         private System.Windows.Forms.Button btnMute;
         private System.Windows.Forms.Timer closeFixTimer;
+        private System.Windows.Forms.ImageList IL;
     }
 }

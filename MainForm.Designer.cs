@@ -140,72 +140,77 @@
             // 
             // mmFileOpen
             // 
+            this.mmFileOpen.Image = global::PacketViewerLogViewer.Properties.Resources.Fairytale_fileopen;
             this.mmFileOpen.Name = "mmFileOpen";
             this.mmFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
-            this.mmFileOpen.Size = new System.Drawing.Size(247, 22);
+            this.mmFileOpen.Size = new System.Drawing.Size(249, 24);
             this.mmFileOpen.Text = "Open ...";
             this.mmFileOpen.Click += new System.EventHandler(this.mmFileOpen_Click);
             // 
             // mmFileAppend
             // 
+            this.mmFileAppend.Image = global::PacketViewerLogViewer.Properties.Resources.Fairytale_filenew3;
             this.mmFileAppend.Name = "mmFileAppend";
             this.mmFileAppend.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
-            this.mmFileAppend.Size = new System.Drawing.Size(247, 22);
+            this.mmFileAppend.Size = new System.Drawing.Size(249, 24);
             this.mmFileAppend.Text = "Append ...";
             this.mmFileAppend.Click += new System.EventHandler(this.mmFileAppend_Click);
             // 
             // mmAddFromClipboard
             // 
+            this.mmAddFromClipboard.Image = global::PacketViewerLogViewer.Properties.Resources.Fairytale_editcopy;
             this.mmAddFromClipboard.Name = "mmAddFromClipboard";
             this.mmAddFromClipboard.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.V)));
-            this.mmAddFromClipboard.Size = new System.Drawing.Size(247, 22);
+            this.mmAddFromClipboard.Size = new System.Drawing.Size(249, 24);
             this.mmAddFromClipboard.Text = "Add from clipboard";
             this.mmAddFromClipboard.Click += new System.EventHandler(this.MmAddFromClipboard_Click);
             // 
             // mmFilePasteNew
             // 
+            this.mmFilePasteNew.Image = global::PacketViewerLogViewer.Properties.Resources.Fairytale_filenew2;
             this.mmFilePasteNew.Name = "mmFilePasteNew";
-            this.mmFilePasteNew.Size = new System.Drawing.Size(247, 22);
+            this.mmFilePasteNew.Size = new System.Drawing.Size(249, 24);
             this.mmFilePasteNew.Text = "New Tab from Clipboard";
             this.mmFilePasteNew.Click += new System.EventHandler(this.MmFilePasteNew_Click);
             // 
             // mmFileS1
             // 
             this.mmFileS1.Name = "mmFileS1";
-            this.mmFileS1.Size = new System.Drawing.Size(244, 6);
+            this.mmFileS1.Size = new System.Drawing.Size(246, 6);
             // 
             // mmFileSettings
             // 
             this.mmFileSettings.Name = "mmFileSettings";
-            this.mmFileSettings.Size = new System.Drawing.Size(247, 22);
+            this.mmFileSettings.Size = new System.Drawing.Size(249, 24);
             this.mmFileSettings.Text = "Settings ...";
             this.mmFileSettings.Click += new System.EventHandler(this.mmFileSettings_Click);
             // 
             // mmFileS2
             // 
             this.mmFileS2.Name = "mmFileS2";
-            this.mmFileS2.Size = new System.Drawing.Size(244, 6);
+            this.mmFileS2.Size = new System.Drawing.Size(246, 6);
             // 
             // mmFileClose
             // 
+            this.mmFileClose.Image = global::PacketViewerLogViewer.Properties.Resources.Fairytale_button_cancel;
             this.mmFileClose.Name = "mmFileClose";
             this.mmFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.mmFileClose.Size = new System.Drawing.Size(247, 22);
+            this.mmFileClose.Size = new System.Drawing.Size(249, 24);
             this.mmFileClose.Text = "Close";
             this.mmFileClose.Click += new System.EventHandler(this.mmFileClose_Click);
             // 
             // mmFileS3
             // 
             this.mmFileS3.Name = "mmFileS3";
-            this.mmFileS3.Size = new System.Drawing.Size(244, 6);
+            this.mmFileS3.Size = new System.Drawing.Size(246, 6);
             // 
             // mmFileExit
             // 
             this.mmFileExit.Name = "mmFileExit";
             this.mmFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.mmFileExit.Size = new System.Drawing.Size(247, 22);
+            this.mmFileExit.Size = new System.Drawing.Size(249, 24);
             this.mmFileExit.Text = "E&xit";
             this.mmFileExit.Click += new System.EventHandler(this.mmFileExit_Click);
             // 

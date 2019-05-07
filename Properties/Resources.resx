@@ -121,7 +121,70 @@
   <data name="add_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\5700.add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="clock_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_history.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="close_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\5657.close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_apply" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_apply.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_button_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_button_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_editcopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_editcopy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_filenew2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_filenew2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_filenew3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_filenew3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_fileopen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_fileopen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_player_eject" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_player_eject.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_player_end" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_player_end.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_player_fwd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_player_fwd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_player_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_player_pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_player_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_player_play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_player_rec" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_player_rec.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_player_rev" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_player_rev.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_player_start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_player_start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_player_stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_player_stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fairytale_right_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_right_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mini_in_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\mini_in_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mini_out_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\mini_out_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mini_unk_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\mini_unk_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

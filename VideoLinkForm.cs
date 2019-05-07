@@ -234,7 +234,12 @@ namespace PacketViewerLogViewer
                 var start = sourceTP.PL.firstPacketTime;
                 var videopos = TimeSpan.FromMilliseconds(pos);
                 var off = start.Add(videopos).Add(sourceTP.LinkVideoOffset);
-                sourceTP.lbPackets.SelectedIndex = sourceTP.PL.FindPacketIndexByDateTime(off, sourceTP.lbPackets.SelectedIndex);
+                var nowIndex = sourceTP.lbPackets.SelectedIndex;
+                var newIndex = sourceTP.PL.FindPacketIndexByDateTime(off, nowIndex);
+
+                // Account for a small bug that I think it related to the redraw or threading, only update if new position is "valid"
+                if (newIndex >= 0)
+                    sourceTP.lbPackets.SelectedIndex = newIndex;
                 sourceTP.CenterListBox();
             }
         }
@@ -328,7 +333,8 @@ namespace PacketViewerLogViewer
             try
             {
                 Invoke((MethodInvoker)delegate {
-                    btnPlay.Text = "Play  |>";
+                    btnPlay.Text = "Play";
+                    btnPlay.ImageIndex = 0;
                 });
             }
             catch { }
@@ -341,7 +347,8 @@ namespace PacketViewerLogViewer
             try
             {
                 Invoke((MethodInvoker)delegate {
-                    btnPlay.Text = "Pause  | |";
+                    btnPlay.Text = "Pause";
+                    btnPlay.ImageIndex = 1;
                 });
             }
             catch { }
