@@ -17,6 +17,53 @@ using PacketViewerLogViewer.PVLVHelper;
 
 namespace PacketViewerLogViewer.Packets
 {
+
+    public static class PacketColors
+    {
+        static public Color ColBackIN;
+        static public Color ColBackOUT;
+        static public Color ColBackUNK;
+        static public Color ColBarIN;
+        static public Color ColBarOUT;
+        static public Color ColBarUNK;
+        static public Color ColFontIN;
+        static public Color ColFontOUT;
+        static public Color ColFontUNK;
+        static public Color ColSelectedFontIN;
+        static public Color ColSelectedFontOUT;
+        static public Color ColSelectedFontUNK;
+        static public Color ColSelectIN;
+        static public Color ColSelectOUT;
+        static public Color ColSelectUNK;
+        static public Color ColSyncIN;
+        static public Color ColSyncOUT;
+        static public Color ColSyncUNK;
+        static public int PacketListStyle;
+
+        public static void UpdateColorsFromSettings()
+        {
+            ColBackIN = Properties.Settings.Default.ColBackIN;
+            ColBackOUT = Properties.Settings.Default.ColBackOUT;
+            ColBackUNK = Properties.Settings.Default.ColBackUNK;
+            ColBarIN = Properties.Settings.Default.ColBarIN;
+            ColBarOUT = Properties.Settings.Default.ColBarOUT;
+            ColBarUNK = Properties.Settings.Default.ColBarUNK;
+            ColFontIN = Properties.Settings.Default.ColFontIN;
+            ColFontOUT = Properties.Settings.Default.ColFontOUT;
+            ColFontUNK = Properties.Settings.Default.ColFontUNK;
+            ColSelectedFontIN = Properties.Settings.Default.ColSelectedFontIN;
+            ColSelectedFontOUT = Properties.Settings.Default.ColSelectedFontOUT;
+            ColSelectedFontUNK = Properties.Settings.Default.ColSelectedFontUNK;
+            ColSelectIN = Properties.Settings.Default.ColSelectIN;
+            ColSelectOUT = Properties.Settings.Default.ColSelectOUT;
+            ColSelectUNK = Properties.Settings.Default.ColSelectUNK;
+            ColSyncIN = Properties.Settings.Default.ColSyncIN;
+            ColSyncOUT = Properties.Settings.Default.ColSyncOUT;
+            ColSyncUNK = Properties.Settings.Default.ColSyncUNK;
+            PacketListStyle = Properties.Settings.Default.PacketListStyle;
+        }
+    }
+
     public enum PacketLogTypes { Unknown, Outgoing, Incoming }
     public enum FilterType { Off, HidePackets, ShowPackets, AllowNone };
     public enum PacketLogFileFormats { Unknown = 0, WindowerPacketViewer = 1, AshitaPacketeer = 2, PacketDB = 3 }
@@ -1343,6 +1390,62 @@ namespace PacketViewerLogViewer.Packets
 
     } // End PacketList
 
+    // source: http://yacsharpblog.blogspot.com/2008/07/listbox-flicker.html
+    public class FlickerFreeListBox : System.Windows.Forms.ListBox
+    {
+        public FlickerFreeListBox()
+        {
+            this.SetStyle(
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.DrawMode = DrawMode.OwnerDrawFixed;
+        }
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (this.Items.Count > 0)
+            {
+                e.DrawBackground();
+                e.Graphics.DrawString(this.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), new PointF(e.Bounds.X, e.Bounds.Y));
+            }
+            base.OnDrawItem(e);
+        }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Region iRegion = new Region(e.ClipRectangle);
+            e.Graphics.FillRegion(new SolidBrush(this.BackColor), iRegion);
+            if (this.Items.Count > 0)
+            {
+                for (int i = 0; i < this.Items.Count; ++i)
+                {
+                    System.Drawing.Rectangle irect = this.GetItemRectangle(i);
+                    if (e.ClipRectangle.IntersectsWith(irect))
+                    {
+                        if ((this.SelectionMode == SelectionMode.One && this.SelectedIndex == i)
+                        || (this.SelectionMode == SelectionMode.MultiSimple && this.SelectedIndices.Contains(i))
+                        || (this.SelectionMode == SelectionMode.MultiExtended && this.SelectedIndices.Contains(i)))
+                        {
+                            OnDrawItem(new DrawItemEventArgs(e.Graphics, this.Font,
+                                irect, i,
+                                DrawItemState.Selected, this.ForeColor,
+                                this.BackColor));
+                        }
+                        else
+                        {
+                            OnDrawItem(new DrawItemEventArgs(e.Graphics, this.Font,
+                                irect, i,
+                                DrawItemState.Default, this.ForeColor,
+                                this.BackColor));
+                        }
+                        iRegion.Complement(irect);
+                    }
+                }
+            }
+            base.OnPaint(e);
+        }
+    }
+
     public class PacketTabPage: System.Windows.Forms.TabPage
     {
         private MainForm ownerMainForm;
@@ -1360,7 +1463,7 @@ namespace PacketViewerLogViewer.Packets
         public string LinkPacketsDownloadURL;
         public TimeSpan LinkVideoOffset;
 
-        public ListBox lbPackets;
+        public FlickerFreeListBox lbPackets;
         // Popup Menu Controls
         public ContextMenuStrip pmPL;
         public ToolStripMenuItem pmPLShowPacketName;
@@ -1383,7 +1486,7 @@ namespace PacketViewerLogViewer.Packets
             // Create base controls
             PLLoaded = new PacketList();
             PL = new PacketList();
-            lbPackets = new ListBox();
+            lbPackets = new FlickerFreeListBox();
             videoLink = null;
             ProjectFolder = string.Empty ;
             LinkVideoFileName = string.Empty;
@@ -1495,46 +1598,46 @@ namespace PacketViewerLogViewer.Packets
             switch (pd.PacketLogType)
             {
                 case PacketLogTypes.Incoming:
-                    textCol = Properties.Settings.Default.ColFontIN;
+                    textCol = PacketColors.ColFontIN;
                     if (isSelected)
                     {
-                        backCol = Properties.Settings.Default.ColSelectIN;
-                        textCol = Properties.Settings.Default.ColSelectedFontIN;
+                        backCol = PacketColors.ColSelectIN;
+                        textCol = PacketColors.ColSelectedFontIN;
                     }
                     else
                     if (barOn)
-                        backCol = Properties.Settings.Default.ColSyncIN;
+                        backCol = PacketColors.ColSyncIN;
                     else
-                        backCol = Properties.Settings.Default.ColBackIN;
-                    barCol = Properties.Settings.Default.ColBarIN;
+                        backCol = PacketColors.ColBackIN;
+                    barCol = PacketColors.ColBarIN;
                     break;
                 case PacketLogTypes.Outgoing:
-                    textCol = Properties.Settings.Default.ColFontOUT;
+                    textCol = PacketColors.ColFontOUT;
                     if (isSelected)
                     {
-                        backCol = Properties.Settings.Default.ColSelectOUT;
-                        textCol = Properties.Settings.Default.ColSelectedFontOUT;
+                        backCol = PacketColors.ColSelectOUT;
+                        textCol = PacketColors.ColSelectedFontOUT;
                     }
                     else
                     if (barOn)
-                        backCol = Properties.Settings.Default.ColSyncOUT;
+                        backCol = PacketColors.ColSyncOUT;
                     else
-                        backCol = Properties.Settings.Default.ColBackOUT;
-                    barCol = Properties.Settings.Default.ColBarOUT;
+                        backCol = PacketColors.ColBackOUT;
+                    barCol = PacketColors.ColBarOUT;
                     break;
                 default:
-                    textCol = Properties.Settings.Default.ColFontUNK;
+                    textCol = PacketColors.ColFontUNK;
                     if (isSelected)
                     {
-                        backCol = Properties.Settings.Default.ColSelectUNK;
-                        textCol = Properties.Settings.Default.ColSelectedFontUNK;
+                        backCol = PacketColors.ColSelectUNK;
+                        textCol = PacketColors.ColSelectedFontUNK;
                     }
                     else
                     if (barOn)
-                        backCol = Properties.Settings.Default.ColSyncUNK;
+                        backCol = PacketColors.ColSyncUNK;
                     else
-                        backCol = Properties.Settings.Default.ColBackUNK;
-                    barCol = Properties.Settings.Default.ColBarUNK;
+                        backCol = PacketColors.ColBackUNK;
+                    barCol = PacketColors.ColBarUNK;
                     break;
             }
 
@@ -1545,29 +1648,72 @@ namespace PacketViewerLogViewer.Packets
 
             // Draw the background of the ListBox control for each item.
             e.Graphics.FillRectangle(backBrush, e.Bounds);
-
-            // Draw the current item text based on the current Font 
-            // and the custom brush settings.
-            Rectangle textBounds = new Rectangle(e.Bounds.Left + (Properties.Resources.mini_unk_icon.Width * 2), e.Bounds.Top, e.Bounds.Width - (Properties.Resources.mini_unk_icon.Width * 2), e.Bounds.Height);
-            e.Graphics.DrawString(lb.Items[e.Index].ToString(),
-                e.Font, textBrush, textBounds, StringFormat.GenericDefault);
+            // header text
+            var s = lb.Items[e.Index].ToString();
 
             Rectangle icon1 = new Rectangle(e.Bounds.Left, e.Bounds.Top + ((e.Bounds.Height - Properties.Resources.mini_unk_icon.Height) / 2), Properties.Resources.mini_unk_icon.Width, Properties.Resources.mini_unk_icon.Height);
             Rectangle icon2 = new Rectangle(e.Bounds.Left + e.Bounds.Height, e.Bounds.Top, e.Bounds.Height, e.Bounds.Height);
-            if (pd.PacketLogType == PacketLogTypes.Incoming)
+
+            Rectangle textBounds = new Rectangle(e.Bounds.Left + (Properties.Resources.mini_unk_icon.Width * 2), e.Bounds.Top, e.Bounds.Width - (Properties.Resources.mini_unk_icon.Width * 2), e.Bounds.Height);
+            switch (PacketColors.PacketListStyle)
             {
-                e.Graphics.DrawImage(Properties.Resources.mini_in_icon, icon1);
-            }
-            else
-            if (pd.PacketLogType == PacketLogTypes.Outgoing)
-            {
-                e.Graphics.DrawImage(Properties.Resources.mini_out_icon, icon1);
-            }
-            else
-            {
-                e.Graphics.DrawImage(Properties.Resources.mini_unk_icon, icon1);
+                case 1:
+                    // Colored arrows
+                    if (pd.PacketLogType == PacketLogTypes.Incoming)
+                    {
+                        e.Graphics.DrawImage(Properties.Resources.mini_in_icon, icon1);
+                    }
+                    else
+                    if (pd.PacketLogType == PacketLogTypes.Outgoing)
+                    {
+                        e.Graphics.DrawImage(Properties.Resources.mini_out_icon, icon1);
+                    }
+                    else
+                    {
+                        e.Graphics.DrawImage(Properties.Resources.mini_unk_icon, icon1);
+                    }
+                    break;
+                case 2:
+                    // transparent arrows
+                    if (pd.PacketLogType == PacketLogTypes.Incoming)
+                    {
+                        e.Graphics.DrawImage(Properties.Resources.mini_in_ticon, icon1);
+                    }
+                    else
+                    if (pd.PacketLogType == PacketLogTypes.Outgoing)
+                    {
+                        e.Graphics.DrawImage(Properties.Resources.mini_out_ticon, icon1);
+                    }
+                    else
+                    {
+                        e.Graphics.DrawImage(Properties.Resources.mini_unk_ticon, icon1);
+                    }
+                    break;
+                case 0:
+                default:
+                    textBounds = e.Bounds ;
+                    // No icons, just text
+                    if (pd.PacketLogType == PacketLogTypes.Incoming)
+                    {
+                        s = "<= " + s;
+                    }
+                    else
+                    if (pd.PacketLogType == PacketLogTypes.Outgoing)
+                    {
+                        s = "=> " + s;
+                    }
+                    else
+                    {
+                        s = "?? " + s;
+                    }
+                    break;
             }
             // e.Graphics.DrawImage(Properties.Resources.mini_unk_icon, icon2);
+
+            // Draw the current item text based on the current Font 
+            // and the custom brush settings.
+            e.Graphics.DrawString(s,
+                e.Font, textBrush, textBounds, StringFormat.GenericDefault);
 
             if (barOn)
             {
@@ -1627,6 +1773,7 @@ namespace PacketViewerLogViewer.Packets
                     loadform.Show();
                     loadform.pb.Minimum = 0;
                     loadform.pb.Maximum = PL.Count();
+                    lbPackets.BeginUpdate();
                     lbPackets.Items.Clear();
                     for (int i = 0; i < PL.Count(); i++)
                     {
@@ -1654,6 +1801,7 @@ namespace PacketViewerLogViewer.Packets
                         if ((i % 50) == 0)
                             loadform.pb.Refresh();
                     }
+                    lbPackets.EndUpdate();
                     if (GotoIndex >= 0)
                     {
                         lbPackets.SelectedIndex = GotoIndex;

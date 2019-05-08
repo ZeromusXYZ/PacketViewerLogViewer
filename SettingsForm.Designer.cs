@@ -67,14 +67,28 @@
             this.rbAutoLoadVideoYoutube = new System.Windows.Forms.RadioButton();
             this.rbAutoLoadVideoLocalOnly = new System.Windows.Forms.RadioButton();
             this.rbAutoLoadVideoNever = new System.Windows.Forms.RadioButton();
+            this.gbListStyle = new System.Windows.Forms.GroupBox();
+            this.rbListStyleTransparent = new System.Windows.Forms.RadioButton();
+            this.rbListStyleSolid = new System.Windows.Forms.RadioButton();
+            this.rbListStyleText = new System.Windows.Forms.RadioButton();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbAutoLoadVideo.SuspendLayout();
+            this.gbListStyle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 263);
+            this.btnOK.Location = new System.Drawing.Point(12, 345);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -86,7 +100,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(93, 263);
+            this.btnCancel.Location = new System.Drawing.Point(93, 345);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -102,7 +116,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 34);
+            this.label1.Location = new System.Drawing.Point(5, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 13);
             this.label1.TabIndex = 2;
@@ -111,7 +125,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 68);
+            this.label2.Location = new System.Drawing.Point(5, 78);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 3;
@@ -120,7 +134,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 102);
+            this.label3.Location = new System.Drawing.Point(5, 116);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 13);
             this.label3.TabIndex = 4;
@@ -129,7 +143,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(157, 0);
+            this.label4.Location = new System.Drawing.Point(155, 2);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 13);
             this.label4.TabIndex = 5;
@@ -138,7 +152,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(234, 0);
+            this.label5.Location = new System.Drawing.Point(230, 2);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(43, 13);
             this.label5.TabIndex = 6;
@@ -147,7 +161,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(311, 0);
+            this.label6.Location = new System.Drawing.Point(305, 2);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(65, 26);
             this.label6.TabIndex = 7;
@@ -156,16 +170,16 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(465, 0);
+            this.label7.Location = new System.Drawing.Point(455, 2);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 13);
+            this.label7.Size = new System.Drawing.Size(50, 26);
             this.label7.TabIndex = 8;
             this.label7.Text = "SyncBar color";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(80, 0);
+            this.label8.Location = new System.Drawing.Point(80, 2);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(28, 13);
             this.label8.TabIndex = 9;
@@ -175,6 +189,7 @@
             // 
             this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Inset;
             this.tableLayoutPanel1.ColumnCount = 7;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
@@ -212,20 +227,20 @@
             this.tableLayoutPanel1.Controls.Add(this.btnSelectedFontOUT, 5, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnSelectedFontUNK, 5, 3);
             this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 19);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(544, 138);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(532, 155);
             this.tableLayoutPanel1.TabIndex = 10;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(388, 0);
+            this.label10.Location = new System.Drawing.Point(380, 2);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(52, 26);
             this.label10.TabIndex = 29;
@@ -235,7 +250,7 @@
             // 
             this.btnFontIN.AutoSize = true;
             this.btnFontIN.BackColor = System.Drawing.Color.Lime;
-            this.btnFontIN.Location = new System.Drawing.Point(80, 37);
+            this.btnFontIN.Location = new System.Drawing.Point(80, 43);
             this.btnFontIN.Name = "btnFontIN";
             this.btnFontIN.Size = new System.Drawing.Size(63, 28);
             this.btnFontIN.TabIndex = 10;
@@ -247,7 +262,7 @@
             // 
             this.btnBackIN.AutoSize = true;
             this.btnBackIN.BackColor = System.Drawing.Color.Lime;
-            this.btnBackIN.Location = new System.Drawing.Point(157, 37);
+            this.btnBackIN.Location = new System.Drawing.Point(155, 43);
             this.btnBackIN.Name = "btnBackIN";
             this.btnBackIN.Size = new System.Drawing.Size(63, 28);
             this.btnBackIN.TabIndex = 11;
@@ -259,7 +274,7 @@
             // 
             this.btnSyncIN.AutoSize = true;
             this.btnSyncIN.BackColor = System.Drawing.Color.Lime;
-            this.btnSyncIN.Location = new System.Drawing.Point(234, 37);
+            this.btnSyncIN.Location = new System.Drawing.Point(230, 43);
             this.btnSyncIN.Name = "btnSyncIN";
             this.btnSyncIN.Size = new System.Drawing.Size(63, 28);
             this.btnSyncIN.TabIndex = 12;
@@ -271,7 +286,7 @@
             // 
             this.btnSelectIN.AutoSize = true;
             this.btnSelectIN.BackColor = System.Drawing.Color.Lime;
-            this.btnSelectIN.Location = new System.Drawing.Point(311, 37);
+            this.btnSelectIN.Location = new System.Drawing.Point(305, 43);
             this.btnSelectIN.Name = "btnSelectIN";
             this.btnSelectIN.Size = new System.Drawing.Size(63, 28);
             this.btnSelectIN.TabIndex = 13;
@@ -283,7 +298,7 @@
             // 
             this.btnFontOUT.AutoSize = true;
             this.btnFontOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnFontOUT.Location = new System.Drawing.Point(80, 71);
+            this.btnFontOUT.Location = new System.Drawing.Point(80, 81);
             this.btnFontOUT.Name = "btnFontOUT";
             this.btnFontOUT.Size = new System.Drawing.Size(63, 28);
             this.btnFontOUT.TabIndex = 15;
@@ -295,7 +310,7 @@
             // 
             this.btnBackOUT.AutoSize = true;
             this.btnBackOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnBackOUT.Location = new System.Drawing.Point(157, 71);
+            this.btnBackOUT.Location = new System.Drawing.Point(155, 81);
             this.btnBackOUT.Name = "btnBackOUT";
             this.btnBackOUT.Size = new System.Drawing.Size(63, 28);
             this.btnBackOUT.TabIndex = 16;
@@ -307,7 +322,7 @@
             // 
             this.btnSyncOUT.AutoSize = true;
             this.btnSyncOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnSyncOUT.Location = new System.Drawing.Point(234, 71);
+            this.btnSyncOUT.Location = new System.Drawing.Point(230, 81);
             this.btnSyncOUT.Name = "btnSyncOUT";
             this.btnSyncOUT.Size = new System.Drawing.Size(63, 28);
             this.btnSyncOUT.TabIndex = 17;
@@ -319,7 +334,7 @@
             // 
             this.btnSelectOUT.AutoSize = true;
             this.btnSelectOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnSelectOUT.Location = new System.Drawing.Point(311, 71);
+            this.btnSelectOUT.Location = new System.Drawing.Point(305, 81);
             this.btnSelectOUT.Name = "btnSelectOUT";
             this.btnSelectOUT.Size = new System.Drawing.Size(63, 28);
             this.btnSelectOUT.TabIndex = 18;
@@ -331,7 +346,7 @@
             // 
             this.btnFontUNK.AutoSize = true;
             this.btnFontUNK.BackColor = System.Drawing.Color.Black;
-            this.btnFontUNK.Location = new System.Drawing.Point(80, 105);
+            this.btnFontUNK.Location = new System.Drawing.Point(80, 119);
             this.btnFontUNK.Name = "btnFontUNK";
             this.btnFontUNK.Size = new System.Drawing.Size(63, 28);
             this.btnFontUNK.TabIndex = 20;
@@ -343,7 +358,7 @@
             // 
             this.btnBackUNK.AutoSize = true;
             this.btnBackUNK.BackColor = System.Drawing.Color.White;
-            this.btnBackUNK.Location = new System.Drawing.Point(157, 105);
+            this.btnBackUNK.Location = new System.Drawing.Point(155, 119);
             this.btnBackUNK.Name = "btnBackUNK";
             this.btnBackUNK.Size = new System.Drawing.Size(63, 28);
             this.btnBackUNK.TabIndex = 21;
@@ -355,7 +370,7 @@
             // 
             this.btnSyncUNK.AutoSize = true;
             this.btnSyncUNK.BackColor = System.Drawing.Color.White;
-            this.btnSyncUNK.Location = new System.Drawing.Point(234, 105);
+            this.btnSyncUNK.Location = new System.Drawing.Point(230, 119);
             this.btnSyncUNK.Name = "btnSyncUNK";
             this.btnSyncUNK.Size = new System.Drawing.Size(63, 28);
             this.btnSyncUNK.TabIndex = 22;
@@ -367,7 +382,7 @@
             // 
             this.btnSelectUNK.AutoSize = true;
             this.btnSelectUNK.BackColor = System.Drawing.Color.White;
-            this.btnSelectUNK.Location = new System.Drawing.Point(311, 105);
+            this.btnSelectUNK.Location = new System.Drawing.Point(305, 119);
             this.btnSelectUNK.Name = "btnSelectUNK";
             this.btnSelectUNK.Size = new System.Drawing.Size(63, 28);
             this.btnSelectUNK.TabIndex = 23;
@@ -379,7 +394,7 @@
             // 
             this.btnBarIN.AutoSize = true;
             this.btnBarIN.BackColor = System.Drawing.Color.Lime;
-            this.btnBarIN.Location = new System.Drawing.Point(465, 37);
+            this.btnBarIN.Location = new System.Drawing.Point(455, 43);
             this.btnBarIN.Name = "btnBarIN";
             this.btnBarIN.Size = new System.Drawing.Size(63, 28);
             this.btnBarIN.TabIndex = 14;
@@ -391,7 +406,7 @@
             // 
             this.btnBarOUT.AutoSize = true;
             this.btnBarOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnBarOUT.Location = new System.Drawing.Point(465, 71);
+            this.btnBarOUT.Location = new System.Drawing.Point(455, 81);
             this.btnBarOUT.Name = "btnBarOUT";
             this.btnBarOUT.Size = new System.Drawing.Size(63, 28);
             this.btnBarOUT.TabIndex = 19;
@@ -403,7 +418,7 @@
             // 
             this.btnBarUNK.AutoSize = true;
             this.btnBarUNK.BackColor = System.Drawing.Color.White;
-            this.btnBarUNK.Location = new System.Drawing.Point(465, 105);
+            this.btnBarUNK.Location = new System.Drawing.Point(455, 119);
             this.btnBarUNK.Name = "btnBarUNK";
             this.btnBarUNK.Size = new System.Drawing.Size(63, 28);
             this.btnBarUNK.TabIndex = 24;
@@ -414,17 +429,17 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 0);
+            this.label9.Location = new System.Drawing.Point(5, 2);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(63, 26);
+            this.label9.Size = new System.Drawing.Size(36, 13);
             this.label9.TabIndex = 25;
-            this.label9.Text = "Packet List Colors";
+            this.label9.Text = "Colors";
             // 
             // btnSelectedFontIN
             // 
             this.btnSelectedFontIN.AutoSize = true;
             this.btnSelectedFontIN.BackColor = System.Drawing.Color.Lime;
-            this.btnSelectedFontIN.Location = new System.Drawing.Point(388, 37);
+            this.btnSelectedFontIN.Location = new System.Drawing.Point(380, 43);
             this.btnSelectedFontIN.Name = "btnSelectedFontIN";
             this.btnSelectedFontIN.Size = new System.Drawing.Size(63, 28);
             this.btnSelectedFontIN.TabIndex = 26;
@@ -436,7 +451,7 @@
             // 
             this.btnSelectedFontOUT.AutoSize = true;
             this.btnSelectedFontOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnSelectedFontOUT.Location = new System.Drawing.Point(388, 71);
+            this.btnSelectedFontOUT.Location = new System.Drawing.Point(380, 81);
             this.btnSelectedFontOUT.Name = "btnSelectedFontOUT";
             this.btnSelectedFontOUT.Size = new System.Drawing.Size(63, 28);
             this.btnSelectedFontOUT.TabIndex = 27;
@@ -448,7 +463,7 @@
             // 
             this.btnSelectedFontUNK.AutoSize = true;
             this.btnSelectedFontUNK.BackColor = System.Drawing.Color.White;
-            this.btnSelectedFontUNK.Location = new System.Drawing.Point(388, 105);
+            this.btnSelectedFontUNK.Location = new System.Drawing.Point(380, 119);
             this.btnSelectedFontUNK.Name = "btnSelectedFontUNK";
             this.btnSelectedFontUNK.Size = new System.Drawing.Size(63, 28);
             this.btnSelectedFontUNK.TabIndex = 28;
@@ -459,7 +474,7 @@
             // btnDefault
             // 
             this.btnDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDefault.Location = new System.Drawing.Point(190, 263);
+            this.btnDefault.Location = new System.Drawing.Point(190, 345);
             this.btnDefault.Name = "btnDefault";
             this.btnDefault.Size = new System.Drawing.Size(75, 23);
             this.btnDefault.TabIndex = 11;
@@ -470,7 +485,7 @@
             // cbUseExternalEditor
             // 
             this.cbUseExternalEditor.AutoSize = true;
-            this.cbUseExternalEditor.Location = new System.Drawing.Point(18, 166);
+            this.cbUseExternalEditor.Location = new System.Drawing.Point(18, 301);
             this.cbUseExternalEditor.Name = "cbUseExternalEditor";
             this.cbUseExternalEditor.Size = new System.Drawing.Size(276, 17);
             this.cbUseExternalEditor.TabIndex = 12;
@@ -485,7 +500,7 @@
             this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoYoutube);
             this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoLocalOnly);
             this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoNever);
-            this.gbAutoLoadVideo.Location = new System.Drawing.Point(12, 189);
+            this.gbAutoLoadVideo.Location = new System.Drawing.Point(12, 246);
             this.gbAutoLoadVideo.Name = "gbAutoLoadVideo";
             this.gbAutoLoadVideo.Size = new System.Drawing.Size(544, 49);
             this.gbAutoLoadVideo.TabIndex = 13;
@@ -537,18 +552,119 @@
             this.rbAutoLoadVideoNever.UseVisualStyleBackColor = true;
             this.rbAutoLoadVideoNever.CheckedChanged += new System.EventHandler(this.RbAutoLoadVideoNever_CheckedChanged);
             // 
+            // gbListStyle
+            // 
+            this.gbListStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbListStyle.Controls.Add(this.label12);
+            this.gbListStyle.Controls.Add(this.pictureBox3);
+            this.gbListStyle.Controls.Add(this.pictureBox4);
+            this.gbListStyle.Controls.Add(this.pictureBox2);
+            this.gbListStyle.Controls.Add(this.pictureBox1);
+            this.gbListStyle.Controls.Add(this.tableLayoutPanel1);
+            this.gbListStyle.Controls.Add(this.rbListStyleTransparent);
+            this.gbListStyle.Controls.Add(this.rbListStyleSolid);
+            this.gbListStyle.Controls.Add(this.rbListStyleText);
+            this.gbListStyle.Location = new System.Drawing.Point(12, 12);
+            this.gbListStyle.Name = "gbListStyle";
+            this.gbListStyle.Size = new System.Drawing.Size(544, 228);
+            this.gbListStyle.TabIndex = 14;
+            this.gbListStyle.TabStop = false;
+            this.gbListStyle.Text = "Packet List Style";
+            // 
+            // rbListStyleTransparent
+            // 
+            this.rbListStyleTransparent.AutoSize = true;
+            this.rbListStyleTransparent.Location = new System.Drawing.Point(317, 203);
+            this.rbListStyleTransparent.Name = "rbListStyleTransparent";
+            this.rbListStyleTransparent.Size = new System.Drawing.Size(117, 17);
+            this.rbListStyleTransparent.TabIndex = 2;
+            this.rbListStyleTransparent.Text = "Transparent Arrows";
+            this.rbListStyleTransparent.UseVisualStyleBackColor = true;
+            // 
+            // rbListStyleSolid
+            // 
+            this.rbListStyleSolid.AutoSize = true;
+            this.rbListStyleSolid.Checked = true;
+            this.rbListStyleSolid.Location = new System.Drawing.Point(163, 203);
+            this.rbListStyleSolid.Name = "rbListStyleSolid";
+            this.rbListStyleSolid.Size = new System.Drawing.Size(83, 17);
+            this.rbListStyleSolid.TabIndex = 1;
+            this.rbListStyleSolid.TabStop = true;
+            this.rbListStyleSolid.Text = "Solid Arrows";
+            this.rbListStyleSolid.UseVisualStyleBackColor = true;
+            // 
+            // rbListStyleText
+            // 
+            this.rbListStyleText.AutoSize = true;
+            this.rbListStyleText.Location = new System.Drawing.Point(6, 203);
+            this.rbListStyleText.Name = "rbListStyleText";
+            this.rbListStyleText.Size = new System.Drawing.Size(117, 17);
+            this.rbListStyleText.TabIndex = 0;
+            this.rbListStyleText.Text = "Text Arrows  <=  =>";
+            this.rbListStyleText.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::PacketViewerLogViewer.Properties.Resources.mini_in_icon;
+            this.pictureBox1.Location = new System.Drawing.Point(252, 208);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(12, 12);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::PacketViewerLogViewer.Properties.Resources.mini_out_icon;
+            this.pictureBox2.Location = new System.Drawing.Point(270, 208);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(12, 12);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::PacketViewerLogViewer.Properties.Resources.mini_out_ticon;
+            this.pictureBox3.Location = new System.Drawing.Point(458, 208);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(12, 12);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox3.TabIndex = 6;
+            this.pictureBox3.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = global::PacketViewerLogViewer.Properties.Resources.mini_in_ticon;
+            this.pictureBox4.Location = new System.Drawing.Point(440, 208);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(12, 12);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox4.TabIndex = 5;
+            this.pictureBox4.TabStop = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(3, 187);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(60, 13);
+            this.label12.TabIndex = 12;
+            this.label12.Text = "Arrow Style";
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(568, 298);
+            this.ClientSize = new System.Drawing.Size(568, 380);
             this.ControlBox = false;
+            this.Controls.Add(this.gbListStyle);
             this.Controls.Add(this.gbAutoLoadVideo);
             this.Controls.Add(this.cbUseExternalEditor);
             this.Controls.Add(this.btnDefault);
-            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -563,6 +679,12 @@
             this.tableLayoutPanel1.PerformLayout();
             this.gbAutoLoadVideo.ResumeLayout(false);
             this.gbAutoLoadVideo.PerformLayout();
+            this.gbListStyle.ResumeLayout(false);
+            this.gbListStyle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -609,5 +731,14 @@
         private System.Windows.Forms.RadioButton rbAutoLoadVideoYoutube;
         private System.Windows.Forms.RadioButton rbAutoLoadVideoLocalOnly;
         private System.Windows.Forms.RadioButton rbAutoLoadVideoNever;
+        private System.Windows.Forms.GroupBox gbListStyle;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.RadioButton rbListStyleTransparent;
+        private System.Windows.Forms.RadioButton rbListStyleSolid;
+        private System.Windows.Forms.RadioButton rbListStyleText;
     }
 }

@@ -28,6 +28,12 @@ namespace PacketViewerLogViewer
                 Properties.Settings.Default.AutoLoadVideo = 1;
             if (rbAutoLoadVideoYoutube.Checked)
                 Properties.Settings.Default.AutoLoadVideo = 2;
+            if (rbListStyleText.Checked)
+                Properties.Settings.Default.PacketListStyle = 0;
+            if (rbListStyleSolid.Checked)
+                Properties.Settings.Default.PacketListStyle = 1;
+            if (rbListStyleTransparent.Checked)
+                Properties.Settings.Default.PacketListStyle = 2;
             DialogResult = DialogResult.OK;
         }
 
@@ -44,6 +50,9 @@ namespace PacketViewerLogViewer
             rbAutoLoadVideoLocalOnly.Checked = (Properties.Settings.Default.AutoLoadVideo == 1);
             rbAutoLoadVideoYoutube.Checked = (Properties.Settings.Default.AutoLoadVideo == 2);
             rbAutoLoadVideoNever.Checked = (!rbAutoLoadVideoLocalOnly.Checked && !rbAutoLoadVideoYoutube.Checked);
+            rbListStyleText.Checked = (Properties.Settings.Default.PacketListStyle == 0);
+            rbListStyleSolid.Checked = (Properties.Settings.Default.PacketListStyle == 1);
+            rbListStyleTransparent.Checked = (Properties.Settings.Default.PacketListStyle == 2);
         }
 
         private void LoadColorSettingsIntoButtons()
@@ -67,6 +76,7 @@ namespace PacketViewerLogViewer
             btnSyncIN.BackColor = Properties.Settings.Default.ColSyncIN;
             btnSyncOUT.BackColor = Properties.Settings.Default.ColSyncOUT;
             btnSyncUNK.BackColor = Properties.Settings.Default.ColSyncUNK;
+            
         }
 
         private void SaveButtonsIntoColorSettings()

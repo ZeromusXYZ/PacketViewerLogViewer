@@ -282,6 +282,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Res\mini_unk_ticon.png" />
+    <None Include="Res\mini_out_ticon.png" />
+    <None Include="Res\mini_in_ticon.png" />
     <None Include="Res\mini_unk_icon.png" />
     <None Include="Res\mini_out_icon.png" />
     <None Include="Res\mini_in_icon.png" />

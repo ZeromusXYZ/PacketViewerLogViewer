@@ -91,6 +91,7 @@ namespace PacketViewerLogViewer
         {
             defaultTitle = Text;
             RegisterFileExt();
+            PacketColors.UpdateColorsFromSettings();
             Application.UseWaitCursor = true;
             try
             {
@@ -481,6 +482,7 @@ namespace PacketViewerLogViewer
                 if (settingsDialog.ShowDialog() == DialogResult.OK)
                 {
                     Properties.Settings.Default.Save();
+                    PacketColors.UpdateColorsFromSettings();
                     //MessageBox.Show("Settings saved");
                 }
                 settingsDialog.Dispose();

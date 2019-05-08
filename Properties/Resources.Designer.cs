@@ -273,6 +273,16 @@ namespace PacketViewerLogViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mini_in_ticon {
+            get {
+                object obj = ResourceManager.GetObject("mini_in_ticon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mini_out_icon {
             get {
                 object obj = ResourceManager.GetObject("mini_out_icon", resourceCulture);
@@ -283,9 +293,29 @@ namespace PacketViewerLogViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mini_out_ticon {
+            get {
+                object obj = ResourceManager.GetObject("mini_out_ticon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mini_unk_icon {
             get {
                 object obj = ResourceManager.GetObject("mini_unk_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mini_unk_ticon {
+            get {
+                object obj = ResourceManager.GetObject("mini_unk_ticon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
