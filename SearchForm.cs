@@ -62,6 +62,16 @@ namespace PacketViewerLogViewer
             {
                 eValue.Text = "";
             }
+
+            cbFieldNames.Items.Clear();
+            cbFieldNames.Items.AddRange(PacketParser.AllFieldNames.ToArray());
+
+            if (searchParameters.SearchByParsedData)
+            {
+                cbFieldNames.Text = searchParameters.SearchParsedFieldName;
+                eFieldValue.Text = searchParameters.SearchParsedFieldValue;
+            }
+
             isValidating = false;
             ValidateFields();
         }
@@ -179,6 +189,14 @@ namespace PacketViewerLogViewer
             {
                 rbByte.Checked = true;
                 eValue.ForeColor = Color.DarkGray;
+            }
+
+            if ((cbFieldNames.Text != string.Empty) && (eFieldValue.Text != string.Empty))
+            {
+                hasData = true;
+                searchParameters.SearchByParsedData = true;
+                searchParameters.SearchParsedFieldName = cbFieldNames.Text.ToLower();
+                searchParameters.SearchParsedFieldValue = eFieldValue.Text.ToLower();
             }
 
             if ((!isValid) || (!hasData))

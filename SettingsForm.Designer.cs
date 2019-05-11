@@ -68,27 +68,28 @@
             this.rbAutoLoadVideoLocalOnly = new System.Windows.Forms.RadioButton();
             this.rbAutoLoadVideoNever = new System.Windows.Forms.RadioButton();
             this.gbListStyle = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.rbListStyleTransparent = new System.Windows.Forms.RadioButton();
             this.rbListStyleSolid = new System.Windows.Forms.RadioButton();
             this.rbListStyleText = new System.Windows.Forms.RadioButton();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.label12 = new System.Windows.Forms.Label();
+            this.cbPreParseData = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbAutoLoadVideo.SuspendLayout();
             this.gbListStyle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 345);
+            this.btnOK.Location = new System.Drawing.Point(12, 359);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -100,7 +101,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(93, 345);
+            this.btnCancel.Location = new System.Drawing.Point(93, 359);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -474,7 +475,7 @@
             // btnDefault
             // 
             this.btnDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDefault.Location = new System.Drawing.Point(190, 345);
+            this.btnDefault.Location = new System.Drawing.Point(190, 359);
             this.btnDefault.Name = "btnDefault";
             this.btnDefault.Size = new System.Drawing.Size(75, 23);
             this.btnDefault.TabIndex = 11;
@@ -487,9 +488,9 @@
             this.cbUseExternalEditor.AutoSize = true;
             this.cbUseExternalEditor.Location = new System.Drawing.Point(18, 301);
             this.cbUseExternalEditor.Name = "cbUseExternalEditor";
-            this.cbUseExternalEditor.Size = new System.Drawing.Size(276, 17);
+            this.cbUseExternalEditor.Size = new System.Drawing.Size(239, 17);
             this.cbUseExternalEditor.TabIndex = 12;
-            this.cbUseExternalEditor.Text = "Use Default External Text Editor for editing parse files";
+            this.cbUseExternalEditor.Text = "Use External Text Editor for editing parse files";
             this.cbUseExternalEditor.UseVisualStyleBackColor = true;
             // 
             // gbAutoLoadVideo
@@ -572,6 +573,55 @@
             this.gbListStyle.TabStop = false;
             this.gbListStyle.Text = "Packet List Style";
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(3, 187);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(60, 13);
+            this.label12.TabIndex = 12;
+            this.label12.Text = "Arrow Style";
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::PacketViewerLogViewer.Properties.Resources.mini_out_ticon;
+            this.pictureBox3.Location = new System.Drawing.Point(458, 208);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(12, 12);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox3.TabIndex = 6;
+            this.pictureBox3.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = global::PacketViewerLogViewer.Properties.Resources.mini_in_ticon;
+            this.pictureBox4.Location = new System.Drawing.Point(440, 208);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(12, 12);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox4.TabIndex = 5;
+            this.pictureBox4.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::PacketViewerLogViewer.Properties.Resources.mini_out_icon;
+            this.pictureBox2.Location = new System.Drawing.Point(270, 208);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(12, 12);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::PacketViewerLogViewer.Properties.Resources.mini_in_icon;
+            this.pictureBox1.Location = new System.Drawing.Point(252, 208);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(12, 12);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
             // rbListStyleTransparent
             // 
             this.rbListStyleTransparent.AutoSize = true;
@@ -604,54 +654,15 @@
             this.rbListStyleText.Text = "Text Arrows  <=  =>";
             this.rbListStyleText.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // cbPreParse
             // 
-            this.pictureBox1.Image = global::PacketViewerLogViewer.Properties.Resources.mini_in_icon;
-            this.pictureBox1.Location = new System.Drawing.Point(252, 208);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(12, 12);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::PacketViewerLogViewer.Properties.Resources.mini_out_icon;
-            this.pictureBox2.Location = new System.Drawing.Point(270, 208);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(12, 12);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 4;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = global::PacketViewerLogViewer.Properties.Resources.mini_out_ticon;
-            this.pictureBox3.Location = new System.Drawing.Point(458, 208);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(12, 12);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox3.TabIndex = 6;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Image = global::PacketViewerLogViewer.Properties.Resources.mini_in_ticon;
-            this.pictureBox4.Location = new System.Drawing.Point(440, 208);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(12, 12);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox4.TabIndex = 5;
-            this.pictureBox4.TabStop = false;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 187);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(60, 13);
-            this.label12.TabIndex = 12;
-            this.label12.Text = "Arrow Style";
+            this.cbPreParseData.AutoSize = true;
+            this.cbPreParseData.Location = new System.Drawing.Point(18, 324);
+            this.cbPreParseData.Name = "cbPreParse";
+            this.cbPreParseData.Size = new System.Drawing.Size(404, 17);
+            this.cbPreParseData.TabIndex = 15;
+            this.cbPreParseData.Text = "Pre-Parse loaded packet data (loads slower but allows additional search options)";
+            this.cbPreParseData.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -659,8 +670,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(568, 380);
+            this.ClientSize = new System.Drawing.Size(568, 394);
             this.ControlBox = false;
+            this.Controls.Add(this.cbPreParseData);
             this.Controls.Add(this.gbListStyle);
             this.Controls.Add(this.gbAutoLoadVideo);
             this.Controls.Add(this.cbUseExternalEditor);
@@ -681,10 +693,10 @@
             this.gbAutoLoadVideo.PerformLayout();
             this.gbListStyle.ResumeLayout(false);
             this.gbListStyle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -740,5 +752,6 @@
         private System.Windows.Forms.RadioButton rbListStyleTransparent;
         private System.Windows.Forms.RadioButton rbListStyleSolid;
         private System.Windows.Forms.RadioButton rbListStyleText;
+        private System.Windows.Forms.CheckBox cbPreParseData;
     }
 }

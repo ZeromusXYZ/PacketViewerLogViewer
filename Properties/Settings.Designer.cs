@@ -286,5 +286,17 @@ namespace PacketViewerLogViewer.Properties {
                 this["PacketListStyle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PreParseData {
+            get {
+                return ((bool)(this["PreParseData"]));
+            }
+            set {
+                this["PreParseData"] = value;
+            }
+        }
     }
 }

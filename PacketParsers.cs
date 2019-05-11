@@ -37,7 +37,15 @@ namespace PacketViewerLogViewer
         public PacketData PD;
         public List<string> SwitchBlocks = new List<string>();
         public string LastSwitchedBlock = "";
-        private string[] CompasDirectionNames = new string[16] { "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N", "NNE", "NE", "ENE" };
+        static private string[] CompasDirectionNames = new string[16] { "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N", "NNE", "NE", "ENE" };
+        public string PreParsedSwitchBlock = "?" ;
+        static public List<string> AllFieldNames = new List<string>();
+
+        static protected void AddFieldNameToList(string fieldName)
+        {
+            if (AllFieldNames.IndexOf(fieldName) < 0)
+                AllFieldNames.Add(fieldName);
+        }
 
         public PacketParser(UInt16 aPacketID,PacketLogTypes aPacketLogType)
         {
@@ -296,6 +304,7 @@ namespace PacketViewerLogViewer
             pvl.FieldIndex = FieldIndex;
             pvl.FieldColor = POSColor;
             ParsedView.Add(pvl);
+            AddFieldNameToList(VARName);
         }
 
         private void MarkParsed(int offset, int bytesize, byte fieldindex)
@@ -515,7 +524,7 @@ namespace PacketViewerLogViewer
         }
 
 
-        public void ParseToDataGridView(DataGridView DGV,string ActiveSwitchBlock)
+        public void ParseData(string ActiveSwitchBlock)
         {
             byte DataFieldIndex = 0; // header is considered 0
 
@@ -753,6 +762,8 @@ namespace PacketViewerLogViewer
                             // Debug Info
                             AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "SwitchBlock", "Activate Block: " + ActiveSwitchBlock);
                             LastSwitchedBlock = ActiveSwitchBlock;
+                            if (PreParsedSwitchBlock == "-")
+                                PreParsedSwitchBlock = ActiveSwitchBlock;
                             continue;
                         }
                     }
@@ -770,6 +781,8 @@ namespace PacketViewerLogViewer
                         // Debug Info
                         AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "ShowBlock", "Activate Block: " + ActiveSwitchBlock);
                         LastSwitchedBlock = ActiveSwitchBlock;
+                        if (PreParsedSwitchBlock == "-")
+                            PreParsedSwitchBlock = ActiveSwitchBlock;
                         continue;
                     }
                 }
@@ -1520,7 +1533,7 @@ namespace PacketViewerLogViewer
                 }
             }
 
-            ToGridView(DGV);
+            //ToGridView(DGV);
         }
 
     }
@@ -1539,6 +1552,9 @@ namespace PacketViewerLogViewer
         public UInt16 SearchUInt16 { get; set; }
         public bool SearchByUInt32 { get; set; }
         public UInt32 SearchUInt32 { get; set; }
+        public bool SearchByParsedData { get; set; }
+        public string SearchParsedFieldName { get; set; }
+        public string SearchParsedFieldValue { get; set; }
 
         public void Clear()
         {
@@ -1549,6 +1565,7 @@ namespace PacketViewerLogViewer
             SearchByByte = false;
             SearchByUInt16 = false;
             SearchByUInt32 = false;
+            SearchByParsedData = false;
         }
 
         public void CopyFrom(SearchParameters p)
@@ -1565,6 +1582,9 @@ namespace PacketViewerLogViewer
             SearchUInt16 = p.SearchUInt16;
             SearchByUInt32 = p.SearchByUInt32;
             SearchUInt32 = p.SearchUInt32;
+            SearchByParsedData = p.SearchByParsedData;
+            SearchParsedFieldName = p.SearchParsedFieldName;
+            SearchParsedFieldValue = p.SearchParsedFieldValue;
         }
     }
 

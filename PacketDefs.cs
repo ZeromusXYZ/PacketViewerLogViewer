@@ -101,6 +101,9 @@ namespace PacketViewerLogViewer.Packets
         public string OriginalTimeString { get; set; }
         public int capturedZoneId { get; set; }
 
+        public PacketParser PP;
+
+
         // Source: https://docs.microsoft.com/en-us/dotnet/api/system.datetime.parse?view=netframework-4.7.2#System_DateTime_Parse_System_String_System_IFormatProvider_System_Globalization_DateTimeStyles_
         // Assume a date and time string formatted for the fr-FR culture is the local 
         // time and convert it to UTC.
@@ -122,6 +125,7 @@ namespace PacketViewerLogViewer.Packets
             VirtualTimeStamp = new DateTime(0);
             OriginalTimeString = "";
             capturedZoneId = 0;
+            PP = null;
         }
 
         ~PacketData()
@@ -887,6 +891,7 @@ namespace PacketViewerLogViewer.Packets
 
         public PacketListFilter Filter ;
         public DateTime firstPacketTime;
+        public bool IsPreParsed = false;
 
         public PacketList()
         {
@@ -952,6 +957,7 @@ namespace PacketViewerLogViewer.Packets
 
         public bool LoadFromStringList(List<string> FileData,PacketLogFileFormats logFileType , PacketLogTypes preferedType)
         {
+            IsPreParsed = Properties.Settings.Default.PreParseData;
             // Add dummy blank lines to fix a bug of ignoring last packet if isn't finished by a blank line
             FileData.Add("");
 
@@ -967,7 +973,7 @@ namespace PacketViewerLogViewer.Packets
                     loadform.pb.Maximum = FileData.Count ;
                     loadform.pb.Step = 1000;
 
-                    PacketData PD = null;
+                    PacketData pd = null;
                     bool IsUndefinedPacketType = true;
                     bool AskForPacketType = true;
 
@@ -975,47 +981,47 @@ namespace PacketViewerLogViewer.Packets
                     foreach(string s in FileData)
                     {
                         string sLower = s.ToLower();
-                        if ((s != "") && (PD == null))
+                        if ((s != "") && (pd == null))
                         {
                             // Begin building a new packet
-                            PD = new PacketData();
+                            pd = new PacketData();
                             if (sLower.IndexOf("incoming") >= 0)
                             {
-                                PD.PacketLogType = PacketLogTypes.Incoming;
+                                pd.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.WindowerPacketViewer;
                             }
                             else
                             if (sLower.IndexOf("outgoing") >= 0)
                             {
-                                PD.PacketLogType = PacketLogTypes.Outgoing;
+                                pd.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.WindowerPacketViewer;
                             }
                             else
                             if (sLower.IndexOf("[s->c]") >= 0)
                             {
-                                PD.PacketLogType = PacketLogTypes.Incoming;
+                                pd.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.AshitaPacketeer;
                             }
                             else
                             if (sLower.IndexOf("[c->s]") >= 0)
                             {
-                                PD.PacketLogType = PacketLogTypes.Outgoing;
+                                pd.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.AshitaPacketeer;
                             }
                             else
                             {
-                                PD.PacketLogType = preferedType;
+                                pd.PacketLogType = preferedType;
                             }
 
                             if (
                                 // Not a comment or empty line
                                 ((s != "") && (!s.StartsWith("--"))) &&
                                 // Unknown packet and we need to know ?
-                                (IsUndefinedPacketType && AskForPacketType && (PD.PacketLogType == PacketLogTypes.Unknown))
+                                (IsUndefinedPacketType && AskForPacketType && (pd.PacketLogType == PacketLogTypes.Unknown))
                                )
                             {
                                 AskForPacketType = false;
@@ -1032,84 +1038,91 @@ namespace PacketViewerLogViewer.Packets
                                 {
                                     preferedType = PacketLogTypes.Incoming ;
                                     IsUndefinedPacketType = false;
-                                    PD.PacketLogType = preferedType ;
+                                    pd.PacketLogType = preferedType ;
                                 }
                                 else
                                 if (askDlgRes == DialogResult.No)
                                 {
                                     preferedType = PacketLogTypes.Outgoing;
                                     IsUndefinedPacketType = false;
-                                    PD.PacketLogType = preferedType;
+                                    pd.PacketLogType = preferedType;
                                 }
                             }
 
-                            PD.RawText.Add(s);
-                            PD.HeaderText = s;
-                            PD.OriginalHeaderText = s;
+                            pd.RawText.Add(s);
+                            pd.HeaderText = s;
+                            pd.OriginalHeaderText = s;
 
                             if (logFileType == PacketLogFileFormats.Unknown)
                             {
                                 // Assume the pasted data is just raw hex bytes
-                                PD.HeaderText = "Clipboard";
-                                PD.OriginalHeaderText = "Clipboard Data";
-                                PD.AddRawHexDataAsBytes(s);
+                                pd.HeaderText = "Clipboard";
+                                pd.OriginalHeaderText = "Clipboard Data";
+                                pd.AddRawHexDataAsBytes(s);
                             }
 
                         } // end start new packet
                         else
-                        if ((s != "") && (PD != null))
+                        if ((s != "") && (pd != null))
                         {
                             // Add line of data
-                            PD.RawText.Add(s);
+                            pd.RawText.Add(s);
                             // Actual packet data starts at the 3rd line after the header
-                            if ((logFileType != PacketLogFileFormats.AshitaPacketeer) && (PD.RawText.Count > 3))
+                            if ((logFileType != PacketLogFileFormats.AshitaPacketeer) && (pd.RawText.Count > 3))
                             {
-                                PD.AddRawLineAsBytes(s);
+                                pd.AddRawLineAsBytes(s);
                             }
                             else
-                            if ((logFileType == PacketLogFileFormats.AshitaPacketeer) && (PD.RawText.Count > 1))
+                            if ((logFileType == PacketLogFileFormats.AshitaPacketeer) && (pd.RawText.Count > 1))
                             {
-                                PD.AddRawPacketeerLineAsBytes(s);
+                                pd.AddRawPacketeerLineAsBytes(s);
                             }
                             else
                             if (logFileType == PacketLogFileFormats.Unknown)
                             {
                                 // Assume the pasted data is just raw hex bytes
-                                PD.AddRawHexDataAsBytes(s);
+                                pd.AddRawHexDataAsBytes(s);
                             }
                         }
                         else
-                        if ((s == "") && (PD != null))
+                        if ((s == "") && (pd != null))
                         {
                             // Close this packet and add it to list
-                            if (PD.CompileData(logFileType))
+                            if (pd.CompileData(logFileType))
                             {
-                                PacketDataList.Add(PD);
-                                if (PD.PacketLogType == PacketLogTypes.Outgoing)
+                                if (IsPreParsed)
                                 {
-                                    if (ContainsPacketsOut.IndexOf(PD.PacketID) < 0)
-                                        ContainsPacketsOut.Add(PD.PacketID);
+                                    pd.PP = new PacketParser(pd.PacketID, pd.PacketLogType);
+                                    pd.PP.AssignPacket(pd);
+                                    pd.PP.ParseData("-");
+                                }
+
+                                PacketDataList.Add(pd);
+                                if (pd.PacketLogType == PacketLogTypes.Outgoing)
+                                {
+                                    if (ContainsPacketsOut.IndexOf(pd.PacketID) < 0)
+                                        ContainsPacketsOut.Add(pd.PacketID);
                                 }
                                 else
-                                if (PD.PacketLogType == PacketLogTypes.Incoming)
+                                if (pd.PacketLogType == PacketLogTypes.Incoming)
                                 {
-                                    if (ContainsPacketsIn.IndexOf(PD.PacketID) < 0)
-                                        ContainsPacketsIn.Add(PD.PacketID);
+                                    if (ContainsPacketsIn.IndexOf(pd.PacketID) < 0)
+                                        ContainsPacketsIn.Add(pd.PacketID);
                                 }
                             }
                             else
                             {
                                 // Invalid data
                             }
-                            PD = null;
+                            pd = null;
                         }
                         else
-                        if ((s == "") && (PD == null))
+                        if ((s == "") && (pd == null))
                         {
                             // Blank line
                         }
                         else
-                        if (s.StartsWith("--") && (PD != null))
+                        if (s.StartsWith("--") && (pd != null))
                         {
                             // Comment
                         }
@@ -1141,6 +1154,7 @@ namespace PacketViewerLogViewer.Packets
 
         public bool LoadFromSQLite3(string sqliteFileName)
         {
+            IsPreParsed = Properties.Settings.Default.PreParseData;
             int c = 0;
             using (LoadingForm loadform = new LoadingForm(MainForm.thisMainForm))
             {
@@ -1189,7 +1203,14 @@ namespace PacketViewerLogViewer.Packets
 
                             if (pd.CompileData(PacketLogFileFormats.PacketDB))
                             {
+                                if (IsPreParsed)
+                                {
+                                    pd.PP = new PacketParser(pd.PacketID, pd.PacketLogType);
+                                    pd.PP.AssignPacket(pd);
+                                    pd.PP.ParseData("-");
+                                }
                                 PacketDataList.Add(pd);
+
                                 if (pd.PacketLogType == PacketLogTypes.Outgoing)
                                 {
                                     if (ContainsPacketsOut.IndexOf(pd.PacketID) < 0)
@@ -1245,6 +1266,7 @@ namespace PacketViewerLogViewer.Packets
         {
             int c = 0;
             Clear();
+            IsPreParsed = Original.IsPreParsed;
             foreach(PacketData pd in Original.PacketDataList)
             {
                 PacketDataList.Add(pd);
@@ -1284,6 +1306,7 @@ namespace PacketViewerLogViewer.Packets
         {
             int c = 0;
             Clear();
+            IsPreParsed = Original.IsPreParsed;
             foreach (PacketData pd in Original.PacketDataList)
             {
                 if (DoIShowThis(pd))

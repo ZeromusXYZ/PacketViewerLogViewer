@@ -69,9 +69,9 @@ namespace PacketViewerLogViewer
                 return;
             }
 
-            MainForm.thisMainForm.PP.RawParseData.Clear();
-            MainForm.thisMainForm.PP.RawParseData.AddRange(editBox.Lines);
-            MainForm.thisMainForm.PP.ParsedView.Clear();
+            MainForm.thisMainForm.CurrentPP.RawParseData.Clear();
+            MainForm.thisMainForm.CurrentPP.RawParseData.AddRange(editBox.Lines);
+            MainForm.thisMainForm.CurrentPP.ParsedView.Clear();
             MainForm.thisMainForm.UpdatePacketDetails(tp, pd, "-", true);
         }
 

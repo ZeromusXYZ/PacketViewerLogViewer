@@ -26,10 +26,7 @@ namespace PacketViewerLogViewer
         const string urlDiscord = "https://discord.gg/GhVfDtK";
         const string urlVideoLAN = "https://www.videolan.org/";
 
-        //PacketList PLLoaded; // File Loaded
-        //PacketList PL; // Filtered File Data Displayed
-        public PacketParser PP;
-        // private UInt16 CurrentSync;
+        public PacketParser CurrentPP;
         SearchParameters searchParameters;
 
         const string InfoGridHeader = "     |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F    | 0123456789ABCDEF\n" +
@@ -423,20 +420,26 @@ namespace PacketViewerLogViewer
             lInfo.Text = pd.OriginalHeaderText;
             rtInfo.Clear();
 
-            if (dontReloadParser == false)
+            if ((dontReloadParser == false) || (pd.PP == null))
             {
-                PP = new PacketParser(pd.PacketID, pd.PacketLogType);
+                pd.PP = new PacketParser(pd.PacketID, pd.PacketLogType);
+                pd.PP.AssignPacket(pd);
             }
-            if (PP == null)
+
+            if (pd.PP == null)
                 return;
-            PP.AssignPacket(pd);
-            PP.ParseToDataGridView(dGV,SwitchBlockName);
+
+            if ((tp.PL.IsPreParsed == false) || (pd.PP.PreParsedSwitchBlock != SwitchBlockName))
+                pd.PP.ParseData(SwitchBlockName);
+
+            CurrentPP = pd.PP;
+            CurrentPP.ToGridView(dGV);
             cbShowBlock.Enabled = false;
-            if (PP.SwitchBlocks.Count > 0)
+            if (CurrentPP.SwitchBlocks.Count > 0)
             {
                 cbShowBlock.Items.Clear();
                 cbShowBlock.Items.Add("-");
-                cbShowBlock.Items.AddRange(PP.SwitchBlocks.ToArray());
+                cbShowBlock.Items.AddRange(CurrentPP.SwitchBlocks.ToArray());
                 cbShowBlock.Show();
             }
             else
@@ -446,7 +449,7 @@ namespace PacketViewerLogViewer
             }
             for(int i = 0; i < cbShowBlock.Items.Count;i++)
             {
-                if ((SwitchBlockName == "-") && (cbShowBlock.Items[i].ToString() == PP.LastSwitchedBlock))
+                if ((SwitchBlockName == "-") && (cbShowBlock.Items[i].ToString() == CurrentPP.LastSwitchedBlock))
                 {
                     if (cbShowBlock.SelectedIndex != i)
                         cbShowBlock.SelectedIndex = i;
@@ -470,7 +473,7 @@ namespace PacketViewerLogViewer
             }
             else
             {
-                RawDataToRichText(PP, rtInfo);
+                RawDataToRichText(CurrentPP, rtInfo);
             }
 
         }
@@ -522,22 +525,22 @@ namespace PacketViewerLogViewer
 
         private void dGV_SelectionChanged(object sender, EventArgs e)
         {
-            if ((PP == null) || (PP.PD == null))
+            if ((CurrentPP == null) || (CurrentPP.PD == null))
                 return;
             if (dGV.Tag != null)
                 return;
-            PP.SelectedFields.Clear();
+            CurrentPP.SelectedFields.Clear();
             for (int i = 0; i < dGV.RowCount;i++)
             {
-                if ((dGV.Rows[i].Selected) && (i < PP.ParsedView.Count))
+                if ((dGV.Rows[i].Selected) && (i < CurrentPP.ParsedView.Count))
                 {
-                    var f = PP.ParsedView[i].FieldIndex;
+                    var f = CurrentPP.ParsedView[i].FieldIndex;
                     //if (f != 0xFF)
-                        PP.SelectedFields.Add(f);
+                        CurrentPP.SelectedFields.Add(f);
                 }
             }
-            PP.ToGridView(dGV);
-            RawDataToRichText(PP, rtInfo);
+            CurrentPP.ToGridView(dGV);
+            RawDataToRichText(CurrentPP, rtInfo);
         }
 
 
@@ -1188,6 +1191,17 @@ namespace PacketViewerLogViewer
             {
                 PacketTabPage tp = (e.Control as PacketTabPage);
                 tp.SaveProjectFile();
+                if ((CurrentPP != null) && (tp.GetSelectedPacket().PP == CurrentPP))
+                {
+                    CurrentPP = null;
+                    dGV.Rows.Clear();
+                    rtInfo.Clear();
+                    lInfo.Text = "";
+                    cbShowBlock.Visible = false;
+                    if (tp.videoLink != null)
+                        tp.videoLink.Close();
+                }
+
                 if (tcPackets.TabCount <= 1)
                     Text = defaultTitle;
             }

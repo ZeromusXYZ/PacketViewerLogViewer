@@ -34,6 +34,7 @@ namespace PacketViewerLogViewer
                 Properties.Settings.Default.PacketListStyle = 1;
             if (rbListStyleTransparent.Checked)
                 Properties.Settings.Default.PacketListStyle = 2;
+            Properties.Settings.Default.PreParseData = cbPreParseData.Checked;
             DialogResult = DialogResult.OK;
         }
 
@@ -53,6 +54,7 @@ namespace PacketViewerLogViewer
             rbListStyleText.Checked = (Properties.Settings.Default.PacketListStyle == 0);
             rbListStyleSolid.Checked = (Properties.Settings.Default.PacketListStyle == 1);
             rbListStyleTransparent.Checked = (Properties.Settings.Default.PacketListStyle == 2);
+            cbPreParseData.Checked = Properties.Settings.Default.PreParseData;
         }
 
         private void LoadColorSettingsIntoButtons()
