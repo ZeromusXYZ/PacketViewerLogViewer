@@ -48,6 +48,7 @@
             this.btnPrevFrame = new System.Windows.Forms.Button();
             this.btnMute = new System.Windows.Forms.Button();
             this.closeFixTimer = new System.Windows.Forms.Timer(this.components);
+            this.packetUpdateTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.media)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tb)).BeginInit();
             this.SuspendLayout();
@@ -274,6 +275,10 @@
             // 
             this.closeFixTimer.Tick += new System.EventHandler(this.CloseFixTimer_Tick);
             // 
+            // packetUpdateTimer
+            // 
+            this.packetUpdateTimer.Interval = 50;
+            // 
             // VideoLinkForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -327,5 +332,6 @@
         private System.Windows.Forms.Button btnMute;
         private System.Windows.Forms.Timer closeFixTimer;
         private System.Windows.Forms.ImageList IL;
+        private System.Windows.Forms.Timer packetUpdateTimer;
     }
 }

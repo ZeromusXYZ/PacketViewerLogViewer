@@ -227,7 +227,7 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
             this.mmSearchSearch.Text = "Search ...";
             this.mmSearchSearch.Click += new System.EventHandler(this.MmSearchSearch_Click);
             // 
@@ -235,7 +235,7 @@
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
             this.mmSearchNext.Text = "Search next";
             this.mmSearchNext.Click += new System.EventHandler(this.MmSearchNext_Click);
             // 
@@ -255,7 +255,7 @@
             this.mmFilterApply.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MMFilterApplyItem});
             this.mmFilterApply.Name = "mmFilterApply";
-            this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterApply.Size = new System.Drawing.Size(170, 22);
             this.mmFilterApply.Text = "Apply";
             this.mmFilterApply.DropDownOpening += new System.EventHandler(this.MmFilterApply_DropDownOpening);
             // 
@@ -268,13 +268,13 @@
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(167, 6);
             // 
             // mmFilterEdit
             // 
             this.mmFilterEdit.Name = "mmFilterEdit";
             this.mmFilterEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F)));
-            this.mmFilterEdit.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterEdit.Size = new System.Drawing.Size(170, 22);
             this.mmFilterEdit.Text = "Edit ...";
             this.mmFilterEdit.Click += new System.EventHandler(this.MmFilterEdit_Click);
             // 
@@ -283,7 +283,7 @@
             this.mmFilterReset.Name = "mmFilterReset";
             this.mmFilterReset.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.F)));
-            this.mmFilterReset.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterReset.Size = new System.Drawing.Size(170, 22);
             this.mmFilterReset.Text = "Reset";
             this.mmFilterReset.Click += new System.EventHandler(this.MmFilterReset_Click);
             // 
@@ -595,12 +595,15 @@
             this.rtInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtInfo.DetectUrls = false;
             this.rtInfo.HideSelection = false;
             this.rtInfo.Location = new System.Drawing.Point(6, 3);
             this.rtInfo.Name = "rtInfo";
             this.rtInfo.Size = new System.Drawing.Size(712, 125);
             this.rtInfo.TabIndex = 2;
-            this.rtInfo.Text = resources.GetString("rtInfo.Text");
+            this.rtInfo.Text = "Click File -> Open to start\n\nTo adjust packet info please check parserinfo.txt in" +
+    " the parse folder\n\"lookup\" folder is used to create some custom value names\n\"fil" +
+    "ters\" folder containts custom filters\n";
             this.rtInfo.SelectionChanged += new System.EventHandler(this.RtInfo_SelectionChanged);
             // 
             // cbOriginalData

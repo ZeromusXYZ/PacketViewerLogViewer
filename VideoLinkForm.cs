@@ -19,9 +19,6 @@ namespace PacketViewerLogViewer
         public PacketTabPage sourceTP { get; set; }
         private bool blockPositionUpdates = false;
         private bool closeOnStop = false;
-        // TODO: check if the offset actually works and a way to set it
-        // TODO: add something to set offset
-        // TODO: add mute options
 
         public VideoLinkForm()
         {
@@ -85,6 +82,8 @@ namespace PacketViewerLogViewer
 
         private void VideoLinkForm_Load(object sender, EventArgs e)
         {
+            Left = MainForm.thisMainForm.Right - Width - 16;
+            Top = MainForm.thisMainForm.Bottom - Height - 16;
             if (sourceTP == null)
             {
                 Text = "Video not attached to a packet list";
@@ -183,6 +182,7 @@ namespace PacketViewerLogViewer
 
         private void VideoLinkForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            packetUpdateTimer.Enabled = false;
             if (sourceTP != null)
             {
                 sourceTP.videoLink = null;
@@ -281,22 +281,40 @@ namespace PacketViewerLogViewer
                 return;
             blockPositionUpdates = true;
 
-            media.Position = ((float)tb.Value / (float)tb.Maximum);
+            media.Time = tb.Value;
+            //media.Position = ((float)tb.Value / (float)tb.Maximum);
             UpdateTimeLabelAndList(tb.Value, tb.Maximum, cbFollowPacketList.Checked);
 
             blockPositionUpdates = false;
         }
 
-        public void MoveToDateTime(DateTime findTime)
+        public bool IsInTimeRange(DateTime packetTime)
+        {
+            TimeSpan off = packetTime - sourceTP.PL.firstPacketTime;
+            off = off.Subtract(sourceTP.LinkVideoOffset);
+            if (off.TotalMilliseconds < 0)
+            {
+                return false;
+            }
+            else
+            if (off.TotalMilliseconds > tb.Maximum)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void MoveToDateTime(DateTime packetTime)
         {
             if (blockPositionUpdates)
                 return;
             blockPositionUpdates = true;
 
-            TimeSpan off = findTime - sourceTP.PL.firstPacketTime ;
+            TimeSpan off = packetTime - sourceTP.PL.firstPacketTime ;
             off = off.Subtract(sourceTP.LinkVideoOffset);
             UpdateTimeLabelAndList((int)off.TotalMilliseconds, tb.Maximum, false);
-            media.Position = (float)(off.TotalMilliseconds / media.Length);
+            media.Time = (long)off.TotalMilliseconds;
+            //media.Position = (float)(off.TotalMilliseconds / media.Length);
             if (off.TotalMilliseconds < 0)
             {
                 lWarningLabel.Text = "Negative Offset";
@@ -393,7 +411,7 @@ namespace PacketViewerLogViewer
                 return;
             }
 
-            TimeSpan videoTime = TimeSpan.FromMilliseconds(media.Position * media.Length);
+            TimeSpan videoTime = TimeSpan.FromMilliseconds(media.Time);// media.Position * media.Length);
             TimeSpan packetTime = thisPacket.VirtualTimeStamp - sourceTP.PL.firstPacketTime ;
             var off = packetTime - videoTime;
             var currentvloff = sourceTP.LinkVideoOffset;
@@ -416,7 +434,7 @@ namespace PacketViewerLogViewer
             if (media.State == Vlc.DotNet.Core.Interops.Signatures.MediaStates.Playing)
                 media.Pause();
             media.VlcMediaPlayer.NextFrame();
-            long newPos = (long)(media.Position * media.Length);
+            long newPos = media.Time;// (long)(media.Position * media.Length);
             UpdateTimeLabelAndList(newPos, media.Length, cbFollowPacketList.Checked);
         }
 
@@ -424,11 +442,12 @@ namespace PacketViewerLogViewer
         {
             if (media.State == Vlc.DotNet.Core.Interops.Signatures.MediaStates.Playing)
                 media.Pause();
-            long newPos = (long)(media.Position * media.Length);
+            long newPos = media.Time;// (long)(media.Position * media.Length);
             newPos -= 1000;
             if (newPos < 0)
                 newPos = 0;
-            media.VlcMediaPlayer.Position = ((float)newPos / (float)media.Length);
+            media.Time = newPos;
+            //media.VlcMediaPlayer.Position = ((float)newPos / (float)media.Length);
             UpdateTimeLabelAndList(newPos, media.Length, cbFollowPacketList.Checked);
         }
 
@@ -471,5 +490,6 @@ namespace PacketViewerLogViewer
             if (closeOnStop)
                 Close();
         }
+
     }
 }

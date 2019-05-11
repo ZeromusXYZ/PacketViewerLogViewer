@@ -184,7 +184,7 @@ namespace PacketViewerLogViewer
             tp.PL.CopyFrom(tp.PLLoaded);
             tp.FillListBox();
             UpdateStatusBarAndTitle(tp);
-            if ( Properties.Settings.Default.AutoOpenVideoForm && (File.Exists(Path.ChangeExtension(tp.LoadedLogFile,".pvlvvl"))) )
+            if ( Properties.Settings.Default.AutoOpenVideoForm && ( (tp.LinkVideoFileName != string.Empty) || (tp.LinkYoutubeURL != string.Empty)) )
             {
                 MmVideoOpenLink_Click(null, null);
             }

@@ -1316,14 +1316,12 @@ namespace PacketViewerLogViewer.Packets
 
         public int FindPacketIndexByDateTime(DateTime dt,int searchStartLocation = 0)
         {
-            // TODO: Make this function work 100% like intended
-
             if (PacketDataList.Count <= 0)
                 return -1;
             int i = searchStartLocation ;
             if ((i < 0) || (i >= PacketDataList.Count))
                 i = 0;
-            var lastCheckTime = PacketDataList[i].VirtualTimeStamp;
+            DateTime lastCheckTime ;
             for(int c = 0;c < PacketDataList.Count; c++)
             {
                 // Next
@@ -1333,7 +1331,6 @@ namespace PacketViewerLogViewer.Packets
                     i = 0;
 
                 if ((lastCheckTime <= dt) && (dt < PacketDataList[i].VirtualTimeStamp))
-                //if (dt <= PacketDataList[i].VirtualTimeStamp)
                    return i;
 
             }
@@ -1650,11 +1647,26 @@ namespace PacketViewerLogViewer.Packets
             e.Graphics.FillRectangle(backBrush, e.Bounds);
             // header text
             var s = lb.Items[e.Index].ToString();
+            //s = pd.VirtualTimeStamp.ToString() + "." + pd.VirtualTimeStamp.Millisecond.ToString("0000");
 
             Rectangle icon1 = new Rectangle(e.Bounds.Left, e.Bounds.Top + ((e.Bounds.Height - Properties.Resources.mini_unk_icon.Height) / 2), Properties.Resources.mini_unk_icon.Width, Properties.Resources.mini_unk_icon.Height);
-            Rectangle icon2 = new Rectangle(e.Bounds.Left + e.Bounds.Height, e.Bounds.Top, e.Bounds.Height, e.Bounds.Height);
+            Rectangle icon2 = new Rectangle(icon1.Left + icon1.Width, icon1.Top, icon1.Width, icon1.Height);
 
-            Rectangle textBounds = new Rectangle(e.Bounds.Left + (Properties.Resources.mini_unk_icon.Width * 2), e.Bounds.Top, e.Bounds.Width - (Properties.Resources.mini_unk_icon.Width * 2), e.Bounds.Height);
+            Rectangle textBounds;
+            if ((tp.videoLink != null) && (tp.videoLink.IsInTimeRange(pd.VirtualTimeStamp)))
+            {
+                e.Graphics.DrawImage(Properties.Resources.mini_video_icon, icon2);
+            }
+
+            if ((tp.LinkVideoFileName != string.Empty) || (tp.LinkYoutubeURL != string.Empty))
+            { 
+                textBounds = new Rectangle(e.Bounds.Left + (icon1.Width * 2), e.Bounds.Top, e.Bounds.Width - (icon1.Width * 2), e.Bounds.Height);
+            }
+            else
+            {
+                textBounds = new Rectangle(e.Bounds.Left + (icon1.Width), e.Bounds.Top, e.Bounds.Width - (icon1.Width), e.Bounds.Height);
+            }
+
             switch (PacketColors.PacketListStyle)
             {
                 case 1:
@@ -1708,7 +1720,6 @@ namespace PacketViewerLogViewer.Packets
                     }
                     break;
             }
-            // e.Graphics.DrawImage(Properties.Resources.mini_unk_icon, icon2);
 
             // Draw the current item text based on the current Font 
             // and the custom brush settings.
