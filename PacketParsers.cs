@@ -43,6 +43,8 @@ namespace PacketViewerLogViewer
 
         static protected void AddFieldNameToList(string fieldName)
         {
+            if (fieldName.StartsWith("??"))
+                return;
             if (AllFieldNames.IndexOf(fieldName) < 0)
                 AllFieldNames.Add(fieldName);
         }

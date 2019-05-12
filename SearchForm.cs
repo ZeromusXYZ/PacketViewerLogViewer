@@ -191,7 +191,7 @@ namespace PacketViewerLogViewer
                 eValue.ForeColor = Color.DarkGray;
             }
 
-            if ((cbFieldNames.Text != string.Empty) && (eFieldValue.Text != string.Empty))
+            if (eFieldValue.Text != string.Empty)
             {
                 hasData = true;
                 searchParameters.SearchByParsedData = true;

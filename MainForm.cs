@@ -750,6 +750,11 @@ namespace PacketViewerLogViewer
                 return;
             using (SearchForm SearchDlg = new SearchForm())
             {
+                if (tp.PL.IsPreParsed == false)
+                {
+                    searchParameters.SearchByParsedData = false;
+                    SearchDlg.gbSearchByField.Enabled = false;
+                }
                 SearchDlg.searchParameters.CopyFrom(this.searchParameters);
                 var res = SearchDlg.ShowDialog();
                 if ((res == DialogResult.OK) || (res == DialogResult.Retry))
@@ -1191,7 +1196,7 @@ namespace PacketViewerLogViewer
             {
                 PacketTabPage tp = (e.Control as PacketTabPage);
                 tp.SaveProjectFile();
-                if ((CurrentPP != null) && (tp.GetSelectedPacket().PP == CurrentPP))
+                if ((CurrentPP != null) && (tp.GetSelectedPacket().PP != null) && (tp.GetSelectedPacket().PP == CurrentPP))
                 {
                     CurrentPP = null;
                     dGV.Rows.Clear();

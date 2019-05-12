@@ -36,26 +36,26 @@
             this.rbAny = new System.Windows.Forms.RadioButton();
             this.btnAsNewTab = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.eSync = new System.Windows.Forms.TextBox();
+            this.ePacketID = new System.Windows.Forms.TextBox();
             this.rbUInt32 = new System.Windows.Forms.RadioButton();
             this.rbUInt16 = new System.Windows.Forms.RadioButton();
             this.rbByte = new System.Windows.Forms.RadioButton();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.eValue = new System.Windows.Forms.TextBox();
-            this.eSync = new System.Windows.Forms.TextBox();
-            this.ePacketID = new System.Windows.Forms.TextBox();
             this.gbRawValues = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.gbSearchByField = new System.Windows.Forms.GroupBox();
+            this.cbFieldNames = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.eFieldValue = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.cbFieldNames = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.gbRawValues.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.gbSearchByField.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnFindNext
@@ -156,6 +156,40 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Search for packet";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Sync Number";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Packet ID";
+            // 
+            // eSync
+            // 
+            this.eSync.Location = new System.Drawing.Point(136, 41);
+            this.eSync.Name = "eSync";
+            this.eSync.Size = new System.Drawing.Size(68, 20);
+            this.eSync.TabIndex = 1;
+            this.eSync.TextChanged += new System.EventHandler(this.SearchFieldsChanged);
+            // 
+            // ePacketID
+            // 
+            this.ePacketID.Location = new System.Drawing.Point(136, 15);
+            this.ePacketID.Name = "ePacketID";
+            this.ePacketID.Size = new System.Drawing.Size(68, 20);
+            this.ePacketID.TabIndex = 0;
+            this.ePacketID.TextChanged += new System.EventHandler(this.SearchFieldsChanged);
+            // 
             // rbUInt32
             // 
             this.rbUInt32.AutoSize = true;
@@ -200,24 +234,6 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Raw Value";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 48);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Sync Number";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Packet ID";
-            // 
             // eValue
             // 
             this.eValue.Location = new System.Drawing.Point(85, 21);
@@ -225,22 +241,6 @@
             this.eValue.Size = new System.Drawing.Size(119, 20);
             this.eValue.TabIndex = 2;
             this.eValue.TextChanged += new System.EventHandler(this.SearchFieldsChanged);
-            // 
-            // eSync
-            // 
-            this.eSync.Location = new System.Drawing.Point(136, 41);
-            this.eSync.Name = "eSync";
-            this.eSync.Size = new System.Drawing.Size(68, 20);
-            this.eSync.TabIndex = 1;
-            this.eSync.TextChanged += new System.EventHandler(this.SearchFieldsChanged);
-            // 
-            // ePacketID
-            // 
-            this.ePacketID.Location = new System.Drawing.Point(136, 15);
-            this.ePacketID.Name = "ePacketID";
-            this.ePacketID.Size = new System.Drawing.Size(68, 20);
-            this.ePacketID.TabIndex = 0;
-            this.ePacketID.TextChanged += new System.EventHandler(this.SearchFieldsChanged);
             // 
             // gbRawValues
             // 
@@ -258,56 +258,21 @@
             this.gbRawValues.TabStop = false;
             this.gbRawValues.Text = "Search for RAW value";
             // 
-            // groupBox3
+            // gbSearchByField
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.gbSearchByField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.cbFieldNames);
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.eFieldValue);
-            this.groupBox3.Location = new System.Drawing.Point(12, 219);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(394, 78);
-            this.groupBox3.TabIndex = 16;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Search for PARSED value";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 24);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(60, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Field Name";
-            // 
-            // eFieldValue
-            // 
-            this.eFieldValue.Location = new System.Drawing.Point(285, 21);
-            this.eFieldValue.Name = "eFieldValue";
-            this.eFieldValue.Size = new System.Drawing.Size(103, 20);
-            this.eFieldValue.TabIndex = 2;
-            this.eFieldValue.TextChanged += new System.EventHandler(this.SearchFieldsChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(219, 24);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Field Value";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 47);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(238, 13);
-            this.label6.TabIndex = 7;
-            this.label6.Text = "Note: parsed values are always treated as strings";
+            this.gbSearchByField.Controls.Add(this.cbFieldNames);
+            this.gbSearchByField.Controls.Add(this.label6);
+            this.gbSearchByField.Controls.Add(this.label5);
+            this.gbSearchByField.Controls.Add(this.label4);
+            this.gbSearchByField.Controls.Add(this.eFieldValue);
+            this.gbSearchByField.Location = new System.Drawing.Point(12, 219);
+            this.gbSearchByField.Name = "gbSearchByField";
+            this.gbSearchByField.Size = new System.Drawing.Size(394, 78);
+            this.gbSearchByField.TabIndex = 16;
+            this.gbSearchByField.TabStop = false;
+            this.gbSearchByField.Text = "Search for PARSED value";
             // 
             // cbFieldNames
             // 
@@ -320,6 +285,41 @@
             this.cbFieldNames.TabIndex = 8;
             this.cbFieldNames.TextChanged += new System.EventHandler(this.SearchFieldsChanged);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 47);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(238, 13);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "Note: parsed values are always treated as strings";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(210, 24);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Field Value";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 24);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(60, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Field Name";
+            // 
+            // eFieldValue
+            // 
+            this.eFieldValue.Location = new System.Drawing.Point(269, 21);
+            this.eFieldValue.Name = "eFieldValue";
+            this.eFieldValue.Size = new System.Drawing.Size(119, 20);
+            this.eFieldValue.TabIndex = 2;
+            this.eFieldValue.TextChanged += new System.EventHandler(this.SearchFieldsChanged);
+            // 
             // SearchForm
             // 
             this.AcceptButton = this.btnFindNext;
@@ -327,7 +327,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(415, 305);
-            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.gbSearchByField);
             this.Controls.Add(this.gbRawValues);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnAsNewTab);
@@ -347,8 +347,8 @@
             this.groupBox2.PerformLayout();
             this.gbRawValues.ResumeLayout(false);
             this.gbRawValues.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            this.gbSearchByField.ResumeLayout(false);
+            this.gbSearchByField.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -372,11 +372,11 @@
         private System.Windows.Forms.TextBox eSync;
         private System.Windows.Forms.TextBox ePacketID;
         private System.Windows.Forms.GroupBox gbRawValues;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ComboBox cbFieldNames;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox eFieldValue;
+        public System.Windows.Forms.GroupBox gbSearchByField;
     }
 }

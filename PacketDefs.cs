@@ -703,6 +703,26 @@ namespace PacketViewerLogViewer.Packets
                 }
             }
 
+            if ((res) && (PP != null) && (p.SearchByParsedData) && (p.SearchParsedFieldValue != string.Empty))
+            {
+                res = false;
+                foreach(var f in PP.ParsedView)
+                {
+                    if (p.SearchParsedFieldName != string.Empty)
+                    {
+                        // Field Name Specified
+                        res = ((f.Var.ToLower().IndexOf(p.SearchParsedFieldName) >= 0) && (f.Data.ToLower().IndexOf(p.SearchParsedFieldValue) >= 0));
+                    }
+                    else
+                    {
+                        // No field name defined
+                        res = (f.Data.ToLower().IndexOf(p.SearchParsedFieldValue) >= 0);
+                    }
+                    if (res)
+                        break;
+                }
+            }
+
             return res;
         }
 
