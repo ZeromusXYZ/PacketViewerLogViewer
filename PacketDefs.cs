@@ -138,17 +138,15 @@ namespace PacketViewerLogViewer.Packets
         {
             /* Example:
             //        1         2         3         4         5         6         7         8         9
-            //34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+            01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
 
             [2018-05-16 18:11:35] Outgoing packet 0x015:
                     |  0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F      | 0123456789ABCDEF
                 -----------------------------------------------------  ----------------------
                   0 | 15 10 9E 00 CF 50 A0 C3 04 0E 1C C2 46 BF 33 43    0 | .....P......F.3C
                   1 | 00 00 02 00 5D 00 00 00 49 97 B8 69 00 00 00 00    1 | ....]...I..i....
-
-            // 1         2         3         4         5         6         7         8         9
-            // 123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-            // 5 | 00 00 00 00 -- -- -- -- -- -- -- -- -- -- -- --    5 | ....------------
+            ...
+                  5 | 00 00 00 00 -- -- -- -- -- -- -- -- -- -- -- --    5 | ....------------
             */
 
             // if (s.Length < 81)
@@ -179,10 +177,10 @@ namespace PacketViewerLogViewer.Packets
         public int AddRawPacketeerLineAsBytes(string s)
         {
             /* Example:
-            // 1         2         3         4         5         6         7         8         9
-            // 123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+            //           1         2         3         4         5         6         7         8         9
+            // 0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
             // [C->S] Id: 001A | Size: 28
-            // 1A 0E ED 24 D5 10 10 01 D5 00 00 00 00 00 00 00  ..í$Õ...Õ.......
+            //     1A 0E ED 24 D5 10 10 01 D5 00 00 00 00 00 00 00  ..í$Õ...Õ.......
             */
 
             if (s.Length < 51)
@@ -194,13 +192,14 @@ namespace PacketViewerLogViewer.Packets
             int c = 0;
             for (int i = 0; i <= 0xf; i++)
             {
-                var h = s.Substring(11 + (i * 3), 2);
+                var h = s.Substring(4 + (i * 3), 2);
                 // If this fails, we're probably at the end of the packet
                 // Unlike windower, Packeteer doesn't add dashes for the blanks
                 if ((h != "--") && (h != "  ") && (h != " "))
                 {
-                    if (!byte.TryParse("0x" + h, out byte b))
-                        break;
+                    byte b = byte.Parse(h, System.Globalization.NumberStyles.HexNumber);
+                    //if (!byte.TryParse("0x" + h, out byte b))
+                    //    break;
                     RawBytes.Add(b);
                     c++;
                 }
@@ -996,6 +995,7 @@ namespace PacketViewerLogViewer.Packets
                     PacketData pd = null;
                     bool IsUndefinedPacketType = true;
                     bool AskForPacketType = true;
+                    bool hasData = false;
 
                     int c = 0;
                     foreach(string s in FileData)
@@ -1010,6 +1010,7 @@ namespace PacketViewerLogViewer.Packets
                                 pd.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.WindowerPacketViewer;
+                                hasData = true;
                             }
                             else
                             if (sLower.IndexOf("outgoing") >= 0)
@@ -1017,6 +1018,7 @@ namespace PacketViewerLogViewer.Packets
                                 pd.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.WindowerPacketViewer;
+                                hasData = true;
                             }
                             else
                             if (sLower.IndexOf("[s->c]") >= 0)
@@ -1024,6 +1026,7 @@ namespace PacketViewerLogViewer.Packets
                                 pd.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.AshitaPacketeer;
+                                hasData = true;
                             }
                             else
                             if (sLower.IndexOf("[c->s]") >= 0)
@@ -1031,6 +1034,7 @@ namespace PacketViewerLogViewer.Packets
                                 pd.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.AshitaPacketeer;
+                                hasData = true;
                             }
                             else
                             {
@@ -1069,21 +1073,28 @@ namespace PacketViewerLogViewer.Packets
                                 }
                             }
 
-                            pd.RawText.Add(s);
-                            pd.HeaderText = s;
-                            pd.OriginalHeaderText = s;
-
-                            if (logFileType == PacketLogFileFormats.Unknown)
+                            if (hasData)
                             {
-                                // Assume the pasted data is just raw hex bytes
-                                pd.HeaderText = "Clipboard";
-                                pd.OriginalHeaderText = "Clipboard Data";
-                                pd.AddRawHexDataAsBytes(s);
+                                pd.RawText.Add(s);
+                                pd.HeaderText = s;
+                                pd.OriginalHeaderText = s;
+
+                                if (logFileType == PacketLogFileFormats.Unknown)
+                                {
+                                    // Assume the pasted data is just raw hex bytes
+                                    pd.HeaderText = "Clipboard";
+                                    pd.OriginalHeaderText = "Clipboard Data";
+                                    pd.AddRawHexDataAsBytes(s);
+                                }
+                            }
+                            else
+                            {
+                                pd = null;
                             }
 
                         } // end start new packet
                         else
-                        if ((s != "") && (pd != null))
+                        if (hasData && (s != "") && (pd != null))
                         {
                             // Add line of data
                             pd.RawText.Add(s);
@@ -1105,7 +1116,7 @@ namespace PacketViewerLogViewer.Packets
                             }
                         }
                         else
-                        if ((s == "") && (pd != null))
+                        if (hasData && (s == "") && (pd != null))
                         {
                             // Close this packet and add it to list
                             if (pd.CompileData(logFileType))
