@@ -123,7 +123,7 @@ namespace PacketViewerLogViewer
             }
             else
             {
-                TryOpenLogFile(aFileName,true);
+                TryOpenLogFile(aFileName, true);
             }
         }
 
@@ -151,10 +151,10 @@ namespace PacketViewerLogViewer
 
         }
 
-        private void TryOpenLogFile(string logFile,bool alsoLoadProject)
+        private void TryOpenLogFile(string logFile, bool alsoLoadProject)
         {
 
-            PacketTabPage tp ;
+            PacketTabPage tp;
             if (alsoLoadProject)
             {
                 tp = CreateNewPacketsTabPage();
@@ -164,7 +164,7 @@ namespace PacketViewerLogViewer
             {
                 tp = GetCurrentPacketTabPage();
             }
-            
+
             //tp.ProjectFolder = Helper.MakeProjectDirectoryFromLogFileName(logFile);
             tp.Text = Helper.MakeTabName(logFile);
 
@@ -181,7 +181,7 @@ namespace PacketViewerLogViewer
             tp.PL.CopyFrom(tp.PLLoaded);
             tp.FillListBox();
             UpdateStatusBarAndTitle(tp);
-            if ( Properties.Settings.Default.AutoOpenVideoForm && ( (tp.LinkVideoFileName != string.Empty) || (tp.LinkYoutubeURL != string.Empty)) )
+            if (Properties.Settings.Default.AutoOpenVideoForm && ((tp.LinkVideoFileName != string.Empty) || (tp.LinkYoutubeURL != string.Empty)))
             {
                 MmVideoOpenLink_Click(null, null);
             }
@@ -202,7 +202,7 @@ namespace PacketViewerLogViewer
             }
             PacketData pd = tp.PL.GetPacket(lb.SelectedIndex);
             cbShowBlock.Enabled = false;
-            UpdatePacketDetails(tp,pd, "-");
+            UpdatePacketDetails(tp, pd, "-");
             cbShowBlock.Enabled = true;
             lb.Invalidate();
             if ((tp.videoLink != null) && (tp.videoLink.cbFollowPacketList.Checked))
@@ -232,7 +232,7 @@ namespace PacketViewerLogViewer
                 return;
             }
 
-            UpdatePacketDetails(tp,pd, "-");
+            UpdatePacketDetails(tp, pd, "-");
         }
 
         private void mmFileClose_Click(object sender, EventArgs e)
@@ -289,7 +289,7 @@ namespace PacketViewerLogViewer
                 rtInfo.SelectionBackColor = Color.White;
             }
 
-            void SetColorSelect(byte n,bool forchars)
+            void SetColorSelect(byte n, bool forchars)
             {
                 if (!forchars)
                 {
@@ -328,11 +328,11 @@ namespace PacketViewerLogViewer
                     var n = pp.ParsedBytes[startIndex + c];
                     if (pp.SelectedFields.IndexOf(n) >= 0)
                     {
-                        SetColorSelect(n,true);
+                        SetColorSelect(n, true);
                     }
                     else
                     {
-                        SetColorNotSelect(n,true);
+                        SetColorNotSelect(n, true);
                     }
                     char ch = (char)pp.PD.GetByteAtPos(startIndex + c);
                     if ((ch < 32) || (ch >= 128))
@@ -350,12 +350,12 @@ namespace PacketViewerLogViewer
             for (int i = 0; i < pp.PD.RawBytes.Count; i += 0x10)
             {
                 SetColorGrid();
-                rtInfo.AppendText(i.ToString("X").PadLeft(4,' ') + " | ");
+                rtInfo.AppendText(i.ToString("X").PadLeft(4, ' ') + " | ");
                 for (int i2 = 0; i2 < 0x10; i2++)
                 {
                     if ((i + i2) < pp.ParsedBytes.Count)
                     {
-                        var n = pp.ParsedBytes[i+i2];
+                        var n = pp.ParsedBytes[i + i2];
                         lastFieldIndex = n;
                         if (pp.SelectedFields.Count > 0)
                         {
@@ -375,7 +375,7 @@ namespace PacketViewerLogViewer
                             // No fields selected
                             SetColorNotSelect(n, false);
                         }
-                        rtInfo.AppendText(pp.PD.GetByteAtPos(i+i2).ToString("X2"));
+                        rtInfo.AppendText(pp.PD.GetByteAtPos(i + i2).ToString("X2"));
                         addCharCount++;
                     }
                     else
@@ -447,7 +447,7 @@ namespace PacketViewerLogViewer
                 cbShowBlock.Items.Clear();
                 cbShowBlock.Hide();
             }
-            for(int i = 0; i < cbShowBlock.Items.Count;i++)
+            for (int i = 0; i < cbShowBlock.Items.Count; i++)
             {
                 if ((SwitchBlockName == "-") && (cbShowBlock.Items[i].ToString() == CurrentPP.LastSwitchedBlock))
                 {
@@ -513,11 +513,11 @@ namespace PacketViewerLogViewer
             var sw = cbShowBlock.SelectedIndex;
             if (sw >= 0)
             {
-                UpdatePacketDetails(tp,pd, cbShowBlock.Items[sw].ToString(),true);
+                UpdatePacketDetails(tp, pd, cbShowBlock.Items[sw].ToString(), true);
             }
             else
             {
-                UpdatePacketDetails(tp,pd, "-",true);
+                UpdatePacketDetails(tp, pd, "-", true);
             }
             cbShowBlock.Enabled = true;
             tp.lbPackets.Invalidate();
@@ -530,13 +530,13 @@ namespace PacketViewerLogViewer
             if (dGV.Tag != null)
                 return;
             CurrentPP.SelectedFields.Clear();
-            for (int i = 0; i < dGV.RowCount;i++)
+            for (int i = 0; i < dGV.RowCount; i++)
             {
                 if ((dGV.Rows[i].Selected) && (i < CurrentPP.ParsedView.Count))
                 {
                     var f = CurrentPP.ParsedView[i].FieldIndex;
                     //if (f != 0xFF)
-                        CurrentPP.SelectedFields.Add(f);
+                    CurrentPP.SelectedFields.Add(f);
                 }
             }
             CurrentPP.ToGridView(dGV);
@@ -618,7 +618,7 @@ namespace PacketViewerLogViewer
             }
             catch (Exception x)
             {
-                MessageBox.Show("Paste Failed, Exception: "+x.Message, "Paste from Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Paste Failed, Exception: " + x.Message, "Paste from Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -796,8 +796,8 @@ namespace PacketViewerLogViewer
             var startIndex = tp.lbPackets.SelectedIndex;
             if ((startIndex < 0) && (startIndex >= tp.lbPackets.Items.Count))
                 startIndex = -1;
-            int i = startIndex + 1 ;
-            for(int c = 0;c < tp.lbPackets.Items.Count-1;c++)
+            int i = startIndex + 1;
+            for (int c = 0; c < tp.lbPackets.Items.Count - 1; c++)
             {
                 var pd = tp.PL.GetPacket(i);
                 if (pd.MatchesSearch(searchParameters))
@@ -907,7 +907,7 @@ namespace PacketViewerLogViewer
             }
 
             string cliptext = "";
-            foreach(string s in pd.RawText)
+            foreach (string s in pd.RawText)
             {
                 // re-add the linefeeds
                 if (cliptext != string.Empty)
@@ -948,7 +948,7 @@ namespace PacketViewerLogViewer
                     TextRenderer.DrawText(e.Graphics, tabPage.Text, tabPage.Font,
                         tabRect, tabPage.ForeColor, TextFormatFlags.Left);
                 }
-                else 
+                else
                 if (tabControl.Alignment == TabAlignment.Left)
                 {
                     // for tabs to the left
@@ -1143,7 +1143,7 @@ namespace PacketViewerLogViewer
                 MessageBox.Show("VideoLAN VLC needs to be installed on your PC to use the video linking feature", "libvlc not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            VideoLinkForm videoLink = null ;
+            VideoLinkForm videoLink = null;
             try
             {
                 PacketTabPage thisTP = GetCurrentPacketTabPage();
@@ -1166,7 +1166,7 @@ namespace PacketViewerLogViewer
             {
                 if (videoLink != null)
                     videoLink.Dispose();
-                MessageBox.Show("Could not create video link, likely libvlc not correcty installed !\r\n"+x.Message, "Video Link Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not create video link, likely libvlc not correcty installed !\r\n" + x.Message, "Video Link Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
@@ -1195,17 +1195,24 @@ namespace PacketViewerLogViewer
             if (e.Control is PacketTabPage)
             {
                 PacketTabPage tp = (e.Control as PacketTabPage);
-                tp.SaveProjectFile();
-                if ((CurrentPP != null) && (tp.GetSelectedPacket().PP != null) && (tp.GetSelectedPacket().PP == CurrentPP))
+                if (tp.PLLoaded.Count() > 0)
+                    tp.SaveProjectFile();
+
+                var gsp = tp.GetSelectedPacket();
+                if ((CurrentPP != null) && (gsp != null) && (gsp.PP != null) && (gsp.PP == CurrentPP))
                 {
                     CurrentPP = null;
                     dGV.Rows.Clear();
                     rtInfo.Clear();
                     lInfo.Text = "";
                     cbShowBlock.Visible = false;
+                }
+                try
+                {
                     if (tp.videoLink != null)
                         tp.videoLink.Close();
                 }
+                catch { }
 
                 if (tcPackets.TabCount <= 1)
                     Text = defaultTitle;
