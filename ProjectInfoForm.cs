@@ -134,7 +134,8 @@ namespace PacketViewerLogViewer
 
         private void ProjectInfoForm_Shown(object sender, EventArgs e)
         {
-            tTagBox.Focus();
+            //tTagBox.Focus();
+            btnSave.Focus();
         }
 
         private void BtnDownloadYoutube_Click(object sender, EventArgs e)
