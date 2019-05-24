@@ -369,5 +369,46 @@ namespace PacketViewerLogViewer.Packets
             return res;
         }
 
+        public static void RegisterCustomLookup(string customListName, UInt64 customID, string customValue)
+        {
+            customListName = customListName.ToLower();
+            if (customListName == "@math")
+                return;
+            if (!customListName.StartsWith("@"))
+                customListName = "@" + customListName;
+            DataLookupList list = null;
+
+            foreach(var ll in LookupLists)
+            {
+                if (ll.Key.ToLower() == customListName)
+                {
+                    list = ll.Value;
+                    break;
+                }
+            }
+            if (list == null)
+            {
+                list = new DataLookupList();
+                LookupLists.Add(customListName, list);
+            }
+            foreach(var li in list.data)
+            {
+                // If a value is already in here, overwrite it
+                if (li.Key == customID)
+                {
+                    var listv = li.Value;
+                    // Special case, don't update if this is a "null string" parsed
+                    if (customValue != "null ()")
+                        listv.Val = customValue;
+                    listv.Extra = string.Empty;
+                    return;
+                }
+            }
+            var newlistv = new DataLookupEntry();
+            newlistv.ID = customID;
+            newlistv.Val = customValue;
+            newlistv.Extra = string.Empty;
+            list.data.Add(customID, newlistv);
+        }
     }
 }

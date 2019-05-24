@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Diagnostics;
 using PacketViewerLogViewer.PVLVHelper;
+using PacketViewerLogViewer.PacketSpecial;
 
 namespace PacketViewerLogViewer.Packets
 {
@@ -103,7 +104,6 @@ namespace PacketViewerLogViewer.Packets
 
         public PacketParser PP;
 
-
         // Source: https://docs.microsoft.com/en-us/dotnet/api/system.datetime.parse?view=netframework-4.7.2#System_DateTime_Parse_System_String_System_IFormatProvider_System_Globalization_DateTimeStyles_
         // Assume a date and time string formatted for the fr-FR culture is the local 
         // time and convert it to UTC.
@@ -118,9 +118,9 @@ namespace PacketViewerLogViewer.Packets
             OriginalHeaderText = "";
             RawBytes = new List<byte>();
             PacketLogType = PacketLogTypes.Unknown;
-            PacketID = 0x000 ;
-            PacketDataSize = 0x0000 ;
-            PacketSync = 0x0000 ;
+            PacketID = 0x000;
+            PacketDataSize = 0x0000;
+            PacketSync = 0x0000;
             TimeStamp = new DateTime(0);
             VirtualTimeStamp = new DateTime(0);
             OriginalTimeString = "";
@@ -131,7 +131,7 @@ namespace PacketViewerLogViewer.Packets
         ~PacketData()
         {
             RawText.Clear();
-            RawBytes = null ;
+            RawBytes = null;
         }
 
         public int AddRawLineAsBytes(string s)
@@ -157,7 +157,7 @@ namespace PacketViewerLogViewer.Packets
             }
 
             int c = 0;
-            for(int i = 0 ; i <= 0xf ; i++)
+            for (int i = 0; i <= 0xf; i++)
             {
                 var h = s.Substring(10 + (i * 3), 2);
                 if (h != "--")
@@ -245,23 +245,23 @@ namespace PacketViewerLogViewer.Packets
             res += "   |  0  1  2  3   4  5  6  7   8  9  A  B   C  D  E  F\r\n";
             res += "---+----------------------------------------------------\r\n";
             int lineNumber = 0;
-            for(int i = 0; i < RawBytes.Count; i++)
+            for (int i = 0; i < RawBytes.Count; i++)
             {
                 if ((i % ValuesPerRow) == 0)
-                    res += lineNumber.ToString("X2") + " | " ;
+                    res += lineNumber.ToString("X2") + " | ";
 
                 res += RawBytes[i].ToString("X2");
 
                 if ((i % ValuesPerRow) == (ValuesPerRow - 1))
                 {
-                    res += "\r\n" ;
+                    res += "\r\n";
                     lineNumber++;
                 }
                 else
                 {
-                    res += " " ;
+                    res += " ";
                     if ((i % 4) == 3)
-                        res += " " ; // Extra space every 4 bytes
+                        res += " "; // Extra space every 4 bytes
                 }
             }
             return res;
@@ -351,9 +351,9 @@ namespace PacketViewerLogViewer.Packets
         {
             string res = string.Empty;
             int i = 0;
-            while (((i+pos) < RawBytes.Count) && (RawBytes[pos+i] != 0) && ((maxSize == -1) || (res.Length < maxSize)))
+            while (((i + pos) < RawBytes.Count) && (RawBytes[pos + i] != 0) && ((maxSize == -1) || (res.Length < maxSize)))
             {
-                res += (char)RawBytes[pos+i];
+                res += (char)RawBytes[pos + i];
                 i++;
             }
             return res;
@@ -363,7 +363,7 @@ namespace PacketViewerLogViewer.Packets
         {
             string res = "";
             int i = 0;
-            while ( ((i+pos) < RawBytes.Count) && (i < size) && (i < 256) )
+            while (((i + pos) < RawBytes.Count) && (i < size) && (i < 256))
             {
                 res += RawBytes[i + pos].ToString("X2") + " ";
                 i++;
@@ -384,7 +384,7 @@ namespace PacketViewerLogViewer.Packets
             if (pos > (RawBytes.Count - 4))
                 return res;
             UInt32 Flags = GetUInt32AtPos(pos);
-            for(uint BitShiftCount = 0; BitShiftCount < 32; BitShiftCount++)
+            for (uint BitShiftCount = 0; BitShiftCount < 32; BitShiftCount++)
             {
                 if ((Flags & 0x00000001) == 1)
                 {
@@ -484,7 +484,7 @@ namespace PacketViewerLogViewer.Packets
                 byte bitMask = 0b00100000;
                 for (int bit = 0; bit < 6; bit++)
                 {
-                    bool isSet = GetBitAtPos(pos + ((Offset+bit) / 8), 7 - ((Offset+bit) % 8));
+                    bool isSet = GetBitAtPos(pos + ((Offset + bit) / 8), 7 - ((Offset + bit) % 8));
                     if (isSet)
                         encodedChar += bitMask;
                     bitMask >>= 1;
@@ -515,7 +515,7 @@ namespace PacketViewerLogViewer.Packets
 
         public int FindUInt16(UInt16 aUInt16)
         {
-            for(int i = 0; i < (RawBytes.Count - 2); i++)
+            for (int i = 0; i < (RawBytes.Count - 2); i++)
             {
                 if (GetUInt16AtPos(i) == aUInt16)
                     return i;
@@ -565,7 +565,7 @@ namespace PacketViewerLogViewer.Packets
             catch
             {
             }
-            return false ;
+            return false;
         }
 
         public bool CompileData(PacketLogFileFormats plff)
@@ -577,7 +577,7 @@ namespace PacketViewerLogViewer.Packets
                 HeaderText = "Invalid Packet Size < 4";
                 return false;
             }
-            PacketID = (UInt16)( GetByteAtPos(0) + ((GetByteAtPos(1) & 0x01) * 0x100) );
+            PacketID = (UInt16)(GetByteAtPos(0) + ((GetByteAtPos(1) & 0x01) * 0x100));
             PacketDataSize = (UInt16)((GetByteAtPos(1) & 0xFE) * 2);
             PacketSync = (UInt16)(GetByteAtPos(2) + (GetByteAtPos(3) * 0x100));
             string TS = "";
@@ -627,7 +627,7 @@ namespace PacketViewerLogViewer.Packets
                 TS = "";
 
             string S = "";
-            switch(PacketLogType)
+            switch (PacketLogType)
             {
                 case PacketLogTypes.Outgoing:
                     S = "OUT ";
@@ -705,7 +705,7 @@ namespace PacketViewerLogViewer.Packets
             if ((res) && (PP != null) && (p.SearchByParsedData) && (p.SearchParsedFieldValue != string.Empty))
             {
                 res = false;
-                foreach(var f in PP.ParsedView)
+                foreach (var f in PP.ParsedView)
                 {
                     if (p.SearchParsedFieldName != string.Empty)
                     {
@@ -723,6 +723,33 @@ namespace PacketViewerLogViewer.Packets
             }
 
             return res;
+        }
+
+        public void CompileSpecial(PacketList pl)
+        {
+            try
+            {
+                if (PacketLogType == PacketLogTypes.Incoming)
+                {
+                    switch (PacketID)
+                    {
+                        case 0x00a: CompileSpecialized.In0x00a(this,pl);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                if (PacketLogType == PacketLogTypes.Outgoing)
+                {
+                    switch (PacketID)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch { }
         }
 
     }
@@ -911,6 +938,9 @@ namespace PacketViewerLogViewer.Packets
         public PacketListFilter Filter ;
         public DateTime firstPacketTime;
         public bool IsPreParsed = false;
+        public UInt16 currentParseZone = 0;
+        public UInt32 currentParsePlayerID = 0;
+        public string currentParsePlayerName = "";
 
         public PacketList()
         {
@@ -1121,6 +1151,10 @@ namespace PacketViewerLogViewer.Packets
                             // Close this packet and add it to list
                             if (pd.CompileData(logFileType))
                             {
+                                pd.CompileSpecial(this);
+                                // Set zone after CompileSpecial, this is only needed if not captured by PacketDB
+                                pd.capturedZoneId = currentParseZone;
+
                                 if (IsPreParsed)
                                 {
                                     pd.PP = new PacketParser(pd.PacketID, pd.PacketLogType);
@@ -1234,6 +1268,8 @@ namespace PacketViewerLogViewer.Packets
 
                             if (pd.CompileData(PacketLogFileFormats.PacketDB))
                             {
+                                pd.CompileSpecial(this);
+
                                 if (IsPreParsed)
                                 {
                                     pd.PP = new PacketParser(pd.PacketID, pd.PacketLogType);

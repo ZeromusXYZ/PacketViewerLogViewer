@@ -1289,5 +1289,14 @@ namespace PacketViewerLogViewer
                 catch { }
         }
 
+        private void MMExtraGameView_Click(object sender, EventArgs e)
+        {
+            if (GameViewForm.GV == null)
+            {
+                _ = new GameViewForm();
+            }
+            GameViewForm.GV.Show();
+            GameViewForm.GV.BringToFront();
+        }
     }
 }

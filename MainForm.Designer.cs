@@ -89,6 +89,7 @@
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.sbExtraInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.MMExtraGameView = new System.Windows.Forms.ToolStripMenuItem();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -291,7 +292,8 @@
             // 
             this.mmExtra.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmVideoOpenLink,
-            this.mmVideoViewProject});
+            this.mmVideoViewProject,
+            this.MMExtraGameView});
             this.mmExtra.Name = "mmExtra";
             this.mmExtra.Size = new System.Drawing.Size(44, 20);
             this.mmExtra.Text = "E&xtra";
@@ -657,6 +659,13 @@
             this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
             this.sbProjectInfo.Text = "Project: none";
             // 
+            // MMExtraGameView
+            // 
+            this.MMExtraGameView.Name = "MMExtraGameView";
+            this.MMExtraGameView.Size = new System.Drawing.Size(210, 22);
+            this.MMExtraGameView.Text = "View Game Info";
+            this.MMExtraGameView.Click += new System.EventHandler(this.MMExtraGameView_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -762,6 +771,7 @@
         private System.Windows.Forms.ToolStripStatusLabel sbProjectInfo;
         private System.Windows.Forms.ToolStripStatusLabel sbExtraInfo;
         private System.Windows.Forms.ToolStripMenuItem mmAboutDiscord;
+        private System.Windows.Forms.ToolStripMenuItem MMExtraGameView;
     }
 }
 

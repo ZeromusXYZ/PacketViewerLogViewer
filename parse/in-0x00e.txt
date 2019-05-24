@@ -1,6 +1,6 @@
 file;in-0x00e;NPC Update;Packet contains info about another PC (i.e. coordinates).
 
-uint32;$04;NPC
+uint32:@actors;$04;NPC
 uint16;$08;Index
 byte;$0A;Update Mask;-- 0A   Bits that control which parts of the packet are actual updates (rest is zeroed). Model is always sent
 bit;$0A:0;  Bit0: Pos,Rot,Walk
@@ -23,3 +23,5 @@ uint32;$2C;Claimer
 uint16;$30;_unknown5
 uint16;$32;Model ID
 string;$34;Name
+
+save;@actors;NPC;Name

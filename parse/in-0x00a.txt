@@ -1,6 +1,6 @@
 file;in-0x00a;Client Connect;(unencrypted/uncompressed) First packet sent when connecting to new zone.
 
-uint32;$4;Player ID
+uint32:@actors;$4;Player ID
 uint16;$8;Player Index
 byte;$A;_padding
 dir;$B;Heading
@@ -96,3 +96,5 @@ int16;$E6;CHR Bonus
 uint32;$E8;Max HP
 uint32;$EC;Max MP
 data20;$F0;_unknown16
+
+save;@actors;Player ID;Player Name

@@ -1,7 +1,7 @@
 file;in-0x037;Update Char;Updates a characters stats and animation.
 
 data32;$04;Buff
-uint32;$24;Player ID
+uint32:@actors;$24;Player ID
 uint16;$28;_flags1;-- 28   Called "Flags" on the old dev wiki. Second byte might not be part of the flags, actually.
 bit;$28:0;  Bit0: Despawns char
 bit;$28:1;  Bit1: Also despawns;-- Also despawns your character, and may trigger an outgoing packet to the server (which triggers an incoming 0x037 packet)

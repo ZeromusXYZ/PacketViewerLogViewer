@@ -1,6 +1,6 @@
 file;in-0x0DD;Party Member Update;Alliance/party member info - zone, HP%, HP% etc
 
-uint32;$04;Player ID
+uint32:@actors;$04;Player ID
 uint32;$08;HP
 uint32;$0C;MP
 uint32;$10;TP
@@ -19,3 +19,5 @@ byte;$23;Main Job Level
 byte:jobs;$24;Sub Job
 byte;$25;Sub Job Level
 string;$26;Name
+
+save;@actors;Player ID;Name

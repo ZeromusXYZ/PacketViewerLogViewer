@@ -154,6 +154,13 @@
     <Compile Include="AboutBoxForm.Designer.cs">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameViewForm.Designer.cs">
+      <DependentUpon>GameViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PacketSpecial.cs" />
     <Compile Include="ClipboardHelper.cs" />
     <Compile Include="DataLookupDefs.cs" />
     <Compile Include="FileExtHelper.cs" />
@@ -219,6 +226,9 @@
     <Compile Include="PVLVHelper.cs" />
     <EmbeddedResource Include="AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GameViewForm.resx">
+      <DependentUpon>GameViewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ParseEditorForm.resx">
       <DependentUpon>ParseEditorForm.cs</DependentUpon>

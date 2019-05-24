@@ -12,7 +12,7 @@ switchblock;$04:0-6;DSP-Mode;4
 rem;-- Finish PC Update, received after incoming 0x00D and 0x037
 info;0;Info;PC-Mode
 uint16;$06;Player Index
-uint32;$08;Player ID
+uint32:@actors;$08;Player ID
 uint16;$0C;Fellow Index
 
 rem;shared info block
@@ -49,7 +49,7 @@ byte;$27;Unknown?
 info;0;Info;NPC-Mode
 rem;-- Finish NPC Update, received after incoming 0x00E
 uint16;$06;NPC Index
-uint32;$08;NPC ID
+uint32:@actors;$08;NPC ID
 uint16;$0C;Owner Index
 
 rem;shared info block
@@ -68,11 +68,13 @@ uint32;$14;Unknown?
 [[DSP-Mode]]
 info;0;Info;DSP-Mode
 uint16;$06;Owner Index
-uint32;$08;Owner ID
+uint32:@actors;$08;Owner ID
 uint16;$0C;Pet Index
 byte;$0E;Current HP%
 byte;$0F;Current MP%
 uint32;$10;Pet TP
-uint32;$14;Target ID
+uint32:@actors;$14;Target ID
 string;$18;Pet Name
+
+save;@actors;Target ID;Pet Name
 [[]]

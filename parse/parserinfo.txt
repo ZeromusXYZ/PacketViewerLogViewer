@@ -118,6 +118,15 @@ description: Shows info about incomming packet 0x028 (has no color coding)
   depending on conditional bit flags (would be too complex to script)
   Does nothing if it's not used in the correct packet parser
 
+functionname: save;CustomLookupListName;BaseValueFieldName;SavedValueFieldName
+description: Saves a id/value combo into a lookup table. CustomLookupListName must start with a @ and cannot be any of the special
+  names like @math. Takes a raw value from a parsed field named BaseValueFieldName (only primitive types are supported) and 
+  associates it with the string value that is a result of of SavedValueFieldName's data view (as show in the grid).
+  Note1: try not to make recurring lookups by accident :p
+  Note2: If the same base value is used, it will be overwritten
+
+  
+
 If there is unused byte data left in the packet, the log viewer will generate a list of the bytes at the end of all parsed fields.
 It will try to generate either uint32's or byte's depending on the unused size.
 
