@@ -853,12 +853,21 @@ namespace PacketViewerLogViewer
                     }
                 }
                 else
-                if (typeField == "byte")
+                if ((typeField == "byte") || (typeField == "uint8"))
                 {
                     var d = PD.GetByteAtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
                     AddDataField(Offset,1);
                     AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " - 0x" + d.ToString("X2") + " - " + ByteToBits(d) + " - '" + (char)d + "'",d);
+                    MarkParsed(Offset, 1, DataFieldIndex);
+                }
+                else
+                if ((typeField == "sbyte") || (typeField == "int8"))
+                {
+                    var d = PD.GetSByteAtPos(Offset);
+                    var l = Lookup(lookupField, (UInt64)unchecked( (byte)d), lookupOffsetEvalString);
+                    AddDataField(Offset, 1);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " - 0x" + d.ToString("X2") + " - " + ByteToBits(unchecked( (byte)d )) + " - '" + (char)d + "'", (UInt64)unchecked((byte)d));
                     MarkParsed(Offset, 1, DataFieldIndex);
                 }
                 else
@@ -896,9 +905,9 @@ namespace PacketViewerLogViewer
                 if (typeField == "int16")
                 {
                     var d = PD.GetInt16AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
+                    var l = Lookup(lookupField, (UInt64)unchecked( (UInt16)d), lookupOffsetEvalString);
                     AddDataField(Offset,2);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")",(UInt64)d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")", (UInt64)unchecked((UInt16)d));
                     MarkParsed(Offset, 2, DataFieldIndex);
                 }
                 else
@@ -914,9 +923,9 @@ namespace PacketViewerLogViewer
                 if (typeField == "int32")
                 {
                     var d = PD.GetInt32AtPos(Offset);
-                    var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
+                    var l = Lookup(lookupField, (UInt64)unchecked((UInt32)d), lookupOffsetEvalString);
                     AddDataField(Offset,4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")",(UInt64)d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")", (UInt64)unchecked((UInt32)d));
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else

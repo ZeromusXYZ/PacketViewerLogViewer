@@ -55,6 +55,7 @@
             this.mmExtra = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoOpenLink = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoViewProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.MMExtraGameView = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutGithub = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutDiscord = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,7 +90,6 @@
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.sbExtraInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.MMExtraGameView = new System.Windows.Forms.ToolStripMenuItem();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -313,6 +313,13 @@
             this.mmVideoViewProject.Size = new System.Drawing.Size(210, 22);
             this.mmVideoViewProject.Text = "View Project Details";
             this.mmVideoViewProject.Click += new System.EventHandler(this.MmVideoViewProject_Click);
+            // 
+            // MMExtraGameView
+            // 
+            this.MMExtraGameView.Name = "MMExtraGameView";
+            this.MMExtraGameView.Size = new System.Drawing.Size(210, 22);
+            this.MMExtraGameView.Text = "View Game Info";
+            this.MMExtraGameView.Click += new System.EventHandler(this.MMExtraGameView_Click);
             // 
             // mmAbout
             // 
@@ -658,13 +665,6 @@
             this.sbProjectInfo.Name = "sbProjectInfo";
             this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
             this.sbProjectInfo.Text = "Project: none";
-            // 
-            // MMExtraGameView
-            // 
-            this.MMExtraGameView.Name = "MMExtraGameView";
-            this.MMExtraGameView.Size = new System.Drawing.Size(210, 22);
-            this.MMExtraGameView.Text = "View Game Info";
-            this.MMExtraGameView.Click += new System.EventHandler(this.MMExtraGameView_Click);
             // 
             // MainForm
             // 

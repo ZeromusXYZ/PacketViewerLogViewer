@@ -274,6 +274,14 @@ namespace PacketViewerLogViewer.Packets
             return RawBytes[pos];
         }
 
+        public sbyte GetSByteAtPos(int pos)
+        {
+            if (pos > (RawBytes.Count - 1))
+                return 0;
+            return unchecked( (sbyte)RawBytes[pos]);
+        }
+
+
         public bool GetBitAtPos(int pos, int bit)
         {
             if ((pos > (RawBytes.Count - 1)) || ((bit < 0) || (bit > 7)))
