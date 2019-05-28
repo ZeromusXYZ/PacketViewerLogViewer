@@ -286,15 +286,19 @@ namespace PacketViewerLogViewer
             void SetColorBasic(byte n)
             {
                 rtInfo.SelectionFont = rtInfo.Font;
-                rtInfo.SelectionColor = Color.Black;
-                rtInfo.SelectionBackColor = Color.White;
+                rtInfo.SelectionColor = rtInfo.ForeColor;
+                rtInfo.SelectionBackColor = rtInfo.BackColor;
+                // rtInfo.SelectionColor = Color.Black;
+                // rtInfo.SelectionBackColor = Color.White;
             }
 
             void SetColorGrid()
             {
                 rtInfo.SelectionFont = rtInfo.Font;
                 rtInfo.SelectionColor = Color.DarkGray;
-                rtInfo.SelectionBackColor = Color.White;
+                rtInfo.SelectionBackColor = rtInfo.BackColor;
+                // rtInfo.SelectionColor = Color.DarkGray;
+                // rtInfo.SelectionBackColor = Color.White;
             }
 
             void SetColorSelect(byte n, bool forchars)
@@ -317,11 +321,13 @@ namespace PacketViewerLogViewer
                 if ((pp.SelectedFields.Count > 0) || forchars)
                 {
                     rtInfo.SelectionColor = pp.GetDataColor(n);
-                    rtInfo.SelectionBackColor = Color.White;
+                    rtInfo.SelectionBackColor = rtInfo.BackColor;
+                    // rtInfo.SelectionBackColor = Color.White;
                 }
                 else
                 {
-                    rtInfo.SelectionColor = Color.White;
+                    rtInfo.SelectionColor = rtInfo.BackColor;
+                    // rtInfo.SelectionColor = Color.White;
                     rtInfo.SelectionBackColor = pp.GetDataColor(n);
                 }
             }
@@ -980,7 +986,8 @@ namespace PacketViewerLogViewer
                     var tSize = e.Graphics.MeasureString(tabPage.Text, tabPage.Font);
                     e.Graphics.TranslateTransform(tabRect.Width, tabRect.Bottom);
                     e.Graphics.RotateTransform(-90);
-                    e.Graphics.DrawString(tabPage.Text, tabPage.Font, Brushes.Black, 0, -tabRect.Width - (tSize.Height / -4), StringFormat.GenericDefault);
+                    var textBrush = new SolidBrush(tabPage.ForeColor);
+                    e.Graphics.DrawString(tabPage.Text, tabPage.Font, textBrush, 0, -tabRect.Width - (tSize.Height / -4), StringFormat.GenericDefault);
                 }
                 else
                 {
