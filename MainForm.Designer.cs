@@ -295,7 +295,7 @@
             this.mmVideoViewProject,
             this.MMExtraGameView});
             this.mmExtra.Name = "mmExtra";
-            this.mmExtra.Size = new System.Drawing.Size(44, 20);
+            this.mmExtra.Size = new System.Drawing.Size(45, 20);
             this.mmExtra.Text = "E&xtra";
             // 
             // mmVideoOpenLink
@@ -547,7 +547,7 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;

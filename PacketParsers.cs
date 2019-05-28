@@ -251,6 +251,8 @@ namespace PacketViewerLogViewer
         {
             if (DGV.Tag != null)
                 return;
+            DGV.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb((int)Math.Round(DGV.DefaultCellStyle.BackColor.R * 0.95), (int)Math.Round(DGV.DefaultCellStyle.BackColor.G * 0.95), (int)Math.Round(DGV.DefaultCellStyle.BackColor.B * 0.95));
+
             DGV.Tag = 1;
             // Header
             //DGV.Rows.Clear();
@@ -267,6 +269,7 @@ namespace PacketViewerLogViewer
             if (dataWidth < 128)
                 dataWidth = 128;
             DGV.Columns[columnDATA].Width = dataWidth;
+
 
             //DGV.Columns[columnSize].HeaderText = "Size";
             //DGV.Columns[columnSize].Width = 32;
