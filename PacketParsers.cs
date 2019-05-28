@@ -53,6 +53,7 @@ namespace PacketViewerLogViewer
         public PacketParser(UInt16 aPacketID,PacketLogTypes aPacketLogType)
         {
             // Default Field Colors
+            DataColors.Clear();
             /*
             DataColors.Add(Color.Black);
             DataColors.Add(Color.Red);
@@ -63,7 +64,8 @@ namespace PacketViewerLogViewer
             DataColors.Add(Color.Maroon);
             DataColors.Add(Color.Navy);
             */
-            DataColors.Add(Color.Black);
+            // DataColors.Add(Color.Black);
+            DataColors.Add(SystemColors.WindowText);
             DataColors.Add(Color.Chocolate);
             DataColors.Add(Color.MediumSeaGreen);
             DataColors.Add(Color.CornflowerBlue);
@@ -593,11 +595,11 @@ namespace PacketViewerLogViewer
                     break;
             }
             AddParseLineToView(0xff,
-                "0x00", Color.Black,
+                "0x00", GetDataColor(0),
                 "Size",
                 PD.PacketDataSize.ToString() + " (0x" + PD.PacketDataSize.ToString("X2")+")",PD.PacketDataSize);
             AddParseLineToView(0xff,
-                "0x02", Color.Black,
+                "0x02", GetDataColor(0),
                 "Sync",
                 PD.PacketSync.ToString() + " (0x" + PD.PacketSync.ToString("X4") + ")",PD.PacketSync);
             // Marked as FF for fixed format

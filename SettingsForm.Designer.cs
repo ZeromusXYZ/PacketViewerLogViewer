@@ -77,6 +77,7 @@
             this.rbListStyleSolid = new System.Windows.Forms.RadioButton();
             this.rbListStyleText = new System.Windows.Forms.RadioButton();
             this.cbPreParseData = new System.Windows.Forms.CheckBox();
+            this.btnSetDarkMode = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbAutoLoadVideo.SuspendLayout();
             this.gbListStyle.SuspendLayout();
@@ -654,15 +655,26 @@
             this.rbListStyleText.Text = "Text Arrows  <=  =>";
             this.rbListStyleText.UseVisualStyleBackColor = true;
             // 
-            // cbPreParse
+            // cbPreParseData
             // 
             this.cbPreParseData.AutoSize = true;
             this.cbPreParseData.Location = new System.Drawing.Point(18, 324);
-            this.cbPreParseData.Name = "cbPreParse";
+            this.cbPreParseData.Name = "cbPreParseData";
             this.cbPreParseData.Size = new System.Drawing.Size(404, 17);
             this.cbPreParseData.TabIndex = 15;
             this.cbPreParseData.Text = "Pre-Parse loaded packet data (loads slower but allows additional search options)";
             this.cbPreParseData.UseVisualStyleBackColor = true;
+            // 
+            // btnSetDarkMode
+            // 
+            this.btnSetDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSetDarkMode.Location = new System.Drawing.Point(326, 359);
+            this.btnSetDarkMode.Name = "btnSetDarkMode";
+            this.btnSetDarkMode.Size = new System.Drawing.Size(224, 23);
+            this.btnSetDarkMode.TabIndex = 16;
+            this.btnSetDarkMode.Text = "Set Dark Mode Packet Colors";
+            this.btnSetDarkMode.UseVisualStyleBackColor = true;
+            this.btnSetDarkMode.Click += new System.EventHandler(this.BtnSetDarkMode_Click);
             // 
             // SettingsForm
             // 
@@ -672,6 +684,7 @@
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(568, 394);
             this.ControlBox = false;
+            this.Controls.Add(this.btnSetDarkMode);
             this.Controls.Add(this.cbPreParseData);
             this.Controls.Add(this.gbListStyle);
             this.Controls.Add(this.gbAutoLoadVideo);
@@ -753,5 +766,6 @@
         private System.Windows.Forms.RadioButton rbListStyleSolid;
         private System.Windows.Forms.RadioButton rbListStyleText;
         private System.Windows.Forms.CheckBox cbPreParseData;
+        private System.Windows.Forms.Button btnSetDarkMode;
     }
 }

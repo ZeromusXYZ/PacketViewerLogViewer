@@ -126,5 +126,29 @@ namespace PacketViewerLogViewer
             if (rbAutoLoadVideoNever.Checked)
                 cbAutoOpenVideoForm.Checked = false;
         }
+
+        private void BtnSetDarkMode_Click(object sender, EventArgs e)
+        {
+            // Dark Mode suggested colors
+
+            btnBackIN.BackColor = Color.FromArgb(0, 16, 0);
+            btnBackOUT.BackColor = Color.FromArgb(0, 0, 16);
+            btnBackUNK.BackColor = Color.FromArgb(16, 16, 16);
+            btnBarIN.BackColor = Color.FromArgb(200, 255, 200);
+            btnBarOUT.BackColor = Color.FromArgb(200, 200, 255);
+            btnBarUNK.BackColor = Color.FromArgb(255, 200, 200);
+            btnFontIN.BackColor = Color.FromArgb(128, 255, 128);
+            btnFontOUT.BackColor = Color.FromArgb(64, 128, 255);
+            btnFontUNK.BackColor = Color.FromArgb(192, 64, 64);
+            btnSelectedFontIN.BackColor = Color.FromArgb(16, 200, 16);
+            btnSelectedFontOUT.BackColor = Color.FromArgb(64, 128, 255);
+            btnSelectedFontUNK.BackColor = Color.FromArgb(200, 16, 16);
+            btnSelectIN.BackColor = Color.FromArgb(0, 64, 0);
+            btnSelectOUT.BackColor = Color.FromArgb(8, 16, 64);
+            btnSelectUNK.BackColor = Color.FromArgb(64, 0, 0);
+            btnSyncIN.BackColor = Color.FromArgb(16, 92, 16);
+            btnSyncOUT.BackColor = Color.FromArgb(16, 16, 92);
+            btnSyncUNK.BackColor = Color.FromArgb(92, 16, 16);
+        }
     }
 }
