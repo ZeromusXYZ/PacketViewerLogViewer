@@ -1,6 +1,6 @@
 file;in-0x00d;PC Update;Packet contains info about another PC (i.e. coordinates).
 
-uint32;$04;Player ID
+uint32:@actors;$04;Player ID
 uint16;$08;Index
 byte;0x0A;Update Mask 1
 bit;$0A:0;  Bit0: Pos,Rot,Target,Speed
@@ -86,3 +86,5 @@ uint16:itemmodels:-0x7000;$56;Sub Weapon Model;
 uint16:itemmodels:-0x8000;$58;Ranged Weapon Model;
 
 string;$5A;Character Name
+
+save;@actors;Player ID;Character Name

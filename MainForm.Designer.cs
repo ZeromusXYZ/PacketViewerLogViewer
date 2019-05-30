@@ -55,6 +55,7 @@
             this.mmExtra = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoOpenLink = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoViewProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.MMExtraGameView = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutGithub = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutDiscord = new System.Windows.Forms.ToolStripMenuItem();
@@ -137,6 +138,7 @@
             this.mmFile.Name = "mmFile";
             this.mmFile.Size = new System.Drawing.Size(37, 20);
             this.mmFile.Text = "&File";
+            this.mmFile.Click += new System.EventHandler(this.MmFile_Click);
             // 
             // mmFileOpen
             // 
@@ -291,9 +293,10 @@
             // 
             this.mmExtra.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmVideoOpenLink,
-            this.mmVideoViewProject});
+            this.mmVideoViewProject,
+            this.MMExtraGameView});
             this.mmExtra.Name = "mmExtra";
-            this.mmExtra.Size = new System.Drawing.Size(44, 20);
+            this.mmExtra.Size = new System.Drawing.Size(45, 20);
             this.mmExtra.Text = "E&xtra";
             // 
             // mmVideoOpenLink
@@ -311,6 +314,13 @@
             this.mmVideoViewProject.Size = new System.Drawing.Size(210, 22);
             this.mmVideoViewProject.Text = "View Project Details";
             this.mmVideoViewProject.Click += new System.EventHandler(this.MmVideoViewProject_Click);
+            // 
+            // MMExtraGameView
+            // 
+            this.MMExtraGameView.Name = "MMExtraGameView";
+            this.MMExtraGameView.Size = new System.Drawing.Size(210, 22);
+            this.MMExtraGameView.Text = "View Game Info";
+            this.MMExtraGameView.Click += new System.EventHandler(this.MMExtraGameView_Click);
             // 
             // mmAbout
             // 
@@ -538,7 +548,7 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -674,6 +684,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Packet Viewer Log Viewer";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
@@ -761,6 +772,7 @@
         private System.Windows.Forms.ToolStripStatusLabel sbProjectInfo;
         private System.Windows.Forms.ToolStripStatusLabel sbExtraInfo;
         private System.Windows.Forms.ToolStripMenuItem mmAboutDiscord;
+        private System.Windows.Forms.ToolStripMenuItem MMExtraGameView;
     }
 }
 

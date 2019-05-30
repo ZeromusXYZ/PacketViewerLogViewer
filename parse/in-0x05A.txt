@@ -1,7 +1,7 @@
 file;in-0x05A;Server Emote;This packet is the server's response to a client /emote
 
-uint32;$04;Player ID
-uint32;$08;Target ID
+uint32:@actors;$04;Player ID
+uint32:@actors;$08;Target ID
 uint16;$0C;Player Index
 uint16;$0E;Target Index
 uint16;$10;Emote ID

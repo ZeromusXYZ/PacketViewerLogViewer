@@ -49,7 +49,6 @@
             this.btnBackOUT = new System.Windows.Forms.Button();
             this.btnSyncOUT = new System.Windows.Forms.Button();
             this.btnSelectOUT = new System.Windows.Forms.Button();
-            this.btnFontUNK = new System.Windows.Forms.Button();
             this.btnBackUNK = new System.Windows.Forms.Button();
             this.btnSyncUNK = new System.Windows.Forms.Button();
             this.btnSelectUNK = new System.Windows.Forms.Button();
@@ -60,6 +59,7 @@
             this.btnSelectedFontIN = new System.Windows.Forms.Button();
             this.btnSelectedFontOUT = new System.Windows.Forms.Button();
             this.btnSelectedFontUNK = new System.Windows.Forms.Button();
+            this.btnFontUNK = new System.Windows.Forms.Button();
             this.btnDefault = new System.Windows.Forms.Button();
             this.cbUseExternalEditor = new System.Windows.Forms.CheckBox();
             this.gbAutoLoadVideo = new System.Windows.Forms.GroupBox();
@@ -77,6 +77,27 @@
             this.rbListStyleSolid = new System.Windows.Forms.RadioButton();
             this.rbListStyleText = new System.Windows.Forms.RadioButton();
             this.cbPreParseData = new System.Windows.Forms.CheckBox();
+            this.btnSetDarkMode = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnColField12 = new System.Windows.Forms.Button();
+            this.btnColField14 = new System.Windows.Forms.Button();
+            this.btnColField15 = new System.Windows.Forms.Button();
+            this.btnColField1 = new System.Windows.Forms.Button();
+            this.btnColField2 = new System.Windows.Forms.Button();
+            this.btnColField3 = new System.Windows.Forms.Button();
+            this.btnColField4 = new System.Windows.Forms.Button();
+            this.btnColField5 = new System.Windows.Forms.Button();
+            this.btnColField6 = new System.Windows.Forms.Button();
+            this.btnColField7 = new System.Windows.Forms.Button();
+            this.btnColField8 = new System.Windows.Forms.Button();
+            this.btnColField9 = new System.Windows.Forms.Button();
+            this.btnColField10 = new System.Windows.Forms.Button();
+            this.btnColField11 = new System.Windows.Forms.Button();
+            this.btnColField13 = new System.Windows.Forms.Button();
+            this.lFieldCol0 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lFieldColCount = new System.Windows.Forms.Label();
+            this.tbFieldColorCount = new System.Windows.Forms.TrackBar();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbAutoLoadVideo.SuspendLayout();
             this.gbListStyle.SuspendLayout();
@@ -84,12 +105,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbFieldColorCount)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 359);
+            this.btnOK.Location = new System.Drawing.Point(12, 351);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -101,7 +125,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(93, 359);
+            this.btnCancel.Location = new System.Drawing.Point(93, 351);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -128,7 +152,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(5, 78);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 13);
+            this.label2.Size = new System.Drawing.Size(41, 26);
             this.label2.TabIndex = 3;
             this.label2.Text = "OUT Packet";
             // 
@@ -144,16 +168,16 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(155, 2);
+            this.label4.Location = new System.Drawing.Point(143, 2);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 13);
+            this.label4.Size = new System.Drawing.Size(59, 26);
             this.label4.TabIndex = 5;
             this.label4.Text = "Background";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(230, 2);
+            this.label5.Location = new System.Drawing.Point(212, 2);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(43, 13);
             this.label5.TabIndex = 6;
@@ -162,16 +186,16 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(305, 2);
+            this.label6.Location = new System.Drawing.Point(281, 2);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 26);
+            this.label6.Size = new System.Drawing.Size(59, 36);
             this.label6.TabIndex = 7;
             this.label6.Text = "Selected Background";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(455, 2);
+            this.label7.Location = new System.Drawing.Point(419, 2);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(50, 26);
             this.label7.TabIndex = 8;
@@ -180,7 +204,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(80, 2);
+            this.label8.Location = new System.Drawing.Point(74, 2);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(28, 13);
             this.label8.TabIndex = 9;
@@ -214,7 +238,6 @@
             this.tableLayoutPanel1.Controls.Add(this.btnBackOUT, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnSyncOUT, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnSelectOUT, 4, 2);
-            this.tableLayoutPanel1.Controls.Add(this.btnFontUNK, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.btnBackUNK, 2, 3);
             this.tableLayoutPanel1.Controls.Add(this.btnSyncUNK, 3, 3);
             this.tableLayoutPanel1.Controls.Add(this.btnSelectUNK, 4, 3);
@@ -227,6 +250,7 @@
             this.tableLayoutPanel1.Controls.Add(this.btnSelectedFontIN, 5, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnSelectedFontOUT, 5, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnSelectedFontUNK, 5, 3);
+            this.tableLayoutPanel1.Controls.Add(this.btnFontUNK, 1, 3);
             this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 19);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -235,13 +259,13 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(532, 155);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(488, 155);
             this.tableLayoutPanel1.TabIndex = 10;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(380, 2);
+            this.label10.Location = new System.Drawing.Point(350, 2);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(52, 26);
             this.label10.TabIndex = 29;
@@ -251,9 +275,9 @@
             // 
             this.btnFontIN.AutoSize = true;
             this.btnFontIN.BackColor = System.Drawing.Color.Lime;
-            this.btnFontIN.Location = new System.Drawing.Point(80, 43);
+            this.btnFontIN.Location = new System.Drawing.Point(74, 43);
             this.btnFontIN.Name = "btnFontIN";
-            this.btnFontIN.Size = new System.Drawing.Size(63, 28);
+            this.btnFontIN.Size = new System.Drawing.Size(58, 28);
             this.btnFontIN.TabIndex = 10;
             this.btnFontIN.Tag = "1";
             this.btnFontIN.UseVisualStyleBackColor = false;
@@ -263,9 +287,9 @@
             // 
             this.btnBackIN.AutoSize = true;
             this.btnBackIN.BackColor = System.Drawing.Color.Lime;
-            this.btnBackIN.Location = new System.Drawing.Point(155, 43);
+            this.btnBackIN.Location = new System.Drawing.Point(143, 43);
             this.btnBackIN.Name = "btnBackIN";
-            this.btnBackIN.Size = new System.Drawing.Size(63, 28);
+            this.btnBackIN.Size = new System.Drawing.Size(58, 28);
             this.btnBackIN.TabIndex = 11;
             this.btnBackIN.Tag = "1";
             this.btnBackIN.UseVisualStyleBackColor = false;
@@ -275,9 +299,9 @@
             // 
             this.btnSyncIN.AutoSize = true;
             this.btnSyncIN.BackColor = System.Drawing.Color.Lime;
-            this.btnSyncIN.Location = new System.Drawing.Point(230, 43);
+            this.btnSyncIN.Location = new System.Drawing.Point(212, 43);
             this.btnSyncIN.Name = "btnSyncIN";
-            this.btnSyncIN.Size = new System.Drawing.Size(63, 28);
+            this.btnSyncIN.Size = new System.Drawing.Size(58, 28);
             this.btnSyncIN.TabIndex = 12;
             this.btnSyncIN.Tag = "1";
             this.btnSyncIN.UseVisualStyleBackColor = false;
@@ -287,9 +311,9 @@
             // 
             this.btnSelectIN.AutoSize = true;
             this.btnSelectIN.BackColor = System.Drawing.Color.Lime;
-            this.btnSelectIN.Location = new System.Drawing.Point(305, 43);
+            this.btnSelectIN.Location = new System.Drawing.Point(281, 43);
             this.btnSelectIN.Name = "btnSelectIN";
-            this.btnSelectIN.Size = new System.Drawing.Size(63, 28);
+            this.btnSelectIN.Size = new System.Drawing.Size(58, 28);
             this.btnSelectIN.TabIndex = 13;
             this.btnSelectIN.Tag = "1";
             this.btnSelectIN.UseVisualStyleBackColor = false;
@@ -299,9 +323,9 @@
             // 
             this.btnFontOUT.AutoSize = true;
             this.btnFontOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnFontOUT.Location = new System.Drawing.Point(80, 81);
+            this.btnFontOUT.Location = new System.Drawing.Point(74, 81);
             this.btnFontOUT.Name = "btnFontOUT";
-            this.btnFontOUT.Size = new System.Drawing.Size(63, 28);
+            this.btnFontOUT.Size = new System.Drawing.Size(58, 28);
             this.btnFontOUT.TabIndex = 15;
             this.btnFontOUT.Tag = "1";
             this.btnFontOUT.UseVisualStyleBackColor = false;
@@ -311,9 +335,9 @@
             // 
             this.btnBackOUT.AutoSize = true;
             this.btnBackOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnBackOUT.Location = new System.Drawing.Point(155, 81);
+            this.btnBackOUT.Location = new System.Drawing.Point(143, 81);
             this.btnBackOUT.Name = "btnBackOUT";
-            this.btnBackOUT.Size = new System.Drawing.Size(63, 28);
+            this.btnBackOUT.Size = new System.Drawing.Size(58, 28);
             this.btnBackOUT.TabIndex = 16;
             this.btnBackOUT.Tag = "1";
             this.btnBackOUT.UseVisualStyleBackColor = false;
@@ -323,9 +347,9 @@
             // 
             this.btnSyncOUT.AutoSize = true;
             this.btnSyncOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnSyncOUT.Location = new System.Drawing.Point(230, 81);
+            this.btnSyncOUT.Location = new System.Drawing.Point(212, 81);
             this.btnSyncOUT.Name = "btnSyncOUT";
-            this.btnSyncOUT.Size = new System.Drawing.Size(63, 28);
+            this.btnSyncOUT.Size = new System.Drawing.Size(58, 28);
             this.btnSyncOUT.TabIndex = 17;
             this.btnSyncOUT.Tag = "1";
             this.btnSyncOUT.UseVisualStyleBackColor = false;
@@ -335,33 +359,21 @@
             // 
             this.btnSelectOUT.AutoSize = true;
             this.btnSelectOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnSelectOUT.Location = new System.Drawing.Point(305, 81);
+            this.btnSelectOUT.Location = new System.Drawing.Point(281, 81);
             this.btnSelectOUT.Name = "btnSelectOUT";
-            this.btnSelectOUT.Size = new System.Drawing.Size(63, 28);
+            this.btnSelectOUT.Size = new System.Drawing.Size(58, 28);
             this.btnSelectOUT.TabIndex = 18;
             this.btnSelectOUT.Tag = "1";
             this.btnSelectOUT.UseVisualStyleBackColor = false;
             this.btnSelectOUT.Click += new System.EventHandler(this.btnColorButton_Click);
             // 
-            // btnFontUNK
-            // 
-            this.btnFontUNK.AutoSize = true;
-            this.btnFontUNK.BackColor = System.Drawing.Color.Black;
-            this.btnFontUNK.Location = new System.Drawing.Point(80, 119);
-            this.btnFontUNK.Name = "btnFontUNK";
-            this.btnFontUNK.Size = new System.Drawing.Size(63, 28);
-            this.btnFontUNK.TabIndex = 20;
-            this.btnFontUNK.Tag = "1";
-            this.btnFontUNK.UseVisualStyleBackColor = false;
-            this.btnFontUNK.Click += new System.EventHandler(this.btnColorButton_Click);
-            // 
             // btnBackUNK
             // 
             this.btnBackUNK.AutoSize = true;
             this.btnBackUNK.BackColor = System.Drawing.Color.White;
-            this.btnBackUNK.Location = new System.Drawing.Point(155, 119);
+            this.btnBackUNK.Location = new System.Drawing.Point(143, 119);
             this.btnBackUNK.Name = "btnBackUNK";
-            this.btnBackUNK.Size = new System.Drawing.Size(63, 28);
+            this.btnBackUNK.Size = new System.Drawing.Size(58, 28);
             this.btnBackUNK.TabIndex = 21;
             this.btnBackUNK.Tag = "1";
             this.btnBackUNK.UseVisualStyleBackColor = false;
@@ -371,9 +383,9 @@
             // 
             this.btnSyncUNK.AutoSize = true;
             this.btnSyncUNK.BackColor = System.Drawing.Color.White;
-            this.btnSyncUNK.Location = new System.Drawing.Point(230, 119);
+            this.btnSyncUNK.Location = new System.Drawing.Point(212, 119);
             this.btnSyncUNK.Name = "btnSyncUNK";
-            this.btnSyncUNK.Size = new System.Drawing.Size(63, 28);
+            this.btnSyncUNK.Size = new System.Drawing.Size(58, 28);
             this.btnSyncUNK.TabIndex = 22;
             this.btnSyncUNK.Tag = "1";
             this.btnSyncUNK.UseVisualStyleBackColor = false;
@@ -383,9 +395,9 @@
             // 
             this.btnSelectUNK.AutoSize = true;
             this.btnSelectUNK.BackColor = System.Drawing.Color.White;
-            this.btnSelectUNK.Location = new System.Drawing.Point(305, 119);
+            this.btnSelectUNK.Location = new System.Drawing.Point(281, 119);
             this.btnSelectUNK.Name = "btnSelectUNK";
-            this.btnSelectUNK.Size = new System.Drawing.Size(63, 28);
+            this.btnSelectUNK.Size = new System.Drawing.Size(58, 28);
             this.btnSelectUNK.TabIndex = 23;
             this.btnSelectUNK.Tag = "1";
             this.btnSelectUNK.UseVisualStyleBackColor = false;
@@ -395,9 +407,9 @@
             // 
             this.btnBarIN.AutoSize = true;
             this.btnBarIN.BackColor = System.Drawing.Color.Lime;
-            this.btnBarIN.Location = new System.Drawing.Point(455, 43);
+            this.btnBarIN.Location = new System.Drawing.Point(419, 43);
             this.btnBarIN.Name = "btnBarIN";
-            this.btnBarIN.Size = new System.Drawing.Size(63, 28);
+            this.btnBarIN.Size = new System.Drawing.Size(60, 28);
             this.btnBarIN.TabIndex = 14;
             this.btnBarIN.Tag = "1";
             this.btnBarIN.UseVisualStyleBackColor = false;
@@ -407,9 +419,9 @@
             // 
             this.btnBarOUT.AutoSize = true;
             this.btnBarOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnBarOUT.Location = new System.Drawing.Point(455, 81);
+            this.btnBarOUT.Location = new System.Drawing.Point(419, 81);
             this.btnBarOUT.Name = "btnBarOUT";
-            this.btnBarOUT.Size = new System.Drawing.Size(63, 28);
+            this.btnBarOUT.Size = new System.Drawing.Size(60, 28);
             this.btnBarOUT.TabIndex = 19;
             this.btnBarOUT.Tag = "1";
             this.btnBarOUT.UseVisualStyleBackColor = false;
@@ -419,9 +431,9 @@
             // 
             this.btnBarUNK.AutoSize = true;
             this.btnBarUNK.BackColor = System.Drawing.Color.White;
-            this.btnBarUNK.Location = new System.Drawing.Point(455, 119);
+            this.btnBarUNK.Location = new System.Drawing.Point(419, 119);
             this.btnBarUNK.Name = "btnBarUNK";
-            this.btnBarUNK.Size = new System.Drawing.Size(63, 28);
+            this.btnBarUNK.Size = new System.Drawing.Size(60, 28);
             this.btnBarUNK.TabIndex = 24;
             this.btnBarUNK.Tag = "1";
             this.btnBarUNK.UseVisualStyleBackColor = false;
@@ -440,9 +452,9 @@
             // 
             this.btnSelectedFontIN.AutoSize = true;
             this.btnSelectedFontIN.BackColor = System.Drawing.Color.Lime;
-            this.btnSelectedFontIN.Location = new System.Drawing.Point(380, 43);
+            this.btnSelectedFontIN.Location = new System.Drawing.Point(350, 43);
             this.btnSelectedFontIN.Name = "btnSelectedFontIN";
-            this.btnSelectedFontIN.Size = new System.Drawing.Size(63, 28);
+            this.btnSelectedFontIN.Size = new System.Drawing.Size(58, 28);
             this.btnSelectedFontIN.TabIndex = 26;
             this.btnSelectedFontIN.Tag = "1";
             this.btnSelectedFontIN.UseVisualStyleBackColor = false;
@@ -452,9 +464,9 @@
             // 
             this.btnSelectedFontOUT.AutoSize = true;
             this.btnSelectedFontOUT.BackColor = System.Drawing.Color.Blue;
-            this.btnSelectedFontOUT.Location = new System.Drawing.Point(380, 81);
+            this.btnSelectedFontOUT.Location = new System.Drawing.Point(350, 81);
             this.btnSelectedFontOUT.Name = "btnSelectedFontOUT";
-            this.btnSelectedFontOUT.Size = new System.Drawing.Size(63, 28);
+            this.btnSelectedFontOUT.Size = new System.Drawing.Size(58, 28);
             this.btnSelectedFontOUT.TabIndex = 27;
             this.btnSelectedFontOUT.Tag = "1";
             this.btnSelectedFontOUT.UseVisualStyleBackColor = false;
@@ -464,18 +476,30 @@
             // 
             this.btnSelectedFontUNK.AutoSize = true;
             this.btnSelectedFontUNK.BackColor = System.Drawing.Color.White;
-            this.btnSelectedFontUNK.Location = new System.Drawing.Point(380, 119);
+            this.btnSelectedFontUNK.Location = new System.Drawing.Point(350, 119);
             this.btnSelectedFontUNK.Name = "btnSelectedFontUNK";
-            this.btnSelectedFontUNK.Size = new System.Drawing.Size(63, 28);
+            this.btnSelectedFontUNK.Size = new System.Drawing.Size(58, 28);
             this.btnSelectedFontUNK.TabIndex = 28;
             this.btnSelectedFontUNK.Tag = "1";
             this.btnSelectedFontUNK.UseVisualStyleBackColor = false;
             this.btnSelectedFontUNK.Click += new System.EventHandler(this.btnColorButton_Click);
             // 
+            // btnFontUNK
+            // 
+            this.btnFontUNK.AutoSize = true;
+            this.btnFontUNK.BackColor = System.Drawing.Color.Black;
+            this.btnFontUNK.Location = new System.Drawing.Point(74, 119);
+            this.btnFontUNK.Name = "btnFontUNK";
+            this.btnFontUNK.Size = new System.Drawing.Size(58, 28);
+            this.btnFontUNK.TabIndex = 20;
+            this.btnFontUNK.Tag = "1";
+            this.btnFontUNK.UseVisualStyleBackColor = false;
+            this.btnFontUNK.Click += new System.EventHandler(this.btnColorButton_Click);
+            // 
             // btnDefault
             // 
             this.btnDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDefault.Location = new System.Drawing.Point(190, 359);
+            this.btnDefault.Location = new System.Drawing.Point(190, 351);
             this.btnDefault.Name = "btnDefault";
             this.btnDefault.Size = new System.Drawing.Size(75, 23);
             this.btnDefault.TabIndex = 11;
@@ -486,7 +510,7 @@
             // cbUseExternalEditor
             // 
             this.cbUseExternalEditor.AutoSize = true;
-            this.cbUseExternalEditor.Location = new System.Drawing.Point(18, 301);
+            this.cbUseExternalEditor.Location = new System.Drawing.Point(18, 303);
             this.cbUseExternalEditor.Name = "cbUseExternalEditor";
             this.cbUseExternalEditor.Size = new System.Drawing.Size(239, 17);
             this.cbUseExternalEditor.TabIndex = 12;
@@ -495,15 +519,13 @@
             // 
             // gbAutoLoadVideo
             // 
-            this.gbAutoLoadVideo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbAutoLoadVideo.Controls.Add(this.cbAutoOpenVideoForm);
             this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoYoutube);
             this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoLocalOnly);
             this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoNever);
-            this.gbAutoLoadVideo.Location = new System.Drawing.Point(12, 246);
+            this.gbAutoLoadVideo.Location = new System.Drawing.Point(12, 248);
             this.gbAutoLoadVideo.Name = "gbAutoLoadVideo";
-            this.gbAutoLoadVideo.Size = new System.Drawing.Size(544, 49);
+            this.gbAutoLoadVideo.Size = new System.Drawing.Size(500, 49);
             this.gbAutoLoadVideo.TabIndex = 13;
             this.gbAutoLoadVideo.TabStop = false;
             this.gbAutoLoadVideo.Text = "Auto-Load Video";
@@ -513,7 +535,7 @@
             this.cbAutoOpenVideoForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbAutoOpenVideoForm.AutoSize = true;
             this.cbAutoOpenVideoForm.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbAutoOpenVideoForm.Location = new System.Drawing.Point(357, 20);
+            this.cbAutoOpenVideoForm.Location = new System.Drawing.Point(313, 20);
             this.cbAutoOpenVideoForm.Name = "cbAutoOpenVideoForm";
             this.cbAutoOpenVideoForm.Size = new System.Drawing.Size(181, 17);
             this.cbAutoOpenVideoForm.TabIndex = 3;
@@ -555,8 +577,6 @@
             // 
             // gbListStyle
             // 
-            this.gbListStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbListStyle.Controls.Add(this.label12);
             this.gbListStyle.Controls.Add(this.pictureBox3);
             this.gbListStyle.Controls.Add(this.pictureBox4);
@@ -568,7 +588,7 @@
             this.gbListStyle.Controls.Add(this.rbListStyleText);
             this.gbListStyle.Location = new System.Drawing.Point(12, 12);
             this.gbListStyle.Name = "gbListStyle";
-            this.gbListStyle.Size = new System.Drawing.Size(544, 228);
+            this.gbListStyle.Size = new System.Drawing.Size(500, 230);
             this.gbListStyle.TabIndex = 14;
             this.gbListStyle.TabStop = false;
             this.gbListStyle.Text = "Packet List Style";
@@ -654,15 +674,300 @@
             this.rbListStyleText.Text = "Text Arrows  <=  =>";
             this.rbListStyleText.UseVisualStyleBackColor = true;
             // 
-            // cbPreParse
+            // cbPreParseData
             // 
             this.cbPreParseData.AutoSize = true;
-            this.cbPreParseData.Location = new System.Drawing.Point(18, 324);
-            this.cbPreParseData.Name = "cbPreParse";
+            this.cbPreParseData.Location = new System.Drawing.Point(18, 326);
+            this.cbPreParseData.Name = "cbPreParseData";
             this.cbPreParseData.Size = new System.Drawing.Size(404, 17);
             this.cbPreParseData.TabIndex = 15;
             this.cbPreParseData.Text = "Pre-Parse loaded packet data (loads slower but allows additional search options)";
             this.cbPreParseData.UseVisualStyleBackColor = true;
+            // 
+            // btnSetDarkMode
+            // 
+            this.btnSetDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSetDarkMode.Location = new System.Drawing.Point(584, 351);
+            this.btnSetDarkMode.Name = "btnSetDarkMode";
+            this.btnSetDarkMode.Size = new System.Drawing.Size(224, 23);
+            this.btnSetDarkMode.TabIndex = 16;
+            this.btnSetDarkMode.Text = "Set Dark Mode Packet Colors";
+            this.btnSetDarkMode.UseVisualStyleBackColor = true;
+            this.btnSetDarkMode.Click += new System.EventHandler(this.BtnSetDarkMode_Click);
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Inset;
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.Controls.Add(this.btnColField12, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField14, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField15, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField1, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField2, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField3, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField4, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField5, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField6, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField7, 3, 1);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField8, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField9, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField10, 2, 2);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField11, 3, 2);
+            this.tableLayoutPanel2.Controls.Add(this.btnColField13, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.lFieldCol0, 0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 19);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 4;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(284, 155);
+            this.tableLayoutPanel2.TabIndex = 13;
+            // 
+            // btnColField12
+            // 
+            this.btnColField12.AutoSize = true;
+            this.btnColField12.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField12.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField12.Location = new System.Drawing.Point(5, 119);
+            this.btnColField12.Name = "btnColField12";
+            this.btnColField12.Size = new System.Drawing.Size(58, 28);
+            this.btnColField12.TabIndex = 36;
+            this.btnColField12.Tag = "13";
+            this.btnColField12.Text = "0x0C";
+            this.btnColField12.UseVisualStyleBackColor = false;
+            // 
+            // btnColField14
+            // 
+            this.btnColField14.AutoSize = true;
+            this.btnColField14.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField14.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField14.Location = new System.Drawing.Point(145, 119);
+            this.btnColField14.Name = "btnColField14";
+            this.btnColField14.Size = new System.Drawing.Size(58, 28);
+            this.btnColField14.TabIndex = 35;
+            this.btnColField14.Tag = "15";
+            this.btnColField14.Text = "0x0E";
+            this.btnColField14.UseVisualStyleBackColor = false;
+            // 
+            // btnColField15
+            // 
+            this.btnColField15.AutoSize = true;
+            this.btnColField15.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField15.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField15.Location = new System.Drawing.Point(215, 119);
+            this.btnColField15.Name = "btnColField15";
+            this.btnColField15.Size = new System.Drawing.Size(58, 28);
+            this.btnColField15.TabIndex = 34;
+            this.btnColField15.Tag = "16";
+            this.btnColField15.Text = "0x0F";
+            this.btnColField15.UseVisualStyleBackColor = false;
+            // 
+            // btnColField1
+            // 
+            this.btnColField1.AutoSize = true;
+            this.btnColField1.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField1.Location = new System.Drawing.Point(75, 5);
+            this.btnColField1.Name = "btnColField1";
+            this.btnColField1.Size = new System.Drawing.Size(58, 28);
+            this.btnColField1.TabIndex = 22;
+            this.btnColField1.Tag = "1";
+            this.btnColField1.Text = "0x01";
+            this.btnColField1.UseVisualStyleBackColor = false;
+            this.btnColField1.Click += new System.EventHandler(this.BtnColField_Click);
+            // 
+            // btnColField2
+            // 
+            this.btnColField2.AutoSize = true;
+            this.btnColField2.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField2.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField2.Location = new System.Drawing.Point(145, 5);
+            this.btnColField2.Name = "btnColField2";
+            this.btnColField2.Size = new System.Drawing.Size(58, 28);
+            this.btnColField2.TabIndex = 23;
+            this.btnColField2.Tag = "2";
+            this.btnColField2.Text = "0x02";
+            this.btnColField2.UseVisualStyleBackColor = false;
+            // 
+            // btnColField3
+            // 
+            this.btnColField3.AutoSize = true;
+            this.btnColField3.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField3.Location = new System.Drawing.Point(215, 5);
+            this.btnColField3.Name = "btnColField3";
+            this.btnColField3.Size = new System.Drawing.Size(58, 28);
+            this.btnColField3.TabIndex = 24;
+            this.btnColField3.Tag = "3";
+            this.btnColField3.Text = "0x03";
+            this.btnColField3.UseVisualStyleBackColor = false;
+            // 
+            // btnColField4
+            // 
+            this.btnColField4.AutoSize = true;
+            this.btnColField4.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField4.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField4.Location = new System.Drawing.Point(5, 43);
+            this.btnColField4.Name = "btnColField4";
+            this.btnColField4.Size = new System.Drawing.Size(58, 28);
+            this.btnColField4.TabIndex = 25;
+            this.btnColField4.Tag = "4";
+            this.btnColField4.Text = "0x04";
+            this.btnColField4.UseVisualStyleBackColor = false;
+            // 
+            // btnColField5
+            // 
+            this.btnColField5.AutoSize = true;
+            this.btnColField5.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField5.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField5.Location = new System.Drawing.Point(75, 43);
+            this.btnColField5.Name = "btnColField5";
+            this.btnColField5.Size = new System.Drawing.Size(58, 28);
+            this.btnColField5.TabIndex = 26;
+            this.btnColField5.Tag = "5";
+            this.btnColField5.Text = "0x05";
+            this.btnColField5.UseVisualStyleBackColor = false;
+            // 
+            // btnColField6
+            // 
+            this.btnColField6.AutoSize = true;
+            this.btnColField6.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField6.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField6.Location = new System.Drawing.Point(145, 43);
+            this.btnColField6.Name = "btnColField6";
+            this.btnColField6.Size = new System.Drawing.Size(58, 28);
+            this.btnColField6.TabIndex = 27;
+            this.btnColField6.Tag = "6";
+            this.btnColField6.Text = "0x06";
+            this.btnColField6.UseVisualStyleBackColor = false;
+            // 
+            // btnColField7
+            // 
+            this.btnColField7.AutoSize = true;
+            this.btnColField7.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField7.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField7.Location = new System.Drawing.Point(215, 43);
+            this.btnColField7.Name = "btnColField7";
+            this.btnColField7.Size = new System.Drawing.Size(58, 28);
+            this.btnColField7.TabIndex = 28;
+            this.btnColField7.Tag = "7";
+            this.btnColField7.Text = "0x07";
+            this.btnColField7.UseVisualStyleBackColor = false;
+            // 
+            // btnColField8
+            // 
+            this.btnColField8.AutoSize = true;
+            this.btnColField8.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField8.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField8.Location = new System.Drawing.Point(5, 81);
+            this.btnColField8.Name = "btnColField8";
+            this.btnColField8.Size = new System.Drawing.Size(58, 28);
+            this.btnColField8.TabIndex = 29;
+            this.btnColField8.Tag = "8";
+            this.btnColField8.Text = "0x08";
+            this.btnColField8.UseVisualStyleBackColor = false;
+            // 
+            // btnColField9
+            // 
+            this.btnColField9.AutoSize = true;
+            this.btnColField9.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField9.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField9.Location = new System.Drawing.Point(75, 81);
+            this.btnColField9.Name = "btnColField9";
+            this.btnColField9.Size = new System.Drawing.Size(58, 28);
+            this.btnColField9.TabIndex = 30;
+            this.btnColField9.Tag = "9";
+            this.btnColField9.Text = "0x09";
+            this.btnColField9.UseVisualStyleBackColor = false;
+            // 
+            // btnColField10
+            // 
+            this.btnColField10.AutoSize = true;
+            this.btnColField10.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField10.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField10.Location = new System.Drawing.Point(145, 81);
+            this.btnColField10.Name = "btnColField10";
+            this.btnColField10.Size = new System.Drawing.Size(58, 28);
+            this.btnColField10.TabIndex = 31;
+            this.btnColField10.Tag = "10";
+            this.btnColField10.Text = "0x0A";
+            this.btnColField10.UseVisualStyleBackColor = false;
+            // 
+            // btnColField11
+            // 
+            this.btnColField11.AutoSize = true;
+            this.btnColField11.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField11.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField11.Location = new System.Drawing.Point(215, 81);
+            this.btnColField11.Name = "btnColField11";
+            this.btnColField11.Size = new System.Drawing.Size(58, 28);
+            this.btnColField11.TabIndex = 32;
+            this.btnColField11.Tag = "11";
+            this.btnColField11.Text = "0x0B";
+            this.btnColField11.UseVisualStyleBackColor = false;
+            // 
+            // btnColField13
+            // 
+            this.btnColField13.AutoSize = true;
+            this.btnColField13.BackColor = System.Drawing.SystemColors.Control;
+            this.btnColField13.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnColField13.Location = new System.Drawing.Point(75, 119);
+            this.btnColField13.Name = "btnColField13";
+            this.btnColField13.Size = new System.Drawing.Size(58, 28);
+            this.btnColField13.TabIndex = 33;
+            this.btnColField13.Tag = "14";
+            this.btnColField13.Text = "0x0D";
+            this.btnColField13.UseVisualStyleBackColor = false;
+            // 
+            // lFieldCol0
+            // 
+            this.lFieldCol0.AutoSize = true;
+            this.lFieldCol0.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lFieldCol0.Location = new System.Drawing.Point(5, 2);
+            this.lFieldCol0.Name = "lFieldCol0";
+            this.lFieldCol0.Size = new System.Drawing.Size(56, 28);
+            this.lFieldCol0.TabIndex = 37;
+            this.lFieldCol0.Text = "Default Color";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.lFieldColCount);
+            this.groupBox1.Controls.Add(this.tbFieldColorCount);
+            this.groupBox1.Controls.Add(this.tableLayoutPanel2);
+            this.groupBox1.Location = new System.Drawing.Point(518, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(296, 230);
+            this.groupBox1.TabIndex = 17;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Field Grid Colors";
+            // 
+            // lFieldColCount
+            // 
+            this.lFieldColCount.AutoSize = true;
+            this.lFieldColCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lFieldColCount.Location = new System.Drawing.Point(261, 187);
+            this.lFieldColCount.Name = "lFieldColCount";
+            this.lFieldColCount.Size = new System.Drawing.Size(18, 20);
+            this.lFieldColCount.TabIndex = 15;
+            this.lFieldColCount.Text = "1";
+            // 
+            // tbFieldColorCount
+            // 
+            this.tbFieldColorCount.Location = new System.Drawing.Point(6, 179);
+            this.tbFieldColorCount.Maximum = 16;
+            this.tbFieldColorCount.Minimum = 1;
+            this.tbFieldColorCount.Name = "tbFieldColorCount";
+            this.tbFieldColorCount.Size = new System.Drawing.Size(226, 45);
+            this.tbFieldColorCount.TabIndex = 14;
+            this.tbFieldColorCount.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.tbFieldColorCount.Value = 1;
+            this.tbFieldColorCount.ValueChanged += new System.EventHandler(this.TbFieldColorCount_ValueChanged);
             // 
             // SettingsForm
             // 
@@ -670,8 +975,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(568, 394);
+            this.ClientSize = new System.Drawing.Size(826, 386);
             this.ControlBox = false;
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnSetDarkMode);
             this.Controls.Add(this.cbPreParseData);
             this.Controls.Add(this.gbListStyle);
             this.Controls.Add(this.gbAutoLoadVideo);
@@ -697,6 +1004,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbFieldColorCount)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -753,5 +1065,26 @@
         private System.Windows.Forms.RadioButton rbListStyleSolid;
         private System.Windows.Forms.RadioButton rbListStyleText;
         private System.Windows.Forms.CheckBox cbPreParseData;
+        private System.Windows.Forms.Button btnSetDarkMode;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Button btnColField12;
+        private System.Windows.Forms.Button btnColField14;
+        private System.Windows.Forms.Button btnColField15;
+        private System.Windows.Forms.Button btnColField1;
+        private System.Windows.Forms.Button btnColField2;
+        private System.Windows.Forms.Button btnColField3;
+        private System.Windows.Forms.Button btnColField4;
+        private System.Windows.Forms.Button btnColField5;
+        private System.Windows.Forms.Button btnColField6;
+        private System.Windows.Forms.Button btnColField7;
+        private System.Windows.Forms.Button btnColField8;
+        private System.Windows.Forms.Button btnColField9;
+        private System.Windows.Forms.Button btnColField10;
+        private System.Windows.Forms.Button btnColField11;
+        private System.Windows.Forms.Button btnColField13;
+        private System.Windows.Forms.Label lFieldCol0;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label lFieldColCount;
+        private System.Windows.Forms.TrackBar tbFieldColorCount;
     }
 }

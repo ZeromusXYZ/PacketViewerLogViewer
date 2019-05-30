@@ -20,6 +20,7 @@ namespace PacketViewerLogViewer
     public partial class MainForm : Form
     {
         public static MainForm thisMainForm;
+        List<string> AllUsedTempFiles = new List<string>();
 
         string defaultTitle = "";
         const string urlGitHub = "https://github.com/ZeromusXYZ/PVLV";
@@ -174,6 +175,13 @@ namespace PacketViewerLogViewer
             {
                 MessageBox.Show("Error loading file: " + logFile, "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tp.PLLoaded.Clear();
+                tcPackets.TabPages.Remove(tp);
+                return;
+            }
+            if (tp.PLLoaded.Count() <= 0)
+            {
+                MessageBox.Show("File contains no useful data.\n" + logFile, "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                tcPackets.TabPages.Remove(tp);
                 return;
             }
             Text = defaultTitle + " - " + logFile;
@@ -278,15 +286,19 @@ namespace PacketViewerLogViewer
             void SetColorBasic(byte n)
             {
                 rtInfo.SelectionFont = rtInfo.Font;
-                rtInfo.SelectionColor = Color.Black;
-                rtInfo.SelectionBackColor = Color.White;
+                rtInfo.SelectionColor = rtInfo.ForeColor;
+                rtInfo.SelectionBackColor = rtInfo.BackColor;
+                // rtInfo.SelectionColor = Color.Black;
+                // rtInfo.SelectionBackColor = Color.White;
             }
 
             void SetColorGrid()
             {
                 rtInfo.SelectionFont = rtInfo.Font;
                 rtInfo.SelectionColor = Color.DarkGray;
-                rtInfo.SelectionBackColor = Color.White;
+                rtInfo.SelectionBackColor = rtInfo.BackColor;
+                // rtInfo.SelectionColor = Color.DarkGray;
+                // rtInfo.SelectionBackColor = Color.White;
             }
 
             void SetColorSelect(byte n, bool forchars)
@@ -309,11 +321,13 @@ namespace PacketViewerLogViewer
                 if ((pp.SelectedFields.Count > 0) || forchars)
                 {
                     rtInfo.SelectionColor = pp.GetDataColor(n);
-                    rtInfo.SelectionBackColor = Color.White;
+                    rtInfo.SelectionBackColor = rtInfo.BackColor;
+                    // rtInfo.SelectionBackColor = Color.White;
                 }
                 else
                 {
-                    rtInfo.SelectionColor = Color.White;
+                    rtInfo.SelectionColor = rtInfo.BackColor;
+                    // rtInfo.SelectionColor = Color.White;
                     rtInfo.SelectionBackColor = pp.GetDataColor(n);
                 }
             }
@@ -601,7 +615,7 @@ namespace PacketViewerLogViewer
                 List<string> clipText = new List<string>();
                 clipText.AddRange(cText.Split((char)10).ToList());
 
-                tp.Text = "Clipboard";
+                tp.Text = "Clipboard   ";
                 tp.LoadedLogFile = "?Paste from Clipboard";
                 tp.ProjectFolder = string.Empty;
 
@@ -609,6 +623,13 @@ namespace PacketViewerLogViewer
                 {
                     MessageBox.Show("Error loading data from clipboard", "Clipboard Paste Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     tp.PLLoaded.Clear();
+                    tcPackets.TabPages.Remove(tp);
+                    return;
+                }
+                if (tp.PLLoaded.Count() <= 0)
+                {
+                    MessageBox.Show("Clipboard contained no useful data.", "Clipboard Paste", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    tcPackets.TabPages.Remove(tp);
                     return;
                 }
                 Text = defaultTitle + " - " + tp.LoadedLogFile;
@@ -863,7 +884,7 @@ namespace PacketViewerLogViewer
             try
             {
                 PacketTabPage tp = CreateNewPacketsTabPage();
-                tp.Text = "Clipboard";
+                tp.Text = "Clipboard   ";
                 tp.LoadedLogFile = "?Paste from Clipboard";
                 tp.ProjectFolder = string.Empty;
                 tcPackets.SelectedTab = tp;
@@ -876,6 +897,13 @@ namespace PacketViewerLogViewer
                 {
                     MessageBox.Show("Error loading data from clipboard", "Clipboard Paste Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     tp.PLLoaded.Clear();
+                    tcPackets.TabPages.Remove(tp);
+                    return;
+                }
+                if (tp.PLLoaded.Count() <= 0)
+                {
+                    MessageBox.Show("Clipboard contained no useful data.", "Clipboard Paste", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    tcPackets.TabPages.Remove(tp);
                     return;
                 }
                 Text = defaultTitle + " - " + tp.LoadedLogFile;
@@ -958,7 +986,8 @@ namespace PacketViewerLogViewer
                     var tSize = e.Graphics.MeasureString(tabPage.Text, tabPage.Font);
                     e.Graphics.TranslateTransform(tabRect.Width, tabRect.Bottom);
                     e.Graphics.RotateTransform(-90);
-                    e.Graphics.DrawString(tabPage.Text, tabPage.Font, Brushes.Black, 0, -tabRect.Width - (tSize.Height / -4), StringFormat.GenericDefault);
+                    var textBrush = new SolidBrush(tabPage.ForeColor);
+                    e.Graphics.DrawString(tabPage.Text, tabPage.Font, textBrush, 0, -tabRect.Width - (tSize.Height / -4), StringFormat.GenericDefault);
                 }
                 else
                 {
@@ -1240,7 +1269,7 @@ namespace PacketViewerLogViewer
         {
             // trying to add some file dropping
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.All;
+                e.Effect = DragDropEffects.Copy;
             else
                 e.Effect = DragDropEffects.None;
         }
@@ -1251,8 +1280,35 @@ namespace PacketViewerLogViewer
             int i;
             for (i = 0; i < s.Length; i++)
             {
-                TryOpenFile(s[i]);
+                if (File.Exists(s[i]))
+                    TryOpenFile(s[i]);
             }
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // try deleting all created temp-files when closing
+            foreach (var fn in AllUsedTempFiles)
+                try
+                {
+                    File.Delete(fn);
+                }
+                catch { }
+        }
+
+        private void MMExtraGameView_Click(object sender, EventArgs e)
+        {
+            if (GameViewForm.GV == null)
+            {
+                _ = new GameViewForm();
+            }
+            GameViewForm.GV.Show();
+            GameViewForm.GV.BringToFront();
+        }
+
+        private void MmFile_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

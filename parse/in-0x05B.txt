@@ -9,3 +9,5 @@ rem;[0x00] = 'Casket or NPC'
 rem;[0x0A] = 'Self'
 rem;byte;$17;_unknown?;-- 17   Always 0 if Type is 3, otherwise a seemingly random non-zero number
 rem;uint32;$18;_unknown?
+
+save;@actors;ID;"{SPAWN}"
