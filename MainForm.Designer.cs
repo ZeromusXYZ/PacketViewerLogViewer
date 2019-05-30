@@ -138,6 +138,7 @@
             this.mmFile.Name = "mmFile";
             this.mmFile.Size = new System.Drawing.Size(37, 20);
             this.mmFile.Text = "&File";
+            this.mmFile.Click += new System.EventHandler(this.MmFile_Click);
             // 
             // mmFileOpen
             // 

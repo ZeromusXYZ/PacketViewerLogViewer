@@ -298,5 +298,208 @@ namespace PacketViewerLogViewer.Properties {
                 this["PreParseData"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public int ColFieldCount {
+            get {
+                return ((int)(this["ColFieldCount"]));
+            }
+            set {
+                this["ColFieldCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Chocolate")]
+        public global::System.Drawing.Color ColField1 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField1"]));
+            }
+            set {
+                this["ColField1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MediumSeaGreen")]
+        public global::System.Drawing.Color ColField2 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField2"]));
+            }
+            set {
+                this["ColField2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("CornflowerBlue")]
+        public global::System.Drawing.Color ColField3 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField3"]));
+            }
+            set {
+                this["ColField3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DarkSalmon")]
+        public global::System.Drawing.Color ColField4 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField4"]));
+            }
+            set {
+                this["ColField4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DarkGray")]
+        public global::System.Drawing.Color ColField5 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField5"]));
+            }
+            set {
+                this["ColField5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Brown")]
+        public global::System.Drawing.Color ColField6 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField6"]));
+            }
+            set {
+                this["ColField6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MidnightBlue")]
+        public global::System.Drawing.Color ColField7 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField7"]));
+            }
+            set {
+                this["ColField7"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color ColField8 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField8"]));
+            }
+            set {
+                this["ColField8"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Green")]
+        public global::System.Drawing.Color ColField9 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField9"]));
+            }
+            set {
+                this["ColField9"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        public global::System.Drawing.Color ColField10 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField10"]));
+            }
+            set {
+                this["ColField10"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Purple")]
+        public global::System.Drawing.Color ColField11 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField11"]));
+            }
+            set {
+                this["ColField11"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Maroon")]
+        public global::System.Drawing.Color ColField12 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField12"]));
+            }
+            set {
+                this["ColField12"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Navy")]
+        public global::System.Drawing.Color ColField13 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField13"]));
+            }
+            set {
+                this["ColField13"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Violet")]
+        public global::System.Drawing.Color ColField14 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField14"]));
+            }
+            set {
+                this["ColField14"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Turquoise")]
+        public global::System.Drawing.Color ColField15 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColField15"]));
+            }
+            set {
+                this["ColField15"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color Setting {
+            get {
+                return ((global::System.Drawing.Color)(this["Setting"]));
+            }
+            set {
+                this["Setting"] = value;
+            }
+        }
     }
 }

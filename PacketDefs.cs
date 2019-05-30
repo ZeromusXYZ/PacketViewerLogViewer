@@ -40,6 +40,8 @@ namespace PacketViewerLogViewer.Packets
         static public Color ColSyncOUT;
         static public Color ColSyncUNK;
         static public int PacketListStyle;
+        public static List<Color> DataColors = new List<Color>();
+
 
         public static void UpdateColorsFromSettings()
         {
@@ -62,6 +64,65 @@ namespace PacketViewerLogViewer.Packets
             ColSyncOUT = Properties.Settings.Default.ColSyncOUT;
             ColSyncUNK = Properties.Settings.Default.ColSyncUNK;
             PacketListStyle = Properties.Settings.Default.PacketListStyle;
+
+            // Default Field Colors
+            var n = Properties.Settings.Default.ColFieldCount;
+            DataColors.Clear();
+            DataColors.Add(SystemColors.WindowText);
+            if (n >= 2)
+                DataColors.Add(Properties.Settings.Default.ColField1);
+
+            if (n >= 3)
+                DataColors.Add(Properties.Settings.Default.ColField2);
+
+            if (n >= 4)
+                DataColors.Add(Properties.Settings.Default.ColField3);
+
+            if (n >= 5)
+                DataColors.Add(Properties.Settings.Default.ColField4);
+
+            if (n >= 6)
+                DataColors.Add(Properties.Settings.Default.ColField5);
+
+            if (n >= 7)
+                DataColors.Add(Properties.Settings.Default.ColField6);
+
+            if (n >= 8)
+                DataColors.Add(Properties.Settings.Default.ColField7);
+
+            if (n >= 9)
+                DataColors.Add(Properties.Settings.Default.ColField8);
+
+            if (n >= 10)
+                DataColors.Add(Properties.Settings.Default.ColField9);
+
+            if (n >= 11)
+                DataColors.Add(Properties.Settings.Default.ColField10);
+
+            if (n >= 12)
+                DataColors.Add(Properties.Settings.Default.ColField11);
+
+            if (n >= 13)
+                DataColors.Add(Properties.Settings.Default.ColField12);
+
+            if (n >= 14)
+                DataColors.Add(Properties.Settings.Default.ColField13);
+
+            if (n >= 15)
+                DataColors.Add(Properties.Settings.Default.ColField14);
+
+            if (n >= 16)
+                DataColors.Add(Properties.Settings.Default.ColField15);
+            /*
+            DataColors.Add(Color.Chocolate);
+            DataColors.Add(Color.MediumSeaGreen);
+            DataColors.Add(Color.CornflowerBlue);
+            DataColors.Add(Color.DarkSalmon);
+            DataColors.Add(Color.DarkGray);
+            DataColors.Add(Color.Brown);
+            DataColors.Add(Color.MidnightBlue);
+            */
+
         }
     }
 

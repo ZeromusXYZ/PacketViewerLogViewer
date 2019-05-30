@@ -23,8 +23,6 @@ namespace PacketViewerLogViewer
 
     public class PacketParser
     {
-        List<Color> DataColors = new List<Color>();
-
         const int columnOffset = 0;
         const int columnVAR = 1;
         const int columnDATA = 2;
@@ -52,28 +50,6 @@ namespace PacketViewerLogViewer
 
         public PacketParser(UInt16 aPacketID,PacketLogTypes aPacketLogType)
         {
-            // Default Field Colors
-            DataColors.Clear();
-            /*
-            DataColors.Add(Color.Black);
-            DataColors.Add(Color.Red);
-            DataColors.Add(Color.Green);
-            DataColors.Add(Color.Blue);
-            DataColors.Add(Color.Purple);
-            DataColors.Add(Color.DarkGray);
-            DataColors.Add(Color.Maroon);
-            DataColors.Add(Color.Navy);
-            */
-            // DataColors.Add(Color.Black);
-            DataColors.Add(SystemColors.WindowText);
-            DataColors.Add(Color.Chocolate);
-            DataColors.Add(Color.MediumSeaGreen);
-            DataColors.Add(Color.CornflowerBlue);
-            DataColors.Add(Color.DarkSalmon);
-            DataColors.Add(Color.DarkGray);
-            DataColors.Add(Color.Brown);
-            DataColors.Add(Color.MidnightBlue);
-
             var filename = Application.StartupPath + Path.DirectorySeparatorChar + "parse" + Path.DirectorySeparatorChar ;
             switch (aPacketLogType)
             {
@@ -99,9 +75,9 @@ namespace PacketViewerLogViewer
 
         public Color GetDataColor(int fieldIndex)
         {
-            if (DataColors.Count > 0)
+            if (PacketColors.DataColors.Count > 0)
             {
-                return DataColors[fieldIndex % DataColors.Count];
+                return PacketColors.DataColors[fieldIndex % PacketColors.DataColors.Count];
             }
             else
             {
@@ -580,19 +556,19 @@ namespace PacketViewerLogViewer
             {
                 case PacketLogTypes.Outgoing:
                     AddParseLineToView(0xff, 
-                        "0x00", Color.DarkSlateGray, 
+                        "0x00", GetDataColor(0), 
                         "PacketID", 
                         "OUT 0x" + PD.PacketID.ToString("X3") + " - " + DataLookups.NLU(DataLookups.LU_PacketOut).GetValue(PD.PacketID),PD.PacketID);
                     break;
                 case PacketLogTypes.Incoming:
                     AddParseLineToView(0xff,
-                        "0x00", Color.DarkGray,
+                        "0x00", GetDataColor(0),
                         "PacketID",
                         "IN 0x" + PD.PacketID.ToString("X3") + " - " + DataLookups.NLU(DataLookups.LU_PacketIn).GetValue(PD.PacketID),PD.PacketID);
                     break;
                 default:
                     AddParseLineToView(0xff,
-                        "0x00", Color.DarkSlateGray,
+                        "0x00", GetDataColor(0),
                         "PacketID",
                         "??? 0x" + PD.PacketID.ToString("X3"),PD.PacketID);
                     break;

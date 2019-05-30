@@ -1305,5 +1305,10 @@ namespace PacketViewerLogViewer
             GameViewForm.GV.Show();
             GameViewForm.GV.BringToFront();
         }
+
+        private void MmFile_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
