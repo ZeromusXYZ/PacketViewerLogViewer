@@ -88,3 +88,4 @@ uint16:itemmodels:-0x8000;$58;Ranged Weapon Model;
 string;$5A;Character Name
 
 save;@actors;Player ID;Character Name
+save;@players;Player ID;Character Name

@@ -79,6 +79,7 @@ namespace PacketViewerLogViewer.Packets
         public static string LU_RoE = "roe";
         public static string LU_CraftRanks = "craftranks";
         public static string LU_Buffs = "buffs";
+        public static string LU_ActionCategory0x028 = "actioncategory0x028";
         public static string LU_ActionCategory = "actioncategory";
         public static string LU_ActionReaction = "actionreaction";
 
@@ -398,7 +399,7 @@ namespace PacketViewerLogViewer.Packets
                 {
                     var listv = li.Value;
                     // Special case, don't update if this is a "null string" parsed
-                    if (customValue != "null ()")
+                    if ((customValue != "NULL") && (listv.Val != customValue))
                         listv.Val = customValue;
                     listv.Extra = string.Empty;
                     return;

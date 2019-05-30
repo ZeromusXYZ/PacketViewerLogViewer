@@ -1,24 +1,17 @@
-rem;packet-in-0x028 action category names
-0;None
-1;Melee Attack
-2;Ranged Attack Finish
-3;Weapon Skill Finish
-4;Magic Finish
-5;Item Finish
-6;Job Ability Finish
-7;Weapon Skill Start
-8;Magic Start
-9;Item Start
-10;Job Ability Start
-11;NPC Ability Finish
-12;Ranged Attack Start
-13;Pet Mob Ability Finish
-14;Job Ability DNC
-15;Job Ability RUN
-rem;DSP stuff (not actually used as max value would be 15 with just 4 bits)
-29;ACTION_ITEM_INTERRUPT';
-31;ACTION_MAGIC_INTERRUPT';
-32;ACTION_RANGED_INTERRUPT';
-33;ACTION_MOBABILITY_START';
-35;ACTION_MOBABILITY_INTERRUPT';
-37;ACTION_RAISE_MENU_SELECTION';
+rem;action category names
+0x00;NPC Interaction
+0x02;Engage monster
+0x03;Magic cast
+0x04;Disengage
+0x05;Call for Help
+0x07;Weaponskill usage
+0x09;Job ability usage
+0x0C;Assist
+0x0D;Reraise dialogue
+0x0E;Cast Fishing Rod
+0x0F;Switch target
+0x10;Ranged attack
+0x12;Dismount Chocobo
+0x14;Show/Zone In
+0x19;Monsterskill
+0x1A;Mount
