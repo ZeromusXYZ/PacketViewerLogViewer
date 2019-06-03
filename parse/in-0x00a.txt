@@ -98,3 +98,4 @@ uint32;$EC;Max MP
 data20;$F0;_unknown16
 
 save;@actors;Player ID;Player Name
+save;@players;Player ID;Player Name

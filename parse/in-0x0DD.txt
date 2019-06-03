@@ -21,3 +21,4 @@ byte;$25;Sub Job Level
 string;$26;Name
 
 save;@actors;Player ID;Name
+save;@players;Player ID;Name

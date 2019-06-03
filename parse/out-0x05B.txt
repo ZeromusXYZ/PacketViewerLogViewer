@@ -1,4 +1,4 @@
-file;in-0x05B;Dialog Choice;Selecting a dialog option
+file;out-0x05B;Dialog Choice;Selecting a dialog option
 
 uint32;$04;Target ID
 uint16;$06;Option Index

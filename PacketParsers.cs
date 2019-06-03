@@ -392,7 +392,7 @@ namespace PacketViewerLogViewer
             MarkParsed(0x09, 1, DataFieldIndex);
 
             AddDataFieldEx(0x0A, 1, ref DataFieldIndex);
-            AddParseLineToView(DataFieldIndex, "0x0A:2-4", GetDataColor(DataFieldIndex), "Action Category", pActionCategory.ToString() + " => " + DataLookups.NLU(DataLookups.LU_ActionCategory).GetValue((UInt64)pActionCategory),(UInt64)pActionCategory);
+            AddParseLineToView(DataFieldIndex, "0x0A:2-4", GetDataColor(DataFieldIndex), "Action Category", pActionCategory.ToString() + " => " + DataLookups.NLU(DataLookups.LU_ActionCategory0x028).GetValue((UInt64)pActionCategory),(UInt64)pActionCategory);
             MarkParsed(0x0A, 1, DataFieldIndex);
 
             AddDataFieldEx(0x0B, 1, ref DataFieldIndex);
@@ -947,17 +947,29 @@ namespace PacketViewerLogViewer
                     }
                     var d = PD.GetStringAtPos(Offset, size);
                     string dHex = "";
-                    foreach(char c in d)
-                    {
-                        if (dHex != string.Empty)
-                            dHex += " ";
-                        dHex += ((byte)c).ToString("X2");
-                    }
                     if (d == string.Empty)
-                        d = "null";
+                    {
+                        d = "NULL";
+                        dHex = string.Empty;
+                    }
+                    else
+                    if (Properties.Settings.Default.ShowStringHexData)
+                    {
+                        foreach (char c in d)
+                        {
+                            if (dHex != string.Empty)
+                                dHex += " ";
+                            dHex += ((byte)c).ToString("X2");
+                        }
+                        dHex = " (" + dHex + ")";
+                    }
+                    else
+                    {
+                        dHex = string.Empty;
+                    }
 
                     AddDataField(Offset,size);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d + " ("+dHex+")");
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d + dHex);
                     if (size > 1)
                     {
                         MarkParsed(Offset, size, DataFieldIndex);

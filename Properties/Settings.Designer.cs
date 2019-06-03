@@ -493,12 +493,13 @@ namespace PacketViewerLogViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Drawing.Color Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowStringHexData {
             get {
-                return ((global::System.Drawing.Color)(this["Setting"]));
+                return ((bool)(this["ShowStringHexData"]));
             }
             set {
-                this["Setting"] = value;
+                this["ShowStringHexData"] = value;
             }
         }
     }

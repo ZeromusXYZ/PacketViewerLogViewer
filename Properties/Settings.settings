@@ -119,8 +119,8 @@
     <Setting Name="ColField15" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Turquoise</Value>
     </Setting>
-    <Setting Name="Setting" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="ShowStringHexData" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
