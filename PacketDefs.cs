@@ -1148,15 +1148,15 @@ namespace PacketViewerLogViewer.Packets
                                )
                             {
                                 AskForPacketType = false;
+                                hasData = true;
                                 // Ask for type
                                 var askDlgRes = DialogResult.Cancel;
                                 using (PacketTypeSelectForm askDlg = new PacketTypeSelectForm())
                                 {
                                     askDlg.lHeaderData.Text = s;
                                     askDlgRes = askDlg.ShowDialog();
-                                    //var askDlgStr = "Unable to indentify the packet type.\r\nDo you want to assign a default type ?\r\n\r\nPress YES for Incomming\r\n\r\nPress NO for outgoing\r\n\r\nPress Cancel to keep it undefined\r\n\r\nLineData:\r\n\r\n" + s.Substring(0, Math.Min(s.Length, 100)) + " ...";
-                                    //MessageBox.Show(askDlgStr, "Packet Type ?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                                 }
+
                                 if (askDlgRes == DialogResult.Yes)
                                 {
                                     preferedType = PacketLogTypes.Incoming ;
