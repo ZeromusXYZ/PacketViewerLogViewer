@@ -34,13 +34,8 @@ namespace PacketViewerLogViewer
         {
             lbLookupValues.Items.Clear();
             lbLookupGroups.Items.Clear();
-            foreach(var dl in DataLookups.LookupLists)
-            {
-                //if (dl.Key.StartsWith("@") && (dl.Key != "@math"))
-                {
-                    lbLookupGroups.Items.Add(dl.Key);
-                }
-            }
+            lbLookupGroups.Items.AddRange(DataLookups.LookupLists.Keys.ToArray());
+            lbLookupGroups.Sorted = true;
         }
 
         private void LbLookupGroups_SelectedIndexChanged(object sender, EventArgs e)
@@ -49,10 +44,20 @@ namespace PacketViewerLogViewer
             if (item == null)
                 return;
             lbLookupValues.Items.Clear();
-            foreach(var d in DataLookups.NLU((string)item).data)
+            lbLookupValues.BeginUpdate();
+            foreach (var d in DataLookups.NLU((string)item).data)
             {
-                lbLookupValues.Items.Add("0x" + d.Value.ID.ToString("x8") + " => " + d.Value.Val);
+                if (cbHexIndex.Checked)
+                    lbLookupValues.Items.Add("0x" + d.Value.ID.ToString("X8") + " => " + d.Value.Val);
+                else
+                    lbLookupValues.Items.Add(d.Value.ID.ToString() + " => " + d.Value.Val);
             }
+            lbLookupValues.EndUpdate();
+        }
+
+        private void GameViewForm_Shown(object sender, EventArgs e)
+        {
+            BtnRefreshLookups_Click(null, null);
         }
     }
 }

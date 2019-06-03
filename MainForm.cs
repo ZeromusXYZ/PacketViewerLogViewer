@@ -283,6 +283,7 @@ namespace PacketViewerLogViewer
 
         private void RawDataToRichText(PacketParser pp, RichTextBox rt)
         {
+
             void SetColorBasic(byte n)
             {
                 rtInfo.SelectionFont = rtInfo.Font;
@@ -355,7 +356,8 @@ namespace PacketViewerLogViewer
                 }
             }
 
-            rtInfo.Enabled = false;
+            rtInfo.ForeColor = SystemColors.WindowText;
+            rtInfo.BackColor = SystemColors.Window;
             rtInfo.Clear();
             SetColorGrid();
             rtInfo.AppendText(InfoGridHeader);
@@ -423,7 +425,6 @@ namespace PacketViewerLogViewer
                 rtInfo.AppendText("\r\n");
             }
             rtInfo.ReadOnly = true;
-            rtInfo.Enabled = true;
         }
 
         public void UpdatePacketDetails(PacketTabPage tp, PacketData pd, string SwitchBlockName, bool dontReloadParser = false)
