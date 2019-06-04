@@ -1137,6 +1137,7 @@ namespace PacketViewerLogViewer.Packets
                             }
                             else
                             {
+                                hasData = (preferedType != PacketLogTypes.Unknown);
                                 pd.PacketLogType = preferedType;
                             }
 

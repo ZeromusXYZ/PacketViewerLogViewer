@@ -1278,8 +1278,9 @@ namespace PacketViewerLogViewer
         private void MainForm_DragDrop(object sender, DragEventArgs e)
         {
             string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            int i;
-            for (i = 0; i < s.Length; i++)
+            if (s == null)
+                return;
+            for (int i = 0; i < s.Length; i++)
             {
                 if (File.Exists(s[i]))
                     TryOpenFile(s[i]);
