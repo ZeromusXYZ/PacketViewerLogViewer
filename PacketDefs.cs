@@ -268,7 +268,7 @@ namespace PacketViewerLogViewer.Packets
             return c;
         }
 
-        public int AddRawHexDataAsBytes(string hexData)
+        public int AddRawHexStringDataAsBytes(string hexData)
         {
             int res = 0;
             try
@@ -1037,33 +1037,49 @@ namespace PacketViewerLogViewer.Packets
             if (!File.Exists(fileName))
                 return false;
 
-            PacketLogTypes packetType = PacketLogTypes.Unknown;
-            PacketLogFileFormats logType = PacketLogFileFormats.Unknown;
+            PacketLogTypes expectedPacketType = PacketLogTypes.Unknown;
+            PacketLogFileFormats expectedLogType = PacketLogFileFormats.Unknown;
             var fn = fileName.ToLower();
-            // first check out, then in (as "in" is also in "ougoing")
-            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("out") >= 0))
-                packetType = PacketLogTypes.Outgoing;
-            if ((packetType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("in") >= 0))
-                packetType = PacketLogTypes.Incoming;
-            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("out") >= 0))
-                packetType = PacketLogTypes.Outgoing;
-            if ((packetType == PacketLogTypes.Unknown) && (fn.IndexOf("in") >= 0))
-                packetType = PacketLogTypes.Incoming;
+            // first check out, then in (as "in" is also in "outgoing")
+            if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("out") >= 0))
+                expectedPacketType = PacketLogTypes.Outgoing;
+            if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("in") >= 0))
+                expectedPacketType = PacketLogTypes.Incoming;
+            if ((expectedPacketType == PacketLogTypes.Unknown) && (fn.IndexOf("out") >= 0))
+                expectedPacketType = PacketLogTypes.Outgoing;
+            if ((expectedPacketType == PacketLogTypes.Unknown) && (fn.IndexOf("in") >= 0))
+                expectedPacketType = PacketLogTypes.Incoming;
 
-            if ((logType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".log"))
-                logType = PacketLogFileFormats.WindowerPacketViewer;
-            if ((logType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".txt"))
-                logType = PacketLogFileFormats.AshitaPacketeer;
-            if ((logType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".sqlite"))
-                logType = PacketLogFileFormats.PacketDB;
+            // Try file type depending on it's extension
+            if ((expectedLogType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".log"))
+                expectedLogType = PacketLogFileFormats.WindowerPacketViewer;
+            if ((expectedLogType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".txt"))
+                expectedLogType = PacketLogFileFormats.AshitaPacketeer;
+            if ((expectedLogType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".sqlite"))
+                expectedLogType = PacketLogFileFormats.PacketDB;
 
-            if ((logType == PacketLogFileFormats.WindowerPacketViewer) || (logType == PacketLogFileFormats.AshitaPacketeer))
+            if ((expectedLogType == PacketLogFileFormats.WindowerPacketViewer) || (expectedLogType == PacketLogFileFormats.AshitaPacketeer))
             {
-                List<string> sl = File.ReadAllLines(fileName).ToList();
-                return LoadFromStringList(sl, logType, packetType);
+                try
+                {
+                    List<string> sl = File.ReadAllLines(fileName).ToList();
+                    return LoadFromStringList(sl, expectedLogType, expectedPacketType);
+                }
+                catch (Exception x)
+                {
+                    if (x is PathTooLongException)
+                    {
+                        MessageBox.Show("This program does not support file paths that are longer than MAX_PATH (260 characters by default)\r\nPlease consider shortening your directory or file names, and try again.", "Name too long", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Exception:\r\n"+x.Message, "LoadFromFile()", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    }
+                    return false;
+                }
             }
             else
-            if (logType == PacketLogFileFormats.PacketDB)
+            if (expectedLogType == PacketLogFileFormats.PacketDB)
             {
                 return LoadFromSQLite3(fileName);
             }
@@ -1094,14 +1110,15 @@ namespace PacketViewerLogViewer.Packets
                     PacketData pd = null;
                     bool IsUndefinedPacketType = true;
                     bool AskForPacketType = true;
-                    bool hasData = false;
+                    bool hasHadDataHeader = false;
 
                     int c = 0;
                     foreach(string s in FileData)
                     {
-                        string sLower = s.ToLower();
-                        if ((s != "") && (pd == null))
+                        string sLower = s.ToLower().Trim(' ');
+                        if ((sLower != string.Empty) && (pd == null))
                         {
+                            hasHadDataHeader = true;
                             // Begin building a new packet
                             pd = new PacketData();
                             if (sLower.IndexOf("incoming") >= 0)
@@ -1109,7 +1126,6 @@ namespace PacketViewerLogViewer.Packets
                                 pd.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.WindowerPacketViewer;
-                                hasData = true;
                             }
                             else
                             if (sLower.IndexOf("outgoing") >= 0)
@@ -1117,7 +1133,6 @@ namespace PacketViewerLogViewer.Packets
                                 pd.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.WindowerPacketViewer;
-                                hasData = true;
                             }
                             else
                             if (sLower.IndexOf("[s->c]") >= 0)
@@ -1125,7 +1140,6 @@ namespace PacketViewerLogViewer.Packets
                                 pd.PacketLogType = PacketLogTypes.Incoming;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.AshitaPacketeer;
-                                hasData = true;
                             }
                             else
                             if (sLower.IndexOf("[c->s]") >= 0)
@@ -1133,11 +1147,9 @@ namespace PacketViewerLogViewer.Packets
                                 pd.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.AshitaPacketeer;
-                                hasData = true;
                             }
                             else
                             {
-                                hasData = (preferedType != PacketLogTypes.Unknown);
                                 pd.PacketLogType = preferedType;
                             }
 
@@ -1149,7 +1161,6 @@ namespace PacketViewerLogViewer.Packets
                                )
                             {
                                 AskForPacketType = false;
-                                hasData = true;
                                 // Ask for type
                                 var askDlgRes = DialogResult.Cancel;
                                 using (PacketTypeSelectForm askDlg = new PacketTypeSelectForm())
@@ -1173,28 +1184,25 @@ namespace PacketViewerLogViewer.Packets
                                 }
                             }
 
-                            if (hasData)
+                            pd.RawText.Add(s);
+                            if (logFileType == PacketLogFileFormats.Unknown)
                             {
-                                pd.RawText.Add(s);
-                                pd.HeaderText = s;
-                                pd.OriginalHeaderText = s;
-
-                                if (logFileType == PacketLogFileFormats.Unknown)
-                                {
-                                    // Assume the pasted data is just raw hex bytes
-                                    pd.HeaderText = "Clipboard";
-                                    pd.OriginalHeaderText = "Clipboard Data";
-                                    pd.AddRawHexDataAsBytes(s);
-                                }
+                                // We couldn't identify what type of packet this might be, and we didn't provide a type
+                                // Assume the pasted data is just raw hex bytes (as string)
+                                pd.HeaderText = "Clipboard";
+                                pd.OriginalHeaderText = "Clipboard Data";
+                                pd.AddRawHexStringDataAsBytes(s);
                             }
                             else
                             {
-                                pd = null;
+                                // Looks like a normal text packet, initialize the header
+                                pd.HeaderText = s;
+                                pd.OriginalHeaderText = s;
                             }
 
                         } // end start new packet
                         else
-                        if (hasData && (s != "") && (pd != null))
+                        if (hasHadDataHeader && (sLower != string.Empty) && (pd != null))
                         {
                             // Add line of data
                             pd.RawText.Add(s);
@@ -1211,12 +1219,12 @@ namespace PacketViewerLogViewer.Packets
                             else
                             if (logFileType == PacketLogFileFormats.Unknown)
                             {
-                                // Assume the pasted data is just raw hex bytes
-                                pd.AddRawHexDataAsBytes(s);
+                                // Assume the pasted data is just raw hex bytes (as string)
+                                pd.AddRawHexStringDataAsBytes(s);
                             }
                         }
                         else
-                        if (hasData && (s == "") && (pd != null))
+                        if (hasHadDataHeader && (sLower == string.Empty) && (pd != null))
                         {
                             // Close this packet and add it to list
                             if (pd.CompileData(logFileType))
@@ -1249,21 +1257,22 @@ namespace PacketViewerLogViewer.Packets
                             {
                                 // Invalid data
                             }
+                            // reset our packet holder
                             pd = null;
                         }
                         else
-                        if ((s == "") && (pd == null))
+                        if ((sLower == "") && (pd == null))
                         {
                             // Blank line
                         }
                         else
-                        if (s.StartsWith("--") && (pd != null))
+                        if (sLower.StartsWith("--") && (pd != null))
                         {
                             // Comment
                         }
                         else
                         {
-                            // ERROR, this should not be possible in a valid file, but just ignore it
+                            // ERROR, this should not be possible in a valid file, but just let's ignore it anyway, just in case
                         }
 
                         c++;
@@ -1330,7 +1339,7 @@ namespace PacketViewerLogViewer.Packets
                             pd.PacketID = (UInt16)reader.GetInt32(reader.GetOrdinal("PACKET_TYPE"));
                             var pData = reader.GetString(reader.GetOrdinal("PACKET_DATA"));
                             pd.RawText.Add(pData);
-                            pd.AddRawHexDataAsBytes(pData);
+                            pd.AddRawHexStringDataAsBytes(pData);
                             pd.capturedZoneId = reader.GetInt16(reader.GetOrdinal("ZONE_ID"));
 
                             pd.OriginalHeaderText = "PACKET_ID " + reader.GetInt64(reader.GetOrdinal("PACKET_ID")) + " , DIR " + dir.ToString() + " , TYPE " + pd.PacketID.ToString();

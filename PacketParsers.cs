@@ -588,6 +588,7 @@ namespace PacketViewerLogViewer
             ParsedBytes[3] = 0xFF;
             int DataCursor = 0;
             int DataSubCursor = 0;
+            bool enableCode = true; // This is mostly used to enable or disable the logging of switchblocks
 
             string CurrentlyParsedSwitchBlock = "";
             SwitchBlocks.Clear();
@@ -616,7 +617,8 @@ namespace PacketViewerLogViewer
                     var thisSwitchName = line.Substring(2, line.Length - 4).Trim(' ');
                     if (thisSwitchName != string.Empty)
                     {
-                        SwitchBlocks.Add(thisSwitchName);
+                        if (enableCode)
+                            SwitchBlocks.Add(thisSwitchName);
                     }
                     else
                     {
@@ -661,6 +663,20 @@ namespace PacketViewerLogViewer
                     continue;
                 if (typeField == "comment")
                     continue;
+                if (typeField == "enablecode")
+                {
+                    int enableCodeVal;
+                    try
+                    {
+                        enableCodeVal = int.Parse(posField);
+                    }
+                    catch
+                    {
+                        enableCodeVal = 0;
+                    }
+                    enableCode = (enableCodeVal != 0);
+                    continue;
+                }
                 if (typeField == string.Empty)
                     continue;
 
@@ -792,8 +808,11 @@ namespace PacketViewerLogViewer
                         {
                             ActiveSwitchBlock = nameField;
                             AllowAutoSwitchBlock = false;
+
                             // Debug Info
-                            AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "SwitchBlock", "Activate Block: " + ActiveSwitchBlock);
+                            if (enableCode)
+                                AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "SwitchBlock", "Activate Block: " + ActiveSwitchBlock);
+
                             LastSwitchedBlock = ActiveSwitchBlock;
                             if (PreParsedSwitchBlock == "-")
                                 PreParsedSwitchBlock = ActiveSwitchBlock;
@@ -811,8 +830,11 @@ namespace PacketViewerLogViewer
 
                         ActiveSwitchBlock = nameField;
                         AllowAutoSwitchBlock = false;
+
                         // Debug Info
-                        AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "ShowBlock", "Activate Block: " + ActiveSwitchBlock);
+                        if (enableCode)
+                            AddParseLineToView(0xff, "L " + parseLineNumber.ToString(), Color.Red, "ShowBlock", "Activate Block: " + ActiveSwitchBlock);
+
                         LastSwitchedBlock = ActiveSwitchBlock;
                         if (PreParsedSwitchBlock == "-")
                             PreParsedSwitchBlock = ActiveSwitchBlock;

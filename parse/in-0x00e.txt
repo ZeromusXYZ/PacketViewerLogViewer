@@ -2,14 +2,7 @@ file;in-0x00e;NPC Update;Packet contains info about another PC (i.e. coordinates
 
 uint32:@actors;$04;NPC
 uint16;$08;Index
-byte;$0A;Update Mask;-- 0A   Bits that control which parts of the packet are actual updates (rest is zeroed). Model is always sent
-bit;$0A:0;  Bit0: Pos,Rot,Walk
-bit;$0A:1;  Bit1: Claimer ID
-bit;$0A:2;  Bit2: HP, Status
-bit;$0A:3;  Bit3: Name
-bit;$0A:4;  Bit4: Look
-bit;$0A:5;  Bit5: Despawn
-bit;$0A:6;  Bit6: Name2?
+bitflaglist2:npcupdatemask;0x0A:0-8;Update Mask
 dir;$0B;Direction
 pos;$0C;Position
 uint32;$18;Walk Count;Steadily increases until rotation changes. Does not reset while the mob isn't walking. Only goes until 0xFF1F.
@@ -24,4 +17,10 @@ uint16;$30;_unknown5
 uint16;$32;Model ID
 string;$34;Name
 
+enablecode;0
+switchblock;0x0A:3;savename;1
+[[savename]]
+rem;Only save name if the bitflag for it is set
 save;@actors;NPC;Name
+[[]]
+enablecode;1

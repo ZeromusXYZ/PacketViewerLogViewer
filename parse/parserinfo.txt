@@ -132,7 +132,7 @@ It will try to generate either uint32's or byte's depending on the unused size.
 
 
 --------------------------------
-About Blocks
+About Switching Blocks
 --------------------------------
 You can mark a parse block using double brackets [[ name ]]
 A block is closed by making a empty named block like [[]]
@@ -173,3 +173,28 @@ Result if byte 0x10 is 0x31
 If you would remove showblock and the brackets for the Default block, 
 you would always show the Raw Data example field, 
 and also the My Value field if the My Info switchblock is triggered
+
+
+--------------------------------
+About EnableCode
+--------------------------------
+Enable/Disable showing of block (and other special code) info
+Syntax:
+enablecode;0
+enablecode;1 (default)
+
+When set to 0 (disabled), the following is disabled:
+- SwitchBlock and ShowBlock will not produce a info line in the field view
+- Opening Switch Blocks are NOT stored for listing on the top-right of the field view
+
+A example of this can be found in the in-0x00E parser where it is used to only store the (N)PC's name if the proper flag for it is set
+
+enablecode;0
+switchblock;0x0A:3;savename;1
+[[savename]]
+rem;Only save name if the bitflag for it is set
+save;@actors;NPC;Name
+[[]]
+
+Because the user has now real value in "seeing" this [[savename]] as it doesn't produce any real output, it's better to just hide it there
+

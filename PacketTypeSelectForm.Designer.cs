@@ -39,17 +39,16 @@
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(208, 26);
+            this.label1.Size = new System.Drawing.Size(266, 54);
             this.label1.TabIndex = 0;
             this.label1.Text = "Unable to indentify the packet direction.\r\nDo you want to assign a default direct" +
-    "ion ?";
+    "ion for the remaining data ?";
             // 
             // btnIN
             // 
-            this.btnIN.Location = new System.Drawing.Point(12, 65);
+            this.btnIN.Location = new System.Drawing.Point(12, 79);
             this.btnIN.Name = "btnIN";
             this.btnIN.Size = new System.Drawing.Size(80, 80);
             this.btnIN.TabIndex = 1;
@@ -60,7 +59,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 49);
+            this.label2.Location = new System.Drawing.Point(12, 63);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(150, 13);
             this.label2.TabIndex = 2;
@@ -68,7 +67,7 @@
             // 
             // btnOUT
             // 
-            this.btnOUT.Location = new System.Drawing.Point(198, 65);
+            this.btnOUT.Location = new System.Drawing.Point(198, 79);
             this.btnOUT.Name = "btnOUT";
             this.btnOUT.Size = new System.Drawing.Size(80, 80);
             this.btnOUT.TabIndex = 3;
@@ -79,7 +78,7 @@
             // btnSkip
             // 
             this.btnSkip.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnSkip.Location = new System.Drawing.Point(12, 151);
+            this.btnSkip.Location = new System.Drawing.Point(12, 165);
             this.btnSkip.Name = "btnSkip";
             this.btnSkip.Size = new System.Drawing.Size(266, 23);
             this.btnSkip.TabIndex = 4;
@@ -90,7 +89,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 188);
+            this.label3.Location = new System.Drawing.Point(12, 202);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(102, 13);
             this.label3.TabIndex = 5;
@@ -99,7 +98,7 @@
             // lHeaderData
             // 
             this.lHeaderData.AutoSize = true;
-            this.lHeaderData.Location = new System.Drawing.Point(12, 211);
+            this.lHeaderData.Location = new System.Drawing.Point(12, 225);
             this.lHeaderData.Name = "lHeaderData";
             this.lHeaderData.Size = new System.Drawing.Size(36, 13);
             this.lHeaderData.TabIndex = 6;
@@ -110,7 +109,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnSkip;
-            this.ClientSize = new System.Drawing.Size(294, 245);
+            this.ClientSize = new System.Drawing.Size(294, 272);
             this.Controls.Add(this.lHeaderData);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnSkip);
