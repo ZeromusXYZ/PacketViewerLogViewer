@@ -62,7 +62,7 @@
             this.btnFontUNK = new System.Windows.Forms.Button();
             this.btnDefault = new System.Windows.Forms.Button();
             this.cbUseExternalEditor = new System.Windows.Forms.CheckBox();
-            this.gbAutoLoadVideo = new System.Windows.Forms.GroupBox();
+            this.gbVideoSettings = new System.Windows.Forms.GroupBox();
             this.cbAutoOpenVideoForm = new System.Windows.Forms.CheckBox();
             this.rbAutoLoadVideoYoutube = new System.Windows.Forms.RadioButton();
             this.rbAutoLoadVideoLocalOnly = new System.Windows.Forms.RadioButton();
@@ -95,19 +95,23 @@
             this.btnColField11 = new System.Windows.Forms.Button();
             this.btnColField13 = new System.Windows.Forms.Button();
             this.lFieldCol0 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbGridStyle = new System.Windows.Forms.GroupBox();
             this.lFieldColCount = new System.Windows.Forms.Label();
             this.tbFieldColorCount = new System.Windows.Forms.TrackBar();
+            this.gbOtherSettings = new System.Windows.Forms.GroupBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.cbShowHexStringData = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
-            this.gbAutoLoadVideo.SuspendLayout();
+            this.gbVideoSettings.SuspendLayout();
             this.gbListStyle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.gbGridStyle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbFieldColorCount)).BeginInit();
+            this.gbOtherSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
@@ -510,32 +514,32 @@
             // cbUseExternalEditor
             // 
             this.cbUseExternalEditor.AutoSize = true;
-            this.cbUseExternalEditor.Location = new System.Drawing.Point(18, 303);
+            this.cbUseExternalEditor.Location = new System.Drawing.Point(14, 19);
             this.cbUseExternalEditor.Name = "cbUseExternalEditor";
             this.cbUseExternalEditor.Size = new System.Drawing.Size(239, 17);
             this.cbUseExternalEditor.TabIndex = 12;
             this.cbUseExternalEditor.Text = "Use External Text Editor for editing parse files";
             this.cbUseExternalEditor.UseVisualStyleBackColor = true;
             // 
-            // gbAutoLoadVideo
+            // gbVideoSettings
             // 
-            this.gbAutoLoadVideo.Controls.Add(this.cbAutoOpenVideoForm);
-            this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoYoutube);
-            this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoLocalOnly);
-            this.gbAutoLoadVideo.Controls.Add(this.rbAutoLoadVideoNever);
-            this.gbAutoLoadVideo.Location = new System.Drawing.Point(12, 248);
-            this.gbAutoLoadVideo.Name = "gbAutoLoadVideo";
-            this.gbAutoLoadVideo.Size = new System.Drawing.Size(500, 49);
-            this.gbAutoLoadVideo.TabIndex = 13;
-            this.gbAutoLoadVideo.TabStop = false;
-            this.gbAutoLoadVideo.Text = "Auto-Load Video";
+            this.gbVideoSettings.Controls.Add(this.cbAutoOpenVideoForm);
+            this.gbVideoSettings.Controls.Add(this.rbAutoLoadVideoYoutube);
+            this.gbVideoSettings.Controls.Add(this.rbAutoLoadVideoLocalOnly);
+            this.gbVideoSettings.Controls.Add(this.rbAutoLoadVideoNever);
+            this.gbVideoSettings.Location = new System.Drawing.Point(470, 250);
+            this.gbVideoSettings.Name = "gbVideoSettings";
+            this.gbVideoSettings.Size = new System.Drawing.Size(344, 95);
+            this.gbVideoSettings.TabIndex = 13;
+            this.gbVideoSettings.TabStop = false;
+            this.gbVideoSettings.Text = "Video Linking Settings";
             // 
             // cbAutoOpenVideoForm
             // 
             this.cbAutoOpenVideoForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbAutoOpenVideoForm.AutoSize = true;
             this.cbAutoOpenVideoForm.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbAutoOpenVideoForm.Location = new System.Drawing.Point(313, 20);
+            this.cbAutoOpenVideoForm.Location = new System.Drawing.Point(157, 19);
             this.cbAutoOpenVideoForm.Name = "cbAutoOpenVideoForm";
             this.cbAutoOpenVideoForm.Size = new System.Drawing.Size(181, 17);
             this.cbAutoOpenVideoForm.TabIndex = 3;
@@ -545,7 +549,7 @@
             // rbAutoLoadVideoYoutube
             // 
             this.rbAutoLoadVideoYoutube.AutoSize = true;
-            this.rbAutoLoadVideoYoutube.Location = new System.Drawing.Point(184, 19);
+            this.rbAutoLoadVideoYoutube.Location = new System.Drawing.Point(6, 64);
             this.rbAutoLoadVideoYoutube.Name = "rbAutoLoadVideoYoutube";
             this.rbAutoLoadVideoYoutube.Size = new System.Drawing.Size(126, 17);
             this.rbAutoLoadVideoYoutube.TabIndex = 2;
@@ -556,7 +560,7 @@
             // 
             this.rbAutoLoadVideoLocalOnly.AutoSize = true;
             this.rbAutoLoadVideoLocalOnly.Checked = true;
-            this.rbAutoLoadVideoLocalOnly.Location = new System.Drawing.Point(66, 20);
+            this.rbAutoLoadVideoLocalOnly.Location = new System.Drawing.Point(6, 41);
             this.rbAutoLoadVideoLocalOnly.Name = "rbAutoLoadVideoLocalOnly";
             this.rbAutoLoadVideoLocalOnly.Size = new System.Drawing.Size(112, 17);
             this.rbAutoLoadVideoLocalOnly.TabIndex = 1;
@@ -677,7 +681,7 @@
             // cbPreParseData
             // 
             this.cbPreParseData.AutoSize = true;
-            this.cbPreParseData.Location = new System.Drawing.Point(18, 326);
+            this.cbPreParseData.Location = new System.Drawing.Point(14, 42);
             this.cbPreParseData.Name = "cbPreParseData";
             this.cbPreParseData.Size = new System.Drawing.Size(404, 17);
             this.cbPreParseData.TabIndex = 15;
@@ -935,17 +939,17 @@
             this.lFieldCol0.TabIndex = 37;
             this.lFieldCol0.Text = "Default Color";
             // 
-            // groupBox1
+            // gbGridStyle
             // 
-            this.groupBox1.Controls.Add(this.lFieldColCount);
-            this.groupBox1.Controls.Add(this.tbFieldColorCount);
-            this.groupBox1.Controls.Add(this.tableLayoutPanel2);
-            this.groupBox1.Location = new System.Drawing.Point(518, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(296, 230);
-            this.groupBox1.TabIndex = 17;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Field Grid Colors";
+            this.gbGridStyle.Controls.Add(this.lFieldColCount);
+            this.gbGridStyle.Controls.Add(this.tbFieldColorCount);
+            this.gbGridStyle.Controls.Add(this.tableLayoutPanel2);
+            this.gbGridStyle.Location = new System.Drawing.Point(518, 12);
+            this.gbGridStyle.Name = "gbGridStyle";
+            this.gbGridStyle.Size = new System.Drawing.Size(296, 230);
+            this.gbGridStyle.TabIndex = 17;
+            this.gbGridStyle.TabStop = false;
+            this.gbGridStyle.Text = "Field Grid Colors";
             // 
             // lFieldColCount
             // 
@@ -969,6 +973,28 @@
             this.tbFieldColorCount.Value = 1;
             this.tbFieldColorCount.ValueChanged += new System.EventHandler(this.TbFieldColorCount_ValueChanged);
             // 
+            // gbOtherSettings
+            // 
+            this.gbOtherSettings.Controls.Add(this.cbShowHexStringData);
+            this.gbOtherSettings.Controls.Add(this.cbUseExternalEditor);
+            this.gbOtherSettings.Controls.Add(this.cbPreParseData);
+            this.gbOtherSettings.Location = new System.Drawing.Point(12, 250);
+            this.gbOtherSettings.Name = "gbOtherSettings";
+            this.gbOtherSettings.Size = new System.Drawing.Size(452, 95);
+            this.gbOtherSettings.TabIndex = 18;
+            this.gbOtherSettings.TabStop = false;
+            this.gbOtherSettings.Text = "Other Settings";
+            // 
+            // cbShowHexStringData
+            // 
+            this.cbShowHexStringData.AutoSize = true;
+            this.cbShowHexStringData.Location = new System.Drawing.Point(14, 64);
+            this.cbShowHexStringData.Name = "cbShowHexStringData";
+            this.cbShowHexStringData.Size = new System.Drawing.Size(166, 17);
+            this.cbShowHexStringData.TabIndex = 16;
+            this.cbShowHexStringData.Text = "Also show hex data on strings";
+            this.cbShowHexStringData.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.btnOK;
@@ -977,12 +1003,11 @@
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(826, 386);
             this.ControlBox = false;
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gbOtherSettings);
+            this.Controls.Add(this.gbGridStyle);
             this.Controls.Add(this.btnSetDarkMode);
-            this.Controls.Add(this.cbPreParseData);
             this.Controls.Add(this.gbListStyle);
-            this.Controls.Add(this.gbAutoLoadVideo);
-            this.Controls.Add(this.cbUseExternalEditor);
+            this.Controls.Add(this.gbVideoSettings);
             this.Controls.Add(this.btnDefault);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
@@ -996,8 +1021,8 @@
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.gbAutoLoadVideo.ResumeLayout(false);
-            this.gbAutoLoadVideo.PerformLayout();
+            this.gbVideoSettings.ResumeLayout(false);
+            this.gbVideoSettings.PerformLayout();
             this.gbListStyle.ResumeLayout(false);
             this.gbListStyle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -1006,11 +1031,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbGridStyle.ResumeLayout(false);
+            this.gbGridStyle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbFieldColorCount)).EndInit();
+            this.gbOtherSettings.ResumeLayout(false);
+            this.gbOtherSettings.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -1050,7 +1076,7 @@
         private System.Windows.Forms.Button btnSelectedFontUNK;
         private System.Windows.Forms.Button btnDefault;
         private System.Windows.Forms.CheckBox cbUseExternalEditor;
-        private System.Windows.Forms.GroupBox gbAutoLoadVideo;
+        private System.Windows.Forms.GroupBox gbVideoSettings;
         private System.Windows.Forms.CheckBox cbAutoOpenVideoForm;
         private System.Windows.Forms.RadioButton rbAutoLoadVideoYoutube;
         private System.Windows.Forms.RadioButton rbAutoLoadVideoLocalOnly;
@@ -1083,8 +1109,11 @@
         private System.Windows.Forms.Button btnColField11;
         private System.Windows.Forms.Button btnColField13;
         private System.Windows.Forms.Label lFieldCol0;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbGridStyle;
         private System.Windows.Forms.Label lFieldColCount;
         private System.Windows.Forms.TrackBar tbFieldColorCount;
+        private System.Windows.Forms.GroupBox gbOtherSettings;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.CheckBox cbShowHexStringData;
     }
 }

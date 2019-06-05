@@ -37,6 +37,7 @@ namespace PacketViewerLogViewer
             if (rbListStyleTransparent.Checked)
                 Properties.Settings.Default.PacketListStyle = 2;
             Properties.Settings.Default.PreParseData = cbPreParseData.Checked;
+            Properties.Settings.Default.ShowStringHexData = cbShowHexStringData.Checked;
             DialogResult = DialogResult.OK;
         }
 
@@ -57,6 +58,7 @@ namespace PacketViewerLogViewer
             rbListStyleSolid.Checked = (Properties.Settings.Default.PacketListStyle == 1);
             rbListStyleTransparent.Checked = (Properties.Settings.Default.PacketListStyle == 2);
             cbPreParseData.Checked = Properties.Settings.Default.PreParseData;
+            cbShowHexStringData.Checked = Properties.Settings.Default.ShowStringHexData;
         }
 
         private void LoadColorSettingsIntoButtons()
