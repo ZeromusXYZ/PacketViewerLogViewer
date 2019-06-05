@@ -1072,25 +1072,24 @@ namespace PacketViewerLogViewer.Packets
             PacketLogFileFormats expectedLogType = PacketLogFileFormats.Unknown;
             var fn = fileName.ToLower();
 
-            // TODO: go walk up through the filename and directories and check in that order
-
-            if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("outgoing") >= 0))
-                expectedPacketType = PacketLogTypes.Outgoing;
-            if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("incoming") >= 0))
-                expectedPacketType = PacketLogTypes.Incoming;
-            // first check "out", then "in" (as "in" is also in "outgoing")
-            if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("out") >= 0))
-                expectedPacketType = PacketLogTypes.Outgoing;
-            if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("in") >= 0))
-                expectedPacketType = PacketLogTypes.Incoming;
-            if ((expectedPacketType == PacketLogTypes.Unknown) && (fn.IndexOf("outgoing") >= 0))
-                expectedPacketType = PacketLogTypes.Outgoing;
-            if ((expectedPacketType == PacketLogTypes.Unknown) && (fn.IndexOf("incoming") >= 0))
-                expectedPacketType = PacketLogTypes.Incoming;
-            if ((expectedPacketType == PacketLogTypes.Unknown) && (fn.IndexOf("out") >= 0))
-                expectedPacketType = PacketLogTypes.Outgoing;
-            if ((expectedPacketType == PacketLogTypes.Unknown) && (fn.IndexOf("in") >= 0))
-                expectedPacketType = PacketLogTypes.Incoming;
+            // Take the filename and 2 parent directories, and use those names to try and guess the packet direction
+            var toCheckList = fn.Split(Path.DirectorySeparatorChar).ToList();
+            while (toCheckList.Count > 3)
+            {
+                toCheckList.RemoveAt(0);
+            }
+            toCheckList.Reverse();
+            foreach(var checkName in toCheckList)
+            {
+                if ((expectedPacketType == PacketLogTypes.Unknown) && (checkName.IndexOf("outgoing") >= 0))
+                    expectedPacketType = PacketLogTypes.Outgoing;
+                if ((expectedPacketType == PacketLogTypes.Unknown) && (checkName.IndexOf("incoming") >= 0))
+                    expectedPacketType = PacketLogTypes.Incoming;
+                if ((expectedPacketType == PacketLogTypes.Unknown) && (checkName.IndexOf("out-") >= 0))
+                    expectedPacketType = PacketLogTypes.Outgoing;
+                if ((expectedPacketType == PacketLogTypes.Unknown) && (checkName.IndexOf("in-") >= 0))
+                    expectedPacketType = PacketLogTypes.Incoming;
+            }
 
             // Try file type depending on it's extension
             if ((expectedLogType == PacketLogFileFormats.Unknown) && (Path.GetExtension(fn) == ".log"))
@@ -1191,6 +1190,14 @@ namespace PacketViewerLogViewer.Packets
                                 pd.PacketLogType = PacketLogTypes.Outgoing;
                                 IsUndefinedPacketType = false;
                                 logFileType = PacketLogFileFormats.AshitaPacketeer;
+                            }
+                            else
+                            if (sLower.IndexOf("npc id:") >= 0)
+                            {
+                                // This is likely a npc logger log file, assume it's a incomming packet
+                                pd.PacketLogType = PacketLogTypes.Incoming;
+                                IsUndefinedPacketType = false;
+                                logFileType = PacketLogFileFormats.WindowerPacketViewer;
                             }
                             else
                             {
