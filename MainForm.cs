@@ -1215,7 +1215,10 @@ namespace PacketViewerLogViewer
                 if (projectDlg.ShowDialog() == DialogResult.OK)
                 {
                     projectDlg.ApplyPacketTapPage();
-                    tp.SaveProjectFile();
+                    if (!tp.SaveProjectFile())
+                    {
+                        MessageBox.Show("Project file was NOT saved !\r\nEither you don't have write permission,\r\nor are not able to save the file because of restrictions placed by this program", "Project NOT saved", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
         }

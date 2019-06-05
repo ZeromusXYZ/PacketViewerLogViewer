@@ -289,7 +289,7 @@ namespace PacketViewerLogViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool PreParseData {
             get {
                 return ((bool)(this["PreParseData"]));
@@ -500,6 +500,18 @@ namespace PacketViewerLogViewer.Properties {
             }
             set {
                 this["ShowStringHexData"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AskCreateNewProjectFile {
+            get {
+                return ((bool)(this["AskCreateNewProjectFile"]));
+            }
+            set {
+                this["AskCreateNewProjectFile"] = value;
             }
         }
     }

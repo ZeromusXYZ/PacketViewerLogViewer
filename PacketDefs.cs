@@ -2314,7 +2314,8 @@ namespace PacketViewerLogViewer.Packets
 
                 }
                 // Set on success
-                ProjectFile = aProjectFile;
+                if (sl.Length >= 1)
+                    ProjectFile = aProjectFile;
             }
             catch
             {
@@ -2333,9 +2334,9 @@ namespace PacketViewerLogViewer.Packets
             if ((fromLogFile != null) && (fromLogFile != string.Empty))
                 ProjectFolder = Helper.MakeProjectDirectoryFromLogFileName(fromLogFile);
 
-            ProjectFile = ProjectFolder + Path.GetFileName(ProjectFolder.TrimEnd('\\')) + ".pvlv";
+            var aProjectFile = ProjectFolder + Path.GetFileName(ProjectFolder.TrimEnd('\\')) + ".pvlv";
 
-            return LoadProjectFile(ProjectFile);
+            return LoadProjectFile(aProjectFile);
         }
 
         public bool SaveProjectFile()
@@ -2345,7 +2346,23 @@ namespace PacketViewerLogViewer.Packets
 
             // Generate Filename if needed
             if ((ProjectFile == null) || (ProjectFile == string.Empty))
-                ProjectFile = ProjectFolder + Path.GetFileName(ProjectFolder.TrimEnd('\\')) + ".pvlv" ;
+            {
+                var partialProjectFileName = Path.GetFileName(ProjectFolder.TrimEnd('\\'));
+                // don't create in a drive root directory
+                if (partialProjectFileName == string.Empty)
+                    return false;
+                ProjectFile = ProjectFolder + partialProjectFileName + ".pvlv";
+            }
+
+            if ( (Properties.Settings.Default.AskCreateNewProjectFile == true) && (!File.Exists(ProjectFile)) )
+            {
+                if (MessageBox.Show("Do you want to save project settings as a new project file ?\r\n" + ProjectFile, "Create Project File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    ProjectFile = string.Empty;
+                    return false;
+                }
+            }
+
 
             string relVideo = string.Empty;
             if ((LinkVideoFileName != null) && (LinkVideoFileName != string.Empty))

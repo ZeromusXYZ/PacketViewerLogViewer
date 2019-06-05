@@ -101,6 +101,7 @@
             this.gbOtherSettings = new System.Windows.Forms.GroupBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.cbShowHexStringData = new System.Windows.Forms.CheckBox();
+            this.cbAskNewProject = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbVideoSettings.SuspendLayout();
             this.gbListStyle.SuspendLayout();
@@ -117,7 +118,7 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 351);
+            this.btnOK.Location = new System.Drawing.Point(12, 377);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -129,7 +130,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(93, 351);
+            this.btnCancel.Location = new System.Drawing.Point(93, 377);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -503,7 +504,7 @@
             // btnDefault
             // 
             this.btnDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDefault.Location = new System.Drawing.Point(190, 351);
+            this.btnDefault.Location = new System.Drawing.Point(190, 377);
             this.btnDefault.Name = "btnDefault";
             this.btnDefault.Size = new System.Drawing.Size(75, 23);
             this.btnDefault.TabIndex = 11;
@@ -691,7 +692,7 @@
             // btnSetDarkMode
             // 
             this.btnSetDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSetDarkMode.Location = new System.Drawing.Point(584, 351);
+            this.btnSetDarkMode.Location = new System.Drawing.Point(584, 377);
             this.btnSetDarkMode.Name = "btnSetDarkMode";
             this.btnSetDarkMode.Size = new System.Drawing.Size(224, 23);
             this.btnSetDarkMode.TabIndex = 16;
@@ -975,12 +976,13 @@
             // 
             // gbOtherSettings
             // 
+            this.gbOtherSettings.Controls.Add(this.cbAskNewProject);
             this.gbOtherSettings.Controls.Add(this.cbShowHexStringData);
             this.gbOtherSettings.Controls.Add(this.cbUseExternalEditor);
             this.gbOtherSettings.Controls.Add(this.cbPreParseData);
             this.gbOtherSettings.Location = new System.Drawing.Point(12, 250);
             this.gbOtherSettings.Name = "gbOtherSettings";
-            this.gbOtherSettings.Size = new System.Drawing.Size(452, 95);
+            this.gbOtherSettings.Size = new System.Drawing.Size(452, 116);
             this.gbOtherSettings.TabIndex = 18;
             this.gbOtherSettings.TabStop = false;
             this.gbOtherSettings.Text = "Other Settings";
@@ -995,13 +997,23 @@
             this.cbShowHexStringData.Text = "Also show hex data on strings";
             this.cbShowHexStringData.UseVisualStyleBackColor = true;
             // 
+            // cbAskNewProject
+            // 
+            this.cbAskNewProject.AutoSize = true;
+            this.cbAskNewProject.Location = new System.Drawing.Point(14, 87);
+            this.cbAskNewProject.Name = "cbAskNewProject";
+            this.cbAskNewProject.Size = new System.Drawing.Size(201, 17);
+            this.cbAskNewProject.TabIndex = 17;
+            this.cbAskNewProject.Text = "Ask before creating a new project file";
+            this.cbAskNewProject.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(826, 386);
+            this.ClientSize = new System.Drawing.Size(826, 412);
             this.ControlBox = false;
             this.Controls.Add(this.gbOtherSettings);
             this.Controls.Add(this.gbGridStyle);
@@ -1115,5 +1127,6 @@
         private System.Windows.Forms.GroupBox gbOtherSettings;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.CheckBox cbShowHexStringData;
+        private System.Windows.Forms.CheckBox cbAskNewProject;
     }
 }

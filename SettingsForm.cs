@@ -38,6 +38,7 @@ namespace PacketViewerLogViewer
                 Properties.Settings.Default.PacketListStyle = 2;
             Properties.Settings.Default.PreParseData = cbPreParseData.Checked;
             Properties.Settings.Default.ShowStringHexData = cbShowHexStringData.Checked;
+            Properties.Settings.Default.AskCreateNewProjectFile = cbAskNewProject.Checked;
             DialogResult = DialogResult.OK;
         }
 
@@ -48,20 +49,10 @@ namespace PacketViewerLogViewer
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            LoadColorSettingsIntoButtons();
-            cbUseExternalEditor.Checked = Properties.Settings.Default.ExternalParseEditor;
-            cbAutoOpenVideoForm.Checked = Properties.Settings.Default.AutoOpenVideoForm;
-            rbAutoLoadVideoLocalOnly.Checked = (Properties.Settings.Default.AutoLoadVideo == 1);
-            rbAutoLoadVideoYoutube.Checked = (Properties.Settings.Default.AutoLoadVideo == 2);
-            rbAutoLoadVideoNever.Checked = (!rbAutoLoadVideoLocalOnly.Checked && !rbAutoLoadVideoYoutube.Checked);
-            rbListStyleText.Checked = (Properties.Settings.Default.PacketListStyle == 0);
-            rbListStyleSolid.Checked = (Properties.Settings.Default.PacketListStyle == 1);
-            rbListStyleTransparent.Checked = (Properties.Settings.Default.PacketListStyle == 2);
-            cbPreParseData.Checked = Properties.Settings.Default.PreParseData;
-            cbShowHexStringData.Checked = Properties.Settings.Default.ShowStringHexData;
+            LoadColorSettingsIntoForm();
         }
 
-        private void LoadColorSettingsIntoButtons()
+        private void LoadColorSettingsIntoForm()
         {
             // Manual loading
             btnBackIN.BackColor = Properties.Settings.Default.ColBackIN;
@@ -103,6 +94,19 @@ namespace PacketViewerLogViewer
 
             tbFieldColorCount.Value = Properties.Settings.Default.ColFieldCount;
             UpdateFieldColorGrid();
+
+            cbUseExternalEditor.Checked = Properties.Settings.Default.ExternalParseEditor;
+            cbAutoOpenVideoForm.Checked = Properties.Settings.Default.AutoOpenVideoForm;
+            rbAutoLoadVideoLocalOnly.Checked = (Properties.Settings.Default.AutoLoadVideo == 1);
+            rbAutoLoadVideoYoutube.Checked = (Properties.Settings.Default.AutoLoadVideo == 2);
+            rbAutoLoadVideoNever.Checked = (!rbAutoLoadVideoLocalOnly.Checked && !rbAutoLoadVideoYoutube.Checked);
+            rbListStyleText.Checked = (Properties.Settings.Default.PacketListStyle == 0);
+            rbListStyleSolid.Checked = (Properties.Settings.Default.PacketListStyle == 1);
+            rbListStyleTransparent.Checked = (Properties.Settings.Default.PacketListStyle == 2);
+            cbPreParseData.Checked = Properties.Settings.Default.PreParseData;
+            cbShowHexStringData.Checked = Properties.Settings.Default.ShowStringHexData;
+            cbAskNewProject.Checked = Properties.Settings.Default.AskCreateNewProjectFile;
+
         }
 
         private void SaveButtonsIntoColorSettings()
@@ -149,7 +153,7 @@ namespace PacketViewerLogViewer
         private void btnDefault_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.Reset();
-            LoadColorSettingsIntoButtons();
+            LoadColorSettingsIntoForm();
         }
 
         private void btnColorButton_Click(object sender, EventArgs e)
