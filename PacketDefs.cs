@@ -197,6 +197,35 @@ namespace PacketViewerLogViewer.Packets
 
         public int AddRawLineAsBytes(string s)
         {
+
+            var simpleLine = s.Replace(" ","").Replace("\t","");
+
+            var dataStartPos = simpleLine.IndexOf("|")+1;
+            if (simpleLine.Length < dataStartPos+32)
+            {
+                // Data seems too short
+                return 0;
+            }
+            var dataString = simpleLine.Substring(dataStartPos, 32); // max 32 hex digits expect
+
+            int c = 0;
+            for (int i = 0; i <= 0xf; i++)
+            {
+                var h = dataString.Substring(i * 2, 2);
+                if (h != "--")
+                {
+                    try
+                    {
+                        byte b = byte.Parse(h, System.Globalization.NumberStyles.HexNumber);
+                        RawBytes.Add(b);
+                    }
+                    catch { }
+                    c++;
+                }
+            }
+            return c;
+
+
             /* Example:
             //        1         2         3         4         5         6         7         8         9
             01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -210,6 +239,7 @@ namespace PacketViewerLogViewer.Packets
                   5 | 00 00 00 00 -- -- -- -- -- -- -- -- -- -- -- --    5 | ....------------
             */
 
+            /*
             // if (s.Length < 81)
             if (s.Length < 57)
             {
@@ -233,6 +263,7 @@ namespace PacketViewerLogViewer.Packets
                 }
             }
             return c;
+            */
         }
 
         public int AddRawPacketeerLineAsBytes(string s)
@@ -1040,10 +1071,21 @@ namespace PacketViewerLogViewer.Packets
             PacketLogTypes expectedPacketType = PacketLogTypes.Unknown;
             PacketLogFileFormats expectedLogType = PacketLogFileFormats.Unknown;
             var fn = fileName.ToLower();
-            // first check out, then in (as "in" is also in "outgoing")
+
+            // TODO: go walk up through the filename and directories and check in that order
+
+            if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("outgoing") >= 0))
+                expectedPacketType = PacketLogTypes.Outgoing;
+            if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("incoming") >= 0))
+                expectedPacketType = PacketLogTypes.Incoming;
+            // first check "out", then "in" (as "in" is also in "outgoing")
             if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("out") >= 0))
                 expectedPacketType = PacketLogTypes.Outgoing;
             if ((expectedPacketType == PacketLogTypes.Unknown) && (Path.GetFileNameWithoutExtension(fn).IndexOf("in") >= 0))
+                expectedPacketType = PacketLogTypes.Incoming;
+            if ((expectedPacketType == PacketLogTypes.Unknown) && (fn.IndexOf("outgoing") >= 0))
+                expectedPacketType = PacketLogTypes.Outgoing;
+            if ((expectedPacketType == PacketLogTypes.Unknown) && (fn.IndexOf("incoming") >= 0))
                 expectedPacketType = PacketLogTypes.Incoming;
             if ((expectedPacketType == PacketLogTypes.Unknown) && (fn.IndexOf("out") >= 0))
                 expectedPacketType = PacketLogTypes.Outgoing;
