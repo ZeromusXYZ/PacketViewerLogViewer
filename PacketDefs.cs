@@ -1153,6 +1153,7 @@ namespace PacketViewerLogViewer.Packets
                     bool IsUndefinedPacketType = true;
                     bool AskForPacketType = true;
                     bool hasHadDataHeader = false;
+                    bool pastStartOfDataMarker = false;
 
                     int c = 0;
                     foreach(string s in FileData)
@@ -1161,6 +1162,7 @@ namespace PacketViewerLogViewer.Packets
                         if ((sLower != string.Empty) && (pd == null))
                         {
                             hasHadDataHeader = true;
+                            pastStartOfDataMarker = false;
                             // Begin building a new packet
                             pd = new PacketData();
                             if (sLower.IndexOf("incoming") >= 0)
@@ -1240,6 +1242,10 @@ namespace PacketViewerLogViewer.Packets
                                 // Looks like a normal text packet, initialize the header
                                 pd.HeaderText = s;
                                 pd.OriginalHeaderText = s;
+
+                                // Packeteer doesn't have any "in between" lines, so mark our header as complete
+                                if (logFileType == PacketLogFileFormats.AshitaPacketeer)
+                                    pastStartOfDataMarker = true;
                             }
 
                         } // end start new packet
@@ -1249,9 +1255,16 @@ namespace PacketViewerLogViewer.Packets
                             // Add line of data
                             pd.RawText.Add(s);
                             // Actual packet data starts at the 3rd line after the header
-                            if ((logFileType != PacketLogFileFormats.AshitaPacketeer) && (pd.RawText.Count > 3))
+                            if ((logFileType != PacketLogFileFormats.AshitaPacketeer) && (pastStartOfDataMarker))
                             {
                                 pd.AddRawLineAsBytes(s);
+                            }
+                            else
+                            if ((logFileType != PacketLogFileFormats.AshitaPacketeer) && (!pastStartOfDataMarker))
+                            {
+                                // a resonable amount of dashes line (32 chars) to mark the start of the data
+                                if (sLower.IndexOf("--------------------------------") >= 0)
+                                    pastStartOfDataMarker = true;
                             }
                             else
                             if ((logFileType == PacketLogFileFormats.AshitaPacketeer) && (pd.RawText.Count > 1))
