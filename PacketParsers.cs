@@ -227,6 +227,7 @@ namespace PacketViewerLogViewer
         {
             if (DGV.Tag != null)
                 return;
+            // DGV.SuspendLayout();
             DGV.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb((int)Math.Round(DGV.DefaultCellStyle.BackColor.R * 0.95), (int)Math.Round(DGV.DefaultCellStyle.BackColor.G * 0.95), (int)Math.Round(DGV.DefaultCellStyle.BackColor.B * 0.95));
 
             DGV.Tag = 1;
@@ -277,6 +278,8 @@ namespace PacketViewerLogViewer
                 DGV.Rows.RemoveAt(DGV.Rows.Count - 1);
 
             DGV.Tag = null;
+            // DGV.Refresh();
+            // DGV.ResumeLayout();
         }
 
         private void AddParseLineToView(byte FieldIndex,string POSString, Color POSColor, string VARName, string DATAString,UInt64 DataUInt64 = 0)

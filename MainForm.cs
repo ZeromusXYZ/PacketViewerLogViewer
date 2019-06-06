@@ -283,53 +283,98 @@ namespace PacketViewerLogViewer
 
         private void RawDataToRichText(PacketParser pp, RichTextBox rt)
         {
+            RichTextBox rtInfo = rt;
+            string rtf = string.Empty;
+            List<Color> colorTable = new List<Color>();
+            int LastForeCol = 0;
+            int LastBackCol = 0;
+
+            int GetRTFColor(Color col)
+            {
+                var p = colorTable.IndexOf(col);
+                if (p < 0)
+                {
+                    p = colorTable.Count;
+                    colorTable.Add(col);
+                }
+                return p + 1;
+            }
+
+            void SetRTFColor(Color Fore, Color Back)
+            {
+                var f = GetRTFColor(Fore);
+                var b = GetRTFColor(Back);
+                //rtf += "\\cf" + f.ToString() + "\\highlight" + b.ToString();
+                if ((f == LastForeCol) && (b == LastBackCol))
+                    return;
+                if (f != LastForeCol)
+                    rtf += "\\cf" + f.ToString();
+                if (b != LastBackCol)
+                    rtf += "\\highlight" + b.ToString();
+                rtf += " ";
+            }
+
+
+            string BuildHeaderWithColorTable()
+            {
+                string rtfHead = string.Empty;
+                rtfHead += "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 Consolas;}}";
+                rtfHead += "{\\colortbl;";
+                foreach(var col in colorTable)
+                {
+                    rtfHead += "\\red" + col.R.ToString() + "\\green" + col.G.ToString() + "\\blue" + col.B.ToString() + ";";
+                }
+                rtfHead += "}";
+                rtfHead += "\\viewkind4\\uc1\\pard\\cf1\\highlight2\\f0\\fs18 ";
+                // {\colortbl ;\red169\green169\blue169;\red255\green255\blue255;\red25\green25\blue112;\red0\green0\blue0;\red210\green105\blue30;\red100\green149\blue237;\red60\green179\blue113;\red233\green150\blue122;\red165\green42\blue42;}
+                return rtfHead;
+            }
 
             void SetColorBasic(byte n)
             {
-                rtInfo.SelectionFont = rtInfo.Font;
-                rtInfo.SelectionColor = rtInfo.ForeColor;
-                rtInfo.SelectionBackColor = rtInfo.BackColor;
-                // rtInfo.SelectionColor = Color.Black;
-                // rtInfo.SelectionBackColor = Color.White;
+                SetRTFColor(rtInfo.ForeColor, rtInfo.BackColor);
+                //rtInfo.SelectionFont = rtInfo.Font;
+                //rtInfo.SelectionColor = rtInfo.ForeColor;
+                //rtInfo.SelectionBackColor = rtInfo.BackColor;
             }
 
             void SetColorGrid()
             {
-                rtInfo.SelectionFont = rtInfo.Font;
-                rtInfo.SelectionColor = Color.DarkGray;
-                rtInfo.SelectionBackColor = rtInfo.BackColor;
-                // rtInfo.SelectionColor = Color.DarkGray;
-                // rtInfo.SelectionBackColor = Color.White;
+                SetRTFColor(Color.DarkGray, rtInfo.BackColor);
+                //rtInfo.SelectionFont = rtInfo.Font;
+                //rtInfo.SelectionColor = Color.DarkGray;
+                //rtInfo.SelectionBackColor = rtInfo.BackColor;
             }
 
             void SetColorSelect(byte n, bool forchars)
             {
-                if (!forchars)
-                {
-                    rtInfo.SelectionFont = new Font(rtInfo.Font, FontStyle.Italic);
-                }
-                else
-                {
-                    rtInfo.SelectionFont = rtInfo.Font;
-                }
-                rtInfo.SelectionColor = Color.Yellow;
-                rtInfo.SelectionBackColor = Color.DarkBlue;
+                //if (!forchars)
+                //{
+                //    rtInfo.SelectionFont = new Font(rtInfo.Font, FontStyle.Italic);
+                //}
+                //else
+                //{
+                //    rtInfo.SelectionFont = rtInfo.Font;
+                //}
+                SetRTFColor(Color.Yellow, Color.DarkBlue);
+                //rtInfo.SelectionColor = Color.Yellow;
+                //rtInfo.SelectionBackColor = Color.DarkBlue;
             }
 
             void SetColorNotSelect(byte n, bool forchars)
             {
-                rtInfo.SelectionFont = rtInfo.Font;
+                //rtInfo.SelectionFont = rtInfo.Font;
                 if ((pp.SelectedFields.Count > 0) || forchars)
                 {
-                    rtInfo.SelectionColor = pp.GetDataColor(n);
-                    rtInfo.SelectionBackColor = rtInfo.BackColor;
-                    // rtInfo.SelectionBackColor = Color.White;
+                    SetRTFColor(pp.GetDataColor(n), rtInfo.BackColor);
+                    //rtInfo.SelectionColor = pp.GetDataColor(n);
+                    //rtInfo.SelectionBackColor = rtInfo.BackColor;
                 }
                 else
                 {
-                    rtInfo.SelectionColor = rtInfo.BackColor;
-                    // rtInfo.SelectionColor = Color.White;
-                    rtInfo.SelectionBackColor = pp.GetDataColor(n);
+                    SetRTFColor(rtInfo.BackColor, pp.GetDataColor(n));
+                    //rtInfo.SelectionColor = rtInfo.BackColor;
+                    //rtInfo.SelectionBackColor = pp.GetDataColor(n);
                 }
             }
 
@@ -337,7 +382,8 @@ namespace PacketViewerLogViewer
             void AddChars(int startIndex)
             {
                 SetColorGrid();
-                rtInfo.AppendText("  | ");
+                rtf += "  | ";
+                //rtInfo.AppendText("  | ");
                 for (int c = 0; (c < 0x10) && ((startIndex + c) < pp.ParsedBytes.Count); c++)
                 {
                     var n = pp.ParsedBytes[startIndex + c];
@@ -350,23 +396,34 @@ namespace PacketViewerLogViewer
                         SetColorNotSelect(n, true);
                     }
                     char ch = (char)pp.PD.GetByteAtPos(startIndex + c);
+                    if (ch == 92)
+                        rtf += "\\\\" ;
+                    else
                     if ((ch < 32) || (ch >= 128))
-                        ch = '.';
-                    rtInfo.AppendText(ch.ToString());
+                        rtf += '.';
+                    else
+                        rtf += ch.ToString() ;
+                    //rtInfo.AppendText(ch.ToString());
                 }
             }
 
+            rtInfo.SuspendLayout();
             rtInfo.ForeColor = SystemColors.WindowText;
             rtInfo.BackColor = SystemColors.Window;
-            rtInfo.Clear();
+            // rtInfo.Clear();
+
             SetColorGrid();
-            rtInfo.AppendText(InfoGridHeader);
+
+            rtf += InfoGridHeader.Replace("\n","\\par\n");
+            //rtInfo.AppendText(InfoGridHeader);
             int addCharCount = 0;
             byte lastFieldIndex = 0;
+
             for (int i = 0; i < pp.PD.RawBytes.Count; i += 0x10)
             {
                 SetColorGrid();
-                rtInfo.AppendText(i.ToString("X").PadLeft(4, ' ') + " | ");
+                rtf += i.ToString("X").PadLeft(4, ' ') + " | ";
+                //rtInfo.AppendText(i.ToString("X").PadLeft(4, ' ') + " | ");
                 for (int i2 = 0; i2 < 0x10; i2++)
                 {
                     if ((i + i2) < pp.ParsedBytes.Count)
@@ -391,13 +448,15 @@ namespace PacketViewerLogViewer
                             // No fields selected
                             SetColorNotSelect(n, false);
                         }
-                        rtInfo.AppendText(pp.PD.GetByteAtPos(i + i2).ToString("X2"));
+                        rtf += pp.PD.GetByteAtPos(i + i2).ToString("X2") ;
+                        //rtInfo.AppendText(pp.PD.GetByteAtPos(i + i2).ToString("X2"));
                         addCharCount++;
                     }
                     else
                     {
                         SetColorGrid();
-                        rtInfo.AppendText("  ");
+                        rtf += "  " ;
+                        //rtInfo.AppendText("  ");
                     }
 
                     if ((i + i2 + 1) < pp.ParsedBytes.Count)
@@ -413,18 +472,27 @@ namespace PacketViewerLogViewer
                         SetColorGrid();
                     }
 
-                    rtInfo.AppendText(" ");
+                    rtf += " ";
+                    // rtInfo.AppendText(" ");
                     if ((i2 % 0x4) == 0x3)
-                        rtInfo.AppendText(" ");
+                    {
+                        rtf += " ";
+                        //rtInfo.AppendText(" ");
+                    }
                 }
                 if (addCharCount > 0)
                 {
                     AddChars(i);
                     addCharCount = 0;
                 }
-                rtInfo.AppendText("\r\n");
+                rtf += "\\par\n" ;
+                // rtInfo.AppendText("\r\n");
             }
-            rtInfo.ReadOnly = true;
+            rtf += "}\n";
+            rtInfo.WordWrap = false;
+            rtInfo.Rtf = BuildHeaderWithColorTable() + rtf;
+            rtInfo.Refresh();
+            rtInfo.ResumeLayout();
         }
 
         public void UpdatePacketDetails(PacketTabPage tp, PacketData pd, string SwitchBlockName, bool dontReloadParser = false)
@@ -482,9 +550,12 @@ namespace PacketViewerLogViewer
 
             if (cbOriginalData.Checked)
             {
+                rtInfo.SuspendLayout();
                 rtInfo.SelectionColor = rtInfo.ForeColor;
                 rtInfo.SelectionBackColor = rtInfo.BackColor;
                 rtInfo.Text = "Source:\r\n" + string.Join("\r\n", pd.RawText.ToArray());
+                rtInfo.Refresh();
+                rtInfo.ResumeLayout();
             }
             else
             {
