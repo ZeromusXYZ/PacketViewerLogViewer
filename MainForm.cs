@@ -286,8 +286,8 @@ namespace PacketViewerLogViewer
             RichTextBox rtInfo = rt;
             string rtf = string.Empty;
             List<Color> colorTable = new List<Color>();
-            int LastForeCol = 0;
-            int LastBackCol = 0;
+            int LastForeCol = -1;
+            int LastBackCol = -1;
 
             int GetRTFColor(Color col)
             {
@@ -312,6 +312,8 @@ namespace PacketViewerLogViewer
                 if (b != LastBackCol)
                     rtf += "\\highlight" + b.ToString();
                 rtf += " ";
+                LastForeCol = f;
+                LastBackCol = b;
             }
 
 
