@@ -99,9 +99,9 @@
             this.lFieldColCount = new System.Windows.Forms.Label();
             this.tbFieldColorCount = new System.Windows.Forms.TrackBar();
             this.gbOtherSettings = new System.Windows.Forms.GroupBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.cbShowHexStringData = new System.Windows.Forms.CheckBox();
             this.cbAskNewProject = new System.Windows.Forms.CheckBox();
+            this.cbShowHexStringData = new System.Windows.Forms.CheckBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbVideoSettings.SuspendLayout();
             this.gbListStyle.SuspendLayout();
@@ -746,6 +746,7 @@
             this.btnColField12.Tag = "13";
             this.btnColField12.Text = "0x0C";
             this.btnColField12.UseVisualStyleBackColor = false;
+            this.btnColField12.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField14
             // 
@@ -759,6 +760,7 @@
             this.btnColField14.Tag = "15";
             this.btnColField14.Text = "0x0E";
             this.btnColField14.UseVisualStyleBackColor = false;
+            this.btnColField14.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField15
             // 
@@ -772,6 +774,7 @@
             this.btnColField15.Tag = "16";
             this.btnColField15.Text = "0x0F";
             this.btnColField15.UseVisualStyleBackColor = false;
+            this.btnColField15.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField1
             // 
@@ -799,6 +802,7 @@
             this.btnColField2.Tag = "2";
             this.btnColField2.Text = "0x02";
             this.btnColField2.UseVisualStyleBackColor = false;
+            this.btnColField2.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField3
             // 
@@ -812,6 +816,7 @@
             this.btnColField3.Tag = "3";
             this.btnColField3.Text = "0x03";
             this.btnColField3.UseVisualStyleBackColor = false;
+            this.btnColField3.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField4
             // 
@@ -825,6 +830,7 @@
             this.btnColField4.Tag = "4";
             this.btnColField4.Text = "0x04";
             this.btnColField4.UseVisualStyleBackColor = false;
+            this.btnColField4.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField5
             // 
@@ -838,6 +844,7 @@
             this.btnColField5.Tag = "5";
             this.btnColField5.Text = "0x05";
             this.btnColField5.UseVisualStyleBackColor = false;
+            this.btnColField5.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField6
             // 
@@ -851,6 +858,7 @@
             this.btnColField6.Tag = "6";
             this.btnColField6.Text = "0x06";
             this.btnColField6.UseVisualStyleBackColor = false;
+            this.btnColField6.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField7
             // 
@@ -864,6 +872,7 @@
             this.btnColField7.Tag = "7";
             this.btnColField7.Text = "0x07";
             this.btnColField7.UseVisualStyleBackColor = false;
+            this.btnColField7.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField8
             // 
@@ -877,6 +886,7 @@
             this.btnColField8.Tag = "8";
             this.btnColField8.Text = "0x08";
             this.btnColField8.UseVisualStyleBackColor = false;
+            this.btnColField8.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField9
             // 
@@ -890,6 +900,7 @@
             this.btnColField9.Tag = "9";
             this.btnColField9.Text = "0x09";
             this.btnColField9.UseVisualStyleBackColor = false;
+            this.btnColField9.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField10
             // 
@@ -903,6 +914,7 @@
             this.btnColField10.Tag = "10";
             this.btnColField10.Text = "0x0A";
             this.btnColField10.UseVisualStyleBackColor = false;
+            this.btnColField10.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField11
             // 
@@ -916,6 +928,7 @@
             this.btnColField11.Tag = "11";
             this.btnColField11.Text = "0x0B";
             this.btnColField11.UseVisualStyleBackColor = false;
+            this.btnColField11.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // btnColField13
             // 
@@ -929,6 +942,7 @@
             this.btnColField13.Tag = "14";
             this.btnColField13.Text = "0x0D";
             this.btnColField13.UseVisualStyleBackColor = false;
+            this.btnColField13.Click += new System.EventHandler(this.BtnColField_Click);
             // 
             // lFieldCol0
             // 
@@ -987,16 +1001,6 @@
             this.gbOtherSettings.TabStop = false;
             this.gbOtherSettings.Text = "Other Settings";
             // 
-            // cbShowHexStringData
-            // 
-            this.cbShowHexStringData.AutoSize = true;
-            this.cbShowHexStringData.Location = new System.Drawing.Point(14, 64);
-            this.cbShowHexStringData.Name = "cbShowHexStringData";
-            this.cbShowHexStringData.Size = new System.Drawing.Size(166, 17);
-            this.cbShowHexStringData.TabIndex = 16;
-            this.cbShowHexStringData.Text = "Also show hex data on strings";
-            this.cbShowHexStringData.UseVisualStyleBackColor = true;
-            // 
             // cbAskNewProject
             // 
             this.cbAskNewProject.AutoSize = true;
@@ -1006,6 +1010,16 @@
             this.cbAskNewProject.TabIndex = 17;
             this.cbAskNewProject.Text = "Ask before creating a new project file";
             this.cbAskNewProject.UseVisualStyleBackColor = true;
+            // 
+            // cbShowHexStringData
+            // 
+            this.cbShowHexStringData.AutoSize = true;
+            this.cbShowHexStringData.Location = new System.Drawing.Point(14, 64);
+            this.cbShowHexStringData.Name = "cbShowHexStringData";
+            this.cbShowHexStringData.Size = new System.Drawing.Size(166, 17);
+            this.cbShowHexStringData.TabIndex = 16;
+            this.cbShowHexStringData.Text = "Also show hex data on strings";
+            this.cbShowHexStringData.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
