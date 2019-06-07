@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PacketViewerLogViewer")]
-[assembly: AssemblyDescription("Tool to view packet logs")]
+[assembly: AssemblyDescription("Tool to view and analyze packet log files made by plugins for FFXI")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ZeromusXYZ")]
 [assembly: AssemblyProduct("PacketViewerLogViewer")]
