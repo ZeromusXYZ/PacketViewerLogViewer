@@ -1246,6 +1246,8 @@ namespace PacketViewerLogViewer
                 MessageBox.Show("VideoLAN VLC needs to be installed on your PC to use the video linking feature", "libvlc not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
             VideoLinkForm videoLink = null;
             try
             {
@@ -1254,6 +1256,8 @@ namespace PacketViewerLogViewer
                 {
                     // MessageBox.Show("You already have a video link open for this packet", "Video Link Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     thisTP.videoLink.BringToFront();
+                    Cursor = Cursors.Default;
+                    Application.UseWaitCursor = false;
                     return;
                 }
                 // Create our virtualtime stamps now
@@ -1270,30 +1274,16 @@ namespace PacketViewerLogViewer
                 if (videoLink != null)
                     videoLink.Dispose();
                 MessageBox.Show("Could not create video link, likely libvlc not correcty installed !\r\n" + x.Message, "Video Link Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Cursor = Cursors.Default;
+                Application.UseWaitCursor = false;
                 return;
             }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
         }
 
         private void MmVideoViewProject_Click(object sender, EventArgs e)
         {
-            var tp = GetCurrentPacketTabPage();
-            if (tp == null)
-            {
-                MessageBox.Show("You need to open a log file first before you can view it's project settings", "View Project", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            using (var projectDlg = new ProjectInfoForm())
-            {
-                projectDlg.LoadFromPacketTapPage(tp);
-                if (projectDlg.ShowDialog() == DialogResult.OK)
-                {
-                    projectDlg.ApplyPacketTapPage();
-                    if (!tp.SaveProjectFile())
-                    {
-                        MessageBox.Show("Project file was NOT saved !\r\nEither you don't have write permission,\r\nor are not able to save the file because of restrictions placed by this program", "Project NOT saved", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                }
-            }
         }
 
         private void TcPackets_ControlRemoved(object sender, ControlEventArgs e)
@@ -1387,6 +1377,28 @@ namespace PacketViewerLogViewer
         private void MmFile_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void MMFileProjectDetails_Click(object sender, EventArgs e)
+        {
+            var tp = GetCurrentPacketTabPage();
+            if (tp == null)
+            {
+                MessageBox.Show("You need to open a log file first before you can view it's project settings", "View Project", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            using (var projectDlg = new ProjectInfoForm())
+            {
+                projectDlg.LoadFromPacketTapPage(tp);
+                if (projectDlg.ShowDialog() == DialogResult.OK)
+                {
+                    projectDlg.ApplyPacketTapPage();
+                    if (!tp.SaveProjectFile())
+                    {
+                        MessageBox.Show("Project file was NOT saved !\r\nEither you don't have write permission,\r\nor are not able to save the file because of restrictions placed by this program", "Project NOT saved", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
         }
     }
 }

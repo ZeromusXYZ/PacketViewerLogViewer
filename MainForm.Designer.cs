@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +54,6 @@
             this.mmFilterReset = new System.Windows.Forms.ToolStripMenuItem();
             this.mmExtra = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoOpenLink = new System.Windows.Forms.ToolStripMenuItem();
-            this.mmVideoViewProject = new System.Windows.Forms.ToolStripMenuItem();
             this.MMExtraGameView = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutGithub = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,6 +89,8 @@
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.sbExtraInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MMFileProjectDetails = new System.Windows.Forms.ToolStripMenuItem();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -126,18 +127,20 @@
             // 
             this.mmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmFileOpen,
+            this.toolStripSeparator1,
             this.mmFileAppend,
             this.mmAddFromClipboard,
             this.mmFilePasteNew,
             this.mmFileS1,
             this.mmFileSettings,
             this.mmFileS2,
+            this.MMFileProjectDetails,
             this.mmFileClose,
             this.mmFileS3,
             this.mmFileExit});
             this.mmFile.Name = "mmFile";
             this.mmFile.Size = new System.Drawing.Size(37, 20);
-            this.mmFile.Text = "&File";
+            this.mmFile.Text = "Fil&e";
             this.mmFile.Click += new System.EventHandler(this.MmFile_Click);
             // 
             // mmFileOpen
@@ -156,7 +159,7 @@
             this.mmFileAppend.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
             this.mmFileAppend.Size = new System.Drawing.Size(249, 24);
-            this.mmFileAppend.Text = "Append ...";
+            this.mmFileAppend.Text = "Append Log ...";
             this.mmFileAppend.Click += new System.EventHandler(this.mmFileAppend_Click);
             // 
             // mmAddFromClipboard
@@ -186,7 +189,7 @@
             // 
             this.mmFileSettings.Name = "mmFileSettings";
             this.mmFileSettings.Size = new System.Drawing.Size(249, 24);
-            this.mmFileSettings.Text = "Settings ...";
+            this.mmFileSettings.Text = "Program settings ...";
             this.mmFileSettings.Click += new System.EventHandler(this.mmFileSettings_Click);
             // 
             // mmFileS2
@@ -229,7 +232,7 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
             this.mmSearchSearch.Text = "Search ...";
             this.mmSearchSearch.Click += new System.EventHandler(this.MmSearchSearch_Click);
             // 
@@ -237,7 +240,7 @@
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
             this.mmSearchNext.Text = "Search next";
             this.mmSearchNext.Click += new System.EventHandler(this.MmSearchNext_Click);
             // 
@@ -257,7 +260,7 @@
             this.mmFilterApply.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MMFilterApplyItem});
             this.mmFilterApply.Name = "mmFilterApply";
-            this.mmFilterApply.Size = new System.Drawing.Size(170, 22);
+            this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
             this.mmFilterApply.Text = "Apply";
             this.mmFilterApply.DropDownOpening += new System.EventHandler(this.MmFilterApply_DropDownOpening);
             // 
@@ -270,13 +273,13 @@
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(167, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
             // 
             // mmFilterEdit
             // 
             this.mmFilterEdit.Name = "mmFilterEdit";
             this.mmFilterEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F)));
-            this.mmFilterEdit.Size = new System.Drawing.Size(170, 22);
+            this.mmFilterEdit.Size = new System.Drawing.Size(180, 22);
             this.mmFilterEdit.Text = "Edit ...";
             this.mmFilterEdit.Click += new System.EventHandler(this.MmFilterEdit_Click);
             // 
@@ -285,7 +288,7 @@
             this.mmFilterReset.Name = "mmFilterReset";
             this.mmFilterReset.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.F)));
-            this.mmFilterReset.Size = new System.Drawing.Size(170, 22);
+            this.mmFilterReset.Size = new System.Drawing.Size(180, 22);
             this.mmFilterReset.Text = "Reset";
             this.mmFilterReset.Click += new System.EventHandler(this.MmFilterReset_Click);
             // 
@@ -293,32 +296,26 @@
             // 
             this.mmExtra.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmVideoOpenLink,
-            this.mmVideoViewProject,
             this.MMExtraGameView});
             this.mmExtra.Name = "mmExtra";
-            this.mmExtra.Size = new System.Drawing.Size(44, 20);
+            this.mmExtra.Size = new System.Drawing.Size(45, 20);
             this.mmExtra.Text = "E&xtra";
             // 
             // mmVideoOpenLink
             // 
+            this.mmVideoOpenLink.Image = global::PacketViewerLogViewer.Properties.Resources.mini_video_icon;
             this.mmVideoOpenLink.Name = "mmVideoOpenLink";
             this.mmVideoOpenLink.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.L)));
-            this.mmVideoOpenLink.Size = new System.Drawing.Size(210, 22);
+            this.mmVideoOpenLink.Size = new System.Drawing.Size(192, 24);
             this.mmVideoOpenLink.Text = "Video link ...";
             this.mmVideoOpenLink.Click += new System.EventHandler(this.MmVideoOpenLink_Click);
             // 
-            // mmVideoViewProject
-            // 
-            this.mmVideoViewProject.Name = "mmVideoViewProject";
-            this.mmVideoViewProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.I)));
-            this.mmVideoViewProject.Size = new System.Drawing.Size(210, 22);
-            this.mmVideoViewProject.Text = "View Project Details";
-            this.mmVideoViewProject.Click += new System.EventHandler(this.MmVideoViewProject_Click);
-            // 
             // MMExtraGameView
             // 
+            this.MMExtraGameView.Image = global::PacketViewerLogViewer.Properties.Resources.mini_unk_ticon;
             this.MMExtraGameView.Name = "MMExtraGameView";
-            this.MMExtraGameView.Size = new System.Drawing.Size(210, 22);
+            this.MMExtraGameView.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.I)));
+            this.MMExtraGameView.Size = new System.Drawing.Size(192, 24);
             this.MMExtraGameView.Text = "View Game Info";
             this.MMExtraGameView.Click += new System.EventHandler(this.MMExtraGameView_Click);
             // 
@@ -548,11 +545,11 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -667,6 +664,19 @@
             this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
             this.sbProjectInfo.Text = "Project: none";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(246, 6);
+            // 
+            // MMFileProjectDetails
+            // 
+            this.MMFileProjectDetails.Name = "MMFileProjectDetails";
+            this.MMFileProjectDetails.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.MMFileProjectDetails.Size = new System.Drawing.Size(249, 24);
+            this.MMFileProjectDetails.Text = "Project details ...";
+            this.MMFileProjectDetails.Click += new System.EventHandler(this.MMFileProjectDetails_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -734,7 +744,6 @@
         private System.Windows.Forms.ToolStripSeparator MMFilterApplyItem;
         private System.Windows.Forms.ToolStripMenuItem mmExtra;
         private System.Windows.Forms.ToolStripMenuItem mmVideoOpenLink;
-        private System.Windows.Forms.ToolStripMenuItem mmVideoViewProject;
         private System.Windows.Forms.ToolStripMenuItem mmAbout;
         private System.Windows.Forms.ToolStripMenuItem mmAboutGithub;
         private System.Windows.Forms.ToolStripMenuItem mmAboutVideoLAN;
@@ -773,6 +782,8 @@
         private System.Windows.Forms.ToolStripStatusLabel sbExtraInfo;
         private System.Windows.Forms.ToolStripMenuItem mmAboutDiscord;
         private System.Windows.Forms.ToolStripMenuItem MMExtraGameView;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem MMFileProjectDetails;
     }
 }
 
