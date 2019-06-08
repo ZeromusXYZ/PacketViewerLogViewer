@@ -54,6 +54,7 @@
             this.lTagLabel = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCopySummary = new System.Windows.Forms.Button();
+            this.btnMake7zip = new System.Windows.Forms.Button();
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
@@ -184,6 +185,7 @@
             // 
             this.gbLocalFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbLocalFiles.Controls.Add(this.btnMake7zip);
             this.gbLocalFiles.Controls.Add(this.lVideoSourceOK);
             this.gbLocalFiles.Controls.Add(this.lOpenedLogOK);
             this.gbLocalFiles.Controls.Add(this.lProjectFolderOK);
@@ -332,6 +334,16 @@
             this.btnCopySummary.UseVisualStyleBackColor = true;
             this.btnCopySummary.Click += new System.EventHandler(this.BtnCopySummary_Click);
             // 
+            // btnMake7zip
+            // 
+            this.btnMake7zip.Location = new System.Drawing.Point(443, 30);
+            this.btnMake7zip.Name = "btnMake7zip";
+            this.btnMake7zip.Size = new System.Drawing.Size(116, 23);
+            this.btnMake7zip.TabIndex = 18;
+            this.btnMake7zip.Text = "Make .7z";
+            this.btnMake7zip.UseVisualStyleBackColor = true;
+            this.btnMake7zip.Click += new System.EventHandler(this.BtnMake7zip_Click);
+            // 
             // ProjectInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -388,5 +400,6 @@
         private System.Windows.Forms.Label lOpenedLogOK;
         private System.Windows.Forms.Label lProjectFolderOK;
         public System.Windows.Forms.Button btnCopySummary;
+        private System.Windows.Forms.Button btnMake7zip;
     }
 }

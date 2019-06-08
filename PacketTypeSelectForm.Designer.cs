@@ -117,6 +117,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnIN);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PacketTypeSelectForm";

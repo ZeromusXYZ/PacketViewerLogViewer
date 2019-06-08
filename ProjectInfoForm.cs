@@ -11,6 +11,8 @@ using PacketViewerLogViewer.Packets;
 using System.Diagnostics;
 using System.IO;
 using PacketViewerLogViewer.ClipboardHelper;
+using SevenZip;
+using System.Reflection;
 
 namespace PacketViewerLogViewer
 {
@@ -221,6 +223,44 @@ namespace PacketViewerLogViewer
             {
             }
 
+        }
+
+        public bool ExploreFile(string filePath)
+        {
+            if (!System.IO.File.Exists(filePath))
+            {
+                return false;
+            }
+            //Clean up file path so it can be navigated OK
+            filePath = System.IO.Path.GetFullPath(filePath);
+            System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,\"{0}\"", filePath));
+            return true;
+        }
+
+        private void BtnMake7zip_Click(object sender, EventArgs e)
+        {
+            using(var zipform = new CompressForm())
+            {
+                zipform.ArchiveFileName = Path.ChangeExtension(tp.ProjectFile, ".7z");
+                
+                zipform.BuildArchieveFilesList(tProjectFolder.Text);
+
+                if (zipform.ShowDialog() == DialogResult.OK)
+                {
+                    ExploreFile(zipform.ArchiveFileName);
+                    //MessageBox.Show("Done creating " + zipform.ArchiveFileName,"Make .7z",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                }
+                else
+                {
+                    try
+                    {
+                        if (File.Exists(zipform.ArchiveFileName))
+                            File.Delete(zipform.ArchiveFileName);
+                    }
+                    catch { }
+                    MessageBox.Show("Error creating " + zipform.ArchiveFileName, "Make .7z", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }
