@@ -205,4 +205,7 @@
   <data name="usgaiji_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\usgaiji-9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Fairytale_ark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\Fairytale_ark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

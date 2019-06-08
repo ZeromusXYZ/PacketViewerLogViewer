@@ -103,6 +103,16 @@ namespace PacketViewerLogViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Fairytale_ark {
+            get {
+                object obj = ResourceManager.GetObject("Fairytale_ark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Fairytale_button_cancel {
             get {
                 object obj = ResourceManager.GetObject("Fairytale_button_cancel", resourceCulture);

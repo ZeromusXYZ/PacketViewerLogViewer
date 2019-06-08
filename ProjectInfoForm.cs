@@ -160,11 +160,13 @@ namespace PacketViewerLogViewer
             {
                 lProjectFolderOK.Text = "\x81";
                 lProjectFolderOK.ForeColor = Color.LimeGreen;
+                btnMake7zip.Enabled = true;
             }
             else
             {
                 lProjectFolderOK.Text = "\xCE";
                 lProjectFolderOK.ForeColor = Color.Red;
+                btnMake7zip.Enabled = false;
                 res = false;
             }
 
@@ -241,9 +243,14 @@ namespace PacketViewerLogViewer
         {
             using(var zipform = new CompressForm())
             {
+                zipform.task = CompressForm.ZipTaskType.doZip;
                 zipform.ArchiveFileName = Path.ChangeExtension(tp.ProjectFile, ".7z");
                 
-                zipform.BuildArchieveFilesList(tProjectFolder.Text);
+                if (zipform.BuildArchieveFilesList(tProjectFolder.Text) <= 0)
+                {
+                    MessageBox.Show("Nothing to add", "Make .7z", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 if (zipform.ShowDialog() == DialogResult.OK)
                 {

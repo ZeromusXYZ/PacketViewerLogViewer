@@ -32,6 +32,7 @@
             this.lZipFile = new System.Windows.Forms.Label();
             this.lInfo = new System.Windows.Forms.Label();
             this.bgwZipper = new System.ComponentModel.BackgroundWorker();
+            this.bgwUnZipper = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // pb
@@ -67,6 +68,10 @@
             this.bgwZipper.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BgwZipper_DoWork);
             this.bgwZipper.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BgwZipper_RunWorkerCompleted);
             // 
+            // bgwUnZipper
+            // 
+            this.bgwUnZipper.WorkerSupportsCancellation = true;
+            // 
             // CompressForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -96,5 +101,6 @@
         private System.Windows.Forms.Label lZipFile;
         private System.Windows.Forms.Label lInfo;
         private System.ComponentModel.BackgroundWorker bgwZipper;
+        private System.ComponentModel.BackgroundWorker bgwUnZipper;
     }
 }

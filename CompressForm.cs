@@ -17,7 +17,11 @@ namespace PacketViewerLogViewer
     {
         public Dictionary<string, string> FilesToAdd = new Dictionary<string, string>();
         public string ArchiveFileName = "logs.7z";
-        SevenZipCompressor sevenZipCompressor;
+        private int thisFileSize = 0;
+        SevenZipCompressor zipper;
+        SevenZipExtractor unzipper;
+        public enum ZipTaskType { doZip, doUnZip };
+        public ZipTaskType task = ZipTaskType.doZip;
 
         public int BuildArchieveFilesList(string ProjectFolder)
         {
@@ -28,6 +32,8 @@ namespace PacketViewerLogViewer
             var startdir = new DirectoryInfo(ProjectFolder);
             var allfiles = startdir.GetFiles("*", SearchOption.AllDirectories);
 
+            pb.Minimum = 0;
+            pb.Maximum = 1;
             foreach(var fn in allfiles)
             {
                 bool skipThis = false;
@@ -51,6 +57,7 @@ namespace PacketViewerLogViewer
                     var addFile = fn.FullName.Substring(ProjectFolder.Length);
                     FilesToAdd.Add(addFile, fn.FullName);
                     res++;
+                    pb.Maximum += (int)fn.Length;
                 }
             }
 
@@ -64,13 +71,28 @@ namespace PacketViewerLogViewer
 
         private void CompressForm_Shown(object sender, EventArgs e)
         {
+            switch (task)
+            {
+                case ZipTaskType.doZip:
+                    Text = "Add to archive";
+                    break;
+                case ZipTaskType.doUnZip:
+                    Text = "Extract from archive";
+                    break;
+                default:
+                    Text = "Unknown command";
+                    DialogResult = DialogResult.Abort;
+                    return;
+            }
             // Start here
             // Toggle between the x86 and x64 bit dll
             var dllpath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Environment.Is64BitProcess ? "x64" : "x86", "7z.dll");
             try
             {
                 if (File.Exists(dllpath))
-                    SevenZipCompressor.SetLibraryPath(dllpath);
+                {
+                    SevenZipBase.SetLibraryPath(dllpath);
+                }
                 else
                 {
                     MessageBox.Show("7zip library not found:\r\n" + dllpath, "Load error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -86,17 +108,24 @@ namespace PacketViewerLogViewer
             }
 
             lZipFile.Text = ArchiveFileName;
+
+            if (File.Exists(ArchiveFileName))
+            {
+                if (MessageBox.Show("Target 7z file already exists, do you want to overwrite it ?\r\n"+ArchiveFileName,"Overwrite File",MessageBoxButtons.YesNo,MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    DialogResult = DialogResult.Cancel;
+                    return;
+                }
+            }
+
             try
             {
-                sevenZipCompressor = new SevenZipCompressor();
-                sevenZipCompressor.CompressionLevel = SevenZip.CompressionLevel.Ultra;
-                sevenZipCompressor.CompressionMethod = CompressionMethod.Lzma;
-                sevenZipCompressor.CompressionMode = CompressionMode.Create;
-                sevenZipCompressor.TempFolderPath = Path.GetTempPath();
-                sevenZipCompressor.ArchiveFormat = OutArchiveFormat.SevenZip;
-                pb.Minimum = 0;
-                pb.Maximum = FilesToAdd.Count;
-                pb.Step = 1;
+                zipper = new SevenZipCompressor();
+                zipper.CompressionLevel = SevenZip.CompressionLevel.Ultra;
+                zipper.CompressionMethod = CompressionMethod.Lzma;
+                zipper.CompressionMode = CompressionMode.Create;
+                zipper.TempFolderPath = Path.GetTempPath();
+                zipper.ArchiveFormat = OutArchiveFormat.SevenZip;
                 bgwZipper.RunWorkerAsync();
             }
             catch (Exception x)
@@ -123,6 +152,16 @@ namespace PacketViewerLogViewer
                 e.Cancel = true;
                 return;
             }
+            if (FilesToAdd.TryGetValue(e.FileName,out string sourceFile))
+            {
+                var fi = new FileInfo(sourceFile);
+                thisFileSize = (int)fi.Length;
+            }
+            else
+            {
+                thisFileSize = 0;
+            }
+            
             this.Invoke(new MethodInvoker(delegate
             {
                 lInfo.Text = e.FileName;
@@ -133,7 +172,7 @@ namespace PacketViewerLogViewer
         {
             this.Invoke(new MethodInvoker(delegate
             {
-                pb.PerformStep();
+                pb.Value += thisFileSize;
             }));
             // System.Threading.Thread.Sleep(200);
         }
@@ -145,9 +184,9 @@ namespace PacketViewerLogViewer
                 File.Delete(ArchiveFileName);
             }
             catch { }
-            sevenZipCompressor.FileCompressionStarted += new EventHandler<FileNameEventArgs>(FileCompressionStarted);
-            sevenZipCompressor.FileCompressionFinished += new EventHandler<EventArgs>(FileCompressionFinished);
-            sevenZipCompressor.CompressFileDictionary(FilesToAdd, ArchiveFileName);
+            zipper.FileCompressionStarted += new EventHandler<FileNameEventArgs>(FileCompressionStarted);
+            zipper.FileCompressionFinished += new EventHandler<EventArgs>(FileCompressionFinished);
+            zipper.CompressFileDictionary(FilesToAdd, ArchiveFileName);
         }
 
         private void CompressForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectInfoForm));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,6 +45,7 @@
             this.btnDownloadYoutube = new System.Windows.Forms.Button();
             this.btnUploadToYoutube = new System.Windows.Forms.Button();
             this.gbLocalFiles = new System.Windows.Forms.GroupBox();
+            this.btnMake7zip = new System.Windows.Forms.Button();
             this.lVideoSourceOK = new System.Windows.Forms.Label();
             this.lOpenedLogOK = new System.Windows.Forms.Label();
             this.lProjectFolderOK = new System.Windows.Forms.Label();
@@ -54,7 +57,7 @@
             this.lTagLabel = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCopySummary = new System.Windows.Forms.Button();
-            this.btnMake7zip = new System.Windows.Forms.Button();
+            this.IL = new System.Windows.Forms.ImageList(this.components);
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
@@ -110,7 +113,7 @@
             // 
             this.tProjectFolder.Location = new System.Drawing.Point(20, 32);
             this.tProjectFolder.Name = "tProjectFolder";
-            this.tProjectFolder.Size = new System.Drawing.Size(389, 20);
+            this.tProjectFolder.Size = new System.Drawing.Size(345, 20);
             this.tProjectFolder.TabIndex = 2;
             this.tProjectFolder.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
@@ -118,7 +121,7 @@
             // 
             this.tOpenedLog.Location = new System.Drawing.Point(20, 71);
             this.tOpenedLog.Name = "tOpenedLog";
-            this.tOpenedLog.Size = new System.Drawing.Size(389, 20);
+            this.tOpenedLog.Size = new System.Drawing.Size(345, 20);
             this.tOpenedLog.TabIndex = 3;
             this.tOpenedLog.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
@@ -126,7 +129,7 @@
             // 
             this.tSourceVideo.Location = new System.Drawing.Point(20, 110);
             this.tSourceVideo.Name = "tSourceVideo";
-            this.tSourceVideo.Size = new System.Drawing.Size(389, 20);
+            this.tSourceVideo.Size = new System.Drawing.Size(345, 20);
             this.tSourceVideo.TabIndex = 4;
             this.tSourceVideo.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
@@ -134,7 +137,7 @@
             // 
             this.tYoutubeURL.Location = new System.Drawing.Point(20, 32);
             this.tYoutubeURL.Name = "tYoutubeURL";
-            this.tYoutubeURL.Size = new System.Drawing.Size(389, 20);
+            this.tYoutubeURL.Size = new System.Drawing.Size(345, 20);
             this.tYoutubeURL.TabIndex = 5;
             this.tYoutubeURL.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
@@ -142,7 +145,7 @@
             // 
             this.tPackedLogsURL.Location = new System.Drawing.Point(20, 71);
             this.tPackedLogsURL.Name = "tPackedLogsURL";
-            this.tPackedLogsURL.Size = new System.Drawing.Size(389, 20);
+            this.tPackedLogsURL.Size = new System.Drawing.Size(345, 20);
             this.tPackedLogsURL.TabIndex = 6;
             this.tPackedLogsURL.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
@@ -153,9 +156,12 @@
             // 
             // btnDownloadSource
             // 
-            this.btnDownloadSource.Location = new System.Drawing.Point(415, 71);
+            this.btnDownloadSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDownloadSource.ImageIndex = 2;
+            this.btnDownloadSource.ImageList = this.IL;
+            this.btnDownloadSource.Location = new System.Drawing.Point(399, 71);
             this.btnDownloadSource.Name = "btnDownloadSource";
-            this.btnDownloadSource.Size = new System.Drawing.Size(144, 23);
+            this.btnDownloadSource.Size = new System.Drawing.Size(160, 23);
             this.btnDownloadSource.TabIndex = 11;
             this.btnDownloadSource.Text = "Open in browser";
             this.btnDownloadSource.UseVisualStyleBackColor = true;
@@ -163,9 +169,12 @@
             // 
             // btnDownloadYoutube
             // 
-            this.btnDownloadYoutube.Location = new System.Drawing.Point(415, 32);
+            this.btnDownloadYoutube.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDownloadYoutube.ImageIndex = 2;
+            this.btnDownloadYoutube.ImageList = this.IL;
+            this.btnDownloadYoutube.Location = new System.Drawing.Point(399, 32);
             this.btnDownloadYoutube.Name = "btnDownloadYoutube";
-            this.btnDownloadYoutube.Size = new System.Drawing.Size(144, 23);
+            this.btnDownloadYoutube.Size = new System.Drawing.Size(160, 23);
             this.btnDownloadYoutube.TabIndex = 12;
             this.btnDownloadYoutube.Text = "Open in browser";
             this.btnDownloadYoutube.UseVisualStyleBackColor = true;
@@ -174,9 +183,12 @@
             // btnUploadToYoutube
             // 
             this.btnUploadToYoutube.Enabled = false;
-            this.btnUploadToYoutube.Location = new System.Drawing.Point(443, 108);
+            this.btnUploadToYoutube.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUploadToYoutube.ImageIndex = 1;
+            this.btnUploadToYoutube.ImageList = this.IL;
+            this.btnUploadToYoutube.Location = new System.Drawing.Point(399, 99);
             this.btnUploadToYoutube.Name = "btnUploadToYoutube";
-            this.btnUploadToYoutube.Size = new System.Drawing.Size(116, 23);
+            this.btnUploadToYoutube.Size = new System.Drawing.Size(160, 31);
             this.btnUploadToYoutube.TabIndex = 14;
             this.btnUploadToYoutube.Text = "Upload to Youtube";
             this.btnUploadToYoutube.UseVisualStyleBackColor = true;
@@ -203,11 +215,24 @@
             this.gbLocalFiles.TabStop = false;
             this.gbLocalFiles.Text = "Local Files";
             // 
+            // btnMake7zip
+            // 
+            this.btnMake7zip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMake7zip.ImageIndex = 0;
+            this.btnMake7zip.ImageList = this.IL;
+            this.btnMake7zip.Location = new System.Drawing.Point(399, 32);
+            this.btnMake7zip.Name = "btnMake7zip";
+            this.btnMake7zip.Size = new System.Drawing.Size(160, 33);
+            this.btnMake7zip.TabIndex = 18;
+            this.btnMake7zip.Text = "Make .7z";
+            this.btnMake7zip.UseVisualStyleBackColor = true;
+            this.btnMake7zip.Click += new System.EventHandler(this.BtnMake7zip_Click);
+            // 
             // lVideoSourceOK
             // 
             this.lVideoSourceOK.AutoSize = true;
             this.lVideoSourceOK.Font = new System.Drawing.Font("Wingdings 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.lVideoSourceOK.Location = new System.Drawing.Point(415, 113);
+            this.lVideoSourceOK.Location = new System.Drawing.Point(371, 110);
             this.lVideoSourceOK.Name = "lVideoSourceOK";
             this.lVideoSourceOK.Size = new System.Drawing.Size(22, 17);
             this.lVideoSourceOK.TabIndex = 17;
@@ -217,7 +242,7 @@
             // 
             this.lOpenedLogOK.AutoSize = true;
             this.lOpenedLogOK.Font = new System.Drawing.Font("Wingdings 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.lOpenedLogOK.Location = new System.Drawing.Point(415, 74);
+            this.lOpenedLogOK.Location = new System.Drawing.Point(371, 71);
             this.lOpenedLogOK.Name = "lOpenedLogOK";
             this.lOpenedLogOK.Size = new System.Drawing.Size(22, 17);
             this.lOpenedLogOK.TabIndex = 16;
@@ -227,7 +252,7 @@
             // 
             this.lProjectFolderOK.AutoSize = true;
             this.lProjectFolderOK.Font = new System.Drawing.Font("Wingdings 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.lProjectFolderOK.Location = new System.Drawing.Point(415, 35);
+            this.lProjectFolderOK.Location = new System.Drawing.Point(371, 32);
             this.lProjectFolderOK.Name = "lProjectFolderOK";
             this.lProjectFolderOK.Size = new System.Drawing.Size(22, 17);
             this.lProjectFolderOK.TabIndex = 15;
@@ -315,6 +340,9 @@
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSave.ImageIndex = 4;
+            this.btnSave.ImageList = this.IL;
             this.btnSave.Location = new System.Drawing.Point(12, 396);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(88, 23);
@@ -326,23 +354,26 @@
             // btnCopySummary
             // 
             this.btnCopySummary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopySummary.Location = new System.Drawing.Point(455, 396);
+            this.btnCopySummary.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCopySummary.ImageIndex = 3;
+            this.btnCopySummary.ImageList = this.IL;
+            this.btnCopySummary.Location = new System.Drawing.Point(411, 396);
             this.btnCopySummary.Name = "btnCopySummary";
-            this.btnCopySummary.Size = new System.Drawing.Size(116, 23);
+            this.btnCopySummary.Size = new System.Drawing.Size(160, 23);
             this.btnCopySummary.TabIndex = 18;
             this.btnCopySummary.Text = "Copy Summary";
             this.btnCopySummary.UseVisualStyleBackColor = true;
             this.btnCopySummary.Click += new System.EventHandler(this.BtnCopySummary_Click);
             // 
-            // btnMake7zip
+            // IL
             // 
-            this.btnMake7zip.Location = new System.Drawing.Point(443, 30);
-            this.btnMake7zip.Name = "btnMake7zip";
-            this.btnMake7zip.Size = new System.Drawing.Size(116, 23);
-            this.btnMake7zip.TabIndex = 18;
-            this.btnMake7zip.Text = "Make .7z";
-            this.btnMake7zip.UseVisualStyleBackColor = true;
-            this.btnMake7zip.Click += new System.EventHandler(this.BtnMake7zip_Click);
+            this.IL.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("IL.ImageStream")));
+            this.IL.TransparentColor = System.Drawing.Color.Transparent;
+            this.IL.Images.SetKeyName(0, "Fairytale_ark.png");
+            this.IL.Images.SetKeyName(1, "Fairytale_upload.png");
+            this.IL.Images.SetKeyName(2, "Fairytale_browser.png");
+            this.IL.Images.SetKeyName(3, "Fairytale_editcopy.png");
+            this.IL.Images.SetKeyName(4, "Fairytale_apply.png");
             // 
             // ProjectInfoForm
             // 
@@ -401,5 +432,6 @@
         private System.Windows.Forms.Label lProjectFolderOK;
         public System.Windows.Forms.Button btnCopySummary;
         private System.Windows.Forms.Button btnMake7zip;
+        private System.Windows.Forms.ImageList IL;
     }
 }
