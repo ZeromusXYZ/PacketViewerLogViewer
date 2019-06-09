@@ -42,6 +42,7 @@
             this.tPackedLogsURL = new System.Windows.Forms.TextBox();
             this.saveProjectDlg = new System.Windows.Forms.SaveFileDialog();
             this.btnDownloadSource = new System.Windows.Forms.Button();
+            this.IL = new System.Windows.Forms.ImageList(this.components);
             this.btnDownloadYoutube = new System.Windows.Forms.Button();
             this.btnUploadToYoutube = new System.Windows.Forms.Button();
             this.gbLocalFiles = new System.Windows.Forms.GroupBox();
@@ -57,7 +58,7 @@
             this.lTagLabel = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCopySummary = new System.Windows.Forms.Button();
-            this.IL = new System.Windows.Forms.ImageList(this.components);
+            this.btnExtractZip = new System.Windows.Forms.Button();
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
@@ -167,6 +168,17 @@
             this.btnDownloadSource.UseVisualStyleBackColor = true;
             this.btnDownloadSource.Click += new System.EventHandler(this.BtnDownloadSource_Click);
             // 
+            // IL
+            // 
+            this.IL.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("IL.ImageStream")));
+            this.IL.TransparentColor = System.Drawing.Color.Transparent;
+            this.IL.Images.SetKeyName(0, "Fairytale_ark.png");
+            this.IL.Images.SetKeyName(1, "Fairytale_upload.png");
+            this.IL.Images.SetKeyName(2, "Fairytale_browser.png");
+            this.IL.Images.SetKeyName(3, "Fairytale_editcopy.png");
+            this.IL.Images.SetKeyName(4, "Fairytale_apply.png");
+            this.IL.Images.SetKeyName(5, "Fairytale_fileopen.png");
+            // 
             // btnDownloadYoutube
             // 
             this.btnDownloadYoutube.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -186,9 +198,9 @@
             this.btnUploadToYoutube.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUploadToYoutube.ImageIndex = 1;
             this.btnUploadToYoutube.ImageList = this.IL;
-            this.btnUploadToYoutube.Location = new System.Drawing.Point(399, 99);
+            this.btnUploadToYoutube.Location = new System.Drawing.Point(399, 110);
             this.btnUploadToYoutube.Name = "btnUploadToYoutube";
-            this.btnUploadToYoutube.Size = new System.Drawing.Size(160, 31);
+            this.btnUploadToYoutube.Size = new System.Drawing.Size(160, 20);
             this.btnUploadToYoutube.TabIndex = 14;
             this.btnUploadToYoutube.Text = "Upload to Youtube";
             this.btnUploadToYoutube.UseVisualStyleBackColor = true;
@@ -197,6 +209,7 @@
             // 
             this.gbLocalFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbLocalFiles.Controls.Add(this.btnExtractZip);
             this.gbLocalFiles.Controls.Add(this.btnMake7zip);
             this.gbLocalFiles.Controls.Add(this.lVideoSourceOK);
             this.gbLocalFiles.Controls.Add(this.lOpenedLogOK);
@@ -222,7 +235,7 @@
             this.btnMake7zip.ImageList = this.IL;
             this.btnMake7zip.Location = new System.Drawing.Point(399, 32);
             this.btnMake7zip.Name = "btnMake7zip";
-            this.btnMake7zip.Size = new System.Drawing.Size(160, 33);
+            this.btnMake7zip.Size = new System.Drawing.Size(160, 20);
             this.btnMake7zip.TabIndex = 18;
             this.btnMake7zip.Text = "Make .7z";
             this.btnMake7zip.UseVisualStyleBackColor = true;
@@ -365,15 +378,18 @@
             this.btnCopySummary.UseVisualStyleBackColor = true;
             this.btnCopySummary.Click += new System.EventHandler(this.BtnCopySummary_Click);
             // 
-            // IL
+            // btnExtractZip
             // 
-            this.IL.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("IL.ImageStream")));
-            this.IL.TransparentColor = System.Drawing.Color.Transparent;
-            this.IL.Images.SetKeyName(0, "Fairytale_ark.png");
-            this.IL.Images.SetKeyName(1, "Fairytale_upload.png");
-            this.IL.Images.SetKeyName(2, "Fairytale_browser.png");
-            this.IL.Images.SetKeyName(3, "Fairytale_editcopy.png");
-            this.IL.Images.SetKeyName(4, "Fairytale_apply.png");
+            this.btnExtractZip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExtractZip.ImageIndex = 5;
+            this.btnExtractZip.ImageList = this.IL;
+            this.btnExtractZip.Location = new System.Drawing.Point(399, 70);
+            this.btnExtractZip.Name = "btnExtractZip";
+            this.btnExtractZip.Size = new System.Drawing.Size(160, 20);
+            this.btnExtractZip.TabIndex = 19;
+            this.btnExtractZip.Text = "Extract Archive";
+            this.btnExtractZip.UseVisualStyleBackColor = true;
+            this.btnExtractZip.Click += new System.EventHandler(this.BtnExtractZip_Click);
             // 
             // ProjectInfoForm
             // 
@@ -433,5 +449,6 @@
         public System.Windows.Forms.Button btnCopySummary;
         private System.Windows.Forms.Button btnMake7zip;
         private System.Windows.Forms.ImageList IL;
+        private System.Windows.Forms.Button btnExtractZip;
     }
 }

@@ -20,6 +20,7 @@ namespace PacketViewerLogViewer
     {
         PacketTabPage tp ;
         int lastTagID = 0;
+        private string CurrentArchieve = string.Empty;
 
         public ProjectInfoForm()
         {
@@ -43,8 +44,20 @@ namespace PacketViewerLogViewer
             L.Click += new EventHandler(LTagLabel_Click);
         }
 
+        private void ClearTags()
+        {
+            foreach (Control c in tagContainer.Controls)
+            {
+                if ((c is Label) && (c.Tag != null) && ((int)c.Tag > 0))
+                {
+                    tagContainer.Controls.Remove(c as Label);
+                }
+            }
+        }
+
         private void CreateVisualTags(string tagString)
         {
+            ClearTags();
             var tags = tagString.Split(',').ToList();
             foreach(string t in tags)
             {
@@ -156,17 +169,69 @@ namespace PacketViewerLogViewer
         {
             bool res = true;
             // Project Folder
-            if (Directory.Exists(tProjectFolder.Text.TrimEnd(Path.DirectorySeparatorChar)))
+            var pDir = tProjectFolder.Text.TrimEnd(Path.DirectorySeparatorChar);
+            var pAltName = Path.Combine(Path.GetDirectoryName(tp.ProjectFile), Path.GetFileNameWithoutExtension(tp.ProjectFile));
+            if (Directory.Exists(pDir))
             {
                 lProjectFolderOK.Text = "\x81";
                 lProjectFolderOK.ForeColor = Color.LimeGreen;
                 btnMake7zip.Enabled = true;
+
+                if (File.Exists(pDir + ".7z"))
+                {
+                    CurrentArchieve = pDir + ".7z";
+                    btnExtractZip.Enabled = true;
+                    btnMake7zip.Enabled = false;
+                }
+                else
+                if (File.Exists(pDir + ".zip"))
+                {
+                    CurrentArchieve = pDir + ".zip" ;
+                    btnExtractZip.Enabled = true;
+                    btnMake7zip.Enabled = false;
+                }
+                else
+                if (File.Exists(pDir + ".rar"))
+                {
+                    CurrentArchieve = pDir + ".rar" ;
+                    btnExtractZip.Enabled = true;
+                    btnMake7zip.Enabled = false;
+                }
+                else
+                if (File.Exists(pAltName + ".7z"))
+                {
+                    CurrentArchieve = pAltName + ".7z";
+                    btnExtractZip.Enabled = true;
+                    btnMake7zip.Enabled = false;
+                }
+                else
+                if (File.Exists(pAltName + ".zip"))
+                {
+                    CurrentArchieve = pAltName + ".zip";
+                    btnExtractZip.Enabled = true;
+                    btnMake7zip.Enabled = false;
+                }
+                else
+                if (File.Exists(pAltName + ".rar"))
+                {
+                    CurrentArchieve = pAltName + ".rar";
+                    btnExtractZip.Enabled = true;
+                    btnMake7zip.Enabled = false;
+                }
+                else
+                {
+                    CurrentArchieve = string.Empty;
+                    btnExtractZip.Enabled = false;
+                }
+
             }
             else
             {
                 lProjectFolderOK.Text = "\xCE";
                 lProjectFolderOK.ForeColor = Color.Red;
                 btnMake7zip.Enabled = false;
+                btnExtractZip.Enabled = false;
+                CurrentArchieve = string.Empty;
                 res = false;
             }
 
@@ -244,7 +309,7 @@ namespace PacketViewerLogViewer
             using(var zipform = new CompressForm())
             {
                 zipform.task = CompressForm.ZipTaskType.doZip;
-                zipform.ArchiveFileName = Path.ChangeExtension(tp.ProjectFile, ".7z");
+                zipform.ArchiveFileName = Path.ChangeExtension(tp.ProjectFolder.TrimEnd(Path.DirectorySeparatorChar), ".7z");
                 
                 if (zipform.BuildArchieveFilesList(tProjectFolder.Text) <= 0)
                 {
@@ -254,6 +319,7 @@ namespace PacketViewerLogViewer
 
                 if (zipform.ShowDialog() == DialogResult.OK)
                 {
+                    ProjectInfo_TextChanged(null, null);
                     ExploreFile(zipform.ArchiveFileName);
                     //MessageBox.Show("Done creating " + zipform.ArchiveFileName,"Make .7z",MessageBoxButtons.OK,MessageBoxIcon.Information);
                 }
@@ -266,6 +332,33 @@ namespace PacketViewerLogViewer
                     }
                     catch { }
                     MessageBox.Show("Error creating " + zipform.ArchiveFileName, "Make .7z", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void BtnExtractZip_Click(object sender, EventArgs e)
+        {
+            using (var zipform = new CompressForm())
+            {
+                zipform.task = CompressForm.ZipTaskType.doUnZip;
+                zipform.ArchiveFileName = CurrentArchieve;
+                zipform.ProjectName = Path.GetFileNameWithoutExtension(tp.ProjectFile);
+
+                if (zipform.ShowDialog() == DialogResult.OK)
+                {
+                    // reload the project file after extraction
+                    var oldDLUrl = tp.LinkPacketsDownloadURL;
+                    var oldFile = tp.ProjectFile;
+                    tp.LoadProjectFile(oldFile);
+                    LoadFromPacketTapPage(tp);
+                    tp.LinkPacketsDownloadURL = oldDLUrl;
+                    tPackedLogsURL.Text = oldDLUrl;
+                    ProjectInfo_TextChanged(null, null);
+                    MessageBox.Show("Done extracting " + zipform.ArchiveFileName, "Extract Archive", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Error extracting " + zipform.ArchiveFileName, "Extract Archive", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

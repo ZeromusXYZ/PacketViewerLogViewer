@@ -71,6 +71,8 @@
             // bgwUnZipper
             // 
             this.bgwUnZipper.WorkerSupportsCancellation = true;
+            this.bgwUnZipper.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BgwUnZipper_DoWork);
+            this.bgwUnZipper.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BgwUnZipper_RunWorkerCompleted);
             // 
             // CompressForm
             // 
@@ -88,6 +90,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add to archieve";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CompressForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CompressForm_FormClosed);
             this.Load += new System.EventHandler(this.CompressForm_Load);
             this.Shown += new System.EventHandler(this.CompressForm_Shown);
             this.ResumeLayout(false);
