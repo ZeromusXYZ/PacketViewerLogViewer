@@ -159,10 +159,65 @@ namespace PacketViewerLogViewer
                 Process.Start(tYoutubeURL.Text);
         }
 
+        private string GetFileNameFromContentDisposition(string cd)
+        {
+            string fn = string.Empty;
+
+            var cdFields = cd.Split(';');
+            string fnTag = "filename=";
+            foreach (var cdf in cdFields)
+            {
+                if (cdf.StartsWith(fnTag))
+                {
+                    fn = cdf.Substring(fnTag.Length);
+                    fn = fn.Trim('\"');
+                    return fn;
+                }
+
+            }
+            return fn;
+        }
+
         private void BtnDownloadSource_Click(object sender, EventArgs e)
         {
             if (tPackedLogsURL.Text != string.Empty)
-                Process.Start(tPackedLogsURL.Text);
+            {
+                Application.UseWaitCursor = true;
+                Cursor = Cursors.WaitCursor;
+                FileInfo fi = null;
+                var ArchiveFileName = Path.ChangeExtension(tp.ProjectFile, ".7z");
+                using (var loadform = new LoadingForm(this))
+                {
+                    loadform.pb.Hide();
+                    loadform.lTextInfo.Show();
+                    loadform.Show();
+                    loadform.Refresh();
+                    fi = PVLVHelper.FileDownloader.DownloadFileFromURLToPath(tPackedLogsURL.Text, ArchiveFileName);
+                    if ((PVLVHelper.FileDownloader.LastContentDisposition != null) && (PVLVHelper.FileDownloader.LastContentDisposition != string.Empty))
+                    {
+                        string dlFile = GetFileNameFromContentDisposition(PVLVHelper.FileDownloader.LastContentDisposition);
+                        if ((dlFile != null) && (dlFile != string.Empty))
+                        {
+                            var dlExt = Path.GetExtension(dlFile).ToLower();
+                            if (dlExt != Path.GetExtension(ArchiveFileName).ToLower())
+                            {
+                                var oldFN = ArchiveFileName;
+                                ArchiveFileName = Path.ChangeExtension(ArchiveFileName, dlExt);
+                                if (File.Exists(ArchiveFileName))
+                                    File.Delete(ArchiveFileName);
+                                File.Move(oldFN,ArchiveFileName);
+                            }
+                        }
+                    }
+                }
+                if ((fi == null) || (!File.Exists(ArchiveFileName)))
+                {
+                    MessageBox.Show("Error downloading file !\r\n"+ ArchiveFileName, "Download error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                ProjectInfo_TextChanged(null, null);
+                Cursor = Cursors.Default;
+                Application.UseWaitCursor = false;
+            }
         }
 
         private void ProjectInfo_TextChanged(object sender, EventArgs e)
@@ -358,7 +413,10 @@ namespace PacketViewerLogViewer
                 }
                 else
                 {
-                    MessageBox.Show("Error extracting " + zipform.ArchiveFileName, "Extract Archive", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (MessageBox.Show("Error extracting " + zipform.ArchiveFileName + "\r\nDo you want to open the file in another program instead ?", "Extract Archive", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+                    {
+                        ExploreFile(zipform.ArchiveFileName);
+                    }
                 }
             }
         }

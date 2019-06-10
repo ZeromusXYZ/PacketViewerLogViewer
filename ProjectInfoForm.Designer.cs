@@ -46,6 +46,7 @@
             this.btnDownloadYoutube = new System.Windows.Forms.Button();
             this.btnUploadToYoutube = new System.Windows.Forms.Button();
             this.gbLocalFiles = new System.Windows.Forms.GroupBox();
+            this.btnExtractZip = new System.Windows.Forms.Button();
             this.btnMake7zip = new System.Windows.Forms.Button();
             this.lVideoSourceOK = new System.Windows.Forms.Label();
             this.lOpenedLogOK = new System.Windows.Forms.Label();
@@ -58,7 +59,6 @@
             this.lTagLabel = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCopySummary = new System.Windows.Forms.Button();
-            this.btnExtractZip = new System.Windows.Forms.Button();
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
@@ -164,7 +164,7 @@
             this.btnDownloadSource.Name = "btnDownloadSource";
             this.btnDownloadSource.Size = new System.Drawing.Size(160, 23);
             this.btnDownloadSource.TabIndex = 11;
-            this.btnDownloadSource.Text = "Open in browser";
+            this.btnDownloadSource.Text = "Download";
             this.btnDownloadSource.UseVisualStyleBackColor = true;
             this.btnDownloadSource.Click += new System.EventHandler(this.BtnDownloadSource_Click);
             // 
@@ -227,6 +227,19 @@
             this.gbLocalFiles.TabIndex = 15;
             this.gbLocalFiles.TabStop = false;
             this.gbLocalFiles.Text = "Local Files";
+            // 
+            // btnExtractZip
+            // 
+            this.btnExtractZip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExtractZip.ImageIndex = 5;
+            this.btnExtractZip.ImageList = this.IL;
+            this.btnExtractZip.Location = new System.Drawing.Point(399, 70);
+            this.btnExtractZip.Name = "btnExtractZip";
+            this.btnExtractZip.Size = new System.Drawing.Size(160, 20);
+            this.btnExtractZip.TabIndex = 19;
+            this.btnExtractZip.Text = "Extract Archive";
+            this.btnExtractZip.UseVisualStyleBackColor = true;
+            this.btnExtractZip.Click += new System.EventHandler(this.BtnExtractZip_Click);
             // 
             // btnMake7zip
             // 
@@ -377,19 +390,6 @@
             this.btnCopySummary.Text = "Copy Summary";
             this.btnCopySummary.UseVisualStyleBackColor = true;
             this.btnCopySummary.Click += new System.EventHandler(this.BtnCopySummary_Click);
-            // 
-            // btnExtractZip
-            // 
-            this.btnExtractZip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExtractZip.ImageIndex = 5;
-            this.btnExtractZip.ImageList = this.IL;
-            this.btnExtractZip.Location = new System.Drawing.Point(399, 70);
-            this.btnExtractZip.Name = "btnExtractZip";
-            this.btnExtractZip.Size = new System.Drawing.Size(160, 20);
-            this.btnExtractZip.TabIndex = 19;
-            this.btnExtractZip.Text = "Extract Archive";
-            this.btnExtractZip.UseVisualStyleBackColor = true;
-            this.btnExtractZip.Click += new System.EventHandler(this.BtnExtractZip_Click);
             // 
             // ProjectInfoForm
             // 

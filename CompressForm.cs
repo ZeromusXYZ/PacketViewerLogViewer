@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.Win32;
 using SevenZip;
 using System.Reflection;
 
@@ -18,6 +19,7 @@ namespace PacketViewerLogViewer
         public Dictionary<string, string> FilesToAdd = new Dictionary<string, string>();
         public string ArchiveFileName = "logs.7z";
         public string ProjectName = string.Empty;
+        public static string SevenZipDLLPath = string.Empty;
         private int thisFileSize = 0;
         SevenZipCompressor zipper;
         SevenZipExtractor unzipper;
@@ -71,6 +73,61 @@ namespace PacketViewerLogViewer
             InitializeComponent();
         }
 
+        private bool TryLoad7ZipLibrary(string dll)
+        {
+            try
+            {
+                if (File.Exists(dll))
+                {
+                    SevenZipBase.SetLibraryPath(dll);
+                    LibraryFeature features = SevenZipBase.CurrentLibraryFeatures;
+
+                    return (features.HasFlag(LibraryFeature.Compress7z) && features.HasFlag(LibraryFeature.Extract7z));
+                }
+                else
+                {
+                    //MessageBox.Show("7zip library not found:\r\n" + dll, "Load error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false ;
+                }
+            }
+            catch // (Exception x)
+            {
+                //MessageBox.Show("Couldn't load 7zip library Exception:\r\n" + x.Message+"\r\n"+dll, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        private string TryGet7ZipLibrary()
+        {
+            string res = string.Empty ;
+
+            string InstallPath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\7-Zip", (Environment.Is64BitProcess ? "Path64" : "Path"), null);
+            if (InstallPath != null)
+            {
+                res = Path.Combine(InstallPath,"7z.dll");
+                if (!TryLoad7ZipLibrary(res))
+                    res = string.Empty;
+            }
+
+            /*
+            if (InstallPath != null)
+            {
+                res = Path.Combine(InstallPath, (Environment.Is64BitProcess ? "7-Zip.dll" : "7-Zip32.dll"));
+                if (!TryLoad7ZipLibrary(res))
+                    res = string.Empty;
+            }
+            */
+
+            if (res == string.Empty)
+            {
+                res = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Environment.Is64BitProcess ? "x64" : "x86", "7z.dll");
+                if (!TryLoad7ZipLibrary(res))
+                    res = string.Empty;
+            }
+
+            return res;
+        }
+
         private void CompressForm_Shown(object sender, EventArgs e)
         {
             switch (task)
@@ -88,32 +145,29 @@ namespace PacketViewerLogViewer
             }
             // Start here
             // Toggle between the x86 and x64 bit dll
-            var dllpath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Environment.Is64BitProcess ? "x64" : "x86", "7z.dll");
-            try
+
+            if ((SevenZipDLLPath == null) || (SevenZipDLLPath == string.Empty))
+                SevenZipDLLPath = TryGet7ZipLibrary();
+
+            if (SevenZipDLLPath == string.Empty)
             {
-                if (File.Exists(dllpath))
-                {
-                    SevenZipBase.SetLibraryPath(dllpath);
-                }
-                else
-                {
-                    MessageBox.Show("7zip library not found:\r\n" + dllpath, "Load error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    DialogResult = DialogResult.Abort;
-                    return;
-                }
-            }
-            catch (Exception x)
-            {
-                MessageBox.Show("Couldn't load 7zip library Exception:\r\n" + x.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 DialogResult = DialogResult.Abort;
                 return;
             }
-
+            LibraryFeature features = SevenZipBase.CurrentLibraryFeatures;
             lZipFile.Text = ArchiveFileName;
 
             switch (task)
             {
                 case ZipTaskType.doZip:
+
+                    if (!features.HasFlag(LibraryFeature.Compress7z))
+                    {
+                        MessageBox.Show("Currently loaded 7-zip library doesn't support 7z compression, cannot continue !\r\n"+SevenZipDLLPath, "Method not supported", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        DialogResult = DialogResult.Abort;
+                        return;
+                    }
+
                     if (File.Exists(ArchiveFileName))
                     {
                         if (MessageBox.Show("Target 7z file already exists, do you want to overwrite it ?\r\n" + ArchiveFileName, "Overwrite File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
@@ -144,6 +198,27 @@ namespace PacketViewerLogViewer
                     {
                         MessageBox.Show("Source 7z file not found ?\r\n" + ArchiveFileName, "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         DialogResult = DialogResult.Cancel;
+                        return;
+                    }
+
+                    if ((Path.GetExtension(ArchiveFileName).ToLower() == ".7z") && (!features.HasFlag(LibraryFeature.Extract7z)))
+                    {
+                        MessageBox.Show("Currently loaded 7-zip library doesn't support .7z extraction, cannot continue !\r\n" + SevenZipDLLPath, "Method not supported", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        DialogResult = DialogResult.Abort;
+                        return;
+                    }
+
+                    if ((Path.GetExtension(ArchiveFileName).ToLower() == ".zip") && (!features.HasFlag(LibraryFeature.ExtractZip)))
+                    {
+                        MessageBox.Show("Currently loaded 7-zip library doesn't support .zip extraction, cannot continue !\r\n" + SevenZipDLLPath, "Method not supported", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        DialogResult = DialogResult.Abort;
+                        return;
+                    }
+
+                    if ((Path.GetExtension(ArchiveFileName).ToLower() == ".rar") && (!features.HasFlag(LibraryFeature.ExtractRar)))
+                    {
+                        MessageBox.Show("Currently loaded 7-zip library doesn't support .rar extraction, cannot continue !\r\n" + SevenZipDLLPath, "Method not supported", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        DialogResult = DialogResult.Abort;
                         return;
                     }
 
@@ -295,9 +370,9 @@ namespace PacketViewerLogViewer
             string expectedRootDir = ProjectName ;
             expectedRootDir = expectedRootDir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
             tDir = tDir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
-            var filelist = unzipper.ArchiveFileNames.ToArray();
+            var filelist = unzipper.ArchiveFileData.ToArray();
             ulong totsize = 0;
-            foreach (var fd in unzipper.ArchiveFileData)
+            foreach (var fd in filelist)
             {
                 totsize += fd.Size;
             }
@@ -307,19 +382,22 @@ namespace PacketViewerLogViewer
                 pb.Maximum = (int)totsize + 1;
                 pb.Value = 0;
             }));
-            foreach (var fn in filelist)
+            foreach (var fd in filelist)
             {
+                // Skip directories
+                if ((fd.Attributes & 0x10) != 0)
+                    continue;
+
                 try
                 {
-
                     var zippedName = string.Empty;
-                    if (fn.StartsWith(expectedRootDir))
+                    if (fd.FileName.StartsWith(expectedRootDir))
                     {
-                        zippedName = fn.Substring(expectedRootDir.Length);
+                        zippedName = fd.FileName.Substring(expectedRootDir.Length);
                     }
                     else
                     {
-                        zippedName = fn;
+                        zippedName = fd.FileName;
                     }
                     var targetName = tDir + zippedName;
                     var targetFileDir = Path.GetDirectoryName(targetName);
@@ -330,13 +408,13 @@ namespace PacketViewerLogViewer
                     //{
                         lInfo.Text = targetName;
                         lInfo.Refresh();
-                        unzipper.ExtractFile(fn, fs);
+                        unzipper.ExtractFile(fd.FileName, fs);
                     //}));
                     fs.Close();
                 }
                 catch (Exception x)
                 {
-                    if (MessageBox.Show("Exception extracting file:\r\n"+x+"\r\n"+fn+"\r\nDo you want to continue ?","Exception",MessageBoxButtons.YesNo,MessageBoxIcon.Error) == DialogResult.No)
+                    if (MessageBox.Show("Exception extracting file:\r\n"+x+"\r\n"+fd+"\r\nDo you want to continue ?","Exception",MessageBoxButtons.YesNo,MessageBoxIcon.Error) == DialogResult.No)
                     {
                         break;
                     }

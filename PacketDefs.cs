@@ -2308,13 +2308,23 @@ namespace PacketViewerLogViewer.Packets
                         ProjectTags = fields[1];
                     }
                     else
+                    if (fields[0].ToLower() == "pin")
+                    {
+                        // not used
+                    }
+                    else
+                    if (fields[0].ToLower() == "pout")
+                    {
+                        // not used
+                    }
+                    else
                     {
                         continue;
                     }
 
                 }
                 // Set on success
-                if (sl.Length >= 1)
+                // if (sl.Length >= 1)
                     ProjectFile = aProjectFile;
             }
             catch
@@ -2374,19 +2384,19 @@ namespace PacketViewerLogViewer.Packets
 
             try
             {
-                string cin = string.Empty;
+                string pin = string.Empty;
                 foreach(UInt16 n in PLLoaded.ContainsPacketsIn)
                 {
-                    if (cin != string.Empty)
-                        cin += ",";
-                    cin += n.ToString("X");
+                    if (pin != string.Empty)
+                        pin += ",";
+                    pin += n.ToString("X3");
                 }
-                string cout = string.Empty;
+                string pout = string.Empty;
                 foreach (UInt16 n in PLLoaded.ContainsPacketsOut)
                 {
-                    if (cout != string.Empty)
-                        cout += ",";
-                    cout += n.ToString("X");
+                    if (pout != string.Empty)
+                        pout += ",";
+                    pout += n.ToString("X3");
                 }
 
                 List<string> sl = new List<string>();
@@ -2394,11 +2404,11 @@ namespace PacketViewerLogViewer.Packets
                 sl.Add("packetlog;" + relLogFile);
                 sl.Add("tags;" + ProjectTags);
                 sl.Add("video;" + relVideo);
+                sl.Add("packedsource;" + LinkPacketsDownloadURL);
                 sl.Add("youtube;" + LinkYoutubeURL);
                 sl.Add("offset;" + LinkVideoOffset.TotalMilliseconds.ToString());
-                sl.Add("packedsource;" + LinkPacketsDownloadURL);
-                sl.Add("cin;" + cin);
-                sl.Add("cout;" + cout);
+                sl.Add("pin;" + pin);
+                sl.Add("pout;" + pout);
                 File.WriteAllLines(ProjectFile, sl);
                 return true;
             }

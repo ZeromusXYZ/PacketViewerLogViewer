@@ -75,7 +75,7 @@ namespace PacketViewerLogViewer.PVLVHelper
 
     static class Helper
     {
-        private static List<string> ExpectedLogFileRoots = new List<string>() { "packetviewer", "logs", "packetdb", "wireshark", "packeteer" };
+        private static List<string> ExpectedLogFileRoots = new List<string>() { "packetviewer", "logs", "packetdb", "wireshark", "packeteer", "idview", "raw" , "incoming" , "outgoing" , "in" , "out"  };
 
         // Source: https://stackoverflow.com/questions/275689/how-to-get-relative-path-from-absolute-path
         /// <summary>
@@ -222,7 +222,7 @@ namespace PacketViewerLogViewer.PVLVHelper
             return res;
         }
 
-        public static string MakeProjectDirectoryFromLogFileName(string filename)
+        public static string MakeProjectDirectoryFromLogFileName_Old(string filename)
         {
             string res;
             string fnl = System.IO.Path.GetFileNameWithoutExtension(filename).ToLower();
@@ -252,6 +252,39 @@ namespace PacketViewerLogViewer.PVLVHelper
             return res;
         }
 
+        public static string MakeProjectDirectoryFromLogFileName(string filename)
+        {
+            string res;
+
+            var pathSplit = filename.Split(Path.DirectorySeparatorChar).ToList();
+            if (pathSplit.Count >= 1)
+                pathSplit[0] = pathSplit[0] + Path.DirectorySeparatorChar; // manually add the \ back to the first split
+
+            while (pathSplit.Count > 1)
+            {
+                pathSplit.RemoveAt(pathSplit.Count - 1);
+                var hDir = pathSplit[pathSplit.Count - 1];
+                if ((ExpectedLogFileRoots.IndexOf(hDir) < 0) && (Directory.Exists(Path.Combine(pathSplit.ToArray()))))
+                {
+                    break;
+                }
+            }
+
+            if (pathSplit.Count > 1)
+            {
+                res = Path.Combine(pathSplit.ToArray());
+            }
+            else
+            {
+                res = Path.GetDirectoryName(filename);
+            }
+
+            if (!res.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                res += Path.DirectorySeparatorChar;
+
+            return res;
+        }
+
 
 
     }
@@ -262,6 +295,7 @@ namespace PacketViewerLogViewer.PVLVHelper
     {
         private const string GOOGLE_DRIVE_DOMAIN = "drive.google.com";
         private const string GOOGLE_DRIVE_DOMAIN2 = "https://drive.google.com";
+        public static string LastContentDisposition = string.Empty;
 
         // Normal example: FileDownloader.DownloadFileFromURLToPath( "http://example.com/file/download/link", @"C:\file.txt" );
         // Drive example: FileDownloader.DownloadFileFromURLToPath( "http://drive.google.com/file/d/FILEID/view?usp=sharing", @"C:\file.txt" );
@@ -282,12 +316,14 @@ namespace PacketViewerLogViewer.PVLVHelper
                     using (webClient = new WebClient())
                     {
                         webClient.DownloadFile(url, path);
+                        LastContentDisposition = webClient.ResponseHeaders.Get("content-disposition");
                         return new FileInfo(path);
                     }
                 }
                 else
                 {
                     webClient.DownloadFile(url, path);
+                    LastContentDisposition = webClient.ResponseHeaders.Get("content-disposition");
                     return new FileInfo(path);
                 }
             }

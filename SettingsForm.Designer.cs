@@ -68,7 +68,9 @@
             this.rbAutoLoadVideoLocalOnly = new System.Windows.Forms.RadioButton();
             this.rbAutoLoadVideoNever = new System.Windows.Forms.RadioButton();
             this.gbListStyle = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.btnSetDarkMode = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -77,7 +79,6 @@
             this.rbListStyleSolid = new System.Windows.Forms.RadioButton();
             this.rbListStyleText = new System.Windows.Forms.RadioButton();
             this.cbPreParseData = new System.Windows.Forms.CheckBox();
-            this.btnSetDarkMode = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnColField12 = new System.Windows.Forms.Button();
             this.btnColField14 = new System.Windows.Forms.Button();
@@ -99,15 +100,14 @@
             this.lFieldColCount = new System.Windows.Forms.Label();
             this.tbFieldColorCount = new System.Windows.Forms.TrackBar();
             this.gbOtherSettings = new System.Windows.Forms.GroupBox();
-            this.cbAskNewProject = new System.Windows.Forms.CheckBox();
             this.cbShowHexStringData = new System.Windows.Forms.CheckBox();
+            this.cbAskNewProject = new System.Windows.Forms.CheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.tcSettings = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbPacketList = new System.Windows.Forms.TabPage();
             this.tpFieldGrid = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbVideoSettings.SuspendLayout();
             this.gbListStyle.SuspendLayout();
@@ -121,9 +121,9 @@
             this.gbOtherSettings.SuspendLayout();
             this.tcSettings.SuspendLayout();
             this.tpGeneral.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tbPacketList.SuspendLayout();
             this.tpFieldGrid.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
@@ -632,7 +632,7 @@
             this.gbVideoSettings.Controls.Add(this.rbAutoLoadVideoNever);
             this.gbVideoSettings.Location = new System.Drawing.Point(6, 83);
             this.gbVideoSettings.Name = "gbVideoSettings";
-            this.gbVideoSettings.Size = new System.Drawing.Size(505, 95);
+            this.gbVideoSettings.Size = new System.Drawing.Size(505, 70);
             this.gbVideoSettings.TabIndex = 13;
             this.gbVideoSettings.TabStop = false;
             this.gbVideoSettings.Text = "Video Linking Settings";
@@ -641,8 +641,7 @@
             // 
             this.cbAutoOpenVideoForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbAutoOpenVideoForm.AutoSize = true;
-            this.cbAutoOpenVideoForm.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbAutoOpenVideoForm.Location = new System.Drawing.Point(318, 19);
+            this.cbAutoOpenVideoForm.Location = new System.Drawing.Point(14, 19);
             this.cbAutoOpenVideoForm.Name = "cbAutoOpenVideoForm";
             this.cbAutoOpenVideoForm.Size = new System.Drawing.Size(181, 17);
             this.cbAutoOpenVideoForm.TabIndex = 3;
@@ -652,7 +651,7 @@
             // rbAutoLoadVideoYoutube
             // 
             this.rbAutoLoadVideoYoutube.AutoSize = true;
-            this.rbAutoLoadVideoYoutube.Location = new System.Drawing.Point(14, 64);
+            this.rbAutoLoadVideoYoutube.Location = new System.Drawing.Point(192, 42);
             this.rbAutoLoadVideoYoutube.Name = "rbAutoLoadVideoYoutube";
             this.rbAutoLoadVideoYoutube.Size = new System.Drawing.Size(126, 17);
             this.rbAutoLoadVideoYoutube.TabIndex = 2;
@@ -663,7 +662,7 @@
             // 
             this.rbAutoLoadVideoLocalOnly.AutoSize = true;
             this.rbAutoLoadVideoLocalOnly.Checked = true;
-            this.rbAutoLoadVideoLocalOnly.Location = new System.Drawing.Point(14, 41);
+            this.rbAutoLoadVideoLocalOnly.Location = new System.Drawing.Point(74, 42);
             this.rbAutoLoadVideoLocalOnly.Name = "rbAutoLoadVideoLocalOnly";
             this.rbAutoLoadVideoLocalOnly.Size = new System.Drawing.Size(112, 17);
             this.rbAutoLoadVideoLocalOnly.TabIndex = 1;
@@ -674,7 +673,7 @@
             // rbAutoLoadVideoNever
             // 
             this.rbAutoLoadVideoNever.AutoSize = true;
-            this.rbAutoLoadVideoNever.Location = new System.Drawing.Point(14, 18);
+            this.rbAutoLoadVideoNever.Location = new System.Drawing.Point(14, 42);
             this.rbAutoLoadVideoNever.Name = "rbAutoLoadVideoNever";
             this.rbAutoLoadVideoNever.Size = new System.Drawing.Size(54, 17);
             this.rbAutoLoadVideoNever.TabIndex = 0;
@@ -702,6 +701,15 @@
             this.gbListStyle.TabStop = false;
             this.gbListStyle.Text = "Packet List Style";
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(126, 195);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(37, 13);
+            this.label11.TabIndex = 17;
+            this.label11.Text = "<=  =>";
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
@@ -710,6 +718,17 @@
             this.label12.Size = new System.Drawing.Size(60, 13);
             this.label12.TabIndex = 12;
             this.label12.Text = "Arrow Style";
+            // 
+            // btnSetDarkMode
+            // 
+            this.btnSetDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSetDarkMode.Location = new System.Drawing.Point(281, 236);
+            this.btnSetDarkMode.Name = "btnSetDarkMode";
+            this.btnSetDarkMode.Size = new System.Drawing.Size(224, 23);
+            this.btnSetDarkMode.TabIndex = 16;
+            this.btnSetDarkMode.Text = "Set Dark Mode Packet Colors";
+            this.btnSetDarkMode.UseVisualStyleBackColor = true;
+            this.btnSetDarkMode.Click += new System.EventHandler(this.BtnSetDarkMode_Click);
             // 
             // pictureBox3
             // 
@@ -792,17 +811,6 @@
             this.cbPreParseData.TabIndex = 15;
             this.cbPreParseData.Text = "Pre-Parse loaded packet data (loads slower but allows additional search options)";
             this.cbPreParseData.UseVisualStyleBackColor = true;
-            // 
-            // btnSetDarkMode
-            // 
-            this.btnSetDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSetDarkMode.Location = new System.Drawing.Point(281, 236);
-            this.btnSetDarkMode.Name = "btnSetDarkMode";
-            this.btnSetDarkMode.Size = new System.Drawing.Size(224, 23);
-            this.btnSetDarkMode.TabIndex = 16;
-            this.btnSetDarkMode.Text = "Set Dark Mode Packet Colors";
-            this.btnSetDarkMode.UseVisualStyleBackColor = true;
-            this.btnSetDarkMode.Click += new System.EventHandler(this.BtnSetDarkMode_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -1148,22 +1156,12 @@
             // 
             this.gbOtherSettings.Controls.Add(this.cbShowHexStringData);
             this.gbOtherSettings.Controls.Add(this.cbUseExternalEditor);
-            this.gbOtherSettings.Location = new System.Drawing.Point(6, 184);
+            this.gbOtherSettings.Location = new System.Drawing.Point(6, 159);
             this.gbOtherSettings.Name = "gbOtherSettings";
             this.gbOtherSettings.Size = new System.Drawing.Size(505, 67);
             this.gbOtherSettings.TabIndex = 18;
             this.gbOtherSettings.TabStop = false;
             this.gbOtherSettings.Text = "Miscellaneous Settings";
-            // 
-            // cbAskNewProject
-            // 
-            this.cbAskNewProject.AutoSize = true;
-            this.cbAskNewProject.Location = new System.Drawing.Point(14, 19);
-            this.cbAskNewProject.Name = "cbAskNewProject";
-            this.cbAskNewProject.Size = new System.Drawing.Size(201, 17);
-            this.cbAskNewProject.TabIndex = 17;
-            this.cbAskNewProject.Text = "Ask before creating a new project file";
-            this.cbAskNewProject.UseVisualStyleBackColor = true;
             // 
             // cbShowHexStringData
             // 
@@ -1174,6 +1172,16 @@
             this.cbShowHexStringData.TabIndex = 16;
             this.cbShowHexStringData.Text = "Also show hex data on strings";
             this.cbShowHexStringData.UseVisualStyleBackColor = true;
+            // 
+            // cbAskNewProject
+            // 
+            this.cbAskNewProject.AutoSize = true;
+            this.cbAskNewProject.Location = new System.Drawing.Point(14, 19);
+            this.cbAskNewProject.Name = "cbAskNewProject";
+            this.cbAskNewProject.Size = new System.Drawing.Size(201, 17);
+            this.cbAskNewProject.TabIndex = 17;
+            this.cbAskNewProject.Text = "Ask before creating a new project file";
+            this.cbAskNewProject.UseVisualStyleBackColor = true;
             // 
             // tcSettings
             // 
@@ -1200,6 +1208,17 @@
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "General";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.cbAskNewProject);
+            this.groupBox1.Controls.Add(this.cbPreParseData);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(505, 71);
+            this.groupBox1.TabIndex = 19;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Program Settings";
+            // 
             // tbPacketList
             // 
             this.tbPacketList.BackColor = System.Drawing.SystemColors.Control;
@@ -1222,26 +1241,6 @@
             this.tpFieldGrid.Size = new System.Drawing.Size(521, 272);
             this.tpFieldGrid.TabIndex = 2;
             this.tpFieldGrid.Text = "Field Grid";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.cbAskNewProject);
-            this.groupBox1.Controls.Add(this.cbPreParseData);
-            this.groupBox1.Location = new System.Drawing.Point(6, 6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(505, 71);
-            this.groupBox1.TabIndex = 19;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Program Settings";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(126, 195);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(37, 13);
-            this.label11.TabIndex = 17;
-            this.label11.Text = "<=  =>";
             // 
             // SettingsForm
             // 
@@ -1282,10 +1281,10 @@
             this.gbOtherSettings.PerformLayout();
             this.tcSettings.ResumeLayout(false);
             this.tpGeneral.ResumeLayout(false);
-            this.tbPacketList.ResumeLayout(false);
-            this.tpFieldGrid.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tbPacketList.ResumeLayout(false);
+            this.tpFieldGrid.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
