@@ -46,11 +46,12 @@ namespace PacketViewerLogViewer
 
         private void ClearTags()
         {
-            foreach (Control c in tagContainer.Controls)
+            for(int i = tagContainer.Controls.Count-1; i >= 0; i--)
             {
+                Label c = (tagContainer.Controls[i] is Label) ? (tagContainer.Controls[i] as Label) : null;
                 if ((c is Label) && (c.Tag != null) && ((int)c.Tag > 0))
                 {
-                    tagContainer.Controls.Remove(c as Label);
+                    tagContainer.Controls.RemoveAt(i);
                 }
             }
         }
