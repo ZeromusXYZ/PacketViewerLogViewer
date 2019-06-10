@@ -2072,12 +2072,12 @@ namespace PacketViewerLogViewer.Packets
             switch (PD.PacketLogType)
             {
                 case PacketLogTypes.Incoming:
-                    ParserFileName = "parse" + Path.DirectorySeparatorChar+ "in-0x" + PD.PacketID.ToString("X3") + ".txt";
+                    ParserFileName = Path.Combine("data","parse","in-0x" + PD.PacketID.ToString("X3") + ".txt");
                     pmPLEditParser.Text = "Edit " + ParserFileName;
                     pmPLEditParser.Visible = true;
                     break;
                 case PacketLogTypes.Outgoing:
-                    ParserFileName = "parse" + Path.DirectorySeparatorChar + "out-0x" + PD.PacketID.ToString("X3") + ".txt";
+                    ParserFileName = Path.Combine("data", "parse", "out-0x" + PD.PacketID.ToString("X3") + ".txt");
                     pmPLEditParser.Text = "Edit " + ParserFileName ;
                     pmPLEditParser.Visible = true;
                     break;

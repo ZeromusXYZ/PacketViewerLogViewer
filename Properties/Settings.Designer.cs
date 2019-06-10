@@ -514,5 +514,17 @@ namespace PacketViewerLogViewer.Properties {
                 this["AskCreateNewProjectFile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/ZeromusXYZ/PVLV-Data/raw/master/update.7z")]
+        public string ParserDataUpdateZipURL {
+            get {
+                return ((string)(this["ParserDataUpdateZipURL"]));
+            }
+            set {
+                this["ParserDataUpdateZipURL"] = value;
+            }
+        }
     }
 }

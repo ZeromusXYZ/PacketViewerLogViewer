@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using PacketViewerLogViewer.Packets;
 
 namespace PacketViewerLogViewer
@@ -20,8 +21,8 @@ namespace PacketViewerLogViewer
         {
             InitializeComponent();
             Filter = new PacketListFilter();
-            saveFileDlg.InitialDirectory = Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "filter" + System.IO.Path.DirectorySeparatorChar;
-            loadFileDlg.InitialDirectory = Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "filter" + System.IO.Path.DirectorySeparatorChar;
+            saveFileDlg.InitialDirectory = Path.Combine(Application.StartupPath,"data","filter");
+            loadFileDlg.InitialDirectory = Path.Combine(Application.StartupPath,"data","filter");
             ClearFilters();
         }
 

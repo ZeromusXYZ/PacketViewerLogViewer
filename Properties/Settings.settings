@@ -125,5 +125,8 @@
     <Setting Name="AskCreateNewProjectFile" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="ParserDataUpdateZipURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://github.com/ZeromusXYZ/PVLV-Data/raw/master/update.7z</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

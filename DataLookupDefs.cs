@@ -329,7 +329,7 @@ namespace PacketViewerLogViewer.Packets
         public static void LoadLookups()
         {
             LookupLists.Clear();
-            var lookupPath = Application.StartupPath + Path.DirectorySeparatorChar + "lookup";
+            var lookupPath = Path.Combine(Application.StartupPath,"data","lookup");
             DirectoryInfo DI = new DirectoryInfo(lookupPath);
             if (Directory.Exists(lookupPath))
             {

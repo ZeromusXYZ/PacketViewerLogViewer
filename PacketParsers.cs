@@ -50,20 +50,21 @@ namespace PacketViewerLogViewer
 
         public PacketParser(UInt16 aPacketID,PacketLogTypes aPacketLogType)
         {
-            var filename = Application.StartupPath + Path.DirectorySeparatorChar + "parse" + Path.DirectorySeparatorChar ;
+            var filename = string.Empty ; // = Application.StartupPath + Path.DirectorySeparatorChar + "parse" + Path.DirectorySeparatorChar ;
             switch (aPacketLogType)
             {
                 case PacketLogTypes.Incoming:
-                    filename += "in-";
+                    filename = Path.Combine(Application.StartupPath, "data", "parse", "in-0x" + aPacketID.ToString("X3") + ".txt");
                     break;
                 case PacketLogTypes.Outgoing:
-                    filename += "out-";
+                    filename = Path.Combine(Application.StartupPath, "data", "parse", "out-0x" + aPacketID.ToString("X3") + ".txt");
                     break;
                 default:
-                    filename += "unk-"; // Really shouldn't be used, but added for completion
+                    // Really shouldn't be used, but added for completion
+                    filename = Path.Combine(Application.StartupPath, "data", "parse", "unk-0x" + aPacketID.ToString("X3") + ".txt");
                     break;
             }
-            filename += "0x" + aPacketID.ToString("X3").ToLower() + ".txt";
+
             if (File.Exists(filename))
             {
                 PD = null;

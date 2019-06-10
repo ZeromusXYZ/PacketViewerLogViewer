@@ -803,7 +803,7 @@ namespace PacketViewerLogViewer
                 var mITem = (sender as ToolStripMenuItem);
                 // apply filter
                 UInt16 lastSync = tp.CurrentSync;
-                tp.PL.Filter.LoadFromFile(Application.StartupPath + Path.DirectorySeparatorChar + "filter" + Path.DirectorySeparatorChar + mITem.Text + ".pfl");
+                tp.PL.Filter.LoadFromFile(Path.Combine(Application.StartupPath, "data", "filter", mITem.Text + ".pfl"));
                 tp.PL.FilterFrom(tp.PLLoaded);
                 tp.FillListBox(lastSync);
                 tp.CenterListBox();
@@ -817,7 +817,7 @@ namespace PacketViewerLogViewer
             try
             {
                 mmFilterApply.DropDownItems.Clear();
-                var di = new DirectoryInfo(Application.StartupPath + Path.DirectorySeparatorChar + "filter");
+                var di = new DirectoryInfo(Path.Combine(Application.StartupPath,"data","filter"));
                 var files = di.GetFiles("*.pfl");
                 foreach (var fi in files)
                 {
@@ -1397,6 +1397,94 @@ namespace PacketViewerLogViewer
                     {
                         MessageBox.Show("Project file was NOT saved !\r\nEither you don't have write permission,\r\nor are not able to save the file because of restrictions placed by this program", "Project NOT saved", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
+                }
+            }
+        }
+
+        private void MMExtraUpdateParser_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you want to download packet data ?\r\n\r\n" +
+                "Any changes you have made will be overwritten if you do.\r\n" +
+                "This does NOT check for a version updates of the program itself !\r\n" +
+                "Also note that it is possible that this data is OLDER than your current one.","Update data ?",MessageBoxButtons.YesNo,MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
+
+            using (var loadform = new LoadingForm(this))
+            {
+                try
+                {
+                    if ((CompressForm.SevenZipDLLPath == null) || (CompressForm.SevenZipDLLPath == string.Empty))
+                        CompressForm.SevenZipDLLPath = CompressForm.TryGet7ZipLibrary();
+
+                    loadform.Text = "Updating data ...";
+                    loadform.pb.Hide();
+                    loadform.lTextInfo.Text = "Downloading ...";
+                    loadform.lTextInfo.Show();
+                    loadform.Show();
+                    loadform.lTextInfo.Refresh();
+
+                    System.Threading.Thread.Sleep(250);
+                    // Delete the old download data if there
+                    var localDataDir = Path.Combine(Application.StartupPath, "data");
+                    var tempFile = Path.GetTempFileName();
+
+                    PVLVHelper.FileDownloader.DownloadFileFromURLToPath(Properties.Settings.Default.ParserDataUpdateZipURL, tempFile);
+
+                    loadform.lTextInfo.Text = "Unpacking ...";
+                    loadform.lTextInfo.Refresh();
+                    System.Threading.Thread.Sleep(500);
+
+                    var unzipper = new SevenZip.SevenZipExtractor(tempFile, SevenZip.InArchiveFormat.SevenZip);
+                    var filelist = unzipper.ArchiveFileData ;
+
+                    loadform.pb.Minimum = 0;
+                    loadform.pb.Maximum = filelist.Count;
+                    loadform.pb.Step = 1;
+                    loadform.pb.Show();
+
+                    foreach (var fd in filelist)
+                    {
+                        // Skip directories
+                        if ((fd.Attributes & 0x10) != 0)
+                            continue;
+
+                        try
+                        {
+                            var zippedName = fd.FileName;
+                            var targetName = Path.Combine(localDataDir, zippedName);
+                            var targetFileDir = Path.GetDirectoryName(targetName);
+                            if (!Directory.Exists(targetFileDir))
+                                Directory.CreateDirectory(targetFileDir);
+                            var fs = File.Create(targetName);
+                            unzipper.ExtractFile(fd.FileName, fs);
+                            fs.Close();
+                            loadform.pb.PerformStep();
+                            System.Threading.Thread.Sleep(25);
+                        }
+                        catch (Exception x)
+                        {
+                            if (MessageBox.Show("Exception extracting file:\r\n" + x + "\r\n" + fd + "\r\nDo you want to continue ?", "Exception", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.No)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    unzipper.Dispose();
+                    loadform.pb.Hide();
+
+                    loadform.lTextInfo.Text = "Done ...";
+                    loadform.lTextInfo.Refresh();
+                    System.Threading.Thread.Sleep(1000);
+                    File.Delete(tempFile);
+
+                    MessageBox.Show("Done downloading and unpacking data from \r\n" + 
+                        Properties.Settings.Default.ParserDataUpdateZipURL+"\r\n\r\n" +
+                        "Some changes will only be visible after you restart the program.", "Update data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show("Exception updating:\r\n" + x.Message, "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

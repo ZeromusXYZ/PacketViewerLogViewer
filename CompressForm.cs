@@ -25,6 +25,7 @@ namespace PacketViewerLogViewer
         SevenZipExtractor unzipper;
         public enum ZipTaskType { doZip, doUnZip };
         public ZipTaskType task = ZipTaskType.doZip;
+        public bool overrideZipFormat = false;
 
         public int BuildArchieveFilesList(string ProjectFolder)
         {
@@ -73,7 +74,7 @@ namespace PacketViewerLogViewer
             InitializeComponent();
         }
 
-        private bool TryLoad7ZipLibrary(string dll)
+        private static bool TryLoad7ZipLibrary(string dll)
         {
             try
             {
@@ -97,7 +98,7 @@ namespace PacketViewerLogViewer
             }
         }
 
-        private string TryGet7ZipLibrary()
+        public static string TryGet7ZipLibrary()
         {
             string res = string.Empty ;
 
@@ -145,7 +146,6 @@ namespace PacketViewerLogViewer
             }
             // Start here
             // Toggle between the x86 and x64 bit dll
-
             if ((SevenZipDLLPath == null) || (SevenZipDLLPath == string.Empty))
                 SevenZipDLLPath = TryGet7ZipLibrary();
 
@@ -224,7 +224,11 @@ namespace PacketViewerLogViewer
 
                     try
                     {
-                        unzipper = new SevenZipExtractor(ArchiveFileName);
+                        if (overrideZipFormat)
+                            unzipper = new SevenZipExtractor(ArchiveFileName,InArchiveFormat.SevenZip);
+                        else
+                            unzipper = new SevenZipExtractor(ArchiveFileName);
+
                         if (unzipper.FilesCount <= 0)
                         {
                             MessageBox.Show("Nothing to extract", "No files", MessageBoxButtons.OK, MessageBoxIcon.Warning);

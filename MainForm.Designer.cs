@@ -34,12 +34,14 @@
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileAppend = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAddFromClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFilePasteNew = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileS1 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileS2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MMFileProjectDetails = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileClose = new System.Windows.Forms.ToolStripMenuItem();
             this.mmFileS3 = new System.Windows.Forms.ToolStripSeparator();
             this.mmFileExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,8 +91,8 @@
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.sbExtraInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MMFileProjectDetails = new System.Windows.Forms.ToolStripMenuItem();
+            this.MMExtraUpdateParser = new System.Windows.Forms.ToolStripMenuItem();
+            this.MMExtraN1 = new System.Windows.Forms.ToolStripSeparator();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -152,6 +154,11 @@
             this.mmFileOpen.Text = "Open ...";
             this.mmFileOpen.Click += new System.EventHandler(this.mmFileOpen_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(246, 6);
+            // 
             // mmFileAppend
             // 
             this.mmFileAppend.Image = global::PacketViewerLogViewer.Properties.Resources.Fairytale_filenew3;
@@ -196,6 +203,14 @@
             // 
             this.mmFileS2.Name = "mmFileS2";
             this.mmFileS2.Size = new System.Drawing.Size(246, 6);
+            // 
+            // MMFileProjectDetails
+            // 
+            this.MMFileProjectDetails.Name = "MMFileProjectDetails";
+            this.MMFileProjectDetails.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.MMFileProjectDetails.Size = new System.Drawing.Size(249, 24);
+            this.MMFileProjectDetails.Text = "Project details ...";
+            this.MMFileProjectDetails.Click += new System.EventHandler(this.MMFileProjectDetails_Click);
             // 
             // mmFileClose
             // 
@@ -296,7 +311,9 @@
             // 
             this.mmExtra.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mmVideoOpenLink,
-            this.MMExtraGameView});
+            this.MMExtraGameView,
+            this.MMExtraN1,
+            this.MMExtraUpdateParser});
             this.mmExtra.Name = "mmExtra";
             this.mmExtra.Size = new System.Drawing.Size(45, 20);
             this.mmExtra.Text = "E&xtra";
@@ -306,7 +323,7 @@
             this.mmVideoOpenLink.Image = global::PacketViewerLogViewer.Properties.Resources.mini_video_icon;
             this.mmVideoOpenLink.Name = "mmVideoOpenLink";
             this.mmVideoOpenLink.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.L)));
-            this.mmVideoOpenLink.Size = new System.Drawing.Size(192, 24);
+            this.mmVideoOpenLink.Size = new System.Drawing.Size(210, 24);
             this.mmVideoOpenLink.Text = "Video link ...";
             this.mmVideoOpenLink.Click += new System.EventHandler(this.MmVideoOpenLink_Click);
             // 
@@ -315,7 +332,7 @@
             this.MMExtraGameView.Image = global::PacketViewerLogViewer.Properties.Resources.mini_unk_ticon;
             this.MMExtraGameView.Name = "MMExtraGameView";
             this.MMExtraGameView.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.I)));
-            this.MMExtraGameView.Size = new System.Drawing.Size(192, 24);
+            this.MMExtraGameView.Size = new System.Drawing.Size(210, 24);
             this.MMExtraGameView.Text = "View Game Info";
             this.MMExtraGameView.Click += new System.EventHandler(this.MMExtraGameView_Click);
             // 
@@ -664,18 +681,17 @@
             this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
             this.sbProjectInfo.Text = "Project: none";
             // 
-            // toolStripSeparator1
+            // MMExtraUpdateParser
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(246, 6);
+            this.MMExtraUpdateParser.Name = "MMExtraUpdateParser";
+            this.MMExtraUpdateParser.Size = new System.Drawing.Size(210, 24);
+            this.MMExtraUpdateParser.Text = "Download parser updates";
+            this.MMExtraUpdateParser.Click += new System.EventHandler(this.MMExtraUpdateParser_Click);
             // 
-            // MMFileProjectDetails
+            // MMExtraN1
             // 
-            this.MMFileProjectDetails.Name = "MMFileProjectDetails";
-            this.MMFileProjectDetails.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.MMFileProjectDetails.Size = new System.Drawing.Size(249, 24);
-            this.MMFileProjectDetails.Text = "Project details ...";
-            this.MMFileProjectDetails.Click += new System.EventHandler(this.MMFileProjectDetails_Click);
+            this.MMExtraN1.Name = "MMExtraN1";
+            this.MMExtraN1.Size = new System.Drawing.Size(207, 6);
             // 
             // MainForm
             // 
@@ -784,6 +800,8 @@
         private System.Windows.Forms.ToolStripMenuItem MMExtraGameView;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem MMFileProjectDetails;
+        private System.Windows.Forms.ToolStripSeparator MMExtraN1;
+        private System.Windows.Forms.ToolStripMenuItem MMExtraUpdateParser;
     }
 }
 
