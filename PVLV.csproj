@@ -797,6 +797,8 @@
     <Content Include="data\parse\parserinfo.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="redist\7z1805-x64.exe" />
+    <Content Include="redist\7z1805.exe" />
     <Content Include="Res\5657.close.png" />
     <Content Include="Res\5700.add.png" />
     <None Include="Res\Fairytale_left.png" />

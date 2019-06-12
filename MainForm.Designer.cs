@@ -57,6 +57,8 @@
             this.mmExtra = new System.Windows.Forms.ToolStripMenuItem();
             this.mmVideoOpenLink = new System.Windows.Forms.ToolStripMenuItem();
             this.MMExtraGameView = new System.Windows.Forms.ToolStripMenuItem();
+            this.MMExtraN1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MMExtraUpdateParser = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutGithub = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutDiscord = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,8 +93,6 @@
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.sbExtraInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.MMExtraUpdateParser = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMExtraN1 = new System.Windows.Forms.ToolStripSeparator();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -247,7 +247,7 @@
             // 
             this.mmSearchSearch.Name = "mmSearchSearch";
             this.mmSearchSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mmSearchSearch.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchSearch.Size = new System.Drawing.Size(161, 22);
             this.mmSearchSearch.Text = "Search ...";
             this.mmSearchSearch.Click += new System.EventHandler(this.MmSearchSearch_Click);
             // 
@@ -255,7 +255,7 @@
             // 
             this.mmSearchNext.Name = "mmSearchNext";
             this.mmSearchNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mmSearchNext.Size = new System.Drawing.Size(180, 22);
+            this.mmSearchNext.Size = new System.Drawing.Size(161, 22);
             this.mmSearchNext.Text = "Search next";
             this.mmSearchNext.Click += new System.EventHandler(this.MmSearchNext_Click);
             // 
@@ -275,7 +275,7 @@
             this.mmFilterApply.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MMFilterApplyItem});
             this.mmFilterApply.Name = "mmFilterApply";
-            this.mmFilterApply.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterApply.Size = new System.Drawing.Size(170, 22);
             this.mmFilterApply.Text = "Apply";
             this.mmFilterApply.DropDownOpening += new System.EventHandler(this.MmFilterApply_DropDownOpening);
             // 
@@ -288,13 +288,13 @@
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(167, 6);
             // 
             // mmFilterEdit
             // 
             this.mmFilterEdit.Name = "mmFilterEdit";
             this.mmFilterEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F)));
-            this.mmFilterEdit.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterEdit.Size = new System.Drawing.Size(170, 22);
             this.mmFilterEdit.Text = "Edit ...";
             this.mmFilterEdit.Click += new System.EventHandler(this.MmFilterEdit_Click);
             // 
@@ -303,7 +303,7 @@
             this.mmFilterReset.Name = "mmFilterReset";
             this.mmFilterReset.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.F)));
-            this.mmFilterReset.Size = new System.Drawing.Size(180, 22);
+            this.mmFilterReset.Size = new System.Drawing.Size(170, 22);
             this.mmFilterReset.Text = "Reset";
             this.mmFilterReset.Click += new System.EventHandler(this.MmFilterReset_Click);
             // 
@@ -335,6 +335,18 @@
             this.MMExtraGameView.Size = new System.Drawing.Size(210, 24);
             this.MMExtraGameView.Text = "View Game Info";
             this.MMExtraGameView.Click += new System.EventHandler(this.MMExtraGameView_Click);
+            // 
+            // MMExtraN1
+            // 
+            this.MMExtraN1.Name = "MMExtraN1";
+            this.MMExtraN1.Size = new System.Drawing.Size(207, 6);
+            // 
+            // MMExtraUpdateParser
+            // 
+            this.MMExtraUpdateParser.Name = "MMExtraUpdateParser";
+            this.MMExtraUpdateParser.Size = new System.Drawing.Size(210, 24);
+            this.MMExtraUpdateParser.Text = "Download parser updates";
+            this.MMExtraUpdateParser.Click += new System.EventHandler(this.MMExtraUpdateParser_Click);
             // 
             // mmAbout
             // 
@@ -625,9 +637,7 @@
             this.rtInfo.Name = "rtInfo";
             this.rtInfo.Size = new System.Drawing.Size(712, 125);
             this.rtInfo.TabIndex = 2;
-            this.rtInfo.Text = "Click File -> Open to start\n\nTo adjust packet info please check parserinfo.txt in" +
-    " the parse folder\n\"lookup\" folder is used to create some custom value names\n\"fil" +
-    "ters\" folder containts custom filters\n";
+            this.rtInfo.Text = resources.GetString("rtInfo.Text");
             this.rtInfo.SelectionChanged += new System.EventHandler(this.RtInfo_SelectionChanged);
             // 
             // cbOriginalData
@@ -680,18 +690,6 @@
             this.sbProjectInfo.Name = "sbProjectInfo";
             this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
             this.sbProjectInfo.Text = "Project: none";
-            // 
-            // MMExtraUpdateParser
-            // 
-            this.MMExtraUpdateParser.Name = "MMExtraUpdateParser";
-            this.MMExtraUpdateParser.Size = new System.Drawing.Size(210, 24);
-            this.MMExtraUpdateParser.Text = "Download parser updates";
-            this.MMExtraUpdateParser.Click += new System.EventHandler(this.MMExtraUpdateParser_Click);
-            // 
-            // MMExtraN1
-            // 
-            this.MMExtraN1.Name = "MMExtraN1";
-            this.MMExtraN1.Size = new System.Drawing.Size(207, 6);
             // 
             // MainForm
             // 

@@ -59,10 +59,22 @@
             this.lTagLabel = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCopySummary = new System.Windows.Forms.Button();
+            this.tcProjectInfo = new System.Windows.Forms.TabControl();
+            this.tpMainInfo = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tlProjectInfo = new System.Windows.Forms.TableLayoutPanel();
+            this.tlCommunity = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
             this.tagContainer.SuspendLayout();
+            this.tcProjectInfo.SuspendLayout();
+            this.tpMainInfo.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tlProjectInfo.SuspendLayout();
+            this.tlCommunity.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -70,9 +82,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 55);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 13);
+            this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Opened Log file";
+            this.label1.Text = "Associated Log file";
             // 
             // label2
             // 
@@ -88,9 +100,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 94);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.Size = new System.Drawing.Size(86, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Source Video";
+            this.label3.Text = "Local Video Link";
             // 
             // label4
             // 
@@ -112,41 +124,54 @@
             // 
             // tProjectFolder
             // 
+            this.tProjectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tProjectFolder.Location = new System.Drawing.Point(20, 32);
             this.tProjectFolder.Name = "tProjectFolder";
-            this.tProjectFolder.Size = new System.Drawing.Size(345, 20);
+            this.tProjectFolder.ReadOnly = true;
+            this.tProjectFolder.Size = new System.Drawing.Size(507, 20);
             this.tProjectFolder.TabIndex = 2;
             this.tProjectFolder.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
             // tOpenedLog
             // 
+            this.tOpenedLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tOpenedLog.Location = new System.Drawing.Point(20, 71);
             this.tOpenedLog.Name = "tOpenedLog";
-            this.tOpenedLog.Size = new System.Drawing.Size(345, 20);
+            this.tOpenedLog.ReadOnly = true;
+            this.tOpenedLog.Size = new System.Drawing.Size(507, 20);
             this.tOpenedLog.TabIndex = 3;
             this.tOpenedLog.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
             // tSourceVideo
             // 
+            this.tSourceVideo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tSourceVideo.Location = new System.Drawing.Point(20, 110);
             this.tSourceVideo.Name = "tSourceVideo";
-            this.tSourceVideo.Size = new System.Drawing.Size(345, 20);
+            this.tSourceVideo.ReadOnly = true;
+            this.tSourceVideo.Size = new System.Drawing.Size(507, 20);
             this.tSourceVideo.TabIndex = 4;
             this.tSourceVideo.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
             // tYoutubeURL
             // 
+            this.tYoutubeURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tYoutubeURL.Location = new System.Drawing.Point(20, 32);
             this.tYoutubeURL.Name = "tYoutubeURL";
-            this.tYoutubeURL.Size = new System.Drawing.Size(345, 20);
+            this.tYoutubeURL.Size = new System.Drawing.Size(406, 20);
             this.tYoutubeURL.TabIndex = 5;
             this.tYoutubeURL.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
             // tPackedLogsURL
             // 
+            this.tPackedLogsURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tPackedLogsURL.Location = new System.Drawing.Point(20, 71);
             this.tPackedLogsURL.Name = "tPackedLogsURL";
-            this.tPackedLogsURL.Size = new System.Drawing.Size(345, 20);
+            this.tPackedLogsURL.Size = new System.Drawing.Size(406, 20);
             this.tPackedLogsURL.TabIndex = 6;
             this.tPackedLogsURL.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
@@ -157,14 +182,16 @@
             // 
             // btnDownloadSource
             // 
+            this.btnDownloadSource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDownloadSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDownloadSource.ImageIndex = 2;
             this.btnDownloadSource.ImageList = this.IL;
-            this.btnDownloadSource.Location = new System.Drawing.Point(399, 71);
+            this.btnDownloadSource.Location = new System.Drawing.Point(432, 69);
             this.btnDownloadSource.Name = "btnDownloadSource";
-            this.btnDownloadSource.Size = new System.Drawing.Size(160, 23);
+            this.btnDownloadSource.Size = new System.Drawing.Size(123, 23);
             this.btnDownloadSource.TabIndex = 11;
             this.btnDownloadSource.Text = "Download";
+            this.btnDownloadSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnDownloadSource.UseVisualStyleBackColor = true;
             this.btnDownloadSource.Click += new System.EventHandler(this.BtnDownloadSource_Click);
             // 
@@ -181,14 +208,16 @@
             // 
             // btnDownloadYoutube
             // 
+            this.btnDownloadYoutube.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDownloadYoutube.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDownloadYoutube.ImageIndex = 2;
             this.btnDownloadYoutube.ImageList = this.IL;
-            this.btnDownloadYoutube.Location = new System.Drawing.Point(399, 32);
+            this.btnDownloadYoutube.Location = new System.Drawing.Point(432, 32);
             this.btnDownloadYoutube.Name = "btnDownloadYoutube";
-            this.btnDownloadYoutube.Size = new System.Drawing.Size(160, 23);
+            this.btnDownloadYoutube.Size = new System.Drawing.Size(123, 23);
             this.btnDownloadYoutube.TabIndex = 12;
             this.btnDownloadYoutube.Text = "Open in browser";
+            this.btnDownloadYoutube.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnDownloadYoutube.UseVisualStyleBackColor = true;
             this.btnDownloadYoutube.Click += new System.EventHandler(this.BtnDownloadYoutube_Click);
             // 
@@ -198,32 +227,29 @@
             this.btnUploadToYoutube.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUploadToYoutube.ImageIndex = 1;
             this.btnUploadToYoutube.ImageList = this.IL;
-            this.btnUploadToYoutube.Location = new System.Drawing.Point(399, 110);
+            this.btnUploadToYoutube.Location = new System.Drawing.Point(9, 48);
             this.btnUploadToYoutube.Name = "btnUploadToYoutube";
-            this.btnUploadToYoutube.Size = new System.Drawing.Size(160, 20);
+            this.btnUploadToYoutube.Size = new System.Drawing.Size(160, 23);
             this.btnUploadToYoutube.TabIndex = 14;
-            this.btnUploadToYoutube.Text = "Upload to Youtube";
+            this.btnUploadToYoutube.Text = "Upload Video to Youtube";
+            this.btnUploadToYoutube.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnUploadToYoutube.UseVisualStyleBackColor = true;
             // 
             // gbLocalFiles
             // 
-            this.gbLocalFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbLocalFiles.Controls.Add(this.btnExtractZip);
-            this.gbLocalFiles.Controls.Add(this.btnMake7zip);
             this.gbLocalFiles.Controls.Add(this.lVideoSourceOK);
             this.gbLocalFiles.Controls.Add(this.lOpenedLogOK);
             this.gbLocalFiles.Controls.Add(this.lProjectFolderOK);
             this.gbLocalFiles.Controls.Add(this.label2);
-            this.gbLocalFiles.Controls.Add(this.btnUploadToYoutube);
             this.gbLocalFiles.Controls.Add(this.label1);
             this.gbLocalFiles.Controls.Add(this.label3);
             this.gbLocalFiles.Controls.Add(this.tProjectFolder);
             this.gbLocalFiles.Controls.Add(this.tOpenedLog);
             this.gbLocalFiles.Controls.Add(this.tSourceVideo);
-            this.gbLocalFiles.Location = new System.Drawing.Point(12, 129);
+            this.gbLocalFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbLocalFiles.Location = new System.Drawing.Point(3, 3);
             this.gbLocalFiles.Name = "gbLocalFiles";
-            this.gbLocalFiles.Size = new System.Drawing.Size(565, 141);
+            this.gbLocalFiles.Size = new System.Drawing.Size(564, 162);
             this.gbLocalFiles.TabIndex = 15;
             this.gbLocalFiles.TabStop = false;
             this.gbLocalFiles.Text = "Local Files";
@@ -233,11 +259,12 @@
             this.btnExtractZip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnExtractZip.ImageIndex = 5;
             this.btnExtractZip.ImageList = this.IL;
-            this.btnExtractZip.Location = new System.Drawing.Point(399, 70);
+            this.btnExtractZip.Location = new System.Drawing.Point(175, 19);
             this.btnExtractZip.Name = "btnExtractZip";
-            this.btnExtractZip.Size = new System.Drawing.Size(160, 20);
+            this.btnExtractZip.Size = new System.Drawing.Size(160, 23);
             this.btnExtractZip.TabIndex = 19;
             this.btnExtractZip.Text = "Extract Archive";
+            this.btnExtractZip.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnExtractZip.UseVisualStyleBackColor = true;
             this.btnExtractZip.Click += new System.EventHandler(this.BtnExtractZip_Click);
             // 
@@ -246,19 +273,21 @@
             this.btnMake7zip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnMake7zip.ImageIndex = 0;
             this.btnMake7zip.ImageList = this.IL;
-            this.btnMake7zip.Location = new System.Drawing.Point(399, 32);
+            this.btnMake7zip.Location = new System.Drawing.Point(9, 19);
             this.btnMake7zip.Name = "btnMake7zip";
-            this.btnMake7zip.Size = new System.Drawing.Size(160, 20);
+            this.btnMake7zip.Size = new System.Drawing.Size(160, 23);
             this.btnMake7zip.TabIndex = 18;
-            this.btnMake7zip.Text = "Make .7z";
+            this.btnMake7zip.Text = "Create Archive";
+            this.btnMake7zip.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnMake7zip.UseVisualStyleBackColor = true;
             this.btnMake7zip.Click += new System.EventHandler(this.BtnMake7zip_Click);
             // 
             // lVideoSourceOK
             // 
+            this.lVideoSourceOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lVideoSourceOK.AutoSize = true;
             this.lVideoSourceOK.Font = new System.Drawing.Font("Wingdings 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.lVideoSourceOK.Location = new System.Drawing.Point(371, 110);
+            this.lVideoSourceOK.Location = new System.Drawing.Point(533, 110);
             this.lVideoSourceOK.Name = "lVideoSourceOK";
             this.lVideoSourceOK.Size = new System.Drawing.Size(22, 17);
             this.lVideoSourceOK.TabIndex = 17;
@@ -266,9 +295,10 @@
             // 
             // lOpenedLogOK
             // 
+            this.lOpenedLogOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lOpenedLogOK.AutoSize = true;
             this.lOpenedLogOK.Font = new System.Drawing.Font("Wingdings 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.lOpenedLogOK.Location = new System.Drawing.Point(371, 71);
+            this.lOpenedLogOK.Location = new System.Drawing.Point(533, 71);
             this.lOpenedLogOK.Name = "lOpenedLogOK";
             this.lOpenedLogOK.Size = new System.Drawing.Size(22, 17);
             this.lOpenedLogOK.TabIndex = 16;
@@ -276,9 +306,10 @@
             // 
             // lProjectFolderOK
             // 
+            this.lProjectFolderOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lProjectFolderOK.AutoSize = true;
             this.lProjectFolderOK.Font = new System.Drawing.Font("Wingdings 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.lProjectFolderOK.Location = new System.Drawing.Point(371, 32);
+            this.lProjectFolderOK.Location = new System.Drawing.Point(533, 32);
             this.lProjectFolderOK.Name = "lProjectFolderOK";
             this.lProjectFolderOK.Size = new System.Drawing.Size(22, 17);
             this.lProjectFolderOK.TabIndex = 15;
@@ -286,32 +317,30 @@
             // 
             // gbOnlineFile
             // 
-            this.gbOnlineFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbOnlineFile.Controls.Add(this.label4);
             this.gbOnlineFile.Controls.Add(this.label5);
             this.gbOnlineFile.Controls.Add(this.tYoutubeURL);
             this.gbOnlineFile.Controls.Add(this.btnDownloadSource);
             this.gbOnlineFile.Controls.Add(this.btnDownloadYoutube);
             this.gbOnlineFile.Controls.Add(this.tPackedLogsURL);
-            this.gbOnlineFile.Location = new System.Drawing.Point(12, 276);
+            this.gbOnlineFile.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbOnlineFile.Location = new System.Drawing.Point(3, 3);
             this.gbOnlineFile.Name = "gbOnlineFile";
-            this.gbOnlineFile.Size = new System.Drawing.Size(565, 110);
+            this.gbOnlineFile.Size = new System.Drawing.Size(564, 162);
             this.gbOnlineFile.TabIndex = 16;
             this.gbOnlineFile.TabStop = false;
             this.gbOnlineFile.Text = "Online Files";
             // 
             // gbProjectInfo
             // 
-            this.gbProjectInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbProjectInfo.BackColor = System.Drawing.SystemColors.Control;
             this.gbProjectInfo.Controls.Add(this.tTagBox);
             this.gbProjectInfo.Controls.Add(this.btnAddTag);
             this.gbProjectInfo.Controls.Add(this.tagContainer);
-            this.gbProjectInfo.Location = new System.Drawing.Point(12, 12);
+            this.gbProjectInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbProjectInfo.Location = new System.Drawing.Point(3, 171);
             this.gbProjectInfo.Name = "gbProjectInfo";
-            this.gbProjectInfo.Size = new System.Drawing.Size(565, 111);
+            this.gbProjectInfo.Size = new System.Drawing.Size(564, 163);
             this.gbProjectInfo.TabIndex = 17;
             this.gbProjectInfo.TabStop = false;
             this.gbProjectInfo.Text = "Project Info";
@@ -369,11 +398,12 @@
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSave.ImageIndex = 4;
             this.btnSave.ImageList = this.IL;
-            this.btnSave.Location = new System.Drawing.Point(12, 396);
+            this.btnSave.Location = new System.Drawing.Point(12, 376);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(88, 23);
             this.btnSave.TabIndex = 7;
             this.btnSave.Text = "Save";
+            this.btnSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
@@ -383,24 +413,100 @@
             this.btnCopySummary.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCopySummary.ImageIndex = 3;
             this.btnCopySummary.ImageList = this.IL;
-            this.btnCopySummary.Location = new System.Drawing.Point(411, 396);
+            this.btnCopySummary.Location = new System.Drawing.Point(443, 376);
             this.btnCopySummary.Name = "btnCopySummary";
-            this.btnCopySummary.Size = new System.Drawing.Size(160, 23);
+            this.btnCopySummary.Size = new System.Drawing.Size(122, 23);
             this.btnCopySummary.TabIndex = 18;
             this.btnCopySummary.Text = "Copy Summary";
+            this.btnCopySummary.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCopySummary.UseVisualStyleBackColor = true;
             this.btnCopySummary.Click += new System.EventHandler(this.BtnCopySummary_Click);
+            // 
+            // tcProjectInfo
+            // 
+            this.tcProjectInfo.Controls.Add(this.tpMainInfo);
+            this.tcProjectInfo.Controls.Add(this.tabPage2);
+            this.tcProjectInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tcProjectInfo.Location = new System.Drawing.Point(0, 0);
+            this.tcProjectInfo.Name = "tcProjectInfo";
+            this.tcProjectInfo.SelectedIndex = 0;
+            this.tcProjectInfo.Size = new System.Drawing.Size(584, 369);
+            this.tcProjectInfo.TabIndex = 19;
+            // 
+            // tpMainInfo
+            // 
+            this.tpMainInfo.BackColor = System.Drawing.SystemColors.Control;
+            this.tpMainInfo.Controls.Add(this.tlProjectInfo);
+            this.tpMainInfo.Location = new System.Drawing.Point(4, 22);
+            this.tpMainInfo.Name = "tpMainInfo";
+            this.tpMainInfo.Padding = new System.Windows.Forms.Padding(3);
+            this.tpMainInfo.Size = new System.Drawing.Size(576, 343);
+            this.tpMainInfo.TabIndex = 0;
+            this.tpMainInfo.Text = "Project Information";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.tlCommunity);
+            this.tabPage2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(576, 343);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Community Settings";
+            // 
+            // tlProjectInfo
+            // 
+            this.tlProjectInfo.ColumnCount = 1;
+            this.tlProjectInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlProjectInfo.Controls.Add(this.gbLocalFiles, 0, 0);
+            this.tlProjectInfo.Controls.Add(this.gbProjectInfo, 0, 1);
+            this.tlProjectInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlProjectInfo.Location = new System.Drawing.Point(3, 3);
+            this.tlProjectInfo.Name = "tlProjectInfo";
+            this.tlProjectInfo.RowCount = 2;
+            this.tlProjectInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlProjectInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlProjectInfo.Size = new System.Drawing.Size(570, 337);
+            this.tlProjectInfo.TabIndex = 18;
+            // 
+            // tlCommunity
+            // 
+            this.tlCommunity.ColumnCount = 1;
+            this.tlCommunity.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlCommunity.Controls.Add(this.groupBox1, 0, 1);
+            this.tlCommunity.Controls.Add(this.gbOnlineFile, 0, 0);
+            this.tlCommunity.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlCommunity.Location = new System.Drawing.Point(3, 3);
+            this.tlCommunity.Name = "tlCommunity";
+            this.tlCommunity.RowCount = 2;
+            this.tlCommunity.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlCommunity.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlCommunity.Size = new System.Drawing.Size(570, 337);
+            this.tlCommunity.TabIndex = 20;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnMake7zip);
+            this.groupBox1.Controls.Add(this.btnExtractZip);
+            this.groupBox1.Controls.Add(this.btnUploadToYoutube);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(3, 171);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(564, 163);
+            this.groupBox1.TabIndex = 17;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Actions";
             // 
             // ProjectInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(590, 431);
+            this.ClientSize = new System.Drawing.Size(584, 411);
+            this.Controls.Add(this.tcProjectInfo);
             this.Controls.Add(this.btnCopySummary);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.gbProjectInfo);
-            this.Controls.Add(this.gbOnlineFile);
-            this.Controls.Add(this.gbLocalFiles);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ProjectInfoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -415,6 +521,12 @@
             this.gbProjectInfo.PerformLayout();
             this.tagContainer.ResumeLayout(false);
             this.tagContainer.PerformLayout();
+            this.tcProjectInfo.ResumeLayout(false);
+            this.tpMainInfo.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tlProjectInfo.ResumeLayout(false);
+            this.tlCommunity.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -450,5 +562,11 @@
         private System.Windows.Forms.Button btnMake7zip;
         private System.Windows.Forms.ImageList IL;
         private System.Windows.Forms.Button btnExtractZip;
+        private System.Windows.Forms.TabControl tcProjectInfo;
+        private System.Windows.Forms.TabPage tpMainInfo;
+        private System.Windows.Forms.TableLayoutPanel tlProjectInfo;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TableLayoutPanel tlCommunity;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

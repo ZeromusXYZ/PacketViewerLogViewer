@@ -123,6 +123,16 @@
   <metadata name="pmPacketList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>245, 17</value>
   </metadata>
+  <data name="rtInfo.Text" xml:space="preserve">
+    <value>Click  File -&gt; Open  to start
+
+To adjust packet info please check parserinfo.txt in the parse folder.
+The "data\lookup" folder is used to create some custom value names
+The "data\filters" folder containts custom filters.
+
+When viewing a packet you can right-click the packet list for extra options.
+</value>
+  </data>
   <metadata name="openLogFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>91, 17</value>
   </metadata>

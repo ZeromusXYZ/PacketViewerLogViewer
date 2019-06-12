@@ -102,12 +102,20 @@ namespace PacketViewerLogViewer
         {
             string res = string.Empty ;
 
-            string InstallPath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\7-Zip", (Environment.Is64BitProcess ? "Path64" : "Path"), null);
-            if (InstallPath != null)
+
+            res = Path.Combine(Application.StartupPath, "7z.dll");
+            if (!TryLoad7ZipLibrary(res))
+                res = string.Empty;
+
+            if (res == string.Empty)
             {
-                res = Path.Combine(InstallPath,"7z.dll");
-                if (!TryLoad7ZipLibrary(res))
-                    res = string.Empty;
+                string InstallPath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\7-Zip", (Environment.Is64BitProcess ? "Path64" : "Path"), null);
+                if (InstallPath != null)
+                {
+                    res = Path.Combine(InstallPath, "7z.dll");
+                    if (!TryLoad7ZipLibrary(res))
+                        res = string.Empty;
+                }
             }
 
             /*
@@ -370,10 +378,10 @@ namespace PacketViewerLogViewer
 
         private void DoUnZip()
         {
-            string tDir = Path.GetDirectoryName(ArchiveFileName);
+            string targetDir = Path.GetDirectoryName(ArchiveFileName);
             string expectedRootDir = ProjectName ;
             expectedRootDir = expectedRootDir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
-            tDir = tDir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+            targetDir = targetDir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
             var filelist = unzipper.ArchiveFileData.ToArray();
             ulong totsize = 0;
             foreach (var fd in filelist)
@@ -403,7 +411,7 @@ namespace PacketViewerLogViewer
                     {
                         zippedName = fd.FileName;
                     }
-                    var targetName = tDir + zippedName;
+                    var targetName = targetDir + zippedName;
                     var targetFileDir = Path.GetDirectoryName(targetName);
                     if (!Directory.Exists(targetFileDir))
                         Directory.CreateDirectory(targetFileDir);

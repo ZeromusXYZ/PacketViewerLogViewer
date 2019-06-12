@@ -20,7 +20,7 @@ namespace PacketViewerLogViewer
     {
         PacketTabPage tp ;
         int lastTagID = 0;
-        private string CurrentArchieve = string.Empty;
+        private string CurrentArchive = string.Empty;
 
         public ProjectInfoForm()
         {
@@ -144,7 +144,9 @@ namespace PacketViewerLogViewer
         {
             if ((sender is Label) && ((int)(sender as Label).Tag > 0))
             {
+                string oldTag = (sender as Label).Text;
                 tagContainer.Controls.Remove(sender as Label);
+                tTagBox.Text = oldTag;
             }
         }
 
@@ -225,58 +227,58 @@ namespace PacketViewerLogViewer
         {
             bool res = true;
             // Project Folder
-            var pDir = tProjectFolder.Text.TrimEnd(Path.DirectorySeparatorChar);
-            var pAltName = Path.Combine(Path.GetDirectoryName(tp.ProjectFile), Path.GetFileNameWithoutExtension(tp.ProjectFile));
-            if (Directory.Exists(pDir))
+            var pUpOneDirName = tProjectFolder.Text.TrimEnd(Path.DirectorySeparatorChar);
+            var pLocalDirName = Path.Combine(Path.GetDirectoryName(tp.ProjectFile), Path.GetFileNameWithoutExtension(tp.ProjectFile));
+            if (Directory.Exists(pUpOneDirName))
             {
                 lProjectFolderOK.Text = "\x81";
                 lProjectFolderOK.ForeColor = Color.LimeGreen;
                 btnMake7zip.Enabled = true;
 
-                if (File.Exists(pDir + ".7z"))
+                if (File.Exists(pLocalDirName + ".7z"))
                 {
-                    CurrentArchieve = pDir + ".7z";
+                    CurrentArchive = pLocalDirName + ".7z";
                     btnExtractZip.Enabled = true;
                     btnMake7zip.Enabled = false;
                 }
                 else
-                if (File.Exists(pDir + ".zip"))
+                if (File.Exists(pLocalDirName + ".zip"))
                 {
-                    CurrentArchieve = pDir + ".zip" ;
+                    CurrentArchive = pLocalDirName + ".zip";
                     btnExtractZip.Enabled = true;
                     btnMake7zip.Enabled = false;
                 }
                 else
-                if (File.Exists(pDir + ".rar"))
+                if (File.Exists(pLocalDirName + ".rar"))
                 {
-                    CurrentArchieve = pDir + ".rar" ;
+                    CurrentArchive = pLocalDirName + ".rar";
                     btnExtractZip.Enabled = true;
                     btnMake7zip.Enabled = false;
                 }
                 else
-                if (File.Exists(pAltName + ".7z"))
+                if (File.Exists(pUpOneDirName + ".7z"))
                 {
-                    CurrentArchieve = pAltName + ".7z";
+                    CurrentArchive = pUpOneDirName + ".7z";
                     btnExtractZip.Enabled = true;
                     btnMake7zip.Enabled = false;
                 }
                 else
-                if (File.Exists(pAltName + ".zip"))
+                if (File.Exists(pUpOneDirName + ".zip"))
                 {
-                    CurrentArchieve = pAltName + ".zip";
+                    CurrentArchive = pUpOneDirName + ".zip" ;
                     btnExtractZip.Enabled = true;
                     btnMake7zip.Enabled = false;
                 }
                 else
-                if (File.Exists(pAltName + ".rar"))
+                if (File.Exists(pUpOneDirName + ".rar"))
                 {
-                    CurrentArchieve = pAltName + ".rar";
+                    CurrentArchive = pUpOneDirName + ".rar" ;
                     btnExtractZip.Enabled = true;
                     btnMake7zip.Enabled = false;
                 }
                 else
                 {
-                    CurrentArchieve = string.Empty;
+                    CurrentArchive = string.Empty;
                     btnExtractZip.Enabled = false;
                 }
 
@@ -287,7 +289,7 @@ namespace PacketViewerLogViewer
                 lProjectFolderOK.ForeColor = Color.Red;
                 btnMake7zip.Enabled = false;
                 btnExtractZip.Enabled = false;
-                CurrentArchieve = string.Empty;
+                CurrentArchive = string.Empty;
                 res = false;
             }
 
@@ -397,7 +399,7 @@ namespace PacketViewerLogViewer
             using (var zipform = new CompressForm())
             {
                 zipform.task = CompressForm.ZipTaskType.doUnZip;
-                zipform.ArchiveFileName = CurrentArchieve;
+                zipform.ArchiveFileName = CurrentArchive;
                 zipform.ProjectName = Path.GetFileNameWithoutExtension(tp.ProjectFile);
 
                 if (zipform.ShowDialog() == DialogResult.OK)
