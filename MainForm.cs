@@ -1407,7 +1407,7 @@ namespace PacketViewerLogViewer
         {
             if (MessageBox.Show("Do you want to download packet data ?\r\n\r\n" +
                 "Any changes you have made will be overwritten if you do.\r\n" +
-                "This does NOT check for a version updates of the program itself !\r\n" +
+                "This does NOT check for version updates of the program itself !\r\n" +
                 "Also note that it is possible that this data is OLDER than your current one.","Update data ?",MessageBoxButtons.YesNo,MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 

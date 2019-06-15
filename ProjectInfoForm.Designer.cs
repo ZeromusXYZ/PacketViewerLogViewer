@@ -68,6 +68,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.lCurrentArchiveName = new System.Windows.Forms.Label();
+            this.btnUploadLogs = new System.Windows.Forms.Button();
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
@@ -238,6 +239,7 @@
             this.btnUploadToYoutube.Text = "Upload Video to Youtube";
             this.btnUploadToYoutube.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnUploadToYoutube.UseVisualStyleBackColor = true;
+            this.btnUploadToYoutube.Click += new System.EventHandler(this.BtnUploadToYoutube_Click);
             // 
             // gbLocalFiles
             // 
@@ -506,6 +508,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnUploadLogs);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.lCurrentArchiveName);
             this.groupBox1.Controls.Add(this.btnMake7zip);
@@ -539,6 +542,20 @@
             this.lCurrentArchiveName.Text = "???";
             this.lCurrentArchiveName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lCurrentArchiveName.Click += new System.EventHandler(this.LCurrentArchiveName_Click);
+            // 
+            // btnUploadLogs
+            // 
+            this.btnUploadLogs.Enabled = false;
+            this.btnUploadLogs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUploadLogs.ImageIndex = 1;
+            this.btnUploadLogs.ImageList = this.IL;
+            this.btnUploadLogs.Location = new System.Drawing.Point(9, 106);
+            this.btnUploadLogs.Name = "btnUploadLogs";
+            this.btnUploadLogs.Size = new System.Drawing.Size(160, 23);
+            this.btnUploadLogs.TabIndex = 22;
+            this.btnUploadLogs.Text = "Upload Logs";
+            this.btnUploadLogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnUploadLogs.UseVisualStyleBackColor = true;
             // 
             // ProjectInfoForm
             // 
@@ -614,5 +631,6 @@
         private System.Windows.Forms.Label lCurrentArchiveName;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnUploadLogs;
     }
 }

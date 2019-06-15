@@ -20,6 +20,7 @@ namespace PacketViewerLogViewer
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
+            this.lArchitecture.Text = Environment.Is64BitProcess ? "Running as 64-bits" : "Running as 32-bits";
         }
 
         #region Assembly Attribute Accessors

@@ -36,6 +36,7 @@
             this.labelCompanyName = new System.Windows.Forms.Label();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.okButton = new System.Windows.Forms.Button();
+            this.lArchitecture = new System.Windows.Forms.Label();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -52,6 +53,7 @@
             this.tableLayoutPanel.Controls.Add(this.labelCompanyName, 1, 3);
             this.tableLayoutPanel.Controls.Add(this.textBoxDescription, 1, 4);
             this.tableLayoutPanel.Controls.Add(this.okButton, 1, 5);
+            this.tableLayoutPanel.Controls.Add(this.lArchitecture, 0, 5);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(9, 9);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -70,7 +72,7 @@
             this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
             this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
             this.logoPictureBox.Name = "logoPictureBox";
-            this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
+            this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 5);
             this.logoPictureBox.Size = new System.Drawing.Size(150, 150);
             this.logoPictureBox.TabIndex = 12;
             this.logoPictureBox.TabStop = false;
@@ -147,6 +149,17 @@
             this.okButton.TabIndex = 24;
             this.okButton.Text = "&OK";
             // 
+            // lArchitecture
+            // 
+            this.lArchitecture.AutoSize = true;
+            this.lArchitecture.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lArchitecture.Location = new System.Drawing.Point(9, 255);
+            this.lArchitecture.Name = "lArchitecture";
+            this.lArchitecture.Size = new System.Drawing.Size(35, 13);
+            this.lArchitecture.TabIndex = 25;
+            this.lArchitecture.Text = "Ver";
+            this.lArchitecture.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // AboutBoxForm
             // 
             this.AcceptButton = this.okButton;
@@ -180,5 +193,6 @@
         private System.Windows.Forms.Label labelCompanyName;
         private System.Windows.Forms.TextBox textBoxDescription;
         private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Label lArchitecture;
     }
 }

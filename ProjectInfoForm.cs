@@ -387,7 +387,16 @@ namespace PacketViewerLogViewer
             using(var zipform = new CompressForm())
             {
                 zipform.task = CompressForm.ZipTaskType.doZip;
-                zipform.ArchiveFileName = Path.ChangeExtension(tp.ProjectFolder.TrimEnd(Path.DirectorySeparatorChar), ".7z");
+                string aName;
+                if (tp.ProjectFile != string.Empty)
+                {
+                    aName = Path.GetFileNameWithoutExtension(tp.ProjectFile) + ".7z";
+                }
+                else
+                {
+                    aName = Path.GetFileNameWithoutExtension(tp.ProjectFolder.TrimEnd(Path.DirectorySeparatorChar)) + ".7z";
+                }
+                zipform.ArchiveFileName = Path.Combine(tp.ProjectFolder,aName);
                 
                 if (zipform.BuildArchieveFilesList(tProjectFolder.Text) <= 0)
                 {
@@ -460,6 +469,11 @@ namespace PacketViewerLogViewer
         private void ProjectInfoForm_Activated(object sender, EventArgs e)
         {
             ProjectInfo_TextChanged(null, null);
+        }
+
+        private void BtnUploadToYoutube_Click(object sender, EventArgs e)
+        {
+            // Use Google's Youtube API somehow ?
         }
     }
 }
