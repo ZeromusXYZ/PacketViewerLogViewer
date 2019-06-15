@@ -46,11 +46,12 @@
             this.btnDownloadYoutube = new System.Windows.Forms.Button();
             this.btnUploadToYoutube = new System.Windows.Forms.Button();
             this.gbLocalFiles = new System.Windows.Forms.GroupBox();
-            this.btnExtractZip = new System.Windows.Forms.Button();
-            this.btnMake7zip = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             this.lVideoSourceOK = new System.Windows.Forms.Label();
             this.lOpenedLogOK = new System.Windows.Forms.Label();
             this.lProjectFolderOK = new System.Windows.Forms.Label();
+            this.btnExtractZip = new System.Windows.Forms.Button();
+            this.btnMake7zip = new System.Windows.Forms.Button();
             this.gbOnlineFile = new System.Windows.Forms.GroupBox();
             this.gbProjectInfo = new System.Windows.Forms.GroupBox();
             this.tTagBox = new System.Windows.Forms.TextBox();
@@ -61,18 +62,20 @@
             this.btnCopySummary = new System.Windows.Forms.Button();
             this.tcProjectInfo = new System.Windows.Forms.TabControl();
             this.tpMainInfo = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tlProjectInfo = new System.Windows.Forms.TableLayoutPanel();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tlCommunity = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lCurrentArchiveName = new System.Windows.Forms.Label();
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
             this.tagContainer.SuspendLayout();
             this.tcProjectInfo.SuspendLayout();
             this.tpMainInfo.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.tlProjectInfo.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.tlCommunity.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -205,6 +208,7 @@
             this.IL.Images.SetKeyName(3, "Fairytale_editcopy.png");
             this.IL.Images.SetKeyName(4, "Fairytale_apply.png");
             this.IL.Images.SetKeyName(5, "Fairytale_fileopen.png");
+            this.IL.Images.SetKeyName(6, "5700.add.png");
             // 
             // btnDownloadYoutube
             // 
@@ -227,7 +231,7 @@
             this.btnUploadToYoutube.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUploadToYoutube.ImageIndex = 1;
             this.btnUploadToYoutube.ImageList = this.IL;
-            this.btnUploadToYoutube.Location = new System.Drawing.Point(9, 48);
+            this.btnUploadToYoutube.Location = new System.Drawing.Point(9, 77);
             this.btnUploadToYoutube.Name = "btnUploadToYoutube";
             this.btnUploadToYoutube.Size = new System.Drawing.Size(160, 23);
             this.btnUploadToYoutube.TabIndex = 14;
@@ -237,6 +241,7 @@
             // 
             // gbLocalFiles
             // 
+            this.gbLocalFiles.Controls.Add(this.label7);
             this.gbLocalFiles.Controls.Add(this.lVideoSourceOK);
             this.gbLocalFiles.Controls.Add(this.lOpenedLogOK);
             this.gbLocalFiles.Controls.Add(this.lProjectFolderOK);
@@ -254,33 +259,15 @@
             this.gbLocalFiles.TabStop = false;
             this.gbLocalFiles.Text = "Local Files";
             // 
-            // btnExtractZip
+            // label7
             // 
-            this.btnExtractZip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExtractZip.ImageIndex = 5;
-            this.btnExtractZip.ImageList = this.IL;
-            this.btnExtractZip.Location = new System.Drawing.Point(175, 19);
-            this.btnExtractZip.Name = "btnExtractZip";
-            this.btnExtractZip.Size = new System.Drawing.Size(160, 23);
-            this.btnExtractZip.TabIndex = 19;
-            this.btnExtractZip.Text = "Extract Archive";
-            this.btnExtractZip.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnExtractZip.UseVisualStyleBackColor = true;
-            this.btnExtractZip.Click += new System.EventHandler(this.BtnExtractZip_Click);
-            // 
-            // btnMake7zip
-            // 
-            this.btnMake7zip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMake7zip.ImageIndex = 0;
-            this.btnMake7zip.ImageList = this.IL;
-            this.btnMake7zip.Location = new System.Drawing.Point(9, 19);
-            this.btnMake7zip.Name = "btnMake7zip";
-            this.btnMake7zip.Size = new System.Drawing.Size(160, 23);
-            this.btnMake7zip.TabIndex = 18;
-            this.btnMake7zip.Text = "Create Archive";
-            this.btnMake7zip.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnMake7zip.UseVisualStyleBackColor = true;
-            this.btnMake7zip.Click += new System.EventHandler(this.BtnMake7zip_Click);
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label7.Location = new System.Drawing.Point(17, 133);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(304, 13);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "* You can change the local video settings in the video link form";
             // 
             // lVideoSourceOK
             // 
@@ -314,6 +301,34 @@
             this.lProjectFolderOK.Size = new System.Drawing.Size(22, 17);
             this.lProjectFolderOK.TabIndex = 15;
             this.lProjectFolderOK.Text = "W";
+            // 
+            // btnExtractZip
+            // 
+            this.btnExtractZip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExtractZip.ImageIndex = 5;
+            this.btnExtractZip.ImageList = this.IL;
+            this.btnExtractZip.Location = new System.Drawing.Point(9, 48);
+            this.btnExtractZip.Name = "btnExtractZip";
+            this.btnExtractZip.Size = new System.Drawing.Size(122, 23);
+            this.btnExtractZip.TabIndex = 19;
+            this.btnExtractZip.Text = "Extract Archive";
+            this.btnExtractZip.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnExtractZip.UseVisualStyleBackColor = true;
+            this.btnExtractZip.Click += new System.EventHandler(this.BtnExtractZip_Click);
+            // 
+            // btnMake7zip
+            // 
+            this.btnMake7zip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMake7zip.ImageIndex = 0;
+            this.btnMake7zip.ImageList = this.IL;
+            this.btnMake7zip.Location = new System.Drawing.Point(9, 19);
+            this.btnMake7zip.Name = "btnMake7zip";
+            this.btnMake7zip.Size = new System.Drawing.Size(122, 23);
+            this.btnMake7zip.TabIndex = 18;
+            this.btnMake7zip.Text = "Create Archive";
+            this.btnMake7zip.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnMake7zip.UseVisualStyleBackColor = true;
+            this.btnMake7zip.Click += new System.EventHandler(this.BtnMake7zip_Click);
             // 
             // gbOnlineFile
             // 
@@ -364,11 +379,14 @@
             // 
             // btnAddTag
             // 
-            this.btnAddTag.Location = new System.Drawing.Point(153, 19);
+            this.btnAddTag.ImageIndex = 6;
+            this.btnAddTag.ImageList = this.IL;
+            this.btnAddTag.Location = new System.Drawing.Point(153, 17);
             this.btnAddTag.Name = "btnAddTag";
-            this.btnAddTag.Size = new System.Drawing.Size(71, 23);
+            this.btnAddTag.Size = new System.Drawing.Size(87, 23);
             this.btnAddTag.TabIndex = 1;
             this.btnAddTag.Text = "Add Tag";
+            this.btnAddTag.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAddTag.UseVisualStyleBackColor = true;
             this.btnAddTag.Click += new System.EventHandler(this.BtnAddTag_Click);
             // 
@@ -444,18 +462,6 @@
             this.tpMainInfo.TabIndex = 0;
             this.tpMainInfo.Text = "Project Information";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage2.Controls.Add(this.tlCommunity);
-            this.tabPage2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(576, 343);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Community Settings";
-            // 
             // tlProjectInfo
             // 
             this.tlProjectInfo.ColumnCount = 1;
@@ -470,6 +476,18 @@
             this.tlProjectInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlProjectInfo.Size = new System.Drawing.Size(570, 337);
             this.tlProjectInfo.TabIndex = 18;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.tlCommunity);
+            this.tabPage2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(576, 343);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Community Settings";
             // 
             // tlCommunity
             // 
@@ -488,6 +506,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.lCurrentArchiveName);
             this.groupBox1.Controls.Add(this.btnMake7zip);
             this.groupBox1.Controls.Add(this.btnExtractZip);
             this.groupBox1.Controls.Add(this.btnUploadToYoutube);
@@ -498,6 +518,27 @@
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Actions";
+            // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(137, 19);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(32, 52);
+            this.label6.TabIndex = 21;
+            this.label6.Text = "}";
+            // 
+            // lCurrentArchiveName
+            // 
+            this.lCurrentArchiveName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lCurrentArchiveName.Location = new System.Drawing.Point(175, 19);
+            this.lCurrentArchiveName.Name = "lCurrentArchiveName";
+            this.lCurrentArchiveName.Size = new System.Drawing.Size(380, 52);
+            this.lCurrentArchiveName.TabIndex = 20;
+            this.lCurrentArchiveName.Text = "???";
+            this.lCurrentArchiveName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lCurrentArchiveName.Click += new System.EventHandler(this.LCurrentArchiveName_Click);
             // 
             // ProjectInfoForm
             // 
@@ -511,8 +552,10 @@
             this.Name = "ProjectInfoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Project Information";
+            this.Activated += new System.EventHandler(this.ProjectInfoForm_Activated);
             this.Load += new System.EventHandler(this.ProjectInfoForm_Load);
             this.Shown += new System.EventHandler(this.ProjectInfoForm_Shown);
+            this.Enter += new System.EventHandler(this.ProjectInfoForm_Enter);
             this.gbLocalFiles.ResumeLayout(false);
             this.gbLocalFiles.PerformLayout();
             this.gbOnlineFile.ResumeLayout(false);
@@ -523,8 +566,8 @@
             this.tagContainer.PerformLayout();
             this.tcProjectInfo.ResumeLayout(false);
             this.tpMainInfo.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
             this.tlProjectInfo.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.tlCommunity.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -568,5 +611,8 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TableLayoutPanel tlCommunity;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label lCurrentArchiveName;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
     }
 }

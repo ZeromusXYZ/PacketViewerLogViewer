@@ -410,6 +410,7 @@ namespace PacketViewerLogViewer.Packets
             newlistv.Val = customValue;
             newlistv.Extra = string.Empty;
             list.data.Add(customID, newlistv);
+            AllValues.Add(customValue);
         }
     }
 }

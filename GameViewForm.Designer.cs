@@ -31,10 +31,12 @@
             this.gbPlayer = new System.Windows.Forms.GroupBox();
             this.lPlayerName = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbHexIndex = new System.Windows.Forms.CheckBox();
             this.btnRefreshLookups = new System.Windows.Forms.Button();
             this.lbLookupValues = new System.Windows.Forms.ListBox();
             this.lbLookupGroups = new System.Windows.Forms.ListBox();
-            this.cbHexIndex = new System.Windows.Forms.CheckBox();
+            this.btnCopyVal = new System.Windows.Forms.Button();
+            this.btnCopyID = new System.Windows.Forms.Button();
             this.gbPlayer.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -63,6 +65,8 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.btnCopyID);
+            this.groupBox1.Controls.Add(this.btnCopyVal);
             this.groupBox1.Controls.Add(this.cbHexIndex);
             this.groupBox1.Controls.Add(this.btnRefreshLookups);
             this.groupBox1.Controls.Add(this.lbLookupValues);
@@ -73,6 +77,18 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Saved Values";
+            // 
+            // cbHexIndex
+            // 
+            this.cbHexIndex.AutoSize = true;
+            this.cbHexIndex.Checked = true;
+            this.cbHexIndex.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbHexIndex.Location = new System.Drawing.Point(135, 23);
+            this.cbHexIndex.Name = "cbHexIndex";
+            this.cbHexIndex.Size = new System.Drawing.Size(118, 17);
+            this.cbHexIndex.TabIndex = 3;
+            this.cbHexIndex.Text = "Show Index as Hex";
+            this.cbHexIndex.UseVisualStyleBackColor = true;
             // 
             // btnRefreshLookups
             // 
@@ -106,17 +122,27 @@
             this.lbLookupGroups.TabIndex = 0;
             this.lbLookupGroups.SelectedIndexChanged += new System.EventHandler(this.LbLookupGroups_SelectedIndexChanged);
             // 
-            // cbHexIndex
+            // btnCopyVal
             // 
-            this.cbHexIndex.AutoSize = true;
-            this.cbHexIndex.Checked = true;
-            this.cbHexIndex.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbHexIndex.Location = new System.Drawing.Point(135, 23);
-            this.cbHexIndex.Name = "cbHexIndex";
-            this.cbHexIndex.Size = new System.Drawing.Size(118, 17);
-            this.cbHexIndex.TabIndex = 3;
-            this.cbHexIndex.Text = "Show Index as Hex";
-            this.cbHexIndex.UseVisualStyleBackColor = true;
+            this.btnCopyVal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopyVal.Location = new System.Drawing.Point(383, 20);
+            this.btnCopyVal.Name = "btnCopyVal";
+            this.btnCopyVal.Size = new System.Drawing.Size(95, 23);
+            this.btnCopyVal.TabIndex = 4;
+            this.btnCopyVal.Text = "Copy Value";
+            this.btnCopyVal.UseVisualStyleBackColor = true;
+            this.btnCopyVal.Click += new System.EventHandler(this.BtnCopyVal_Click);
+            // 
+            // btnCopyID
+            // 
+            this.btnCopyID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopyID.Location = new System.Drawing.Point(282, 20);
+            this.btnCopyID.Name = "btnCopyID";
+            this.btnCopyID.Size = new System.Drawing.Size(95, 23);
+            this.btnCopyID.TabIndex = 5;
+            this.btnCopyID.Text = "Copy ID";
+            this.btnCopyID.UseVisualStyleBackColor = true;
+            this.btnCopyID.Click += new System.EventHandler(this.BtnCopyID_Click);
             // 
             // GameViewForm
             // 
@@ -147,5 +173,7 @@
         private System.Windows.Forms.ListBox lbLookupGroups;
         private System.Windows.Forms.Button btnRefreshLookups;
         private System.Windows.Forms.CheckBox cbHexIndex;
+        private System.Windows.Forms.Button btnCopyID;
+        private System.Windows.Forms.Button btnCopyVal;
     }
 }

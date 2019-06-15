@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PacketViewerLogViewer.ClipboardHelper;
 using PacketViewerLogViewer.Packets;
 
 namespace PacketViewerLogViewer
@@ -14,6 +15,7 @@ namespace PacketViewerLogViewer
     public partial class GameViewForm : Form
     {
         public static GameViewForm GV = null;
+        private DataLookupList LastLookupList = null;
 
         public GameViewForm()
         {
@@ -42,10 +44,14 @@ namespace PacketViewerLogViewer
         {
             var item = lbLookupGroups.SelectedItem;
             if (item == null)
+            {
+                LastLookupList = null;
                 return;
+            }
             lbLookupValues.Items.Clear();
             lbLookupValues.BeginUpdate();
-            foreach (var d in DataLookups.NLU((string)item).data)
+            LastLookupList = DataLookups.NLU((string)item);
+            foreach (var d in LastLookupList.data)
             {
                 if (cbHexIndex.Checked)
                     lbLookupValues.Items.Add("0x" + d.Value.ID.ToString("X8") + " => " + d.Value.Val);
@@ -58,6 +64,48 @@ namespace PacketViewerLogViewer
         private void GameViewForm_Shown(object sender, EventArgs e)
         {
             BtnRefreshLookups_Click(null, null);
+        }
+
+        private void SendToClipBoard(string cliptext)
+        {
+            try
+            {
+                // Because nothing is ever as simple as the next line >.>
+                // Clipboard.SetText(s);
+                // Helper will (try to) prevent errors when copying to clipboard because of threading issues
+                var cliphelp = new SetClipboardHelper(DataFormats.Text, cliptext);
+                cliphelp.DontRetryWorkOnFailed = false;
+                cliphelp.Go();
+            }
+            catch
+            {
+            }
+        }
+
+        private void BtnCopyID_Click(object sender, EventArgs e)
+        {
+            var n = lbLookupValues.SelectedIndex;
+            if (n >= LastLookupList.data.Count)
+                return;
+            string s;
+            if (cbHexIndex.Checked)
+            {
+                s = "0x" + LastLookupList.data.ElementAt(n).Value.ID.ToString("X");
+            }
+            else
+            {
+                s = LastLookupList.data.ElementAt(n).Value.ID.ToString();
+            }
+            SendToClipBoard(s);
+        }
+
+        private void BtnCopyVal_Click(object sender, EventArgs e)
+        {
+            var n = lbLookupValues.SelectedIndex;
+            if (n >= LastLookupList.data.Count)
+                return;
+            var s = LastLookupList.data.ElementAt(n).Value.Val;
+            SendToClipBoard(s);
         }
     }
 }

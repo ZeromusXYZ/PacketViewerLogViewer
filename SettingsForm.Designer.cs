@@ -108,6 +108,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbPacketList = new System.Windows.Forms.TabPage();
             this.tpFieldGrid = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbVideoSettings.SuspendLayout();
             this.gbListStyle.SuspendLayout();
@@ -1118,6 +1119,7 @@
             // gbGridStyle
             // 
             this.gbGridStyle.BackColor = System.Drawing.Color.Transparent;
+            this.gbGridStyle.Controls.Add(this.label13);
             this.gbGridStyle.Controls.Add(this.lFieldColCount);
             this.gbGridStyle.Controls.Add(this.tbFieldColorCount);
             this.gbGridStyle.Controls.Add(this.tableLayoutPanel2);
@@ -1241,6 +1243,15 @@
             this.tpFieldGrid.Size = new System.Drawing.Size(521, 272);
             this.tpFieldGrid.TabIndex = 2;
             this.tpFieldGrid.Text = "Field Grid";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(11, 193);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(190, 13);
+            this.label13.TabIndex = 16;
+            this.label13.Text = "Number of colors to use in the field grid";
             // 
             // SettingsForm
             // 
@@ -1371,5 +1382,6 @@
         private System.Windows.Forms.TabPage tpFieldGrid;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label13;
     }
 }

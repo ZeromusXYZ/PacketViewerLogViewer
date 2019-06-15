@@ -86,7 +86,7 @@
             this.btnOpen.Size = new System.Drawing.Size(89, 23);
             this.btnOpen.TabIndex = 1;
             this.btnOpen.Text = "Open Local";
-            this.btnOpen.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnOpen.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
             // 
@@ -123,6 +123,7 @@
             this.btnPlay.Size = new System.Drawing.Size(89, 23);
             this.btnPlay.TabIndex = 2;
             this.btnPlay.Text = "Play";
+            this.btnPlay.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btnPlay.UseVisualStyleBackColor = true;
             this.btnPlay.Click += new System.EventHandler(this.BtnPlay_Click);
             // 
@@ -215,7 +216,7 @@
             this.btnSetOffset.Size = new System.Drawing.Size(83, 23);
             this.btnSetOffset.TabIndex = 12;
             this.btnSetOffset.Text = "Set Offset";
-            this.btnSetOffset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSetOffset.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnSetOffset.UseVisualStyleBackColor = true;
             this.btnSetOffset.Click += new System.EventHandler(this.BtnSetOffset_Click);
             // 
@@ -255,7 +256,7 @@
             this.btnPrevFrame.Size = new System.Drawing.Size(47, 23);
             this.btnPrevFrame.TabIndex = 15;
             this.btnPrevFrame.Text = "1s";
-            this.btnPrevFrame.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnPrevFrame.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnPrevFrame.UseVisualStyleBackColor = true;
             this.btnPrevFrame.Click += new System.EventHandler(this.BtnPrevFrame_Click);
             // 

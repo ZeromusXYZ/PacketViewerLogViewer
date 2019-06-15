@@ -17,7 +17,7 @@ namespace PacketViewerLogViewer
     public partial class CompressForm : Form
     {
         public Dictionary<string, string> FilesToAdd = new Dictionary<string, string>();
-        public string ArchiveFileName = "logs.7z";
+        public string ArchiveFileName = "logs.7z" ;
         public string ProjectName = string.Empty;
         public static string SevenZipDLLPath = string.Empty;
         private int thisFileSize = 0;
@@ -103,10 +103,12 @@ namespace PacketViewerLogViewer
             string res = string.Empty ;
 
 
+            // Try local 7z.dll
             res = Path.Combine(Application.StartupPath, "7z.dll");
             if (!TryLoad7ZipLibrary(res))
                 res = string.Empty;
 
+            // Try from installed version of 7-zip
             if (res == string.Empty)
             {
                 string InstallPath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\7-Zip", (Environment.Is64BitProcess ? "Path64" : "Path"), null);
@@ -118,6 +120,14 @@ namespace PacketViewerLogViewer
                 }
             }
 
+            // Try local x86 and x64 dirs ?
+            if (res == string.Empty)
+            {
+                res = Path.Combine(Application.StartupPath, Environment.Is64BitProcess ? "x64" : "x86", "7z.dll");
+                if (!TryLoad7ZipLibrary(res))
+                    res = string.Empty;
+            }
+
             /*
             if (InstallPath != null)
             {
@@ -126,13 +136,6 @@ namespace PacketViewerLogViewer
                     res = string.Empty;
             }
             */
-
-            if (res == string.Empty)
-            {
-                res = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Environment.Is64BitProcess ? "x64" : "x86", "7z.dll");
-                if (!TryLoad7ZipLibrary(res))
-                    res = string.Empty;
-            }
 
             return res;
         }
@@ -452,9 +455,14 @@ namespace PacketViewerLogViewer
         private void CompressForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (zipper != null)
+            {
                 zipper = null;
+            }
             if (unzipper != null)
+            {
+                unzipper.Dispose();
                 unzipper = null;
+            }
         }
     }
 }

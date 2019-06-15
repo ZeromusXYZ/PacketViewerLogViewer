@@ -115,6 +115,7 @@ namespace PacketViewerLogViewer
 
         private void ProjectInfoForm_Load(object sender, EventArgs e)
         {
+            tcProjectInfo.SelectedTab = tpMainInfo;
             // Populate Autocomplete for tags
             tTagBox.AutoCompleteCustomSource.Clear();
             tTagBox.AutoCompleteCustomSource.AddRange(DataLookups.AllValues.ToArray());
@@ -226,6 +227,11 @@ namespace PacketViewerLogViewer
         private void ProjectInfo_TextChanged(object sender, EventArgs e)
         {
             bool res = true;
+
+            // Online button stuff
+            btnDownloadSource.Enabled = (tPackedLogsURL.Text != string.Empty) && ((tPackedLogsURL.Text.ToLower().StartsWith("http://")) || (tPackedLogsURL.Text.ToLower().StartsWith("https://")));
+            btnDownloadYoutube.Enabled = (tYoutubeURL.Text != string.Empty) && ((tYoutubeURL.Text.ToLower().StartsWith("http://")) || (tYoutubeURL.Text.ToLower().StartsWith("https://"))); ;
+
             // Project Folder
             var pUpOneDirName = tProjectFolder.Text.TrimEnd(Path.DirectorySeparatorChar);
             var pLocalDirName = Path.Combine(Path.GetDirectoryName(tp.ProjectFile), Path.GetFileNameWithoutExtension(tp.ProjectFile));
@@ -293,17 +299,34 @@ namespace PacketViewerLogViewer
                 res = false;
             }
 
+            lCurrentArchiveName.Text = CurrentArchive;
+            if ((CurrentArchive == string.Empty) || (!File.Exists(CurrentArchive)))
+            {
+                lCurrentArchiveName.ForeColor = Color.Red;
+                lCurrentArchiveName.Cursor = Cursors.Default;
+            }
+            else
+            {
+                lCurrentArchiveName.ForeColor = SystemColors.ControlText;
+                lCurrentArchiveName.Cursor = Cursors.Hand;
+            }
+
             // Attached Log file
             if (File.Exists(tOpenedLog.Text))
             {
                 lOpenedLogOK.Text = "\x81";
                 lOpenedLogOK.ForeColor = Color.LimeGreen;
+                // Disable download/extract when we have a valid file
+                btnExtractZip.Enabled = false;
+                btnDownloadSource.Enabled = false;
             }
             else
             {
                 lOpenedLogOK.Text = "\xCE";
                 lOpenedLogOK.ForeColor = Color.Red;
                 res = false;
+                // Disable zip creating if we don't have a valid file we could open
+                btnMake7zip.Enabled = false;
             }
 
             // Linked Local Video
@@ -317,9 +340,6 @@ namespace PacketViewerLogViewer
                 lVideoSourceOK.Text = "\xCE";
                 lVideoSourceOK.ForeColor = Color.Red;
             }
-
-            btnDownloadSource.Enabled = (tPackedLogsURL.Text != string.Empty) && ( (tPackedLogsURL.Text.ToLower().StartsWith("http://")) || (tPackedLogsURL.Text.ToLower().StartsWith("https://")) );
-            btnDownloadYoutube.Enabled = (tYoutubeURL.Text != string.Empty) && ((tYoutubeURL.Text.ToLower().StartsWith("http://")) || (tYoutubeURL.Text.ToLower().StartsWith("https://"))); ;
 
             btnSave.Enabled = res;
         }
@@ -422,6 +442,24 @@ namespace PacketViewerLogViewer
                     }
                 }
             }
+        }
+
+        private void LCurrentArchiveName_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(CurrentArchive))
+            {
+                ExploreFile(CurrentArchive);
+            }
+        }
+
+        private void ProjectInfoForm_Enter(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void ProjectInfoForm_Activated(object sender, EventArgs e)
+        {
+            ProjectInfo_TextChanged(null, null);
         }
     }
 }

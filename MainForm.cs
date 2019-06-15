@@ -23,9 +23,11 @@ namespace PacketViewerLogViewer
         List<string> AllUsedTempFiles = new List<string>();
 
         string defaultTitle = "";
-        const string urlGitHub = "https://github.com/ZeromusXYZ/PVLV";
-        const string urlDiscord = "https://discord.gg/GhVfDtK";
-        const string urlVideoLAN = "https://www.videolan.org/";
+        static readonly string urlGitHub = "https://github.com/ZeromusXYZ/PVLV";
+        static readonly string urlDiscord = "https://discord.gg/GhVfDtK";
+        static readonly string urlVideoLAN = "https://www.videolan.org/";
+        static readonly string url7Zip = "https://www.7-zip.org/";
+        static readonly string url7ZipRequiredVer = "https://sourceforge.net/p/sevenzip/discussion/45797/thread/adc65bfa/";
 
         public PacketParser CurrentPP;
         SearchParameters searchParameters;
@@ -1487,6 +1489,16 @@ namespace PacketViewerLogViewer
                     MessageBox.Show("Exception updating:\r\n" + x.Message, "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void MMAbout7ZipMain_Click(object sender, EventArgs e)
+        {
+            Process.Start(url7Zip);
+        }
+
+        private void MMAbout7ZipDownload_Click(object sender, EventArgs e)
+        {
+            Process.Start(url7ZipRequiredVer);
         }
     }
 }

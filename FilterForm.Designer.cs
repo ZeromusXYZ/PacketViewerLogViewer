@@ -81,11 +81,12 @@
             // btnOutAdd
             // 
             this.btnOutAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOutAdd.Image = global::PacketViewerLogViewer.Properties.Resources.add_icon;
             this.btnOutAdd.Location = new System.Drawing.Point(156, 339);
             this.btnOutAdd.Name = "btnOutAdd";
             this.btnOutAdd.Size = new System.Drawing.Size(31, 30);
             this.btnOutAdd.TabIndex = 8;
-            this.btnOutAdd.Text = "+";
+            this.btnOutAdd.Text = " ";
             this.btnOutAdd.UseVisualStyleBackColor = true;
             this.btnOutAdd.Click += new System.EventHandler(this.BtnOutAdd_Click);
             // 
@@ -113,11 +114,13 @@
             // btnRemoveOut
             // 
             this.btnRemoveOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveOut.Image = global::PacketViewerLogViewer.Properties.Resources.close_icon;
             this.btnRemoveOut.Location = new System.Drawing.Point(114, 116);
             this.btnRemoveOut.Name = "btnRemoveOut";
             this.btnRemoveOut.Size = new System.Drawing.Size(73, 23);
             this.btnRemoveOut.TabIndex = 5;
             this.btnRemoveOut.Text = "remove";
+            this.btnRemoveOut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnRemoveOut.UseVisualStyleBackColor = true;
             this.btnRemoveOut.Click += new System.EventHandler(this.BtnRemoveOut_Click);
             // 
@@ -196,11 +199,12 @@
             // btnInAdd
             // 
             this.btnInAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInAdd.Image = global::PacketViewerLogViewer.Properties.Resources.add_icon;
             this.btnInAdd.Location = new System.Drawing.Point(156, 339);
             this.btnInAdd.Name = "btnInAdd";
             this.btnInAdd.Size = new System.Drawing.Size(31, 30);
             this.btnInAdd.TabIndex = 8;
-            this.btnInAdd.Text = "+";
+            this.btnInAdd.Text = " ";
             this.btnInAdd.UseVisualStyleBackColor = true;
             this.btnInAdd.Click += new System.EventHandler(this.BtnInAdd_Click);
             // 
@@ -228,11 +232,13 @@
             // btnRemoveIn
             // 
             this.btnRemoveIn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveIn.Image = global::PacketViewerLogViewer.Properties.Resources.close_icon;
             this.btnRemoveIn.Location = new System.Drawing.Point(114, 116);
             this.btnRemoveIn.Name = "btnRemoveIn";
             this.btnRemoveIn.Size = new System.Drawing.Size(73, 23);
             this.btnRemoveIn.TabIndex = 5;
             this.btnRemoveIn.Text = "remove";
+            this.btnRemoveIn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnRemoveIn.UseVisualStyleBackColor = true;
             this.btnRemoveIn.Click += new System.EventHandler(this.BtnRemoveIn_Click);
             // 
