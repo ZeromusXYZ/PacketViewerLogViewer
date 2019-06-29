@@ -82,6 +82,12 @@ namespace PacketViewerLogViewer
             return res;
         }
 
+        private void AddLogOption(string fulldir)
+        {
+            string shortDir = PVLVHelper.Helper.MakeRelative(tp.ProjectFolder,fulldir);
+            cbOpenedLog.Items.Add(shortDir);
+        }
+
         public void LoadFromPacketTapPage(PacketTabPage sourceTP)
         {
             tp = sourceTP;
@@ -91,11 +97,26 @@ namespace PacketViewerLogViewer
                 CreateVisualTags(tp.ProjectTags);
                 tTagBox.Text = "";
                 tProjectFolder.Text = tp.ProjectFolder;
-                tOpenedLog.Text = tp.LoadedLogFile;
+                cbOpenedLog.Text = tp.LoadedLogFile;
                 tSourceVideo.Text = tp.LinkVideoFileName;
                 tYoutubeURL.Text = tp.LinkYoutubeURL;
                 tPackedLogsURL.Text = tp.LinkPacketsDownloadURL;
-
+                cbOpenedLog.Items.Clear();
+                AddLogOption(tp.LoadedLogFile); // Current Log File
+                cbOpenedLog.Text = tp.LoadedLogFile;
+                var logfiles = Directory.GetFiles(tp.ProjectFolder, "*.log", SearchOption.AllDirectories);
+                var txtfiles = Directory.GetFiles(tp.ProjectFolder, "*.txt", SearchOption.AllDirectories);
+                var sqlfiles = Directory.GetFiles(tp.ProjectFolder, "*.sqlite", SearchOption.AllDirectories);
+                List<string> files = new List<string>();
+                files.AddRange(logfiles);
+                files.AddRange(txtfiles);
+                files.AddRange(sqlfiles);
+                foreach (var f in files)
+                {
+                    if (!Path.GetFileName(f).ToLower().StartsWith("0x"))
+                        AddLogOption(f);
+                }
+                
                 gbProjectInfo.Text = "Project Information: " + Path.GetFileName(tp.ProjectFile);
             }
         }
@@ -106,7 +127,10 @@ namespace PacketViewerLogViewer
             {
                 tp.ProjectTags = VisualTagsToString();
                 tp.ProjectFolder = tProjectFolder.Text;
-                tp.LoadedLogFile = tOpenedLog.Text;
+                if (File.Exists(tProjectFolder.Text + cbOpenedLog.Text))
+                    tp.LoadedLogFile = tProjectFolder.Text + cbOpenedLog.Text;
+                else
+                    tp.LoadedLogFile = cbOpenedLog.Text;
                 tp.LinkVideoFileName = tSourceVideo.Text;
                 tp.LinkYoutubeURL = tYoutubeURL.Text;
                 tp.LinkPacketsDownloadURL = tPackedLogsURL.Text;
@@ -312,7 +336,16 @@ namespace PacketViewerLogViewer
             }
 
             // Attached Log file
-            if (File.Exists(tOpenedLog.Text))
+            if (File.Exists(cbOpenedLog.Text))
+            {
+                lOpenedLogOK.Text = "\x81";
+                lOpenedLogOK.ForeColor = Color.LimeGreen;
+                // Disable download/extract when we have a valid file
+                btnExtractZip.Enabled = false;
+                btnDownloadSource.Enabled = false;
+            }
+            else
+            if (File.Exists(tProjectFolder.Text + cbOpenedLog.Text))
             {
                 lOpenedLogOK.Text = "\x81";
                 lOpenedLogOK.ForeColor = Color.LimeGreen;

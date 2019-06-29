@@ -42,7 +42,6 @@ namespace PacketViewerLogViewer.Packets
         static public int PacketListStyle;
         public static List<Color> DataColors = new List<Color>();
 
-
         public static void UpdateColorsFromSettings()
         {
             ColBackIN = Properties.Settings.Default.ColBackIN;
@@ -122,7 +121,6 @@ namespace PacketViewerLogViewer.Packets
             DataColors.Add(Color.Brown);
             DataColors.Add(Color.MidnightBlue);
             */
-
         }
     }
 

@@ -75,7 +75,8 @@ namespace PacketViewerLogViewer.PVLVHelper
 
     static class Helper
     {
-        private static List<string> ExpectedLogFileRoots = new List<string>() { "packetviewer", "logs", "packetdb", "wireshark", "packeteer", "idview", "raw" , "incoming" , "outgoing" , "in" , "out"  };
+        private static List<string> ExpectedLogFileRoots = new List<string>() { "packetviewer", "logs", "packetdb", "wireshark", "packeteer", "idview", "raw" , "incoming" , "outgoing" , "in" , "out", "npclogger"  };
+        private static List<string> ExpectedLogFolderRootsWithCharacterNames = new List<string>() { "packetviewer", "packetdb", "wireshark", "packeteer", "idview", "npclogger" };
 
         // Source: https://stackoverflow.com/questions/275689/how-to-get-relative-path-from-absolute-path
         /// <summary>
@@ -260,11 +261,25 @@ namespace PacketViewerLogViewer.PVLVHelper
             if (pathSplit.Count >= 1)
                 pathSplit[0] = pathSplit[0] + Path.DirectorySeparatorChar; // manually add the \ back to the first split
 
+            List<string> elfr = new List<string>();
+            elfr.AddRange(ExpectedLogFileRoots);
+
             while (pathSplit.Count > 1)
             {
                 pathSplit.RemoveAt(pathSplit.Count - 1);
                 var hDir = pathSplit[pathSplit.Count - 1];
-                if ((ExpectedLogFileRoots.IndexOf(hDir) < 0) && (Directory.Exists(Path.Combine(pathSplit.ToArray()))))
+
+                if ( (pathSplit.Count > 2) && (ExpectedLogFolderRootsWithCharacterNames.IndexOf(pathSplit[pathSplit.Count - 2]) >= 0) )
+                {
+                    // This is the first dir inside packetviewer, add support for character names
+                    // Add "this character name" to expected dirs when downdir is packetviewer and currect dir isn't in expected
+                    if ((elfr.IndexOf(hDir) < 0) && (Directory.Exists(Path.Combine(pathSplit.ToArray()))))
+                    {
+                        elfr.Add(hDir);
+                    }
+                }
+
+                if ((elfr.IndexOf(hDir) < 0) && (Directory.Exists(Path.Combine(pathSplit.ToArray()))))
                 {
                     break;
                 }

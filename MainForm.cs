@@ -140,6 +140,7 @@ namespace PacketViewerLogViewer
             {
                 projectDlg.LoadFromPacketTapPage(tp);
                 projectDlg.btnSave.Text = "Open";
+                projectDlg.cbOpenedLog.Enabled = true;
                 if (projectDlg.ShowDialog() == DialogResult.OK)
                 {
                     projectDlg.ApplyPacketTapPage();

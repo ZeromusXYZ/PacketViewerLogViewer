@@ -36,7 +36,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tProjectFolder = new System.Windows.Forms.TextBox();
-            this.tOpenedLog = new System.Windows.Forms.TextBox();
             this.tSourceVideo = new System.Windows.Forms.TextBox();
             this.tYoutubeURL = new System.Windows.Forms.TextBox();
             this.tPackedLogsURL = new System.Windows.Forms.TextBox();
@@ -66,9 +65,10 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tlCommunity = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnUploadLogs = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.lCurrentArchiveName = new System.Windows.Forms.Label();
-            this.btnUploadLogs = new System.Windows.Forms.Button();
+            this.cbOpenedLog = new System.Windows.Forms.ComboBox();
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
@@ -136,17 +136,6 @@
             this.tProjectFolder.Size = new System.Drawing.Size(507, 20);
             this.tProjectFolder.TabIndex = 2;
             this.tProjectFolder.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
-            // 
-            // tOpenedLog
-            // 
-            this.tOpenedLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tOpenedLog.Location = new System.Drawing.Point(20, 71);
-            this.tOpenedLog.Name = "tOpenedLog";
-            this.tOpenedLog.ReadOnly = true;
-            this.tOpenedLog.Size = new System.Drawing.Size(507, 20);
-            this.tOpenedLog.TabIndex = 3;
-            this.tOpenedLog.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
             // tSourceVideo
             // 
@@ -243,6 +232,7 @@
             // 
             // gbLocalFiles
             // 
+            this.gbLocalFiles.Controls.Add(this.cbOpenedLog);
             this.gbLocalFiles.Controls.Add(this.label7);
             this.gbLocalFiles.Controls.Add(this.lVideoSourceOK);
             this.gbLocalFiles.Controls.Add(this.lOpenedLogOK);
@@ -251,7 +241,6 @@
             this.gbLocalFiles.Controls.Add(this.label1);
             this.gbLocalFiles.Controls.Add(this.label3);
             this.gbLocalFiles.Controls.Add(this.tProjectFolder);
-            this.gbLocalFiles.Controls.Add(this.tOpenedLog);
             this.gbLocalFiles.Controls.Add(this.tSourceVideo);
             this.gbLocalFiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbLocalFiles.Location = new System.Drawing.Point(3, 3);
@@ -522,6 +511,20 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Actions";
             // 
+            // btnUploadLogs
+            // 
+            this.btnUploadLogs.Enabled = false;
+            this.btnUploadLogs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUploadLogs.ImageIndex = 1;
+            this.btnUploadLogs.ImageList = this.IL;
+            this.btnUploadLogs.Location = new System.Drawing.Point(9, 106);
+            this.btnUploadLogs.Name = "btnUploadLogs";
+            this.btnUploadLogs.Size = new System.Drawing.Size(160, 23);
+            this.btnUploadLogs.TabIndex = 22;
+            this.btnUploadLogs.Text = "Upload Logs";
+            this.btnUploadLogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnUploadLogs.UseVisualStyleBackColor = true;
+            // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -543,19 +546,16 @@
             this.lCurrentArchiveName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lCurrentArchiveName.Click += new System.EventHandler(this.LCurrentArchiveName_Click);
             // 
-            // btnUploadLogs
+            // cbOpenedLog
             // 
-            this.btnUploadLogs.Enabled = false;
-            this.btnUploadLogs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUploadLogs.ImageIndex = 1;
-            this.btnUploadLogs.ImageList = this.IL;
-            this.btnUploadLogs.Location = new System.Drawing.Point(9, 106);
-            this.btnUploadLogs.Name = "btnUploadLogs";
-            this.btnUploadLogs.Size = new System.Drawing.Size(160, 23);
-            this.btnUploadLogs.TabIndex = 22;
-            this.btnUploadLogs.Text = "Upload Logs";
-            this.btnUploadLogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnUploadLogs.UseVisualStyleBackColor = true;
+            this.cbOpenedLog.Enabled = false;
+            this.cbOpenedLog.FormattingEnabled = true;
+            this.cbOpenedLog.Location = new System.Drawing.Point(20, 71);
+            this.cbOpenedLog.Name = "cbOpenedLog";
+            this.cbOpenedLog.Size = new System.Drawing.Size(507, 21);
+            this.cbOpenedLog.TabIndex = 19;
+            this.cbOpenedLog.SelectedValueChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
+            this.cbOpenedLog.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
             // ProjectInfoForm
             // 
@@ -599,7 +599,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tProjectFolder;
-        private System.Windows.Forms.TextBox tOpenedLog;
         private System.Windows.Forms.TextBox tSourceVideo;
         private System.Windows.Forms.TextBox tYoutubeURL;
         private System.Windows.Forms.TextBox tPackedLogsURL;
@@ -632,5 +631,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnUploadLogs;
+        public System.Windows.Forms.ComboBox cbOpenedLog;
     }
 }
