@@ -45,6 +45,7 @@
             this.btnDownloadYoutube = new System.Windows.Forms.Button();
             this.btnUploadToYoutube = new System.Windows.Forms.Button();
             this.gbLocalFiles = new System.Windows.Forms.GroupBox();
+            this.cbOpenedLog = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.lVideoSourceOK = new System.Windows.Forms.Label();
             this.lOpenedLogOK = new System.Windows.Forms.Label();
@@ -68,7 +69,6 @@
             this.btnUploadLogs = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.lCurrentArchiveName = new System.Windows.Forms.Label();
-            this.cbOpenedLog = new System.Windows.Forms.ComboBox();
             this.gbLocalFiles.SuspendLayout();
             this.gbOnlineFile.SuspendLayout();
             this.gbProjectInfo.SuspendLayout();
@@ -249,6 +249,17 @@
             this.gbLocalFiles.TabIndex = 15;
             this.gbLocalFiles.TabStop = false;
             this.gbLocalFiles.Text = "Local Files";
+            // 
+            // cbOpenedLog
+            // 
+            this.cbOpenedLog.Enabled = false;
+            this.cbOpenedLog.FormattingEnabled = true;
+            this.cbOpenedLog.Location = new System.Drawing.Point(20, 71);
+            this.cbOpenedLog.Name = "cbOpenedLog";
+            this.cbOpenedLog.Size = new System.Drawing.Size(507, 21);
+            this.cbOpenedLog.TabIndex = 19;
+            this.cbOpenedLog.SelectedValueChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
+            this.cbOpenedLog.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
             // 
             // label7
             // 
@@ -546,17 +557,6 @@
             this.lCurrentArchiveName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lCurrentArchiveName.Click += new System.EventHandler(this.LCurrentArchiveName_Click);
             // 
-            // cbOpenedLog
-            // 
-            this.cbOpenedLog.Enabled = false;
-            this.cbOpenedLog.FormattingEnabled = true;
-            this.cbOpenedLog.Location = new System.Drawing.Point(20, 71);
-            this.cbOpenedLog.Name = "cbOpenedLog";
-            this.cbOpenedLog.Size = new System.Drawing.Size(507, 21);
-            this.cbOpenedLog.TabIndex = 19;
-            this.cbOpenedLog.SelectedValueChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
-            this.cbOpenedLog.TextChanged += new System.EventHandler(this.ProjectInfo_TextChanged);
-            // 
             // ProjectInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -566,6 +566,7 @@
             this.Controls.Add(this.btnCopySummary);
             this.Controls.Add(this.btnSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "ProjectInfoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Project Information";

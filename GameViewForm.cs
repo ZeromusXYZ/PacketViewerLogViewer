@@ -85,7 +85,7 @@ namespace PacketViewerLogViewer
         private void BtnCopyID_Click(object sender, EventArgs e)
         {
             var n = lbLookupValues.SelectedIndex;
-            if (n >= LastLookupList.data.Count)
+            if ((n >= LastLookupList.data.Count) || (n < 0))
                 return;
             string s;
             if (cbHexIndex.Checked)
@@ -102,7 +102,7 @@ namespace PacketViewerLogViewer
         private void BtnCopyVal_Click(object sender, EventArgs e)
         {
             var n = lbLookupValues.SelectedIndex;
-            if (n >= LastLookupList.data.Count)
+            if ((n >= LastLookupList.data.Count) || (n < 0))
                 return;
             var s = LastLookupList.data.ElementAt(n).Value.Val;
             SendToClipBoard(s);
