@@ -273,6 +273,12 @@ namespace PacketViewerLogViewer.Packets
             //     1A 0E ED 24 D5 10 10 01 D5 00 00 00 00 00 00 00  ..í$Õ...Õ.......
             */
 
+            if (s.StartsWith("--"))
+            {
+                // Still a comment, get out of here
+                return 0;
+            }
+
             if (s.Length < 51)
             {
                 // Doesn't look like a correct format
