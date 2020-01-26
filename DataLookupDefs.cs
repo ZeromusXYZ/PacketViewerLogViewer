@@ -87,6 +87,7 @@ namespace PacketViewerLogViewer.Packets
         public static DataLookupEntry NullEntry = new DataLookupEntry();
         public static DataLookupListSpecialMath MathList = new DataLookupListSpecialMath();
         public static List<string> AllValues = new List<string>();
+        public static string AllLoadErrors = string.Empty ;
 
         // lookupname, id, lookupresult
         static public Dictionary<string, DataLookupList> LookupLists = new Dictionary<string, DataLookupList>();
@@ -295,7 +296,7 @@ namespace PacketViewerLogViewer.Packets
             return Convert.ToUInt64(table.Compute(expression, string.Empty));
         }
 
-        static void LoadLookupFile(string fileName)
+        static bool LoadLookupFile(string fileName)
         {
             // Extract name
             var lookupname = Path.GetFileNameWithoutExtension(fileName).ToLower();
@@ -306,38 +307,53 @@ namespace PacketViewerLogViewer.Packets
             // Load file
             List<string> sl = File.ReadAllLines(fileName).ToList();
             // Parse File
+            var linenumber = 0;
             foreach(string line in sl)
             {
-                string[] fields = line.Split(';');
-                if (fields.Length > 1)
+                linenumber++;
+                try
                 {
-                    if (TryFieldParse(fields[0], out int newID))
+                    string[] fields = line.Split(';');
+                    if (fields.Length > 1)
                     {
-                        DataLookupEntry dle = new DataLookupEntry();
-                        dle.ID = (UInt64)newID;
-                        dle.Val = fields[1];
-                        if (fields.Length > 2)
-                            dle.Extra = fields[2];
-                        dll.data.Add((UInt64)newID,dle);
-                        // for autocomplete
-                        AllValues.Add(dle.Val);
+                        if (TryFieldParse(fields[0], out int newID))
+                        {
+                            DataLookupEntry dle = new DataLookupEntry();
+                            dle.ID = (UInt64)newID;
+                            dle.Val = fields[1];
+                            if (fields.Length > 2)
+                                dle.Extra = fields[2];
+                            dll.data.Add((UInt64)newID, dle);
+                            // for autocomplete
+                            AllValues.Add(dle.Val);
+                        }
                     }
                 }
+                catch (Exception x)
+                {
+                    AllLoadErrors += string.Format("\n\r\n\rException loading {0} at line {1} :\n\r{2}\r\n=> {3}", fileName, linenumber,x.Message,line);
+                    return false;
+                }
             }
+            return true;
         }
 
-        public static void LoadLookups()
+        public static bool LoadLookups()
         {
             LookupLists.Clear();
+            AllLoadErrors = string.Empty ;
+            bool noErrors = true;
             var lookupPath = Path.Combine(Application.StartupPath,"data","lookup");
             DirectoryInfo DI = new DirectoryInfo(lookupPath);
             if (Directory.Exists(lookupPath))
             {
                 foreach (var fi in DI.GetFiles())
                 {
-                    LoadLookupFile(fi.FullName);
+                    if (!LoadLookupFile(fi.FullName))
+                        noErrors = false;
                 }
             }
+            return noErrors;
         }
 
         public static DataLookupList NLU(string lookupName,string LookupOffsetString = "")

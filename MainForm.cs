@@ -96,7 +96,10 @@ namespace PacketViewerLogViewer
             try
             {
                 Directory.SetCurrentDirectory(Application.StartupPath);
-                DataLookups.LoadLookups();
+                if (DataLookups.LoadLookups() == false)
+                {
+                    MessageBox.Show("Errors while loading lookup data: " + DataLookups.AllLoadErrors, "Error Loading Lookup Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
             }
             catch (Exception x)
             {
