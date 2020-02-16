@@ -1,4 +1,5 @@
 file;in-0x00a;Client Connect;(unencrypted/uncompressed) First packet sent when connecting to new zone.
+rem;Weather and zone animation info updated by Setzor
 
 uint32:@actors;$4;Player ID
 uint16;$8;Player Index
@@ -11,7 +12,11 @@ byte;$1C;Movement Speed;Speed 0x32 represents 100%
 byte;$1D;Animation Speed;Speed 0x32 represents 100%
 byte;$1E;HP %
 byte;$1F;Status
-data16;$20;_unknown1;
+uint32;$20;_unknown_@0x20;
+uint32;0x24;Affects Zone "direction"
+uint16;0x28;Always 0x0100
+uint16;0x2A;Zone animation
+uint32;0x2C;_unknown_@0x2C
 uint16:zones;$30;Zone
 data6;$32;_unknown2;
 ms;$38;Timestamp 1
@@ -37,9 +42,15 @@ uint16;$60;Boundary
 uint16;$62;Menu Zone;Only set if the menu ID is sent, used as the zone for menu responses (0x5b, 0x5c)
 uint16;$64;Menu ID / CS-id
 uint16;$66;_unknown5
-uint16:weather;$68;Weather
-uint32;$6A;Weather Change Time
-data22;$6E;_unknown7;
+uint16:weather;$68;Current Weather
+uint16:weather;$6A;Previous Weather
+uint32;$6C;Weather Change Time;
+uint32;$70;Previous Weather Time;
+uint16;$74;Weather Transition;
+uint16;$76;Prev Weather Transition;
+uint32;0x78;Zone Animation Start Time
+uint16;0x7C;Zone Animation Length
+data6;$7E;_unknown7;
 string;$84;Player Name;
 data12;$94;_unknown8
 uint32;$A0;Abyssea Timestamp?
