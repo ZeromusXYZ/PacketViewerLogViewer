@@ -19,6 +19,7 @@ namespace PacketViewerLogViewer
         public byte FieldIndex;
         public Color FieldColor;
         public UInt64 DataAsUInt64;
+        public string ExtraInfo;
     }
 
     public class PacketParser
@@ -273,6 +274,9 @@ namespace PacketViewerLogViewer
                 {
                     DGV.Rows[thisRow].Selected = false;
                 }
+                DGV.Rows[thisRow].Cells[columnOffset].ToolTipText = pvl.ExtraInfo;
+                DGV.Rows[thisRow].Cells[columnVAR].ToolTipText = pvl.ExtraInfo;
+                // DGV.Rows[thisRow].Cells[columnDATA].ToolTipText = pvl.ExtraInfo;
             }
 
             while (DGV.Rows.Count > ParsedView.Count)
@@ -283,7 +287,7 @@ namespace PacketViewerLogViewer
             DGV.ResumeLayout();
         }
 
-        private void AddParseLineToView(byte FieldIndex,string POSString, Color POSColor, string VARName, string DATAString,UInt64 DataUInt64 = 0)
+        private void AddParseLineToView(byte FieldIndex,string POSString, Color POSColor, string VARName, string DATAString,string EXTRAString, UInt64 DataUInt64)
         {
             ParsedViewLine pvl = new ParsedViewLine();
             pvl.Pos = POSString;
@@ -292,9 +296,24 @@ namespace PacketViewerLogViewer
             pvl.FieldIndex = FieldIndex;
             pvl.FieldColor = POSColor;
             pvl.DataAsUInt64 = DataUInt64;
+            if (EXTRAString == string.Empty)
+                pvl.ExtraInfo = DATAString;
+            else
+                pvl.ExtraInfo = EXTRAString;
             ParsedView.Add(pvl);
             AddFieldNameToList(VARName);
         }
+
+        private void AddParseLineToView(byte FieldIndex, string POSString, Color POSColor, string VARName, string DATAString, UInt64 DataUInt64 = 0)
+        {
+            AddParseLineToView(FieldIndex, POSString, POSColor, VARName, DATAString, DATAString, DataUInt64);
+        }
+
+        private void AddParseLineToView(byte FieldIndex, string POSString, Color POSColor, string VARName, string DATAString, string EXTRAString)
+        {
+            AddParseLineToView(FieldIndex, POSString, POSColor, VARName, DATAString, EXTRAString, 0);
+        }
+
 
         private void MarkParsed(int offset, int bytesize, byte fieldindex)
         {
@@ -865,7 +884,7 @@ namespace PacketViewerLogViewer
                     var d = PD.GetByteAtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
                     AddDataField(Offset,1);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " - 0x" + d.ToString("X2") + " - " + ByteToBits(d) + " - '" + (char)d + "'",d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " - 0x" + d.ToString("X2") + " - " + ByteToBits(d) + " - '" + (char)d + "'", descriptionField);
                     MarkParsed(Offset, 1, DataFieldIndex);
                 }
                 else
@@ -874,7 +893,7 @@ namespace PacketViewerLogViewer
                     var d = PD.GetSByteAtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)unchecked( (byte)d), lookupOffsetEvalString);
                     AddDataField(Offset, 1);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " - 0x" + d.ToString("X2") + " - " + ByteToBits(unchecked( (byte)d )) + " - '" + (char)d + "'", (UInt64)unchecked((byte)d));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " - 0x" + d.ToString("X2") + " - " + ByteToBits(unchecked( (byte)d )) + " - '" + (char)d + "'", descriptionField, (UInt64)unchecked((byte)d));
                     MarkParsed(Offset, 1, DataFieldIndex);
                 }
                 else
@@ -882,7 +901,7 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetBitAtPos(Offset,SubOffset);
                     AddDataField(Offset,1);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d.ToString(),(UInt64)(d?1:0));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d.ToString(),descriptionField, (UInt64)(d?1:0));
                     MarkParsed(Offset, 1, DataFieldIndex);
                 }
                 else
@@ -896,7 +915,7 @@ namespace PacketViewerLogViewer
                     var lastbyte = lastbit / 8;
                     var bytesize = lastbyte - firstbyte + 1;
                     AddDataField(firstbyte, bytesize);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + "0x"+d.ToString("X") + " - " + d.ToString(""),(UInt64)d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + "0x"+d.ToString("X") + " - " + d.ToString(""),descriptionField, (UInt64)d);
                     MarkParsed(firstbyte, bytesize, DataFieldIndex);
                 }
                 else
@@ -905,7 +924,7 @@ namespace PacketViewerLogViewer
                     var d = PD.GetUInt16AtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
                     AddDataField(Offset,2);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")",d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")", descriptionField) ;
                     MarkParsed(Offset, 2, DataFieldIndex);
                 }
                 else
@@ -914,7 +933,7 @@ namespace PacketViewerLogViewer
                     var d = PD.GetInt16AtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)unchecked( (UInt16)d), lookupOffsetEvalString);
                     AddDataField(Offset,2);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")", (UInt64)unchecked((UInt16)d));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X4") + ")", descriptionField, (UInt64)unchecked((UInt16)d));
                     MarkParsed(Offset, 2, DataFieldIndex);
                 }
                 else
@@ -923,7 +942,7 @@ namespace PacketViewerLogViewer
                     var d = PD.GetUInt32AtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)(d), lookupOffsetEvalString);
                     AddDataField(Offset,4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")",d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")",descriptionField, d);
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -932,7 +951,7 @@ namespace PacketViewerLogViewer
                     var d = PD.GetInt32AtPos(Offset);
                     var l = Lookup(lookupField, (UInt64)unchecked((UInt32)d), lookupOffsetEvalString);
                     AddDataField(Offset,4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")", (UInt64)unchecked((UInt32)d));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString() + " (0x" + d.ToString("X8") + ")", descriptionField, (UInt64)unchecked((UInt32)d));
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -940,7 +959,7 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetFloatAtPos(Offset);
                     AddDataField(Offset,4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d.ToString());
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d.ToString(), descriptionField);
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -950,7 +969,7 @@ namespace PacketViewerLogViewer
                     var y = PD.GetFloatAtPos(Offset+4);
                     var z = PD.GetFloatAtPos(Offset+8);
                     AddDataField(Offset,12);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "X:"+x.ToString("F") + "  Y:" + y.ToString("F") + "  Z:" + z.ToString("F"));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "X:"+x.ToString("F") + "  Y:" + y.ToString("F") + "  Z:" + z.ToString("F"),descriptionField);
                     MarkParsed(Offset, 12, DataFieldIndex);
                 }
                 else
@@ -959,7 +978,7 @@ namespace PacketViewerLogViewer
                     var d = PD.GetByteAtPos(Offset);
                     var dir = ByteToRotation(d);
                     AddDataField(Offset,1);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, dir,d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, dir,descriptionField);
                     MarkParsed(Offset, 1, DataFieldIndex);
                 }
                 else
@@ -995,7 +1014,7 @@ namespace PacketViewerLogViewer
                     }
 
                     AddDataField(Offset,size);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d + dHex);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d + dHex,descriptionField);
                     if (size > 1)
                     {
                         MarkParsed(Offset, size, DataFieldIndex);
@@ -1016,7 +1035,7 @@ namespace PacketViewerLogViewer
                     }
                     var d = PD.GetDataAtPos(Offset, size);
                     AddDataField(Offset,size);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d,descriptionField);
                     MarkParsed(Offset, size, DataFieldIndex);
                 }
                 else
@@ -1024,7 +1043,7 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetUInt32AtPos(Offset);
                     AddDataField(Offset,4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, MSToString(d) + " ("+d.ToString()+")",d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, MSToString(d) + " ("+d.ToString()+")",descriptionField);
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -1032,7 +1051,7 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetUInt32AtPos(Offset);
                     AddDataField(Offset,4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, FramesToString(d) + " (" + d.ToString() + ")",d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, FramesToString(d) + " (" + d.ToString() + ")",descriptionField);
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -1042,7 +1061,7 @@ namespace PacketViewerLogViewer
                     AddDataField(Offset,4);
                     var vt = new VanadielTime();
                     vt.FromVanadielIntTime((int)d);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, vt.LocalEarthTime.ToString("yyyy-MM-dd HH:mm:ss") + " ("+ d.ToString() +") => " + vt.ToString(),d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, vt.LocalEarthTime.ToString("yyyy-MM-dd HH:mm:ss") + " ("+ d.ToString() +") => " + vt.ToString(),descriptionField);
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -1050,7 +1069,7 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetIP4AtPos(Offset);
                     AddDataField(Offset, 4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d,PD.GetUInt32AtPos(Offset));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d + " <= " + PD.GetUInt32AtPos(Offset),descriptionField);
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -1058,7 +1077,7 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetPackedString16AtPos(Offset,String6BitEncodeKeys.Linkshell);
                     AddDataField(Offset, 16);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d,descriptionField);
                     MarkParsed(Offset, 16, DataFieldIndex);
                 }
                 else
@@ -1066,7 +1085,7 @@ namespace PacketViewerLogViewer
                 {
                     var d = PD.GetPackedString16AtPos(Offset, String6BitEncodeKeys.Item);
                     AddDataField(Offset, 16);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d,descriptionField);
                     MarkParsed(Offset, 16, DataFieldIndex);
                 }
                 else
@@ -1091,7 +1110,7 @@ namespace PacketViewerLogViewer
                             {
                                 d += " => " + DataLookups.NLU(lookupField).GetValue((UInt64)(bitNumber + lookupFieldOffset));
                             }
-                            AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " - Bit"+bitNumber.ToString(), d);
+                            AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " - Bit"+bitNumber.ToString(), d,descriptionField);
                         }
 
                         bitNumber++;
@@ -1108,7 +1127,7 @@ namespace PacketViewerLogViewer
                     }
                     if (foundCount <= 0)
                     {
-                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "No bits are set");
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "No bits are set",descriptionField);
                     }
                     MarkParsed(Offset, SubOffsetRange / 8, DataFieldIndex);
                 }
@@ -1156,11 +1175,11 @@ namespace PacketViewerLogViewer
                     }
                     if (foundCount <= 0)
                     {
-                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "No bits are set");
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "No bits are set",descriptionField);
                     }
                     else
                     {
-                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d2);
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d2,descriptionField);
                     }
                     MarkParsed(Offset, SubOffsetRange / 8, DataFieldIndex);
                 }
@@ -1173,7 +1192,7 @@ namespace PacketViewerLogViewer
                     AddDataField(Offset, 2);
                     if ((d & 0x8000) != 0)
                         cappedString = " (Capped)";
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, skilllevel.ToString() + cappedString + " <= 0x"+d.ToString("X4"));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, skilllevel.ToString() + cappedString + " <= 0x"+d.ToString("X4"),descriptionField);
                     MarkParsed(Offset, 2, DataFieldIndex);
                 }
                 else
@@ -1186,7 +1205,7 @@ namespace PacketViewerLogViewer
                     AddDataField(Offset, 2);
                     if ((d & 0x8000) != 0)
                         cappedString = " (Capped)";
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "Level: "+ craftlevel.ToString() + " Rank: " + craftrank.ToString() + " " + DataLookups.NLU(DataLookups.LU_CraftRanks).GetValue((UInt64)craftrank) + cappedString + " <= 0x" + d.ToString("X4"));
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "Level: "+ craftlevel.ToString() + " Rank: " + craftrank.ToString() + " " + DataLookups.NLU(DataLookups.LU_CraftRanks).GetValue((UInt64)craftrank) + cappedString + " <= 0x" + d.ToString("X4"),descriptionField);
                     MarkParsed(Offset, 2, DataFieldIndex);
                 }
                 else
@@ -1204,7 +1223,7 @@ namespace PacketViewerLogViewer
                     d += DataLookups.NLU(DataLookups.LU_Container).GetValue((UInt64)bagid)+" ";
                     d += "InvIndex: " + invindex.ToString() + " " ;
                     d += "Item: " + DataLookups.NLU(DataLookups.LU_Item).GetValue((UInt64)item);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "0x" + PD.GetUInt32AtPos(Offset).ToString("X4") + " => " + d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "0x" + PD.GetUInt32AtPos(Offset).ToString("X4") + " => " + d,descriptionField);
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -1229,7 +1248,7 @@ namespace PacketViewerLogViewer
                         d += DataLookups.NLU(DataLookups.LU_Container).GetValue((UInt64)bagid) + " ";
                         d += "InvIndex: " + invindex.ToString() + " ";
                         d += "Item: " + DataLookups.NLU(DataLookups.LU_Item).GetValue((UInt64)item);
-                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " #"+c.ToString(), "0x" + PD.GetUInt32AtPos(off + Offset).ToString("X4") + " => " + d);
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " #"+c.ToString(), "0x" + PD.GetUInt32AtPos(off + Offset).ToString("X4") + " => " + d,descriptionField);
                         c++;
                     }
                     MarkParsed(Offset, counter * 4, DataFieldIndex);
@@ -1258,7 +1277,7 @@ namespace PacketViewerLogViewer
                         if ((aID != 0) || (c == 0))
                         {
                             AddDataField(off, 8);
-                            AddParseLineToView(DataFieldIndex, "0x"+off.ToString("X2") , GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                            AddParseLineToView(DataFieldIndex, "0x"+off.ToString("X2") , GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d,descriptionField);
                             MarkParsed(off, 8, DataFieldIndex);
                         }
                         off += 8;
@@ -1270,7 +1289,7 @@ namespace PacketViewerLogViewer
                     var pID = PD.GetUInt32AtPos(Offset);
                     var pName = PD.GetStringAtPos(Offset + 4);
                     AddDataField(Offset, 20);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "ID: 0x" + pID.ToString("X8") + " => " + pName);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, "ID: 0x" + pID.ToString("X8") + " => " + pName,descriptionField);
                     MarkParsed(Offset, 20, DataFieldIndex);
                 }
                 else
@@ -1291,7 +1310,7 @@ namespace PacketViewerLogViewer
                         d += "ID: 0x" + meritID.ToString("X4") + " (" + DataLookups.NLU(DataLookups.LU_Merit).GetValue((UInt64)meritID) + ") - ";
                         d += "Next Cost: " + meritNextCost.ToString() + " - ";
                         d += "Value: " + meritValue.ToString();
-                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                        AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d,descriptionField);
                         c++;
                     }
                     MarkParsed(Offset, counter * 4, DataFieldIndex);
@@ -1320,10 +1339,10 @@ namespace PacketViewerLogViewer
                         string extdataStr = PD.GetDataAtPos(n + 4, 24);
 
                         AddDataField(n, 28);
-                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString()+" ID", idStr);
-                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString() + " Slot", slotStr);
-                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString() + " ???", unkStr);
-                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString() + " ExtData", extdataStr);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString()+" ID", idStr,descriptionField);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString() + " Slot", slotStr, descriptionField);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString() + " ???", unkStr, descriptionField);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString() + " ExtData", extdataStr, descriptionField);
                         MarkParsed(n, 28, DataFieldIndex);
                         n += 28;
                     }
@@ -1348,7 +1367,7 @@ namespace PacketViewerLogViewer
                         string iconStr = "0x" + iconVal.ToString("X4") + " => " + DataLookups.NLU(DataLookups.LU_Buffs).GetValue(iconVal);
 
                         AddDataField(n, 2);
-                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), iconStr);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), iconStr, descriptionField);
                         MarkParsed(n, 2, DataFieldIndex);
                         n += 2;
                     }
@@ -1380,7 +1399,7 @@ namespace PacketViewerLogViewer
                             timerStr = "0x" + timerVal.ToString("X8") + " => " + MSToString((uint)timerVal);
 
                         AddDataField(n, 4);
-                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), timerStr);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), timerStr, descriptionField);
                         MarkParsed(n, 4, DataFieldIndex);
                         n += 4;
                     }
@@ -1414,7 +1433,7 @@ namespace PacketViewerLogViewer
                         string iconStr = "0x" + iconVal.ToString("X4") + " => " + DataLookups.NLU(DataLookups.LU_Buffs).GetValue(iconVal);
 
                         AddDataField(n, 2);
-                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString()+" Icon", iconStr);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString()+" Icon", iconStr, descriptionField);
                         MarkParsed(n, 2, DataFieldIndex);
 
                         Int32 timerVal = PD.GetInt32AtPos(t);
@@ -1428,7 +1447,7 @@ namespace PacketViewerLogViewer
                             timerStr = "0x" + timerVal.ToString("X8") + " => " + MSToString((uint)timerVal);
 
                         // AddDataField(t, 4);
-                        AddParseLineToView(DataFieldIndex, "0x" + t.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString()+" Timer", timerStr);
+                        AddParseLineToView(DataFieldIndex, "0x" + t.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString()+" Timer", timerStr, descriptionField);
                         MarkParsed(t, 4, DataFieldIndex);
                         n += 2;
                         t += 4;
@@ -1463,7 +1482,7 @@ namespace PacketViewerLogViewer
 
                         AddDataField(n, 4);
                         if ((jpVal != 0) && (jp2Val != 0))
-                            AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                            AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d, descriptionField);
                         MarkParsed(n, 4, DataFieldIndex);
                         n += 4;
                     }
@@ -1501,7 +1520,7 @@ namespace PacketViewerLogViewer
                         d += " => " + DataLookups.NLU(DataLookups.LU_Item).GetValue(itemVal);
 
                         AddDataField(n, 12);
-                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d, descriptionField);
                         MarkParsed(n, 12, DataFieldIndex);
                         n += 12;
                     }
@@ -1528,7 +1547,7 @@ namespace PacketViewerLogViewer
                         d += " => " + DataLookups.NLU(DataLookups.LU_Item).GetValue(itemVal);
 
                         AddDataField(n, 8);
-                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d);
+                        AddParseLineToView(DataFieldIndex, "0x" + n.ToString("X"), GetDataColor(DataFieldIndex), nameField + " #" + c.ToString(), d, descriptionField);
                         MarkParsed(n, 8, DataFieldIndex);
                         n += 8;
                     }
@@ -1546,7 +1565,7 @@ namespace PacketViewerLogViewer
                     d += spentVal.ToString() + " Spent JP  ";
 
                     AddDataField(Offset, 6);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d, descriptionField);
                     MarkParsed(Offset, 6, DataFieldIndex);
                 }
                 else
@@ -1562,7 +1581,7 @@ namespace PacketViewerLogViewer
                     d += "Progress; " + progressVal.ToString() + " / " + maxVal ;
 
                     AddDataField(Offset, 4);
-                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, d, descriptionField);
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
@@ -1596,7 +1615,7 @@ namespace PacketViewerLogViewer
                         "0x" + i.ToString("X2"),
                         Color.DarkGray,
                         "??_UInt32 (@" + i.ToString() + ")",
-                        "0x" + PD.GetUInt32AtPos(i).ToString("X8") + " (" + PD.GetUInt32AtPos(i).ToString() + ")", PD.GetUInt32AtPos(i));
+                        "0x" + PD.GetUInt32AtPos(i).ToString("X8") + " (" + PD.GetUInt32AtPos(i).ToString() + ")", "Not parsed by script", PD.GetUInt32AtPos(i));
                     MarkParsed(i, 4, DataFieldIndex);
                     i += 3; // move forward a extra 3 bytes
                 }
@@ -1608,7 +1627,7 @@ namespace PacketViewerLogViewer
                         "0x" + i.ToString("X2"), 
                         Color.DarkGray, 
                         "??_Byte (@" + i.ToString() + ")", 
-                        "0x" + PD.GetByteAtPos(i).ToString("X2") + " (" + PD.GetByteAtPos(i).ToString() + ")", PD.GetByteAtPos(i));
+                        "0x" + PD.GetByteAtPos(i).ToString("X2") + " (" + PD.GetByteAtPos(i).ToString() + ")", "Not parsed by script", PD.GetByteAtPos(i));
                     MarkParsed(i, 1, DataFieldIndex);
                 }
             }

@@ -407,6 +407,15 @@ namespace PacketViewerLogViewer
                     if (ch == 92)
                         rtf += "\\\\" ;
                     else
+                    if (ch == 64)
+                        rtf += "\\@";
+                    else
+                    if (ch == 123)
+                        rtf += "\\{";
+                    else
+                    if (ch == 125)
+                        rtf += "\\}";
+                    else
                     if ((ch < 32) || (ch >= 128))
                         rtf += '.';
                     else
@@ -1409,10 +1418,17 @@ namespace PacketViewerLogViewer
 
         private void MMExtraUpdateParser_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you want to download packet data ?\r\n\r\n" +
+            if (MessageBox.Show("Do you want to download packet data ?\r\n" +
+                "\r\n" +
+                "This will update your lookup and parse data from the PVLV-Data repository on GitHub at \r\n"+
+                Properties.Settings.Default.ParserDataUpdateZipURL + "\r\n" +
+                "\r\n" +
                 "Any changes you have made will be overwritten if you do.\r\n" +
                 "This does NOT check for version updates of the program itself !\r\n" +
-                "Also note that it is possible that this data is OLDER than your current one.","Update data ?",MessageBoxButtons.YesNo,MessageBoxIcon.Warning) != DialogResult.Yes)
+                "Also note that it is possible that this data is OLDER than your current one.",
+                "Update data ?",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 
             using (var loadform = new LoadingForm(this))

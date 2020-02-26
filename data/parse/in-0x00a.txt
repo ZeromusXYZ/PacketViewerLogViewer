@@ -12,7 +12,7 @@ byte;$1C;Movement Speed;Speed 0x32 represents 100%
 byte;$1D;Animation Speed;Speed 0x32 represents 100%
 byte;$1E;HP %
 byte;$1F;Status
-uint32;$20;_unknown_@0x20;
+uint32;0x20;Character Gender and Size;
 uint32;0x24;Affects Zone "direction"
 uint16;0x28;Always 0x0100
 uint16;0x2A;Zone animation
@@ -106,7 +106,11 @@ int16;$E4;MND Bonus
 int16;$E6;CHR Bonus
 uint32;$E8;Max HP
 uint32;$EC;Max MP
-data20;$F0;_unknown16
+uint32;$F0;_unknown_@0xF0
+uint32;$F4;Menu Config Data
+uint32;$F8;Same as 0x08 in-0xB4
+uint32;$FC;Same as 0x0C in-0xB4
+bitflaglist2:expansions;0x100:0-32;Required Expansion?
 
 save;@actors;Player ID;Player Name
 save;@players;Player ID;Player Name
