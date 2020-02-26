@@ -1064,7 +1064,7 @@ namespace PacketViewerLogViewer
                         tabRect.Left + (tabRect.Width - closeImage.Width) / 2,
                         tabRect.Top);
                     var tSize = e.Graphics.MeasureString(tabPage.Text, tabPage.Font);
-                    e.Graphics.TranslateTransform(tabRect.Width, tabRect.Bottom);
+                    e.Graphics.TranslateTransform(tabRect.Left + tabRect.Width, tabRect.Bottom);
                     e.Graphics.RotateTransform(-90);
                     var textBrush = new SolidBrush(tabPage.ForeColor);
                     e.Graphics.DrawString(tabPage.Text, tabPage.Font, textBrush, 0, -tabRect.Width - (tSize.Height / -4), StringFormat.GenericDefault);
