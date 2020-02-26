@@ -256,10 +256,10 @@
             this.rbInNone.AutoSize = true;
             this.rbInNone.Location = new System.Drawing.Point(15, 88);
             this.rbInNone.Name = "rbInNone";
-            this.rbInNone.Size = new System.Drawing.Size(104, 17);
+            this.rbInNone.Size = new System.Drawing.Size(105, 17);
             this.rbInNone.TabIndex = 3;
             this.rbInNone.TabStop = true;
-            this.rbInNone.Text = "Hide all outgoing";
+            this.rbInNone.Text = "Hide all incoming";
             this.rbInNone.UseVisualStyleBackColor = true;
             // 
             // rbInShow

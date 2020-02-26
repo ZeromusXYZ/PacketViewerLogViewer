@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MM = new System.Windows.Forms.MenuStrip();
             this.mmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +62,10 @@
             this.mmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutGithub = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutDiscord = new System.Windows.Forms.ToolStripMenuItem();
+            this.MMAboutN1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MMAbout7Zip = new System.Windows.Forms.ToolStripMenuItem();
+            this.MMAbout7ZipMain = new System.Windows.Forms.ToolStripMenuItem();
+            this.MMAbout7ZipDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutVideoLAN = new System.Windows.Forms.ToolStripMenuItem();
             this.MMAboutN2 = new System.Windows.Forms.ToolStripSeparator();
             this.mmAboutAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,10 +97,6 @@
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.sbExtraInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.MMAboutN1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MMAbout7Zip = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMAbout7ZipMain = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMAbout7ZipDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -380,6 +380,34 @@
             this.mmAboutDiscord.Text = "Join Discord";
             this.mmAboutDiscord.Click += new System.EventHandler(this.MmAboutDiscord_Click);
             // 
+            // MMAboutN1
+            // 
+            this.MMAboutN1.Name = "MMAboutN1";
+            this.MMAboutN1.Size = new System.Drawing.Size(194, 6);
+            // 
+            // MMAbout7Zip
+            // 
+            this.MMAbout7Zip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MMAbout7ZipMain,
+            this.MMAbout7ZipDownload});
+            this.MMAbout7Zip.Name = "MMAbout7Zip";
+            this.MMAbout7Zip.Size = new System.Drawing.Size(197, 22);
+            this.MMAbout7Zip.Text = "Visit 7-zip site";
+            // 
+            // MMAbout7ZipMain
+            // 
+            this.MMAbout7ZipMain.Name = "MMAbout7ZipMain";
+            this.MMAbout7ZipMain.Size = new System.Drawing.Size(222, 22);
+            this.MMAbout7ZipMain.Text = "Main site";
+            this.MMAbout7ZipMain.Click += new System.EventHandler(this.MMAbout7ZipMain_Click);
+            // 
+            // MMAbout7ZipDownload
+            // 
+            this.MMAbout7ZipDownload.Name = "MMAbout7ZipDownload";
+            this.MMAbout7ZipDownload.Size = new System.Drawing.Size(222, 22);
+            this.MMAbout7ZipDownload.Text = "Goto V18.05 download page";
+            this.MMAbout7ZipDownload.Click += new System.EventHandler(this.MMAbout7ZipDownload_Click);
+            // 
             // mmAboutVideoLAN
             // 
             this.mmAboutVideoLAN.Name = "mmAboutVideoLAN";
@@ -580,11 +608,11 @@
             // 
             this.dGV.AllowUserToAddRows = false;
             this.dGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dGV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -696,34 +724,6 @@
             this.sbProjectInfo.Name = "sbProjectInfo";
             this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
             this.sbProjectInfo.Text = "Project: none";
-            // 
-            // MMAboutN1
-            // 
-            this.MMAboutN1.Name = "MMAboutN1";
-            this.MMAboutN1.Size = new System.Drawing.Size(194, 6);
-            // 
-            // MMAbout7Zip
-            // 
-            this.MMAbout7Zip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MMAbout7ZipMain,
-            this.MMAbout7ZipDownload});
-            this.MMAbout7Zip.Name = "MMAbout7Zip";
-            this.MMAbout7Zip.Size = new System.Drawing.Size(197, 22);
-            this.MMAbout7Zip.Text = "Visit 7-zip site";
-            // 
-            // MMAbout7ZipMain
-            // 
-            this.MMAbout7ZipMain.Name = "MMAbout7ZipMain";
-            this.MMAbout7ZipMain.Size = new System.Drawing.Size(222, 22);
-            this.MMAbout7ZipMain.Text = "Main site";
-            this.MMAbout7ZipMain.Click += new System.EventHandler(this.MMAbout7ZipMain_Click);
-            // 
-            // MMAbout7ZipDownload
-            // 
-            this.MMAbout7ZipDownload.Name = "MMAbout7ZipDownload";
-            this.MMAbout7ZipDownload.Size = new System.Drawing.Size(222, 22);
-            this.MMAbout7ZipDownload.Text = "Goto V18.05 download page";
-            this.MMAbout7ZipDownload.Click += new System.EventHandler(this.MMAbout7ZipDownload_Click);
             // 
             // MainForm
             // 

@@ -96,7 +96,10 @@ namespace PacketViewerLogViewer
             try
             {
                 Directory.SetCurrentDirectory(Application.StartupPath);
-                DataLookups.LoadLookups();
+                if (DataLookups.LoadLookups() == false)
+                {
+                    MessageBox.Show("Errors while loading lookup data: " + DataLookups.AllLoadErrors, "Error Loading Lookup Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
             }
             catch (Exception x)
             {
@@ -403,6 +406,15 @@ namespace PacketViewerLogViewer
                     char ch = (char)pp.PD.GetByteAtPos(startIndex + c);
                     if (ch == 92)
                         rtf += "\\\\" ;
+                    else
+                    if (ch == 64)
+                        rtf += "\\@";
+                    else
+                    if (ch == 123)
+                        rtf += "\\{";
+                    else
+                    if (ch == 125)
+                        rtf += "\\}";
                     else
                     if ((ch < 32) || (ch >= 128))
                         rtf += '.';
@@ -1061,7 +1073,7 @@ namespace PacketViewerLogViewer
                         tabRect.Left + (tabRect.Width - closeImage.Width) / 2,
                         tabRect.Top);
                     var tSize = e.Graphics.MeasureString(tabPage.Text, tabPage.Font);
-                    e.Graphics.TranslateTransform(tabRect.Width, tabRect.Bottom);
+                    e.Graphics.TranslateTransform(tabRect.Left + tabRect.Width, tabRect.Bottom);
                     e.Graphics.RotateTransform(-90);
                     var textBrush = new SolidBrush(tabPage.ForeColor);
                     e.Graphics.DrawString(tabPage.Text, tabPage.Font, textBrush, 0, -tabRect.Width - (tSize.Height / -4), StringFormat.GenericDefault);
@@ -1406,10 +1418,17 @@ namespace PacketViewerLogViewer
 
         private void MMExtraUpdateParser_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you want to download packet data ?\r\n\r\n" +
+            if (MessageBox.Show("Do you want to download packet data ?\r\n" +
+                "\r\n" +
+                "This will update your lookup and parse data from the PVLV-Data repository on GitHub at \r\n"+
+                Properties.Settings.Default.ParserDataUpdateZipURL + "\r\n" +
+                "\r\n" +
                 "Any changes you have made will be overwritten if you do.\r\n" +
                 "This does NOT check for version updates of the program itself !\r\n" +
-                "Also note that it is possible that this data is OLDER than your current one.","Update data ?",MessageBoxButtons.YesNo,MessageBoxIcon.Warning) != DialogResult.Yes)
+                "Also note that it is possible that this data is OLDER than your current one.",
+                "Update data ?",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 
             using (var loadform = new LoadingForm(this))
