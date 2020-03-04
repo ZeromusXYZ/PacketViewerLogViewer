@@ -105,6 +105,7 @@
             this.rbOutgoing.TabIndex = 2;
             this.rbOutgoing.Text = "Outgoing";
             this.rbOutgoing.UseVisualStyleBackColor = true;
+            this.rbOutgoing.CheckedChanged += new System.EventHandler(this.SearchFieldsChanged);
             // 
             // rbIncoming
             // 
@@ -115,6 +116,7 @@
             this.rbIncoming.TabIndex = 1;
             this.rbIncoming.Text = "Incoming";
             this.rbIncoming.UseVisualStyleBackColor = true;
+            this.rbIncoming.CheckedChanged += new System.EventHandler(this.SearchFieldsChanged);
             // 
             // rbAny
             // 
@@ -127,6 +129,7 @@
             this.rbAny.TabStop = true;
             this.rbAny.Text = "Any";
             this.rbAny.UseVisualStyleBackColor = true;
+            this.rbAny.CheckedChanged += new System.EventHandler(this.SearchFieldsChanged);
             // 
             // btnAsNewTab
             // 
