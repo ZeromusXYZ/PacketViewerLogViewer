@@ -1,0 +1,19 @@
+file;out-0x110;Fishing Action;
+
+uint32:@actors;0x04;CharId
+
+uint32;0x08;Stamina/Status Code/Time Left;(Action:[3] 0-100=Fish Stamina % when catching, 200=Give Up after Hook, 201=Cancel before hook, 300=Out of Time -- [5] #=Time Left, )
+switchblock;0x0E;action3;3
+switchblock;0x0E;action5;5
+
+[[action3]]
+uint32;0x08;Stamina/Status Code;(Action:[3] 0-100=Fish Stamina % when catching, 200=Give Up after Hook, 201=Cancel before hook, 300=Out of Time -- [5] #=Time Left, )
+[[]]
+
+[[action5]]
+uint32;0x08;Time Left
+[[]]
+
+uint16;0x0C;Targ Index
+uint8:fishingaction;0x0E;Action;2 = Check hook, 3 = Hook Action, 4 = End, 5 = Time Warning
+uint32;0x10;Fishing "Special";Received from 0x115 being sent back
