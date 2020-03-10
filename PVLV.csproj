@@ -157,50 +157,50 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBoxForm.cs">
+    <Compile Include="forms\AboutBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBoxForm.Designer.cs">
+    <Compile Include="forms\AboutBoxForm.Designer.cs">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CompressForm.cs">
+    <Compile Include="forms\CompressForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CompressForm.Designer.cs">
+    <Compile Include="forms\CompressForm.Designer.cs">
       <DependentUpon>CompressForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameViewForm.cs">
+    <Compile Include="forms\GameViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameViewForm.Designer.cs">
+    <Compile Include="forms\GameViewForm.Designer.cs">
       <DependentUpon>GameViewForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PacketSpecial.cs" />
-    <Compile Include="ClipboardHelper.cs" />
-    <Compile Include="DataLookupDefs.cs" />
-    <Compile Include="FileExtHelper.cs" />
-    <Compile Include="ParseEditorForm.cs">
+    <Compile Include="helpers\PacketSpecial.cs" />
+    <Compile Include="helpers\ClipboardHelper.cs" />
+    <Compile Include="helpers\DataLookupDefs.cs" />
+    <Compile Include="helpers\FileExtHelper.cs" />
+    <Compile Include="forms\ParseEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ParseEditorForm.Designer.cs">
+    <Compile Include="forms\ParseEditorForm.Designer.cs">
       <DependentUpon>ParseEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProjectInfoForm.cs">
+    <Compile Include="forms\ProjectInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProjectInfoForm.Designer.cs">
+    <Compile Include="forms\ProjectInfoForm.Designer.cs">
       <DependentUpon>ProjectInfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SearchForm.cs">
+    <Compile Include="forms\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SearchForm.Designer.cs">
+    <Compile Include="forms\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoadingForm.cs">
+    <Compile Include="forms\LoadingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoadingForm.Designer.cs">
+    <Compile Include="forms\LoadingForm.Designer.cs">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
@@ -209,65 +209,65 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PacketDefs.cs" />
-    <Compile Include="PacketParsers.cs" />
-    <Compile Include="PacketTypeSelectForm.cs">
+    <Compile Include="helpers\PacketDefs.cs" />
+    <Compile Include="helpers\PacketParsers.cs" />
+    <Compile Include="forms\PacketTypeSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PacketTypeSelectForm.Designer.cs">
+    <Compile Include="forms\PacketTypeSelectForm.Designer.cs">
       <DependentUpon>PacketTypeSelectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FilterForm.cs">
+    <Compile Include="forms\FilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FilterForm.Designer.cs">
+    <Compile Include="forms\FilterForm.Designer.cs">
       <DependentUpon>FilterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsForm.cs">
+    <Compile Include="forms\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsForm.Designer.cs">
+    <Compile Include="forms\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="VanaTime.cs" />
-    <Compile Include="VideoLinkForm.cs">
+    <Compile Include="helpers\VanaTime.cs" />
+    <Compile Include="forms\VideoLinkForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VideoLinkForm.Designer.cs">
+    <Compile Include="forms\VideoLinkForm.Designer.cs">
       <DependentUpon>VideoLinkForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PVLVHelper.cs" />
-    <EmbeddedResource Include="AboutBoxForm.resx">
+    <Compile Include="helpers\PVLVHelper.cs" />
+    <EmbeddedResource Include="forms\AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CompressForm.resx">
+    <EmbeddedResource Include="forms\CompressForm.resx">
       <DependentUpon>CompressForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GameViewForm.resx">
+    <EmbeddedResource Include="forms\GameViewForm.resx">
       <DependentUpon>GameViewForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ParseEditorForm.resx">
+    <EmbeddedResource Include="forms\ParseEditorForm.resx">
       <DependentUpon>ParseEditorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProjectInfoForm.resx">
+    <EmbeddedResource Include="forms\ProjectInfoForm.resx">
       <DependentUpon>ProjectInfoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SearchForm.resx">
+    <EmbeddedResource Include="forms\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoadingForm.resx">
+    <EmbeddedResource Include="forms\LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PacketTypeSelectForm.resx">
+    <EmbeddedResource Include="forms\PacketTypeSelectForm.resx">
       <DependentUpon>PacketTypeSelectForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FilterForm.resx">
+    <EmbeddedResource Include="forms\FilterForm.resx">
       <DependentUpon>FilterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -280,10 +280,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SettingsForm.resx">
+    <EmbeddedResource Include="forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VideoLinkForm.resx">
+    <EmbeddedResource Include="forms\VideoLinkForm.resx">
       <DependentUpon>VideoLinkForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="data\filter\hide movement.pfl">
