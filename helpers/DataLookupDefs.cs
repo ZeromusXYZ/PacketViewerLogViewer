@@ -300,6 +300,11 @@ namespace PacketViewerLogViewer.Packets
         {
             // Extract name
             var lookupname = Path.GetFileNameWithoutExtension(fileName).ToLower();
+
+            // Remove a old list if it already exists
+            if (LookupLists.TryGetValue(lookupname,out _))
+                LookupLists.Remove(lookupname);
+
             // Create new list
             DataLookupList dll = new DataLookupList();
             // Add it
@@ -338,12 +343,18 @@ namespace PacketViewerLogViewer.Packets
             return true;
         }
 
-        public static bool LoadLookups()
+        public static string DefaultLookupPath()
         {
-            LookupLists.Clear();
+            return Path.Combine(Application.StartupPath, "data", "lookup");
+        }
+
+        public static bool LoadLookups(bool InitialLoading = true)
+        {
+            if (InitialLoading)
+                LookupLists.Clear();
             AllLoadErrors = string.Empty ;
             bool noErrors = true;
-            var lookupPath = Path.Combine(Application.StartupPath,"data","lookup");
+            var lookupPath = DefaultLookupPath();
             DirectoryInfo DI = new DirectoryInfo(lookupPath);
             if (Directory.Exists(lookupPath))
             {

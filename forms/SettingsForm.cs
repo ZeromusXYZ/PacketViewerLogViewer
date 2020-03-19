@@ -39,6 +39,8 @@ namespace PacketViewerLogViewer
             Properties.Settings.Default.PreParseData = cbPreParseData.Checked;
             Properties.Settings.Default.ShowStringHexData = cbShowHexStringData.Checked;
             Properties.Settings.Default.AskCreateNewProjectFile = cbAskNewProject.Checked;
+            Properties.Settings.Default.ParserDataUpdateZipURL = eParserDataUpdateZipURL.Text;
+            Properties.Settings.Default.POLUtilsDataFolder = ePOLUtilsDataFolder.Text;
             DialogResult = DialogResult.OK;
         }
 
@@ -49,10 +51,10 @@ namespace PacketViewerLogViewer
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            LoadColorSettingsIntoForm();
+            LoadSettingsIntoForm();
         }
 
-        private void LoadColorSettingsIntoForm()
+        private void LoadSettingsIntoForm()
         {
             // Manual loading
             btnBackIN.BackColor = Properties.Settings.Default.ColBackIN;
@@ -106,6 +108,8 @@ namespace PacketViewerLogViewer
             cbPreParseData.Checked = Properties.Settings.Default.PreParseData;
             cbShowHexStringData.Checked = Properties.Settings.Default.ShowStringHexData;
             cbAskNewProject.Checked = Properties.Settings.Default.AskCreateNewProjectFile;
+            eParserDataUpdateZipURL.Text = Properties.Settings.Default.ParserDataUpdateZipURL;
+            ePOLUtilsDataFolder.Text = Properties.Settings.Default.POLUtilsDataFolder;
 
         }
 
@@ -153,7 +157,7 @@ namespace PacketViewerLogViewer
         private void btnDefault_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.Reset();
-            LoadColorSettingsIntoForm();
+            LoadSettingsIntoForm();
         }
 
         private void btnColorButton_Click(object sender, EventArgs e)
@@ -393,6 +397,20 @@ namespace PacketViewerLogViewer
             {
                 localFieldColors[t] = colorDlg.Color;
                 UpdateFieldColorGrid();
+            }
+        }
+
+        private void btnDefaultUpdateURL_Click(object sender, EventArgs e)
+        {
+            eParserDataUpdateZipURL.Text = "https://github.com/ZeromusXYZ/PVLV-Data/raw/master/update.7z";
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            fbdPOLUtils.SelectedPath = ePOLUtilsDataFolder.Text;
+            if (fbdPOLUtils.ShowDialog() == DialogResult.OK)
+            {
+                ePOLUtilsDataFolder.Text = fbdPOLUtils.SelectedPath;
             }
         }
     }
