@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PacketViewerLogViewer.SEUtils;
 
 namespace PacketViewerLogViewer
 {
@@ -110,6 +111,20 @@ namespace PacketViewerLogViewer
             cbAskNewProject.Checked = Properties.Settings.Default.AskCreateNewProjectFile;
             eParserDataUpdateZipURL.Text = Properties.Settings.Default.ParserDataUpdateZipURL;
             ePOLUtilsDataFolder.Text = Properties.Settings.Default.POLUtilsDataFolder;
+
+            // Re-check once
+            if (SEHelper.FFXI_InstallationPath != string.Empty)
+                SEHelper.FindPaths();
+            if (SEHelper.FFXI_InstallationPath != string.Empty)
+            {
+                eFFXIPath.Text = SEHelper.FFXI_InstallationPath;
+                lFFXIFileCount.Text = SEHelper.FFXI_FTable.Count.ToString() + " / " + SEHelper.FFXI_FTableCount.ToString();
+            }
+            else
+            {
+                eFFXIPath.Text = "<not installed>";
+                lFFXIFileCount.Text = "no files";
+            }
 
         }
 

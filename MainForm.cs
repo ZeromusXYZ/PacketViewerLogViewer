@@ -13,7 +13,7 @@ using System.IO;
 using PacketViewerLogViewer.ClipboardHelper;
 using PacketViewerLogViewer.PVLVHelper;
 using PacketViewerLogViewer.FileExtHelper;
-using PacketViewerLogViewer.POLUtils;
+using PacketViewerLogViewer.SEUtils;
 
 namespace PacketViewerLogViewer
 {
@@ -96,6 +96,7 @@ namespace PacketViewerLogViewer
             Application.UseWaitCursor = true;
             try
             {
+                SEHelper.FindPaths();
                 Directory.SetCurrentDirectory(Application.StartupPath);
                 if (DataLookups.LoadLookups() == false)
                 {
@@ -1542,7 +1543,7 @@ namespace PacketViewerLogViewer
                 loadform.pb.Hide();
                 loadform.lTextInfo.Show();
                 loadform.Show();
-                List<POLUtils.Item> items = new List<POLUtils.Item>();
+                List<SEUtils.FFXI_Item> items = new List<SEUtils.FFXI_Item>();
 
                 var itemFiles = Directory.GetFiles(Properties.Settings.Default.POLUtilsDataFolder, "items-*.xml");
 
@@ -1550,7 +1551,7 @@ namespace PacketViewerLogViewer
                 {
                     loadform.lTextInfo.Text = "Items " + (c + 1).ToString() + "/" + itemFiles.Length.ToString();
                     loadform.Refresh();
-                    items.AddRange(POLUtilsHelper.ReadItemListFromXML(itemFiles[c]));
+                    items.AddRange(SEHelper.ReadItemListFromXML(itemFiles[c]));
                     System.Threading.Thread.Sleep(250);
                 }
                 loadform.lTextInfo.Text = "Saving "+items.Count.ToString() +" items ...";

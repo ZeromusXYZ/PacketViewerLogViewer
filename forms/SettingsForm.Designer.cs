@@ -109,15 +109,18 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbPacketList = new System.Windows.Forms.TabPage();
             this.tpFieldGrid = new System.Windows.Forms.TabPage();
-            this.tpLookup = new System.Windows.Forms.TabPage();
+            this.tpDataSetup = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnBrowse = new System.Windows.Forms.Button();
+            this.ePOLUtilsDataFolder = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.btnDefaultUpdateURL = new System.Windows.Forms.Button();
             this.eParserDataUpdateZipURL = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.btnDefaultUpdateURL = new System.Windows.Forms.Button();
-            this.label15 = new System.Windows.Forms.Label();
-            this.ePOLUtilsDataFolder = new System.Windows.Forms.TextBox();
-            this.btnBrowse = new System.Windows.Forms.Button();
             this.fbdPOLUtils = new System.Windows.Forms.FolderBrowserDialog();
+            this.eFFXIPath = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.lFFXIFileCount = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbVideoSettings.SuspendLayout();
             this.gbListStyle.SuspendLayout();
@@ -134,7 +137,7 @@
             this.groupBox1.SuspendLayout();
             this.tbPacketList.SuspendLayout();
             this.tpFieldGrid.SuspendLayout();
-            this.tpLookup.SuspendLayout();
+            this.tpDataSetup.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1210,7 +1213,7 @@
             this.tcSettings.Controls.Add(this.tpGeneral);
             this.tcSettings.Controls.Add(this.tbPacketList);
             this.tcSettings.Controls.Add(this.tpFieldGrid);
-            this.tcSettings.Controls.Add(this.tpLookup);
+            this.tcSettings.Controls.Add(this.tpDataSetup);
             this.tcSettings.Location = new System.Drawing.Point(0, 0);
             this.tcSettings.Name = "tcSettings";
             this.tcSettings.SelectedIndex = 0;
@@ -1265,21 +1268,24 @@
             this.tpFieldGrid.TabIndex = 2;
             this.tpFieldGrid.Text = "Field Grid";
             // 
-            // tpLookup
+            // tpDataSetup
             // 
-            this.tpLookup.Controls.Add(this.groupBox2);
-            this.tpLookup.Location = new System.Drawing.Point(4, 22);
-            this.tpLookup.Name = "tpLookup";
-            this.tpLookup.Padding = new System.Windows.Forms.Padding(3);
-            this.tpLookup.Size = new System.Drawing.Size(521, 272);
-            this.tpLookup.TabIndex = 3;
-            this.tpLookup.Text = "Lookup Settings";
-            this.tpLookup.UseVisualStyleBackColor = true;
+            this.tpDataSetup.Controls.Add(this.groupBox2);
+            this.tpDataSetup.Location = new System.Drawing.Point(4, 22);
+            this.tpDataSetup.Name = "tpDataSetup";
+            this.tpDataSetup.Padding = new System.Windows.Forms.Padding(3);
+            this.tpDataSetup.Size = new System.Drawing.Size(521, 272);
+            this.tpDataSetup.TabIndex = 3;
+            this.tpDataSetup.Text = "Data Settings";
+            this.tpDataSetup.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.lFFXIFileCount);
+            this.groupBox2.Controls.Add(this.eFFXIPath);
+            this.groupBox2.Controls.Add(this.label16);
             this.groupBox2.Controls.Add(this.btnBrowse);
             this.groupBox2.Controls.Add(this.ePOLUtilsDataFolder);
             this.groupBox2.Controls.Add(this.label15);
@@ -1288,10 +1294,50 @@
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(505, 130);
+            this.groupBox2.Size = new System.Drawing.Size(505, 182);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Update Settings";
+            // 
+            // btnBrowse
+            // 
+            this.btnBrowse.Location = new System.Drawing.Point(394, 83);
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.Size = new System.Drawing.Size(105, 23);
+            this.btnBrowse.TabIndex = 5;
+            this.btnBrowse.Text = "Browse";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
+            // ePOLUtilsDataFolder
+            // 
+            this.ePOLUtilsDataFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ePOLUtilsDataFolder.Location = new System.Drawing.Point(11, 83);
+            this.ePOLUtilsDataFolder.Name = "ePOLUtilsDataFolder";
+            this.ePOLUtilsDataFolder.ReadOnly = true;
+            this.ePOLUtilsDataFolder.Size = new System.Drawing.Size(377, 20);
+            this.ePOLUtilsDataFolder.TabIndex = 4;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(8, 67);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(108, 13);
+            this.label15.TabIndex = 3;
+            this.label15.Text = "POLUtils import folder";
+            // 
+            // btnDefaultUpdateURL
+            // 
+            this.btnDefaultUpdateURL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDefaultUpdateURL.Location = new System.Drawing.Point(394, 32);
+            this.btnDefaultUpdateURL.Name = "btnDefaultUpdateURL";
+            this.btnDefaultUpdateURL.Size = new System.Drawing.Size(105, 23);
+            this.btnDefaultUpdateURL.TabIndex = 2;
+            this.btnDefaultUpdateURL.Text = "Default";
+            this.btnDefaultUpdateURL.UseVisualStyleBackColor = true;
+            this.btnDefaultUpdateURL.Click += new System.EventHandler(this.btnDefaultUpdateURL_Click);
             // 
             // eParserDataUpdateZipURL
             // 
@@ -1299,7 +1345,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.eParserDataUpdateZipURL.Location = new System.Drawing.Point(11, 32);
             this.eParserDataUpdateZipURL.Name = "eParserDataUpdateZipURL";
-            this.eParserDataUpdateZipURL.Size = new System.Drawing.Size(407, 20);
+            this.eParserDataUpdateZipURL.Size = new System.Drawing.Size(377, 20);
             this.eParserDataUpdateZipURL.TabIndex = 1;
             // 
             // label14
@@ -1311,49 +1357,37 @@
             this.label14.TabIndex = 0;
             this.label14.Text = "URL to parser update file";
             // 
-            // btnDefaultUpdateURL
-            // 
-            this.btnDefaultUpdateURL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDefaultUpdateURL.Location = new System.Drawing.Point(424, 32);
-            this.btnDefaultUpdateURL.Name = "btnDefaultUpdateURL";
-            this.btnDefaultUpdateURL.Size = new System.Drawing.Size(75, 23);
-            this.btnDefaultUpdateURL.TabIndex = 2;
-            this.btnDefaultUpdateURL.Text = "Default";
-            this.btnDefaultUpdateURL.UseVisualStyleBackColor = true;
-            this.btnDefaultUpdateURL.Click += new System.EventHandler(this.btnDefaultUpdateURL_Click);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(8, 67);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(108, 13);
-            this.label15.TabIndex = 3;
-            this.label15.Text = "POLUtils import folder";
-            // 
-            // ePOLUtilsDataFolder
-            // 
-            this.ePOLUtilsDataFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ePOLUtilsDataFolder.Location = new System.Drawing.Point(11, 83);
-            this.ePOLUtilsDataFolder.Name = "ePOLUtilsDataFolder";
-            this.ePOLUtilsDataFolder.ReadOnly = true;
-            this.ePOLUtilsDataFolder.Size = new System.Drawing.Size(407, 20);
-            this.ePOLUtilsDataFolder.TabIndex = 4;
-            // 
-            // btnBrowse
-            // 
-            this.btnBrowse.Location = new System.Drawing.Point(424, 83);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowse.TabIndex = 5;
-            this.btnBrowse.Text = "Browse";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-            // 
             // fbdPOLUtils
             // 
             this.fbdPOLUtils.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            // 
+            // eFFXIPath
+            // 
+            this.eFFXIPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.eFFXIPath.Location = new System.Drawing.Point(11, 135);
+            this.eFFXIPath.Name = "eFFXIPath";
+            this.eFFXIPath.ReadOnly = true;
+            this.eFFXIPath.Size = new System.Drawing.Size(377, 20);
+            this.eFFXIPath.TabIndex = 7;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(8, 119);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(114, 13);
+            this.label16.TabIndex = 6;
+            this.label16.Text = "FFXI Installation Folder";
+            // 
+            // lFFXIFileCount
+            // 
+            this.lFFXIFileCount.AutoSize = true;
+            this.lFFXIFileCount.Location = new System.Drawing.Point(391, 138);
+            this.lFFXIFileCount.Name = "lFFXIFileCount";
+            this.lFFXIFileCount.Size = new System.Drawing.Size(40, 13);
+            this.lFFXIFileCount.TabIndex = 8;
+            this.lFFXIFileCount.Text = "no files";
             // 
             // SettingsForm
             // 
@@ -1398,7 +1432,7 @@
             this.groupBox1.PerformLayout();
             this.tbPacketList.ResumeLayout(false);
             this.tpFieldGrid.ResumeLayout(false);
-            this.tpLookup.ResumeLayout(false);
+            this.tpDataSetup.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -1488,7 +1522,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TabPage tpLookup;
+        private System.Windows.Forms.TabPage tpDataSetup;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox eParserDataUpdateZipURL;
         private System.Windows.Forms.Label label14;
@@ -1497,5 +1531,8 @@
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.TextBox ePOLUtilsDataFolder;
         private System.Windows.Forms.FolderBrowserDialog fbdPOLUtils;
+        private System.Windows.Forms.TextBox eFFXIPath;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label lFFXIFileCount;
     }
 }
