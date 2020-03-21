@@ -111,6 +111,9 @@
             this.tpFieldGrid = new System.Windows.Forms.TabPage();
             this.tpDataSetup = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lFFXIFileCount = new System.Windows.Forms.Label();
+            this.eFFXIPath = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.ePOLUtilsDataFolder = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -118,9 +121,8 @@
             this.eParserDataUpdateZipURL = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.fbdPOLUtils = new System.Windows.Forms.FolderBrowserDialog();
-            this.eFFXIPath = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.lFFXIFileCount = new System.Windows.Forms.Label();
+            this.cbUseGameClientData = new System.Windows.Forms.CheckBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbVideoSettings.SuspendLayout();
             this.gbListStyle.SuspendLayout();
@@ -1270,6 +1272,7 @@
             // 
             // tpDataSetup
             // 
+            this.tpDataSetup.Controls.Add(this.label17);
             this.tpDataSetup.Controls.Add(this.groupBox2);
             this.tpDataSetup.Location = new System.Drawing.Point(4, 22);
             this.tpDataSetup.Name = "tpDataSetup";
@@ -1283,6 +1286,7 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.cbUseGameClientData);
             this.groupBox2.Controls.Add(this.lFFXIFileCount);
             this.groupBox2.Controls.Add(this.eFFXIPath);
             this.groupBox2.Controls.Add(this.label16);
@@ -1294,10 +1298,38 @@
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(505, 182);
+            this.groupBox2.Size = new System.Drawing.Size(505, 192);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Update Settings";
+            // 
+            // lFFXIFileCount
+            // 
+            this.lFFXIFileCount.AutoSize = true;
+            this.lFFXIFileCount.Location = new System.Drawing.Point(391, 138);
+            this.lFFXIFileCount.Name = "lFFXIFileCount";
+            this.lFFXIFileCount.Size = new System.Drawing.Size(40, 13);
+            this.lFFXIFileCount.TabIndex = 8;
+            this.lFFXIFileCount.Text = "no files";
+            // 
+            // eFFXIPath
+            // 
+            this.eFFXIPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.eFFXIPath.Location = new System.Drawing.Point(11, 135);
+            this.eFFXIPath.Name = "eFFXIPath";
+            this.eFFXIPath.ReadOnly = true;
+            this.eFFXIPath.Size = new System.Drawing.Size(377, 20);
+            this.eFFXIPath.TabIndex = 7;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(8, 119);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(114, 13);
+            this.label16.TabIndex = 6;
+            this.label16.Text = "FFXI Installation Folder";
             // 
             // btnBrowse
             // 
@@ -1361,33 +1393,25 @@
             // 
             this.fbdPOLUtils.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
-            // eFFXIPath
+            // cbUseGameClientData
             // 
-            this.eFFXIPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.eFFXIPath.Location = new System.Drawing.Point(11, 135);
-            this.eFFXIPath.Name = "eFFXIPath";
-            this.eFFXIPath.ReadOnly = true;
-            this.eFFXIPath.Size = new System.Drawing.Size(377, 20);
-            this.eFFXIPath.TabIndex = 7;
+            this.cbUseGameClientData.AutoSize = true;
+            this.cbUseGameClientData.Location = new System.Drawing.Point(11, 161);
+            this.cbUseGameClientData.Name = "cbUseGameClientData";
+            this.cbUseGameClientData.Size = new System.Drawing.Size(263, 17);
+            this.cbUseGameClientData.TabIndex = 9;
+            this.cbUseGameClientData.Text = "Load lookup data from game client when possible*";
+            this.cbUseGameClientData.UseVisualStyleBackColor = true;
             // 
-            // label16
+            // label17
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(8, 119);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(114, 13);
-            this.label16.TabIndex = 6;
-            this.label16.Text = "FFXI Installation Folder";
-            // 
-            // lFFXIFileCount
-            // 
-            this.lFFXIFileCount.AutoSize = true;
-            this.lFFXIFileCount.Location = new System.Drawing.Point(391, 138);
-            this.lFFXIFileCount.Name = "lFFXIFileCount";
-            this.lFFXIFileCount.Size = new System.Drawing.Size(40, 13);
-            this.lFFXIFileCount.TabIndex = 8;
-            this.lFFXIFileCount.Text = "no files";
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(14, 256);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(257, 13);
+            this.label17.TabIndex = 21;
+            this.label17.Text = "(*) Only a limited amount of lookups is affected by this";
             // 
             // SettingsForm
             // 
@@ -1433,6 +1457,7 @@
             this.tbPacketList.ResumeLayout(false);
             this.tpFieldGrid.ResumeLayout(false);
             this.tpDataSetup.ResumeLayout(false);
+            this.tpDataSetup.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -1534,5 +1559,7 @@
         private System.Windows.Forms.TextBox eFFXIPath;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label lFFXIFileCount;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.CheckBox cbUseGameClientData;
     }
 }

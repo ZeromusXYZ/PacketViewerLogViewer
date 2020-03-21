@@ -42,6 +42,7 @@ namespace PacketViewerLogViewer
             Properties.Settings.Default.AskCreateNewProjectFile = cbAskNewProject.Checked;
             Properties.Settings.Default.ParserDataUpdateZipURL = eParserDataUpdateZipURL.Text;
             Properties.Settings.Default.POLUtilsDataFolder = ePOLUtilsDataFolder.Text;
+            Properties.Settings.Default.UseGameClientData = cbUseGameClientData.Checked ;
             DialogResult = DialogResult.OK;
         }
 
@@ -125,6 +126,7 @@ namespace PacketViewerLogViewer
                 eFFXIPath.Text = "<not installed>";
                 lFFXIFileCount.Text = "no files";
             }
+            cbUseGameClientData.Checked = Properties.Settings.Default.UseGameClientData;
 
         }
 

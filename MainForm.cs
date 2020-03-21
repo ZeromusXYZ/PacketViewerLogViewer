@@ -87,6 +87,13 @@ namespace PacketViewerLogViewer
             }
         }
 
+        private void LoadDataFromGameclient()
+        {
+            if ((Properties.Settings.Default.UseGameClientData == false) || (!Directory.Exists(SEHelper.FFXI_InstallationPath)))
+                return;
+
+            SEHelper.FFXI_LoadItemsFromDats(ref DataLookups.ItemsList.items);
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -102,6 +109,8 @@ namespace PacketViewerLogViewer
                 {
                     MessageBox.Show("Errors while loading lookup data: " + DataLookups.AllLoadErrors, "Error Loading Lookup Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
+
+                LoadDataFromGameclient();
             }
             catch (Exception x)
             {
@@ -591,6 +600,7 @@ namespace PacketViewerLogViewer
                 {
                     Properties.Settings.Default.Save();
                     PacketColors.UpdateColorsFromSettings();
+                    LoadDataFromGameclient();
                     //MessageBox.Show("Settings saved");
                 }
                 settingsDialog.Dispose();
@@ -1543,10 +1553,11 @@ namespace PacketViewerLogViewer
                 loadform.pb.Hide();
                 loadform.lTextInfo.Show();
                 loadform.Show();
-                List<SEUtils.FFXI_Item> items = new List<SEUtils.FFXI_Item>();
+                Dictionary<uint,FFXI_Item> items = new Dictionary<uint, FFXI_Item>();
 
+                SEHelper.FFXI_LoadItemsFromDats(ref items);
+                /*
                 var itemFiles = Directory.GetFiles(Properties.Settings.Default.POLUtilsDataFolder, "items-*.xml");
-
                 for(var c = 0; c < itemFiles.Length; c++)
                 {
                     loadform.lTextInfo.Text = "Items " + (c + 1).ToString() + "/" + itemFiles.Length.ToString();
@@ -1554,16 +1565,17 @@ namespace PacketViewerLogViewer
                     items.AddRange(SEHelper.ReadItemListFromXML(itemFiles[c]));
                     System.Threading.Thread.Sleep(250);
                 }
+                */
                 loadform.lTextInfo.Text = "Saving "+items.Count.ToString() +" items ...";
                 loadform.Refresh();
-                items.Sort();
+                var sorteditems = items.OrderBy(d => d.Value);
                 var itemsString = new List<string>();
                 itemsString.Add("id;name");
-                foreach(var item in items)
+                foreach(var item in sorteditems)
                 {
-                    if ((item.Id > 0) && (item.Name != string.Empty) && (item.Name != "."))
+                    if ((item.Value.Id > 0) && (item.Value.Name != string.Empty) && (item.Value.Name != "."))
                     {
-                        itemsString.Add(item.Id.ToString() + ";" + item.Name);
+                        itemsString.Add(item.Value.Id.ToString() + ";" + item.Value.Name);
                     }
                 }
                 File.WriteAllLines(Path.Combine(DataLookups.DefaultLookupPath(),"items.txt"), itemsString);
