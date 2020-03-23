@@ -107,8 +107,18 @@ namespace PacketViewerLogViewer
             searchParameters.SearchIncoming = (rbAny.Checked || rbIncoming.Checked);
             searchParameters.SearchOutgoing = (rbAny.Checked || rbOutgoing.Checked);
 
+            // Make sure no search options are on before validating
+            searchParameters.SearchByPacketID = false;
+            searchParameters.SearchBySync = false;
+            searchParameters.SearchByByte = false;
+            searchParameters.SearchByUInt16 = false;
+            searchParameters.SearchByUInt32 = false;
+            searchParameters.SearchByParsedData = false;
+            searchParameters.SearchParsedFieldName = string.Empty;
+            searchParameters.SearchParsedFieldValue = string.Empty;
+
             // PacketID
-            if (DataLookups.TryFieldParse(ePacketID.Text,out int nPacketID))
+            if (DataLookups.TryFieldParse(ePacketID.Text, out int nPacketID))
             {
                 if ((nPacketID > 0) && (nPacketID < 0x1FF))
                 {
@@ -118,10 +128,14 @@ namespace PacketViewerLogViewer
                     ePacketID.ForeColor = Color.Blue;
                 }
                 else
+                {
                     ePacketID.ForeColor = Color.Red;
+                }
             }
             else
+            {
                 ePacketID.ForeColor = Color.DarkGray;
+            }
 
             // Sync
             if (DataLookups.TryFieldParse(eSync.Text, out int nSync))

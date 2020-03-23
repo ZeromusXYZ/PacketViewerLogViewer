@@ -59,6 +59,7 @@
             this.MMExtraGameView = new System.Windows.Forms.ToolStripMenuItem();
             this.MMExtraN1 = new System.Windows.Forms.ToolStripSeparator();
             this.MMExtraUpdateParser = new System.Windows.Forms.ToolStripMenuItem();
+            this.MMExtraImportFromGame = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutGithub = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutDiscord = new System.Windows.Forms.ToolStripMenuItem();
@@ -317,7 +318,8 @@
             this.mmVideoOpenLink,
             this.MMExtraGameView,
             this.MMExtraN1,
-            this.MMExtraUpdateParser});
+            this.MMExtraUpdateParser,
+            this.MMExtraImportFromGame});
             this.mmExtra.Name = "mmExtra";
             this.mmExtra.Size = new System.Drawing.Size(45, 20);
             this.mmExtra.Text = "E&xtra";
@@ -327,7 +329,7 @@
             this.mmVideoOpenLink.Image = global::PacketViewerLogViewer.Properties.Resources.mini_video_icon;
             this.mmVideoOpenLink.Name = "mmVideoOpenLink";
             this.mmVideoOpenLink.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.L)));
-            this.mmVideoOpenLink.Size = new System.Drawing.Size(210, 24);
+            this.mmVideoOpenLink.Size = new System.Drawing.Size(305, 24);
             this.mmVideoOpenLink.Text = "Video link ...";
             this.mmVideoOpenLink.Click += new System.EventHandler(this.MmVideoOpenLink_Click);
             // 
@@ -336,21 +338,28 @@
             this.MMExtraGameView.Image = global::PacketViewerLogViewer.Properties.Resources.mini_unk_ticon;
             this.MMExtraGameView.Name = "MMExtraGameView";
             this.MMExtraGameView.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.I)));
-            this.MMExtraGameView.Size = new System.Drawing.Size(210, 24);
+            this.MMExtraGameView.Size = new System.Drawing.Size(305, 24);
             this.MMExtraGameView.Text = "View Game Info";
             this.MMExtraGameView.Click += new System.EventHandler(this.MMExtraGameView_Click);
             // 
             // MMExtraN1
             // 
             this.MMExtraN1.Name = "MMExtraN1";
-            this.MMExtraN1.Size = new System.Drawing.Size(207, 6);
+            this.MMExtraN1.Size = new System.Drawing.Size(302, 6);
             // 
             // MMExtraUpdateParser
             // 
             this.MMExtraUpdateParser.Name = "MMExtraUpdateParser";
-            this.MMExtraUpdateParser.Size = new System.Drawing.Size(210, 24);
-            this.MMExtraUpdateParser.Text = "Download parser updates";
+            this.MMExtraUpdateParser.Size = new System.Drawing.Size(305, 24);
+            this.MMExtraUpdateParser.Text = "Download parser updates from GitHub";
             this.MMExtraUpdateParser.Click += new System.EventHandler(this.MMExtraUpdateParser_Click);
+            // 
+            // MMExtraImportFromGame
+            // 
+            this.MMExtraImportFromGame.Name = "MMExtraImportFromGame";
+            this.MMExtraImportFromGame.Size = new System.Drawing.Size(305, 24);
+            this.MMExtraImportFromGame.Text = "Import data lookups from FFXI Game Client";
+            this.MMExtraImportFromGame.Click += new System.EventHandler(this.MMExtraImportFromGame_Click);
             // 
             // mmAbout
             // 
@@ -838,6 +847,7 @@
         private System.Windows.Forms.ToolStripMenuItem MMAbout7Zip;
         private System.Windows.Forms.ToolStripMenuItem MMAbout7ZipMain;
         private System.Windows.Forms.ToolStripMenuItem MMAbout7ZipDownload;
+        private System.Windows.Forms.ToolStripMenuItem MMExtraImportFromGame;
     }
 }
 
