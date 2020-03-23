@@ -116,9 +116,6 @@
             this.lFFXIFileCount = new System.Windows.Forms.Label();
             this.eFFXIPath = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.btnBrowse = new System.Windows.Forms.Button();
-            this.ePOLUtilsDataFolder = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
             this.btnDefaultUpdateURL = new System.Windows.Forms.Button();
             this.eParserDataUpdateZipURL = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -1301,15 +1298,12 @@
             this.groupBox2.Controls.Add(this.lFFXIFileCount);
             this.groupBox2.Controls.Add(this.eFFXIPath);
             this.groupBox2.Controls.Add(this.label16);
-            this.groupBox2.Controls.Add(this.btnBrowse);
-            this.groupBox2.Controls.Add(this.ePOLUtilsDataFolder);
-            this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Controls.Add(this.btnDefaultUpdateURL);
             this.groupBox2.Controls.Add(this.eParserDataUpdateZipURL);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(505, 192);
+            this.groupBox2.Size = new System.Drawing.Size(505, 138);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Update Settings";
@@ -1317,7 +1311,7 @@
             // cbUseGameClientData
             // 
             this.cbUseGameClientData.AutoSize = true;
-            this.cbUseGameClientData.Location = new System.Drawing.Point(11, 161);
+            this.cbUseGameClientData.Location = new System.Drawing.Point(11, 109);
             this.cbUseGameClientData.Name = "cbUseGameClientData";
             this.cbUseGameClientData.Size = new System.Drawing.Size(310, 17);
             this.cbUseGameClientData.TabIndex = 9;
@@ -1327,7 +1321,7 @@
             // lFFXIFileCount
             // 
             this.lFFXIFileCount.AutoSize = true;
-            this.lFFXIFileCount.Location = new System.Drawing.Point(391, 138);
+            this.lFFXIFileCount.Location = new System.Drawing.Point(391, 86);
             this.lFFXIFileCount.Name = "lFFXIFileCount";
             this.lFFXIFileCount.Size = new System.Drawing.Size(40, 13);
             this.lFFXIFileCount.TabIndex = 8;
@@ -1337,7 +1331,7 @@
             // 
             this.eFFXIPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.eFFXIPath.Location = new System.Drawing.Point(11, 135);
+            this.eFFXIPath.Location = new System.Drawing.Point(11, 83);
             this.eFFXIPath.Name = "eFFXIPath";
             this.eFFXIPath.ReadOnly = true;
             this.eFFXIPath.Size = new System.Drawing.Size(377, 20);
@@ -1346,40 +1340,11 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(8, 119);
+            this.label16.Location = new System.Drawing.Point(8, 67);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(114, 13);
             this.label16.TabIndex = 6;
             this.label16.Text = "FFXI Installation Folder";
-            // 
-            // btnBrowse
-            // 
-            this.btnBrowse.Location = new System.Drawing.Point(394, 83);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(105, 23);
-            this.btnBrowse.TabIndex = 5;
-            this.btnBrowse.Text = "Browse";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-            // 
-            // ePOLUtilsDataFolder
-            // 
-            this.ePOLUtilsDataFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ePOLUtilsDataFolder.Location = new System.Drawing.Point(11, 83);
-            this.ePOLUtilsDataFolder.Name = "ePOLUtilsDataFolder";
-            this.ePOLUtilsDataFolder.ReadOnly = true;
-            this.ePOLUtilsDataFolder.Size = new System.Drawing.Size(377, 20);
-            this.ePOLUtilsDataFolder.TabIndex = 4;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(8, 67);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(108, 13);
-            this.label15.TabIndex = 3;
-            this.label15.Text = "POLUtils import folder";
             // 
             // btnDefaultUpdateURL
             // 
@@ -1553,9 +1518,6 @@
         private System.Windows.Forms.TextBox eParserDataUpdateZipURL;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button btnDefaultUpdateURL;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Button btnBrowse;
-        private System.Windows.Forms.TextBox ePOLUtilsDataFolder;
         private System.Windows.Forms.FolderBrowserDialog fbdPOLUtils;
         private System.Windows.Forms.TextBox eFFXIPath;
         private System.Windows.Forms.Label label16;

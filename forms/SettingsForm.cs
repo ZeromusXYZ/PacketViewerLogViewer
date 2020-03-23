@@ -41,7 +41,6 @@ namespace PacketViewerLogViewer
             Properties.Settings.Default.ShowStringHexData = cbShowHexStringData.Checked;
             Properties.Settings.Default.AskCreateNewProjectFile = cbAskNewProject.Checked;
             Properties.Settings.Default.ParserDataUpdateZipURL = eParserDataUpdateZipURL.Text;
-            Properties.Settings.Default.POLUtilsDataFolder = ePOLUtilsDataFolder.Text;
             Properties.Settings.Default.UseGameClientData = cbUseGameClientData.Checked ;
             DialogResult = DialogResult.OK;
         }
@@ -111,7 +110,6 @@ namespace PacketViewerLogViewer
             cbShowHexStringData.Checked = Properties.Settings.Default.ShowStringHexData;
             cbAskNewProject.Checked = Properties.Settings.Default.AskCreateNewProjectFile;
             eParserDataUpdateZipURL.Text = Properties.Settings.Default.ParserDataUpdateZipURL;
-            ePOLUtilsDataFolder.Text = Properties.Settings.Default.POLUtilsDataFolder;
 
             // Re-check once
             if (SEHelper.FFXI_InstallationPath != string.Empty)
@@ -424,11 +422,6 @@ namespace PacketViewerLogViewer
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            fbdPOLUtils.SelectedPath = ePOLUtilsDataFolder.Text;
-            if (fbdPOLUtils.ShowDialog() == DialogResult.OK)
-            {
-                ePOLUtilsDataFolder.Text = fbdPOLUtils.SelectedPath;
-            }
         }
     }
 }
