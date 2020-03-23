@@ -13,6 +13,7 @@ using System.IO;
 using PacketViewerLogViewer.ClipboardHelper;
 using PacketViewerLogViewer.PVLVHelper;
 using PacketViewerLogViewer.FileExtHelper;
+using PacketViewerLogViewer.SEUtils;
 
 namespace PacketViewerLogViewer
 {
@@ -86,6 +87,14 @@ namespace PacketViewerLogViewer
             }
         }
 
+        private void LoadDataFromGameclient()
+        {
+            if ((Properties.Settings.Default.UseGameClientData == false) || (!Directory.Exists(SEHelper.FFXI_InstallationPath)))
+                return;
+
+            SEHelper.FFXI_LoadItemsFromDats(ref DataLookups.ItemsList.items);
+            DataLookups.ItemsList.UpdateData();
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -95,11 +104,14 @@ namespace PacketViewerLogViewer
             Application.UseWaitCursor = true;
             try
             {
+                SEHelper.FindPaths();
                 Directory.SetCurrentDirectory(Application.StartupPath);
                 if (DataLookups.LoadLookups() == false)
                 {
                     MessageBox.Show("Errors while loading lookup data: " + DataLookups.AllLoadErrors, "Error Loading Lookup Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
+
+                LoadDataFromGameclient();
             }
             catch (Exception x)
             {
@@ -328,7 +340,7 @@ namespace PacketViewerLogViewer
                 string rtfHead = string.Empty;
                 rtfHead += "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 Consolas;}}";
                 rtfHead += "{\\colortbl;";
-                foreach(var col in colorTable)
+                foreach (var col in colorTable)
                 {
                     rtfHead += "\\red" + col.R.ToString() + "\\green" + col.G.ToString() + "\\blue" + col.B.ToString() + ";";
                 }
@@ -405,7 +417,7 @@ namespace PacketViewerLogViewer
                     }
                     char ch = (char)pp.PD.GetByteAtPos(startIndex + c);
                     if (ch == 92)
-                        rtf += "\\\\" ;
+                        rtf += "\\\\";
                     else
                     if (ch == 64)
                         rtf += "\\@";
@@ -419,7 +431,7 @@ namespace PacketViewerLogViewer
                     if ((ch < 32) || (ch >= 128))
                         rtf += '.';
                     else
-                        rtf += ch.ToString() ;
+                        rtf += ch.ToString();
                     //rtInfo.AppendText(ch.ToString());
                 }
             }
@@ -431,7 +443,7 @@ namespace PacketViewerLogViewer
 
             SetColorGrid();
 
-            rtf += InfoGridHeader.Replace("\n","\\par\n");
+            rtf += InfoGridHeader.Replace("\n", "\\par\n");
             //rtInfo.AppendText(InfoGridHeader);
             int addCharCount = 0;
             byte lastFieldIndex = 0;
@@ -465,14 +477,14 @@ namespace PacketViewerLogViewer
                             // No fields selected
                             SetColorNotSelect(n, false);
                         }
-                        rtf += pp.PD.GetByteAtPos(i + i2).ToString("X2") ;
+                        rtf += pp.PD.GetByteAtPos(i + i2).ToString("X2");
                         //rtInfo.AppendText(pp.PD.GetByteAtPos(i + i2).ToString("X2"));
                         addCharCount++;
                     }
                     else
                     {
                         SetColorGrid();
-                        rtf += "  " ;
+                        rtf += "  ";
                         //rtInfo.AppendText("  ");
                     }
 
@@ -502,7 +514,7 @@ namespace PacketViewerLogViewer
                     AddChars(i);
                     addCharCount = 0;
                 }
-                rtf += "\\par\n" ;
+                rtf += "\\par\n";
                 // rtInfo.AppendText("\r\n");
             }
             rtf += "}\n";
@@ -589,6 +601,7 @@ namespace PacketViewerLogViewer
                 {
                     Properties.Settings.Default.Save();
                     PacketColors.UpdateColorsFromSettings();
+                    LoadDataFromGameclient();
                     //MessageBox.Show("Settings saved");
                 }
                 settingsDialog.Dispose();
@@ -832,7 +845,7 @@ namespace PacketViewerLogViewer
             try
             {
                 mmFilterApply.DropDownItems.Clear();
-                var di = new DirectoryInfo(Path.Combine(Application.StartupPath,"data","filter"));
+                var di = new DirectoryInfo(Path.Combine(Application.StartupPath, "data", "filter"));
                 var files = di.GetFiles("*.pfl");
                 foreach (var fi in files)
                 {
@@ -1418,9 +1431,15 @@ namespace PacketViewerLogViewer
 
         private void MMExtraUpdateParser_Click(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.ParserDataUpdateZipURL == string.Empty)
+            {
+                MessageBox.Show("No update URL has been set, please go to program settings to set one up", "No update URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (MessageBox.Show("Do you want to download packet data ?\r\n" +
                 "\r\n" +
-                "This will update your lookup and parse data from the PVLV-Data repository on GitHub at \r\n"+
+                "This will update your lookup and parse data from the PVLV-Data repository on GitHub at \r\n" +
                 Properties.Settings.Default.ParserDataUpdateZipURL + "\r\n" +
                 "\r\n" +
                 "Any changes you have made will be overwritten if you do.\r\n" +
@@ -1457,7 +1476,7 @@ namespace PacketViewerLogViewer
                     System.Threading.Thread.Sleep(500);
 
                     var unzipper = new SevenZip.SevenZipExtractor(tempFile, SevenZip.InArchiveFormat.SevenZip);
-                    var filelist = unzipper.ArchiveFileData ;
+                    var filelist = unzipper.ArchiveFileData;
 
                     loadform.pb.Minimum = 0;
                     loadform.pb.Maximum = filelist.Count;
@@ -1499,8 +1518,8 @@ namespace PacketViewerLogViewer
                     System.Threading.Thread.Sleep(1000);
                     File.Delete(tempFile);
 
-                    MessageBox.Show("Done downloading and unpacking data from \r\n" + 
-                        Properties.Settings.Default.ParserDataUpdateZipURL+"\r\n\r\n" +
+                    MessageBox.Show("Done downloading and unpacking data from \r\n" +
+                        Properties.Settings.Default.ParserDataUpdateZipURL + "\r\n\r\n" +
                         "Some changes will only be visible after you restart the program.", "Update data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 }
@@ -1519,6 +1538,55 @@ namespace PacketViewerLogViewer
         private void MMAbout7ZipDownload_Click(object sender, EventArgs e)
         {
             Process.Start(url7ZipRequiredVer);
+        }
+
+        private void MMExtraImportPOLUtils_Click(object sender, EventArgs e)
+        {
+            if ((Properties.Settings.Default.POLUtilsDataFolder == string.Empty) || (!Directory.Exists(Properties.Settings.Default.POLUtilsDataFolder)))
+            {
+                MessageBox.Show("No POLUtils update folder has been set, or it doesn't exist, please go to program settings to set one up", "No update folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var loadform = new LoadingForm(this))
+            {
+                loadform.Text = "Importing ...";
+                loadform.pb.Hide();
+                loadform.lTextInfo.Show();
+                loadform.Show();
+
+                SEHelper.FFXI_LoadItemsFromDats(ref DataLookups.ItemsList.items);
+                DataLookups.ItemsList.UpdateData();
+                /*
+                var itemFiles = Directory.GetFiles(Properties.Settings.Default.POLUtilsDataFolder, "items-*.xml");
+                for(var c = 0; c < itemFiles.Length; c++)
+                {
+                    loadform.lTextInfo.Text = "Items " + (c + 1).ToString() + "/" + itemFiles.Length.ToString();
+                    loadform.Refresh();
+                    items.AddRange(SEHelper.ReadItemListFromXML(itemFiles[c]));
+                    System.Threading.Thread.Sleep(250);
+                }
+                */
+                loadform.lTextInfo.Text = "Saving "+ DataLookups.ItemsList.items.Count.ToString() +" items ...";
+                loadform.Refresh();
+                // var sorteditems = DataLookups.ItemsList.items.OrderBy(d => d.Value);
+                var itemsString = new List<string>();
+                itemsString.Add("id;name");
+                foreach(var item in DataLookups.ItemsList.items)
+                {
+                    if ((item.Value.Id > 0) && (item.Value.Name != string.Empty) && (item.Value.Name != "."))
+                    {
+                        itemsString.Add(item.Value.Id.ToString() + ";" + item.Value.Name);
+                    }
+                }
+                File.WriteAllLines(Path.Combine(DataLookups.DefaultLookupPath(),"items.txt"), itemsString);
+                System.Threading.Thread.Sleep(500);
+
+                loadform.lTextInfo.Text = "Reloading lookups ...";
+                loadform.Refresh();
+                DataLookups.LoadLookups(false);
+            }
+
         }
     }
 }

@@ -53,10 +53,14 @@ namespace PacketViewerLogViewer
             LastLookupList = DataLookups.NLU((string)item);
             foreach (var d in LastLookupList.data)
             {
+                string t ;
                 if (cbHexIndex.Checked)
-                    lbLookupValues.Items.Add("0x" + d.Value.ID.ToString("X8") + " => " + d.Value.Val);
+                    t = "0x" + d.Value.ID.ToString("X8") + " => " + d.Value.Val;
                 else
-                    lbLookupValues.Items.Add(d.Value.ID.ToString() + " => " + d.Value.Val);
+                    t = d.Value.ID.ToString() + " => " + d.Value.Val;
+                if ((eTextFilter.Text != string.Empty) && (!t.ToLower().Contains(eTextFilter.Text.ToLower())))
+                    continue;
+                lbLookupValues.Items.Add(t);
             }
             lbLookupValues.EndUpdate();
         }

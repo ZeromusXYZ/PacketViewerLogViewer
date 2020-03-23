@@ -175,6 +175,8 @@
     <Compile Include="forms\GameViewForm.Designer.cs">
       <DependentUpon>GameViewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="helpers\FFXIEncoding.cs" />
+    <Compile Include="helpers\FFXIEncryption.cs" />
     <Compile Include="helpers\PacketSpecial.cs" />
     <Compile Include="helpers\ClipboardHelper.cs" />
     <Compile Include="helpers\DataLookupDefs.cs" />
@@ -203,6 +205,7 @@
     <Compile Include="forms\LoadingForm.Designer.cs">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="helpers\SEHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using System.Globalization;
+using PacketViewerLogViewer.SEUtils;
 
 namespace PacketViewerLogViewer.Packets
 {
@@ -55,6 +56,43 @@ namespace PacketViewerLogViewer.Packets
         }
     }
 
+    public class DataLookupListSpecialItems : DataLookupList
+    {
+        public Dictionary<uint, FFXI_Item> items = new Dictionary<uint, FFXI_Item>();
+
+        public void UpdateData()
+        {
+            if (items.Count <= 0)
+                return;
+
+            data.Clear();
+            foreach(var i in items)
+            {
+                DataLookupEntry dle = new DataLookupEntry();
+                dle.ID = i.Value.Id;
+                dle.Val = i.Value.Name;
+                dle.Extra = i.Value.Description;
+                data.Add(dle.ID, dle);
+            }
+        }
+
+        public override string GetValue(UInt64 ID)
+        {
+            try
+            {
+                if (items.TryGetValue((uint)ID, out var i))
+                    return i.Name;
+                return "<item not found: " + ID.ToString() + ">";
+            }
+            catch
+            {
+                return "<exception on item: " + ID.ToString() + ">";
+            }
+        }
+    }
+
+
+
     static public class DataLookups
     {
         public static string LU_PacketOut = "out";
@@ -86,6 +124,7 @@ namespace PacketViewerLogViewer.Packets
         public static DataLookupList NullList = new DataLookupList();
         public static DataLookupEntry NullEntry = new DataLookupEntry();
         public static DataLookupListSpecialMath MathList = new DataLookupListSpecialMath();
+        public static DataLookupListSpecialItems ItemsList = new DataLookupListSpecialItems();
         public static List<string> AllValues = new List<string>();
         public static string AllLoadErrors = string.Empty ;
 
@@ -300,6 +339,11 @@ namespace PacketViewerLogViewer.Packets
         {
             // Extract name
             var lookupname = Path.GetFileNameWithoutExtension(fileName).ToLower();
+
+            // Remove a old list if it already exists
+            if (LookupLists.TryGetValue(lookupname,out _))
+                LookupLists.Remove(lookupname);
+
             // Create new list
             DataLookupList dll = new DataLookupList();
             // Add it
@@ -338,12 +382,18 @@ namespace PacketViewerLogViewer.Packets
             return true;
         }
 
-        public static bool LoadLookups()
+        public static string DefaultLookupPath()
         {
-            LookupLists.Clear();
+            return Path.Combine(Application.StartupPath, "data", "lookup");
+        }
+
+        public static bool LoadLookups(bool InitialLoading = true)
+        {
+            if (InitialLoading)
+                LookupLists.Clear();
             AllLoadErrors = string.Empty ;
             bool noErrors = true;
-            var lookupPath = Path.Combine(Application.StartupPath,"data","lookup");
+            var lookupPath = DefaultLookupPath();
             DirectoryInfo DI = new DirectoryInfo(lookupPath);
             if (Directory.Exists(lookupPath))
             {
@@ -358,6 +408,11 @@ namespace PacketViewerLogViewer.Packets
 
         public static DataLookupList NLU(string lookupName,string LookupOffsetString = "")
         {
+            if ((lookupName.ToLower() == "items") && (ItemsList.items.Count > 0))
+            {
+                return ItemsList;
+            }
+            else
             if ((LookupOffsetString != string.Empty) && (lookupName.ToLower() == "@math"))
             {
                 if (LookupOffsetString.IndexOf("?") < 0)

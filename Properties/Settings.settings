@@ -128,5 +128,11 @@
     <Setting Name="ParserDataUpdateZipURL" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://github.com/ZeromusXYZ/PVLV-Data/raw/master/update.7z</Value>
     </Setting>
+    <Setting Name="POLUtilsDataFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UseGameClientData" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
