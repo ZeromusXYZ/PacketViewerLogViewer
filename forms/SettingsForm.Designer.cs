@@ -110,7 +110,9 @@
             this.tbPacketList = new System.Windows.Forms.TabPage();
             this.tpFieldGrid = new System.Windows.Forms.TabPage();
             this.tpDataSetup = new System.Windows.Forms.TabPage();
+            this.label17 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbUseGameClientData = new System.Windows.Forms.CheckBox();
             this.lFFXIFileCount = new System.Windows.Forms.Label();
             this.eFFXIPath = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -121,8 +123,6 @@
             this.eParserDataUpdateZipURL = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.fbdPOLUtils = new System.Windows.Forms.FolderBrowserDialog();
-            this.cbUseGameClientData = new System.Windows.Forms.CheckBox();
-            this.label17 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbVideoSettings.SuspendLayout();
             this.gbListStyle.SuspendLayout();
@@ -1282,6 +1282,17 @@
             this.tpDataSetup.Text = "Data Settings";
             this.tpDataSetup.UseVisualStyleBackColor = true;
             // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(14, 256);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(417, 13);
+            this.label17.TabIndex = 21;
+            this.label17.Text = "(*) Only a limited amount of lookups is affected by this, and can slow down start" +
+    "up times";
+            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1302,6 +1313,16 @@
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Update Settings";
+            // 
+            // cbUseGameClientData
+            // 
+            this.cbUseGameClientData.AutoSize = true;
+            this.cbUseGameClientData.Location = new System.Drawing.Point(11, 161);
+            this.cbUseGameClientData.Name = "cbUseGameClientData";
+            this.cbUseGameClientData.Size = new System.Drawing.Size(310, 17);
+            this.cbUseGameClientData.TabIndex = 9;
+            this.cbUseGameClientData.Text = "Load lookup data from game client at startup when possible*";
+            this.cbUseGameClientData.UseVisualStyleBackColor = true;
             // 
             // lFFXIFileCount
             // 
@@ -1392,26 +1413,6 @@
             // fbdPOLUtils
             // 
             this.fbdPOLUtils.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            // 
-            // cbUseGameClientData
-            // 
-            this.cbUseGameClientData.AutoSize = true;
-            this.cbUseGameClientData.Location = new System.Drawing.Point(11, 161);
-            this.cbUseGameClientData.Name = "cbUseGameClientData";
-            this.cbUseGameClientData.Size = new System.Drawing.Size(263, 17);
-            this.cbUseGameClientData.TabIndex = 9;
-            this.cbUseGameClientData.Text = "Load lookup data from game client when possible*";
-            this.cbUseGameClientData.UseVisualStyleBackColor = true;
-            // 
-            // label17
-            // 
-            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(14, 256);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(257, 13);
-            this.label17.TabIndex = 21;
-            this.label17.Text = "(*) Only a limited amount of lookups is affected by this";
             // 
             // SettingsForm
             // 

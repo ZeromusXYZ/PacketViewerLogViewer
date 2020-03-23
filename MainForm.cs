@@ -1540,13 +1540,27 @@ namespace PacketViewerLogViewer
             Process.Start(url7ZipRequiredVer);
         }
 
-        private void MMExtraImportPOLUtils_Click(object sender, EventArgs e)
+        private void MMExtraImportFromGame_Click(object sender, EventArgs e)
         {
+            /*
             if ((Properties.Settings.Default.POLUtilsDataFolder == string.Empty) || (!Directory.Exists(Properties.Settings.Default.POLUtilsDataFolder)))
             {
                 MessageBox.Show("No POLUtils update folder has been set, or it doesn't exist, please go to program settings to set one up", "No update folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            */
+            if (!Directory.Exists(SEHelper.FFXI_InstallationPath))
+            {
+                MessageBox.Show("No FFXI Installation found to extract data from !", "No game client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (MessageBox.Show("You are about to import data from \r\n" +
+                SEHelper.FFXI_InstallationPath + "\r\n\r\n" +
+                "The following lookups will be overwritten:\r\n" +
+                "- items.txt",
+                "Import game data", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
 
             using (var loadform = new LoadingForm(this))
             {

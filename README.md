@@ -8,3 +8,4 @@ The program should be pretty straight forward to use for anybody for who it woul
 The end idea is to make a program that can mimic the track function for the original addon, but in a offline fashion by parsing the log files
 
 This is a port of my [PacketViewerLogViewer in Delphi](https://github.com/ZeromusXYZ/PVLV-Delphi-Old)
+This program borrows some parts of Windower's [POLUtils project](https://github.com/Windower/POLUtils) to load data directly from the game client.
