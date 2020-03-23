@@ -529,18 +529,6 @@ namespace PacketViewerLogViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string POLUtilsDataFolder {
-            get {
-                return ((string)(this["POLUtilsDataFolder"]));
-            }
-            set {
-                this["POLUtilsDataFolder"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool UseGameClientData {
             get {
