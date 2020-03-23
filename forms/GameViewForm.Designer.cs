@@ -31,12 +31,14 @@
             this.gbPlayer = new System.Windows.Forms.GroupBox();
             this.lPlayerName = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnCopyID = new System.Windows.Forms.Button();
+            this.btnCopyVal = new System.Windows.Forms.Button();
             this.cbHexIndex = new System.Windows.Forms.CheckBox();
             this.btnRefreshLookups = new System.Windows.Forms.Button();
             this.lbLookupValues = new System.Windows.Forms.ListBox();
             this.lbLookupGroups = new System.Windows.Forms.ListBox();
-            this.btnCopyVal = new System.Windows.Forms.Button();
-            this.btnCopyID = new System.Windows.Forms.Button();
+            this.eTextFilter = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.gbPlayer.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -65,6 +67,8 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.eTextFilter);
             this.groupBox1.Controls.Add(this.btnCopyID);
             this.groupBox1.Controls.Add(this.btnCopyVal);
             this.groupBox1.Controls.Add(this.cbHexIndex);
@@ -77,6 +81,28 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Saved Values";
+            // 
+            // btnCopyID
+            // 
+            this.btnCopyID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopyID.Location = new System.Drawing.Point(282, 20);
+            this.btnCopyID.Name = "btnCopyID";
+            this.btnCopyID.Size = new System.Drawing.Size(95, 23);
+            this.btnCopyID.TabIndex = 5;
+            this.btnCopyID.Text = "Copy ID";
+            this.btnCopyID.UseVisualStyleBackColor = true;
+            this.btnCopyID.Click += new System.EventHandler(this.BtnCopyID_Click);
+            // 
+            // btnCopyVal
+            // 
+            this.btnCopyVal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopyVal.Location = new System.Drawing.Point(383, 20);
+            this.btnCopyVal.Name = "btnCopyVal";
+            this.btnCopyVal.Size = new System.Drawing.Size(95, 23);
+            this.btnCopyVal.TabIndex = 4;
+            this.btnCopyVal.Text = "Copy Value";
+            this.btnCopyVal.UseVisualStyleBackColor = true;
+            this.btnCopyVal.Click += new System.EventHandler(this.BtnCopyVal_Click);
             // 
             // cbHexIndex
             // 
@@ -106,9 +132,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbLookupValues.FormattingEnabled = true;
-            this.lbLookupValues.Location = new System.Drawing.Point(135, 46);
+            this.lbLookupValues.Location = new System.Drawing.Point(135, 72);
             this.lbLookupValues.Name = "lbLookupValues";
-            this.lbLookupValues.Size = new System.Drawing.Size(343, 251);
+            this.lbLookupValues.Size = new System.Drawing.Size(343, 225);
             this.lbLookupValues.TabIndex = 1;
             // 
             // lbLookupGroups
@@ -122,27 +148,22 @@
             this.lbLookupGroups.TabIndex = 0;
             this.lbLookupGroups.SelectedIndexChanged += new System.EventHandler(this.LbLookupGroups_SelectedIndexChanged);
             // 
-            // btnCopyVal
+            // eTextFilter
             // 
-            this.btnCopyVal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyVal.Location = new System.Drawing.Point(383, 20);
-            this.btnCopyVal.Name = "btnCopyVal";
-            this.btnCopyVal.Size = new System.Drawing.Size(95, 23);
-            this.btnCopyVal.TabIndex = 4;
-            this.btnCopyVal.Text = "Copy Value";
-            this.btnCopyVal.UseVisualStyleBackColor = true;
-            this.btnCopyVal.Click += new System.EventHandler(this.BtnCopyVal_Click);
+            this.eTextFilter.Location = new System.Drawing.Point(170, 45);
+            this.eTextFilter.Name = "eTextFilter";
+            this.eTextFilter.Size = new System.Drawing.Size(308, 20);
+            this.eTextFilter.TabIndex = 6;
+            this.eTextFilter.TextChanged += new System.EventHandler(this.LbLookupGroups_SelectedIndexChanged);
             // 
-            // btnCopyID
+            // label1
             // 
-            this.btnCopyID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyID.Location = new System.Drawing.Point(282, 20);
-            this.btnCopyID.Name = "btnCopyID";
-            this.btnCopyID.Size = new System.Drawing.Size(95, 23);
-            this.btnCopyID.TabIndex = 5;
-            this.btnCopyID.Text = "Copy ID";
-            this.btnCopyID.UseVisualStyleBackColor = true;
-            this.btnCopyID.Click += new System.EventHandler(this.BtnCopyID_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(132, 48);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Filter:";
             // 
             // GameViewForm
             // 
@@ -175,5 +196,7 @@
         private System.Windows.Forms.CheckBox cbHexIndex;
         private System.Windows.Forms.Button btnCopyID;
         private System.Windows.Forms.Button btnCopyVal;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox eTextFilter;
     }
 }

@@ -402,17 +402,28 @@ namespace PacketViewerLogViewer.SEUtils
         {
             itemList.Clear();
 
-            itemList.Concat(ReadItemListFromDatFile(73));     // General
-            itemList.Concat(ReadItemListFromDatFile(55671));  // General 2
-            itemList.Concat(ReadItemListFromDatFile(74));     // Useable
-            itemList.Concat(ReadItemListFromDatFile(75));     // Weapons
-            itemList.Concat(ReadItemListFromDatFile(76));     // Armor
-            itemList.Concat(ReadItemListFromDatFile(55668));  // Armor 2
-            itemList.Concat(ReadItemListFromDatFile(77));     // Puppet
-            itemList.Concat(ReadItemListFromDatFile(91));     // Currency
-            itemList.Concat(ReadItemListFromDatFile(55667));  // Vouchers
-            //itemList.Concat(ReadItemListFromDatFile(55669));  // Monipulator
-            itemList.Concat(ReadItemListFromDatFile(55670));  // Instincts
+            Dictionary<uint, FFXI_Item> items = new Dictionary<uint, FFXI_Item>();
+
+            void Add(ref Dictionary<uint, FFXI_Item> iList, uint datFile)
+            {
+                var newItems = ReadItemListFromDatFile(datFile);
+                var union = iList.Union(newItems);
+                iList = union.ToDictionary(k => k.Key, v => v.Value);
+            }
+
+            Add(ref items, 73);      // General
+            Add(ref items, 55671);   // General 2
+            Add(ref items, 74);      // Useable
+            Add(ref items, 75);      // Weapons
+            Add(ref items, 76);      // Armor
+            Add(ref items, 55668);   // Armor 2
+            Add(ref items, 77);      // Puppet
+            Add(ref items, 91);      // Currency
+            Add(ref items, 55667);   // Vouchers
+            Add(ref items, 55669);   // Monipulator
+            Add(ref items, 55670);   // Instincts
+
+            itemList = items.OrderBy(d => d.Value).ToDictionary(k => k.Key, v => v.Value);
         }
 
         public static void FFXI_DeduceItemType(BinaryReader BR, out FFXI_ItemDatFileTypes ItemType)
@@ -666,7 +677,7 @@ namespace PacketViewerLogViewer.SEUtils
                             StringCount = 0;
                             break;
                         }
-                        BR.BaseStream.Position = StringBase + 4 + 8 * (i + 1);
+                        MemBR.BaseStream.Position = StringBase + 4 + 8 * (iStrings + 1);
                     }
                 }
                 // Assign the strings to the proper fields
@@ -716,7 +727,8 @@ namespace PacketViewerLogViewer.SEUtils
                 }
                 MemBR.Close();
 
-                res.Add(item.Id, item);
+                if ((item.Name != null) && (item.Name != string.Empty) && (item.Name != "."))
+                    res.Add(item.Id, item);
             }
             return res;
         }

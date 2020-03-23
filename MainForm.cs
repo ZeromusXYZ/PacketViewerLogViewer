@@ -93,6 +93,7 @@ namespace PacketViewerLogViewer
                 return;
 
             SEHelper.FFXI_LoadItemsFromDats(ref DataLookups.ItemsList.items);
+            DataLookups.ItemsList.UpdateData();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -1553,9 +1554,9 @@ namespace PacketViewerLogViewer
                 loadform.pb.Hide();
                 loadform.lTextInfo.Show();
                 loadform.Show();
-                Dictionary<uint,FFXI_Item> items = new Dictionary<uint, FFXI_Item>();
 
-                SEHelper.FFXI_LoadItemsFromDats(ref items);
+                SEHelper.FFXI_LoadItemsFromDats(ref DataLookups.ItemsList.items);
+                DataLookups.ItemsList.UpdateData();
                 /*
                 var itemFiles = Directory.GetFiles(Properties.Settings.Default.POLUtilsDataFolder, "items-*.xml");
                 for(var c = 0; c < itemFiles.Length; c++)
@@ -1566,12 +1567,12 @@ namespace PacketViewerLogViewer
                     System.Threading.Thread.Sleep(250);
                 }
                 */
-                loadform.lTextInfo.Text = "Saving "+items.Count.ToString() +" items ...";
+                loadform.lTextInfo.Text = "Saving "+ DataLookups.ItemsList.items.Count.ToString() +" items ...";
                 loadform.Refresh();
-                var sorteditems = items.OrderBy(d => d.Value);
+                // var sorteditems = DataLookups.ItemsList.items.OrderBy(d => d.Value);
                 var itemsString = new List<string>();
                 itemsString.Add("id;name");
-                foreach(var item in sorteditems)
+                foreach(var item in DataLookups.ItemsList.items)
                 {
                     if ((item.Value.Id > 0) && (item.Value.Name != string.Empty) && (item.Value.Name != "."))
                     {

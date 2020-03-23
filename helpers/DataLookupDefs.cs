@@ -60,6 +60,22 @@ namespace PacketViewerLogViewer.Packets
     {
         public Dictionary<uint, FFXI_Item> items = new Dictionary<uint, FFXI_Item>();
 
+        public void UpdateData()
+        {
+            if (items.Count <= 0)
+                return;
+
+            data.Clear();
+            foreach(var i in items)
+            {
+                DataLookupEntry dle = new DataLookupEntry();
+                dle.ID = i.Value.Id;
+                dle.Val = i.Value.Name;
+                dle.Extra = i.Value.Description;
+                data.Add(dle.ID, dle);
+            }
+        }
+
         public override string GetValue(UInt64 ID)
         {
             try
