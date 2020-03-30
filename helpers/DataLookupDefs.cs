@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using System.Globalization;
-using PacketViewerLogViewer.SEUtils;
+using PacketViewerLogViewer.FFXIUtils;
 
 namespace PacketViewerLogViewer.Packets
 {
@@ -35,6 +35,20 @@ namespace PacketViewerLogViewer.Packets
             if (data.TryGetValue(ID, out res))
                 return res.Extra;
             return "";
+        }
+
+        public void AddValuesFromMobList(ref Dictionary<uint, FFXI_MobListEntry> mobList)
+        {
+            foreach(var MLE in mobList)
+            {
+                if (data.TryGetValue(MLE.Key, out _))
+                    continue;
+                DataLookupEntry DLE = new DataLookupEntry();
+                DLE.ID = MLE.Value.Id;
+                DLE.Val = MLE.Value.Name;
+                DLE.Extra = MLE.Value.ExpectedZoneId.ToString();
+                data.Add(DLE.ID,DLE);
+            }
         }
     }
 
@@ -91,6 +105,71 @@ namespace PacketViewerLogViewer.Packets
         }
     }
 
+    public class DataLookupListSpecialDialog : DataLookupList
+    {
+        public bool EnableCache = true;
+        public Dictionary<uint, FFXI_DialogTableEntry> dialogsCache = new Dictionary<uint, FFXI_DialogTableEntry>();
+
+        public void UpdateData()
+        {
+            if (dialogsCache.Count <= 0)
+                return;
+
+            data.Clear();
+            foreach (var i in dialogsCache)
+            {
+                DataLookupEntry dle = new DataLookupEntry();
+                dle.ID = i.Value.Id;
+                dle.Val = i.Value.Text ;
+                dle.Extra = string.Empty;
+                data.Add(dle.ID, dle);
+            }
+        }
+
+        public override string GetValue(UInt64 ID)
+        {
+            try
+            {
+                FFXI_DialogTableEntry i;
+                if (dialogsCache.TryGetValue((uint)ID, out i))
+                {
+                    return i.Text;
+                }
+                else
+                {
+                    ushort zone = (ushort)(ID / 0x10000);
+                    if (MakeZoneDialogCache(zone))
+                    {
+                        // try again if we loaded something
+                        if (dialogsCache.TryGetValue((uint)ID, out i))
+                        {
+                            return i.Text;
+                        }
+                    }
+                }
+                return "<dialog not found: 0x" + ID.ToString("X8") + ">";
+            }
+            catch
+            {
+                return "<exception on dialog: 0x" + ID.ToString("X8") + ">";
+            }
+        }
+
+        public string GetValue(ushort zoneId,ushort dialogId)
+        {
+            return GetValue((UInt64)(dialogId + (zoneId * 0x10000)));
+        }
+
+        public bool MakeZoneDialogCache(ushort zoneID)
+        {
+            if (FFXIHelper.FFXI_FTable.Count <= 0)
+                return false ;
+            return FFXIHelper.FFXI_LoadDialogsFromDats(ref dialogsCache, zoneID);
+        }
+
+    }
+
+
 
 
     static public class DataLookups
@@ -120,11 +199,13 @@ namespace PacketViewerLogViewer.Packets
         public static string LU_ActionCategory0x028 = "actioncategory0x028";
         public static string LU_ActionCategory = "actioncategory";
         public static string LU_ActionReaction = "actionreaction";
+        public static string LU_Dialog = "dialog"; // Key = zoneId * 0x10000 + dialogId
 
         public static DataLookupList NullList = new DataLookupList();
         public static DataLookupEntry NullEntry = new DataLookupEntry();
         public static DataLookupListSpecialMath MathList = new DataLookupListSpecialMath();
         public static DataLookupListSpecialItems ItemsList = new DataLookupListSpecialItems();
+        public static DataLookupListSpecialDialog DialogsList = new DataLookupListSpecialDialog();
         public static List<string> AllValues = new List<string>();
         public static string AllLoadErrors = string.Empty ;
 
@@ -408,9 +489,14 @@ namespace PacketViewerLogViewer.Packets
 
         public static DataLookupList NLU(string lookupName,string LookupOffsetString = "")
         {
-            if ((lookupName.ToLower() == "items") && (ItemsList.items.Count > 0))
+            if ((lookupName.ToLower() == LU_Item) && (ItemsList.items.Count > 0))
             {
                 return ItemsList;
+            }
+            else
+            if ((lookupName.ToLower() == LU_Dialog) && (DialogsList.dialogsCache.Count > 0))
+            {
+                return DialogsList;
             }
             else
             if ((LookupOffsetString != string.Empty) && (lookupName.ToLower() == "@math"))
@@ -427,6 +513,16 @@ namespace PacketViewerLogViewer.Packets
                     return res;
             }
             return NullList;
+        }
+
+        public static DataLookupList NLUOrCreate(string lookupName)
+        {
+            DataLookupList res;
+            if (LookupLists.TryGetValue(lookupName, out res))
+                return res;
+            res = new DataLookupList();
+            LookupLists.Add(lookupName, res);
+            return res;
         }
 
         public static string PacketTypeToString(PacketLogTypes PacketLogType, UInt16 PacketID)

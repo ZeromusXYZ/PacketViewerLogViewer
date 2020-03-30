@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PacketViewerLogViewer.SEUtils;
+using PacketViewerLogViewer.FFXIUtils;
 
 namespace PacketViewerLogViewer
 {
@@ -112,12 +112,12 @@ namespace PacketViewerLogViewer
             eParserDataUpdateZipURL.Text = Properties.Settings.Default.ParserDataUpdateZipURL;
 
             // Re-check once
-            if (SEHelper.FFXI_InstallationPath != string.Empty)
-                SEHelper.FindPaths();
-            if (SEHelper.FFXI_InstallationPath != string.Empty)
+            if (FFXIHelper.FFXI_InstallationPath != string.Empty)
+                FFXIHelper.FindPaths();
+            if (FFXIHelper.FFXI_InstallationPath != string.Empty)
             {
-                eFFXIPath.Text = SEHelper.FFXI_InstallationPath;
-                lFFXIFileCount.Text = SEHelper.FFXI_FTable.Count.ToString() + " / " + SEHelper.FFXI_FTableCount.ToString();
+                eFFXIPath.Text = FFXIHelper.FFXI_InstallationPath;
+                lFFXIFileCount.Text = FFXIHelper.FFXI_FTable.Count.ToString() + " / " + FFXIHelper.FFXI_FTable.Count.ToString();
             }
             else
             {

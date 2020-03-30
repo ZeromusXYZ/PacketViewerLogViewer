@@ -1585,6 +1585,15 @@ namespace PacketViewerLogViewer
                     MarkParsed(Offset, 4, DataFieldIndex);
                 }
                 else
+                if (typeField == "dialogtext")
+                {
+                    var d = PD.GetUInt16AtPos(Offset);
+                    var l = "0x" + d.ToString("X4") + " => " + DataLookups.DialogsList.GetValue((ushort)PD.capturedZoneId, d);
+                    AddDataField(Offset, 2);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField, l + d.ToString(), descriptionField);
+                    MarkParsed(Offset, 2, DataFieldIndex);
+                }
+                else
                 if (typeField == "packet-in-0x028")
                 {
                     // This packet is too complex to do the normal way (for now)

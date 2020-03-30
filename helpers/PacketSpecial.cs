@@ -28,5 +28,25 @@ namespace PacketViewerLogViewer.PacketSpecial
             }
         }
 
+        /// <summary>
+        /// NPC Interaction 1
+        /// </summary>
+        /// <param name="pd"></param>
+        /// <param name="pl"></param>
+        public static void In0x032(PacketData pd, PacketList pl)
+        {
+            pl.currentParseZone = pd.GetUInt16AtPos(0x0A);
+        }
+
+        /// <summary>
+        /// NPC Interaction 2
+        /// </summary>
+        /// <param name="pd"></param>
+        /// <param name="pl"></param>
+        public static void In0x034(PacketData pd, PacketList pl)
+        {
+            pl.currentParseZone = pd.GetUInt16AtPos(0x2A);
+        }
+
     }
 }

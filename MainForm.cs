@@ -13,7 +13,7 @@ using System.IO;
 using PacketViewerLogViewer.ClipboardHelper;
 using PacketViewerLogViewer.PVLVHelper;
 using PacketViewerLogViewer.FileExtHelper;
-using PacketViewerLogViewer.SEUtils;
+using PacketViewerLogViewer.FFXIUtils;
 
 namespace PacketViewerLogViewer
 {
@@ -89,11 +89,23 @@ namespace PacketViewerLogViewer
 
         private void LoadDataFromGameclient()
         {
-            if ((Properties.Settings.Default.UseGameClientData == false) || (!Directory.Exists(SEHelper.FFXI_InstallationPath)))
+            if ((Properties.Settings.Default.UseGameClientData == false) || (!Directory.Exists(FFXIHelper.FFXI_InstallationPath)))
                 return;
 
-            SEHelper.FFXI_LoadItemsFromDats(ref DataLookups.ItemsList.items);
+            // Items
+            FFXIHelper.FFXI_LoadItemsFromDats(ref DataLookups.ItemsList.items);
             DataLookups.ItemsList.UpdateData();
+
+            // Enabled dynamic loading for dialog text
+            DataLookups.DialogsList.EnableCache = true;
+
+            // NPC Names
+            var mobList = new Dictionary<uint, FFXI_MobListEntry>();
+            mobList.Add(0, new FFXI_MobListEntry()); // Id 0 = "none"
+            for (ushort z = 0; z < 0x1FF; z++)
+                FFXIHelper.FFXI_LoadMobListForZone(ref mobList, z);
+            DataLookups.NLUOrCreate("@actors").AddValuesFromMobList(ref mobList);
+            DataLookups.NLUOrCreate("npcname").AddValuesFromMobList(ref mobList); // Not sure if we're ever gonna use this, but meh
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -104,7 +116,7 @@ namespace PacketViewerLogViewer
             Application.UseWaitCursor = true;
             try
             {
-                SEHelper.FindPaths();
+                FFXIHelper.FindPaths();
                 Directory.SetCurrentDirectory(Application.StartupPath);
                 if (DataLookups.LoadLookups() == false)
                 {
@@ -117,6 +129,7 @@ namespace PacketViewerLogViewer
             {
                 MessageBox.Show("Exception: " + x.Message, "Loading Lookup Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Close();
+                return;
             }
             tcPackets.TabPages.Clear();
             Application.UseWaitCursor = false;
@@ -1549,14 +1562,14 @@ namespace PacketViewerLogViewer
                 return;
             }
             */
-            if (!Directory.Exists(SEHelper.FFXI_InstallationPath))
+            if (!Directory.Exists(FFXIHelper.FFXI_InstallationPath))
             {
                 MessageBox.Show("No FFXI Installation found to extract data from !", "No game client", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (MessageBox.Show("You are about to import data from \r\n" +
-                SEHelper.FFXI_InstallationPath + "\r\n\r\n" +
+                FFXIHelper.FFXI_InstallationPath + "\r\n\r\n" +
                 "The following lookups will be overwritten:\r\n" +
                 "- items.txt",
                 "Import game data", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
@@ -1569,7 +1582,7 @@ namespace PacketViewerLogViewer
                 loadform.lTextInfo.Show();
                 loadform.Show();
 
-                SEHelper.FFXI_LoadItemsFromDats(ref DataLookups.ItemsList.items);
+                FFXIHelper.FFXI_LoadItemsFromDats(ref DataLookups.ItemsList.items);
                 DataLookups.ItemsList.UpdateData();
                 /*
                 var itemFiles = Directory.GetFiles(Properties.Settings.Default.POLUtilsDataFolder, "items-*.xml");
