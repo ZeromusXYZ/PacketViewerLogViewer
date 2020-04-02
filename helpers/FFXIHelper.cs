@@ -11,72 +11,11 @@ using PlayOnline.FFXI;
 
 namespace PacketViewerLogViewer.FFXIUtils
 {
-    public enum FFXI_ItemFlags : ushort
-    {
-        None = 0x0000,
-        // Simple Flags - mostly assumed meanings
-        WallHanging = 0x0001, // Used by furnishing like paintings.
-        Flag01 = 0x0002,
-        MysteryBox = 0x0004,  // Can be gained from Gobbie Mystery Box
-        MogGarden = 0x0008,   // Can use in Mog Garden
-        CanSendPOL = 0x0010,
-        Inscribable = 0x0020,
-        NoAuction = 0x0040,
-        Scroll = 0x0080,
-        Linkshell = 0x0100,
-        CanUse = 0x0200,
-        CanTradeNPC = 0x0400,
-        CanEquip = 0x0800,
-        NoSale = 0x1000,
-        NoDelivery = 0x2000,
-        NoTradePC = 0x4000,
-        Rare = 0x8000,
-        // Combined Flags
-        Ex = 0x6040, // NoAuction + NoDelivery + NoTrade
-    }
-
-    public enum FFXI_ItemType : ushort
-    {
-        Nothing = 0x0000,
-        Item = 0x0001,
-        QuestItem = 0x0002,
-        Fish = 0x0003,
-        Weapon = 0x0004,
-        Armor = 0x0005,
-        Linkshell = 0x0006,
-        UsableItem = 0x0007,
-        Crystal = 0x0008,
-        Currency = 0x0009,
-        Furnishing = 0x000A,
-        Plant = 0x000B,
-        Flowerpot = 0x000C,
-        PuppetItem = 0x000D,
-        Mannequin = 0x000E,
-        Book = 0x000F,
-        RacingForm = 0x0010,
-        BettingSlip = 0x0011,
-        SoulPlate = 0x0012,
-        Reflector = 0x0013,
-        ItemType20 = 0x0014,
-        LotteryTicket = 0x0015,
-        MazeTabula_M = 0x0016,
-        MazeTabula_R = 0x0017,
-        MazeVoucher = 0x0018,
-        MazeRune = 0x0019,
-        ItemType_26 = 0x001A,
-        StorageSlip = 0x001B,
-        LegionPass = 0x001C,
-        MeebleBurrows = 0x001D,
-        Instincts = 0x001E,
-        CraftingKit = 0x001F,
-        Max = CraftingKit,
-    }
-
     public class FFXI_Item : IComparable
     {
         public uint Id { get; set; }
-        public FFXI_ItemFlags Flags { get; set; }
-        public FFXI_ItemType Type { get; set; }
+        public FFXIHelper.FFXI_ItemFlags Flags { get; set; }
+        public FFXIHelper.FFXI_ItemType Type { get; set; }
         public uint StackSize { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -123,17 +62,17 @@ namespace PacketViewerLogViewer.FFXIUtils
         }
     }
 
-    public struct FFXI_FTable_Item
-    {
-        public uint FileId; // Just for reference
-        public byte RomFolder;
-        public uint SubFolder;
-        public uint DatFile;
-        public string FullFileName;
-    }
-
     static public class FFXIHelper
     {
+        public struct FFXI_FTable_Item
+        {
+            public uint FileId; // Just for reference
+            public byte RomFolder;
+            public uint SubFolder;
+            public uint DatFile;
+            public string FullFileName;
+        }
+
         static public string FFXI_InstallationPath { get; private set; }
         static public string POL_InstallationPath { get; private set; }
         static public string TetraMaster_InstallationPath { get; private set; }
@@ -144,6 +83,67 @@ namespace PacketViewerLogViewer.FFXIUtils
         private const string GameID_FFXI = "0001";
         private const string GameID_TetraMaster = "0002";
         // public const string GameID_FFXITC = "0015";
+
+        public enum FFXI_ItemFlags : ushort
+        {
+            None = 0x0000,
+            // Simple Flags - mostly assumed meanings
+            WallHanging = 0x0001, // Used by furnishing like paintings.
+            Flag01 = 0x0002,
+            MysteryBox = 0x0004,  // Can be gained from Gobbie Mystery Box
+            MogGarden = 0x0008,   // Can use in Mog Garden
+            CanSendPOL = 0x0010,
+            Inscribable = 0x0020,
+            NoAuction = 0x0040,
+            Scroll = 0x0080,
+            Linkshell = 0x0100,
+            CanUse = 0x0200,
+            CanTradeNPC = 0x0400,
+            CanEquip = 0x0800,
+            NoSale = 0x1000,
+            NoDelivery = 0x2000,
+            NoTradePC = 0x4000,
+            Rare = 0x8000,
+            // Combined Flags
+            Ex = 0x6040, // NoAuction + NoDelivery + NoTrade
+        }
+
+        public enum FFXI_ItemType : ushort
+        {
+            Nothing = 0x0000,
+            Item = 0x0001,
+            QuestItem = 0x0002,
+            Fish = 0x0003,
+            Weapon = 0x0004,
+            Armor = 0x0005,
+            Linkshell = 0x0006,
+            UsableItem = 0x0007,
+            Crystal = 0x0008,
+            Currency = 0x0009,
+            Furnishing = 0x000A,
+            Plant = 0x000B,
+            Flowerpot = 0x000C,
+            PuppetItem = 0x000D,
+            Mannequin = 0x000E,
+            Book = 0x000F,
+            RacingForm = 0x0010,
+            BettingSlip = 0x0011,
+            SoulPlate = 0x0012,
+            Reflector = 0x0013,
+            ItemType20 = 0x0014,
+            LotteryTicket = 0x0015,
+            MazeTabula_M = 0x0016,
+            MazeTabula_R = 0x0017,
+            MazeVoucher = 0x0018,
+            MazeRune = 0x0019,
+            ItemType_26 = 0x001A,
+            StorageSlip = 0x001B,
+            LegionPass = 0x001C,
+            MeebleBurrows = 0x001D,
+            Instincts = 0x001E,
+            CraftingKit = 0x001F,
+            Max = CraftingKit,
+        }
 
         [Flags]
         private enum Regions
@@ -168,6 +168,11 @@ namespace PacketViewerLogViewer.FFXIUtils
             Monipulator
         };
 
+        /// <summary>
+        /// Read Item data from PolUtils MassExtractor xml files
+        /// </summary>
+        /// <param name="ItemXmlFile"></param>
+        /// <returns></returns>
         static public List<FFXI_Item> ReadItemListFromXML(string ItemXmlFile)
         {
             List<FFXI_Item> res = new List<FFXI_Item>();
@@ -292,7 +297,7 @@ namespace PacketViewerLogViewer.FFXIUtils
             return InstallPath;
         }
 
-        static public bool FFXI_LoadFileTables()
+        static private bool FFXI_LoadFileTables()
         {
             // Do we have a installation ?
             if ((FFXI_InstallationPath == null) || (FFXI_InstallationPath == string.Empty) || (!Directory.Exists(FFXI_InstallationPath)))
@@ -379,7 +384,7 @@ namespace PacketViewerLogViewer.FFXIUtils
             return true;
         }
 
-        static public void FindPaths()
+        static public bool FindPaths()
         {
             // PlayOnline
             if (POL_InstallationPath == null)
@@ -420,7 +425,7 @@ namespace PacketViewerLogViewer.FFXIUtils
             if (TetraMaster_InstallationPath == string.Empty)
                 TetraMaster_InstallationPath = GetInstalledGamePath(GameID_TetraMaster, Regions.EU);
 
-            FFXI_LoadFileTables();
+            return FFXI_LoadFileTables();
         }
 
         static public void FFXI_LoadItemsFromDats(ref Dictionary<uint, FFXI_Item> itemList)
@@ -451,9 +456,9 @@ namespace PacketViewerLogViewer.FFXIUtils
             itemList = items.OrderBy(d => d.Value).ToDictionary(k => k.Key, v => v.Value);
         }
 
-        public static void FFXI_DeduceItemType(BinaryReader BR, out FFXI_ItemDatFileTypes ItemType)
+        static private FFXI_ItemDatFileTypes FFXI_DeduceItemType(BinaryReader BR)
         {
-            ItemType = FFXI_ItemDatFileTypes.Unknown;
+            FFXI_ItemDatFileTypes ItemType = FFXI_ItemDatFileTypes.Unknown;
             byte[] FirstItem = null;
             long Position = BR.BaseStream.Position;
             BR.BaseStream.Position = 0;
@@ -525,9 +530,10 @@ namespace PacketViewerLogViewer.FFXIUtils
             }
             catch { }
             BR.BaseStream.Position = Position;
+            return ItemType;
         }
 
-        static public Dictionary<uint, FFXI_Item> ReadItemListFromDatFile(uint DatFileId)
+        static private Dictionary<uint, FFXI_Item> ReadItemListFromDatFile(uint DatFileId)
         {
             Dictionary<uint, FFXI_Item> res = new Dictionary<uint, FFXI_Item>();
 
@@ -542,7 +548,7 @@ namespace PacketViewerLogViewer.FFXIUtils
             if (((FS.Length % 0x0C00) != 0) || (FS.Length < 0xC000))
                 return res;
             var BR = new BinaryReader(FS);
-            FFXI_DeduceItemType(BR, out var ExpectedItemType);
+            var ExpectedItemType = FFXI_DeduceItemType(BR);
 
             var itemCount = BR.BaseStream.Length / 0x0C00;
             for (var i = 0; i < itemCount; i++)
@@ -799,7 +805,7 @@ namespace PacketViewerLogViewer.FFXIUtils
             return null;
         }
 
-        static public bool ReadDialogTableEntryInsideFile(BinaryReader BR, ref FFXI_DialogTableEntry DTE, uint? Index, long EntryStart, long EntryEnd)
+        static private bool ReadDialogTableEntryInsideFile(BinaryReader BR, ref FFXI_DialogTableEntry DTE, uint? Index, long EntryStart, long EntryEnd)
         {
             if (Index == null)
                 throw new Exception("Dialog entry is NULL");
@@ -1082,6 +1088,12 @@ namespace PacketViewerLogViewer.FFXIUtils
 
         }
 
+        /// <summary>
+        /// Loads dialog text for a specified zone into memory
+        /// </summary>
+        /// <param name="dialogList"></param>
+        /// <param name="specifiedZone">If no zone specified, it will load all the zones (takes very long)</param>
+        /// <returns></returns>
         static public bool FFXI_LoadDialogsFromDats(ref Dictionary<uint, FFXI_DialogTableEntry> dialogList,int specifiedZone = -1)
         {
             bool res = false;
@@ -1142,6 +1154,12 @@ namespace PacketViewerLogViewer.FFXIUtils
             return res;
         }
 
+        /// <summary>
+        /// Loads NPC names for a specified zone, special instances are not yet supported
+        /// </summary>
+        /// <param name="mobList"></param>
+        /// <param name="zoneId"></param>
+        /// <returns></returns>
         static public bool FFXI_LoadMobListForZone(ref Dictionary<uint, FFXI_MobListEntry> mobList,uint zoneId)
         {
             uint datFile = zoneId + 0 ;

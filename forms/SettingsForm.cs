@@ -111,10 +111,7 @@ namespace PacketViewerLogViewer
             cbAskNewProject.Checked = Properties.Settings.Default.AskCreateNewProjectFile;
             eParserDataUpdateZipURL.Text = Properties.Settings.Default.ParserDataUpdateZipURL;
 
-            // Re-check once
-            if (FFXIHelper.FFXI_InstallationPath != string.Empty)
-                FFXIHelper.FindPaths();
-            if (FFXIHelper.FFXI_InstallationPath != string.Empty)
+            if (FFXIHelper.FindPaths())
             {
                 eFFXIPath.Text = FFXIHelper.FFXI_InstallationPath;
                 lFFXIFileCount.Text = FFXIHelper.FFXI_FTable.Count.ToString() + " / " + FFXIHelper.FFXI_FTable.Count.ToString();

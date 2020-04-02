@@ -116,14 +116,14 @@ namespace PacketViewerLogViewer
             Application.UseWaitCursor = true;
             try
             {
-                FFXIHelper.FindPaths();
                 Directory.SetCurrentDirectory(Application.StartupPath);
                 if (DataLookups.LoadLookups() == false)
                 {
                     MessageBox.Show("Errors while loading lookup data: " + DataLookups.AllLoadErrors, "Error Loading Lookup Data", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
 
-                LoadDataFromGameclient();
+                if (FFXIHelper.FindPaths())
+                    LoadDataFromGameclient();
             }
             catch (Exception x)
             {
