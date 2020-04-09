@@ -14,6 +14,7 @@ using PacketViewerLogViewer.ClipboardHelper;
 using PacketViewerLogViewer.PVLVHelper;
 using PacketViewerLogViewer.FileExtHelper;
 using PacketViewerLogViewer.FFXIUtils;
+using PacketViewerLogViewer.helpers;
 
 namespace PacketViewerLogViewer
 {
@@ -1614,6 +1615,29 @@ namespace PacketViewerLogViewer
                 DataLookups.LoadLookups(false);
             }
 
+        }
+
+        private void mmExtraExportPacketsAsCSV_Click(object sender, EventArgs e)
+        {
+            PacketTabPage thisTP = GetCurrentPacketTabPage();
+            if (thisTP == null)
+                return;
+
+            if (!thisTP.PL.IsPreParsed)
+            {
+                MessageBox.Show("This function requires the pre-parse setting to be enabled","Export to CSV",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                return ;
+            }
+
+            saveCSVFileDialog.FileName = Path.GetFileNameWithoutExtension(thisTP.ProjectFile) + ".csv";
+
+            if (saveCSVFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (ExportCSVHelper.ExportPacketToCSV(thisTP.PL, saveCSVFileDialog.FileName))
+                    MessageBox.Show("Exported as:\r\n" + saveCSVFileDialog.FileName, "Export CSV",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                else
+                    MessageBox.Show("Export failed !", "Export CSV", MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
         }
     }
 }
