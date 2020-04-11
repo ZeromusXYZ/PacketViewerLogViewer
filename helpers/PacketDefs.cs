@@ -1543,6 +1543,7 @@ namespace PacketViewerLogViewer.Packets
         {
             int c = 0;
             Clear();
+            IsPreParsed = Original.IsPreParsed;
             foreach (PacketData pd in Original.PacketDataList)
             {
                 if (pd.MatchesSearch(p))
