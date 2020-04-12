@@ -1594,6 +1594,85 @@ namespace PacketViewerLogViewer
                     MarkParsed(Offset, 2, DataFieldIndex);
                 }
                 else
+                if (typeField == "fishrankservermessage")
+                {
+                    var fishrankentrycount = PD.GetUInt32AtPos(Offset);
+                    var l = fishrankentrycount.ToString() + " entries in this block";
+                    AddDataField(Offset, 4);
+                    AddParseLineToView(DataFieldIndex, posField, GetDataColor(DataFieldIndex), nameField + " count", l, descriptionField);
+                    MarkParsed(Offset, 4, DataFieldIndex);
+
+                    // struct fish_ranking_listing {
+                    //     uint8 name[16];     // 00:15
+                    //     uint8 mjob;         // 16
+                    //     uint8 sjob;         // 17
+                    //     uint8 mlevel;       // 18
+                    //     uint8 slevel;       // 19
+                    //     uint8 race;         // 20
+                    //     uint8 padding;      // 21
+                    //     uint8 allegience;   // 22
+                    //     uint8 fishrank;     // 23
+                    //     uint32 score;       // 24:27
+                    //     uint32 submittime;  // 28:31
+                    //     uint8 contestrank;  // 32
+                    //     uint8 resultcount;  // 33
+                    //     uint8 dataset_a;    // 34
+                    //     uint8 dataset_b;    // 35
+                    // };
+
+                    // grab message length from before this offset
+                    var fishrankentrycountforloop = (PD.GetUInt32AtPos(Offset-4) / 36);
+                    fishrankentrycountforloop++; // add one for self data
+
+                    for (int i = 0;i < fishrankentrycountforloop; i++)
+                    {
+                        int thisoffset = Offset + 4 + (i * 36);
+                        var fishline = string.Empty;
+                        // check mainjob to see if this is a valid entry
+                        if (PD.GetByteAtPos(thisoffset + 16) == 0)
+                        {
+                            fishline = "none";
+                        }
+                        else
+                        {
+                            fishline += "Rank: " + PD.GetByteAtPos(thisoffset + 32).ToString().PadLeft(3);
+                            fishline += "/" + PD.GetByteAtPos(thisoffset + 33).ToString().PadLeft(3);
+                            fishline += " ";
+                            fishline += "Score: " + PD.GetUInt32AtPos(thisoffset + 24).ToString().PadLeft(4);
+                            fishline += " ";
+                            fishline += "SubmitTime: 0x" + PD.GetUInt32AtPos(thisoffset + 28).ToString("X8");
+                            fishline += " - ";
+                            var job = DataLookups.NLU(DataLookups.LU_Job).GetValue(PD.GetByteAtPos(thisoffset + 16)) + PD.GetByteAtPos(thisoffset + 18).ToString("00");
+                            if (PD.GetByteAtPos(thisoffset + 17) > 0)
+                            {
+                                job += "/";
+                                job += DataLookups.NLU(DataLookups.LU_Job).GetValue(PD.GetByteAtPos(thisoffset + 17));
+                                job += PD.GetByteAtPos(thisoffset + 19).ToString("00");
+                            }
+                            fishline += job.PadRight(11);
+                            fishline += " ";
+                            fishline += DataLookups.NLU("raceandgender").GetValue(PD.GetByteAtPos(thisoffset + 20),"?").PadRight(10); // race
+                            fishline += " ";
+                            fishline += DataLookups.NLU("nations").GetValue(PD.GetByteAtPos(thisoffset + 22),"Unknown").PadRight(10); // Allegience
+                            fishline += "(" + PD.GetByteAtPos(thisoffset + 23).ToString()+")";
+                            fishline += " - ";
+                            fishline += PD.GetStringAtPos(thisoffset, 16).PadRight(16);
+                            fishline += " - ";
+                            fishline += "Data-A: 0x" + PD.GetByteAtPos(thisoffset + 34).ToString("X2");
+                            fishline += " ";
+                            fishline += "Data-B: 0x" + PD.GetByteAtPos(thisoffset + 35).ToString("X2");
+                        }
+
+                        AddDataField(thisoffset, 36);
+                        var fishFieldName = nameField + " " + (i + 1).ToString() + "/" + fishrankentrycountforloop.ToString();
+                        if (i == 0)
+                            fishFieldName = nameField + " self";
+                        AddParseLineToView(DataFieldIndex, "0x" + thisoffset.ToString("X2"), GetDataColor(DataFieldIndex), fishFieldName.ToString(), fishline, descriptionField);
+                        MarkParsed(thisoffset, 36, DataFieldIndex);
+                    }
+
+                }
+                else
                 if (typeField == "packet-in-0x028")
                 {
                     // This packet is too complex to do the normal way (for now)

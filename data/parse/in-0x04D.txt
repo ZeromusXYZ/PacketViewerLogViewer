@@ -5,7 +5,7 @@ byte;0x05;_unknown?;Always 1 ?
 byte;0x06;Message Type;01 = SvrMsg 2 = FishRank
 byte:languages;0x07;Language;
 uint32;0x08;Timestamp;-- 08  UTC Timestamp
-uint32;0x0A;Message Length Total
+uint32;0x0C;Message Size Total
 uint32;0x10;Message Offset
 uint32;0x14;This Message Length;Max 236?
 
@@ -17,7 +17,8 @@ string;0x18;Text
 [[]]
 
 [[FishRank]]
-uint32;0x18;Fishing Entries Count
+fishrankservermessage;0x18;Fish Rank
+rem;uint32;0x18;Fishing Entries Count
 rem;data204;0x1C;FishRank Data
 // struct fish_ranking_listing {
 //     uint8 name[16];     // 00:15

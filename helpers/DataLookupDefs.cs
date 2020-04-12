@@ -21,6 +21,20 @@ namespace PacketViewerLogViewer.Packets
     {
         public Dictionary<UInt64, DataLookupEntry> data = new Dictionary<UInt64, DataLookupEntry>();
 
+        public virtual string GetValue(UInt64 ID, string defaultValue = "")
+        {
+            var res = GetValue(ID);
+            if (res == "")
+            {
+                if (defaultValue == "?")
+                    return ID.ToString();
+                else
+                    return defaultValue;
+            }
+            else
+                return res;
+        }
+
         public virtual string GetValue(UInt64 ID)
         {
             DataLookupEntry res;
