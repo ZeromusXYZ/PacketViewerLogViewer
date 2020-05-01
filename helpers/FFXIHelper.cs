@@ -9,74 +9,13 @@ using System.Globalization;
 using Microsoft.Win32;
 using PlayOnline.FFXI;
 
-namespace PacketViewerLogViewer.SEUtils
+namespace PacketViewerLogViewer.FFXIUtils
 {
-    public enum FFXI_ItemFlags : ushort
-    {
-        None = 0x0000,
-        // Simple Flags - mostly assumed meanings
-        WallHanging = 0x0001, // Used by furnishing like paintings.
-        Flag01 = 0x0002,
-        MysteryBox = 0x0004,  // Can be gained from Gobbie Mystery Box
-        MogGarden = 0x0008,   // Can use in Mog Garden
-        CanSendPOL = 0x0010,
-        Inscribable = 0x0020,
-        NoAuction = 0x0040,
-        Scroll = 0x0080,
-        Linkshell = 0x0100,
-        CanUse = 0x0200,
-        CanTradeNPC = 0x0400,
-        CanEquip = 0x0800,
-        NoSale = 0x1000,
-        NoDelivery = 0x2000,
-        NoTradePC = 0x4000,
-        Rare = 0x8000,
-        // Combined Flags
-        Ex = 0x6040, // NoAuction + NoDelivery + NoTrade
-    }
-
-    public enum FFXI_ItemType : ushort
-    {
-        Nothing = 0x0000,
-        Item = 0x0001,
-        QuestItem = 0x0002,
-        Fish = 0x0003,
-        Weapon = 0x0004,
-        Armor = 0x0005,
-        Linkshell = 0x0006,
-        UsableItem = 0x0007,
-        Crystal = 0x0008,
-        Currency = 0x0009,
-        Furnishing = 0x000A,
-        Plant = 0x000B,
-        Flowerpot = 0x000C,
-        PuppetItem = 0x000D,
-        Mannequin = 0x000E,
-        Book = 0x000F,
-        RacingForm = 0x0010,
-        BettingSlip = 0x0011,
-        SoulPlate = 0x0012,
-        Reflector = 0x0013,
-        ItemType20 = 0x0014,
-        LotteryTicket = 0x0015,
-        MazeTabula_M = 0x0016,
-        MazeTabula_R = 0x0017,
-        MazeVoucher = 0x0018,
-        MazeRune = 0x0019,
-        ItemType_26 = 0x001A,
-        StorageSlip = 0x001B,
-        LegionPass = 0x001C,
-        MeebleBurrows = 0x001D,
-        Instincts = 0x001E,
-        CraftingKit = 0x001F,
-        Max = CraftingKit,
-    }
-
     public class FFXI_Item : IComparable
     {
         public uint Id { get; set; }
-        public FFXI_ItemFlags Flags { get; set; }
-        public FFXI_ItemType Type { get; set; }
+        public FFXIHelper.FFXI_ItemFlags Flags { get; set; }
+        public FFXIHelper.FFXI_ItemType Type { get; set; }
         public uint StackSize { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -90,35 +29,121 @@ namespace PacketViewerLogViewer.SEUtils
         }
     }
 
-    /*
-    public struct FFXI_VTable_Item
+    public class FFXI_DialogTableEntry : IComparable
     {
-        public byte RomFolder;
-    }
-    */
+        public ushort zoneId { get; set; }
+        public ushort Id { get; set; }
+        public string Text { get; set; }
 
-    public struct FFXI_FTable_Item
-    {
-        public uint FileId; // Just for reference
-        public byte RomFolder;
-        public uint SubFolder;
-        public uint DatFile;
-        public string FullFileName;
+        public uint KeyIndex
+        {
+            get { return ((uint)zoneId * 0x10000) + (uint)Id ; }
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+            return KeyIndex.CompareTo((obj as FFXI_DialogTableEntry).KeyIndex);
+        }
+
     }
 
-    static public class SEHelper
+    public class FFXI_MobListEntry
     {
+        public uint Id { get; set; }
+        public string Name { get; set; }
+        public ushort ExpectedZoneId { get; set; }
+
+        public FFXI_MobListEntry()
+        {
+            Id = 0;
+            Name = "none";
+            ExpectedZoneId = 0;
+        }
+    }
+
+    static public class FFXIHelper
+    {
+        public struct FFXI_FTable_Item
+        {
+            public uint FileId; // Just for reference
+            public byte RomFolder;
+            public uint SubFolder;
+            public uint DatFile;
+            public string FullFileName;
+        }
+
         static public string FFXI_InstallationPath { get; private set; }
         static public string POL_InstallationPath { get; private set; }
         static public string TetraMaster_InstallationPath { get; private set; }
 
         static public Dictionary<uint,FFXI_FTable_Item> FFXI_FTable = new Dictionary<uint, FFXI_FTable_Item>();
-        static public int FFXI_FTableCount = 0;
 
         private const string GameID_POL = "1000";
         private const string GameID_FFXI = "0001";
         private const string GameID_TetraMaster = "0002";
         // public const string GameID_FFXITC = "0015";
+
+        public enum FFXI_ItemFlags : ushort
+        {
+            None = 0x0000,
+            // Simple Flags - mostly assumed meanings
+            WallHanging = 0x0001, // Used by furnishing like paintings.
+            Flag01 = 0x0002,
+            MysteryBox = 0x0004,  // Can be gained from Gobbie Mystery Box
+            MogGarden = 0x0008,   // Can use in Mog Garden
+            CanSendPOL = 0x0010,
+            Inscribable = 0x0020,
+            NoAuction = 0x0040,
+            Scroll = 0x0080,
+            Linkshell = 0x0100,
+            CanUse = 0x0200,
+            CanTradeNPC = 0x0400,
+            CanEquip = 0x0800,
+            NoSale = 0x1000,
+            NoDelivery = 0x2000,
+            NoTradePC = 0x4000,
+            Rare = 0x8000,
+            // Combined Flags
+            Ex = 0x6040, // NoAuction + NoDelivery + NoTrade
+        }
+
+        public enum FFXI_ItemType : ushort
+        {
+            Nothing = 0x0000,
+            Item = 0x0001,
+            QuestItem = 0x0002,
+            Fish = 0x0003,
+            Weapon = 0x0004,
+            Armor = 0x0005,
+            Linkshell = 0x0006,
+            UsableItem = 0x0007,
+            Crystal = 0x0008,
+            Currency = 0x0009,
+            Furnishing = 0x000A,
+            Plant = 0x000B,
+            Flowerpot = 0x000C,
+            PuppetItem = 0x000D,
+            Mannequin = 0x000E,
+            Book = 0x000F,
+            RacingForm = 0x0010,
+            BettingSlip = 0x0011,
+            SoulPlate = 0x0012,
+            Reflector = 0x0013,
+            ItemType20 = 0x0014,
+            LotteryTicket = 0x0015,
+            MazeTabula_M = 0x0016,
+            MazeTabula_R = 0x0017,
+            MazeVoucher = 0x0018,
+            MazeRune = 0x0019,
+            ItemType_26 = 0x001A,
+            StorageSlip = 0x001B,
+            LegionPass = 0x001C,
+            MeebleBurrows = 0x001D,
+            Instincts = 0x001E,
+            CraftingKit = 0x001F,
+            Max = CraftingKit,
+        }
 
         [Flags]
         private enum Regions
@@ -143,6 +168,11 @@ namespace PacketViewerLogViewer.SEUtils
             Monipulator
         };
 
+        /// <summary>
+        /// Read Item data from PolUtils MassExtractor xml files
+        /// </summary>
+        /// <param name="ItemXmlFile"></param>
+        /// <returns></returns>
         static public List<FFXI_Item> ReadItemListFromXML(string ItemXmlFile)
         {
             List<FFXI_Item> res = new List<FFXI_Item>();
@@ -267,7 +297,7 @@ namespace PacketViewerLogViewer.SEUtils
             return InstallPath;
         }
 
-        static public bool FFXI_LoadFileTables()
+        static private bool FFXI_LoadFileTables()
         {
             // Do we have a installation ?
             if ((FFXI_InstallationPath == null) || (FFXI_InstallationPath == string.Empty) || (!Directory.Exists(FFXI_InstallationPath)))
@@ -345,7 +375,7 @@ namespace PacketViewerLogViewer.SEUtils
                     }
                     
                 }
-                FFXI_FTableCount = FFXI_VTable.Length;
+                
             }
             catch 
             {
@@ -354,7 +384,7 @@ namespace PacketViewerLogViewer.SEUtils
             return true;
         }
 
-        static public void FindPaths()
+        static public bool FindPaths()
         {
             // PlayOnline
             if (POL_InstallationPath == null)
@@ -395,7 +425,7 @@ namespace PacketViewerLogViewer.SEUtils
             if (TetraMaster_InstallationPath == string.Empty)
                 TetraMaster_InstallationPath = GetInstalledGamePath(GameID_TetraMaster, Regions.EU);
 
-            FFXI_LoadFileTables();
+            return FFXI_LoadFileTables();
         }
 
         static public void FFXI_LoadItemsFromDats(ref Dictionary<uint, FFXI_Item> itemList)
@@ -426,9 +456,9 @@ namespace PacketViewerLogViewer.SEUtils
             itemList = items.OrderBy(d => d.Value).ToDictionary(k => k.Key, v => v.Value);
         }
 
-        public static void FFXI_DeduceItemType(BinaryReader BR, out FFXI_ItemDatFileTypes ItemType)
+        static private FFXI_ItemDatFileTypes FFXI_DeduceItemType(BinaryReader BR)
         {
-            ItemType = FFXI_ItemDatFileTypes.Unknown;
+            FFXI_ItemDatFileTypes ItemType = FFXI_ItemDatFileTypes.Unknown;
             byte[] FirstItem = null;
             long Position = BR.BaseStream.Position;
             BR.BaseStream.Position = 0;
@@ -500,9 +530,10 @@ namespace PacketViewerLogViewer.SEUtils
             }
             catch { }
             BR.BaseStream.Position = Position;
+            return ItemType;
         }
 
-        static public Dictionary<uint, FFXI_Item> ReadItemListFromDatFile(uint DatFileId)
+        static private Dictionary<uint, FFXI_Item> ReadItemListFromDatFile(uint DatFileId)
         {
             Dictionary<uint, FFXI_Item> res = new Dictionary<uint, FFXI_Item>();
 
@@ -517,7 +548,7 @@ namespace PacketViewerLogViewer.SEUtils
             if (((FS.Length % 0x0C00) != 0) || (FS.Length < 0xC000))
                 return res;
             var BR = new BinaryReader(FS);
-            FFXI_DeduceItemType(BR, out var ExpectedItemType);
+            var ExpectedItemType = FFXI_DeduceItemType(BR);
 
             var itemCount = BR.BaseStream.Length / 0x0C00;
             for (var i = 0; i < itemCount; i++)
@@ -772,6 +803,447 @@ namespace PacketViewerLogViewer.SEUtils
                 }
             }
             return null;
+        }
+
+        static private bool ReadDialogTableEntryInsideFile(BinaryReader BR, ref FFXI_DialogTableEntry DTE, uint? Index, long EntryStart, long EntryEnd)
+        {
+            if (Index == null)
+                throw new Exception("Dialog entry is NULL");
+            if (Index > ushort.MaxValue)
+                throw new Exception("Dialog entry too high " + Index.ToString());
+            DTE.zoneId = 0;
+            DTE.Text = string.Empty;
+            DTE.Id = (ushort)Index;
+            try
+            {
+                BR.BaseStream.Seek(4 + EntryStart, SeekOrigin.Begin);
+                byte[] TextBytes = BR.ReadBytes((int)(EntryEnd - EntryStart));
+                for (int i = 0; i < TextBytes.Length; ++i)
+                {
+                    TextBytes[i] ^= 0x80; // <= Evil encryption-breaking!
+                }
+                DTE.Text = String.Empty;
+                // FFXIEncoding E = new FFXIEncoding();
+                int LastPos = 0;
+                for (int i = 0; i < TextBytes.Length; ++i)
+                {
+                    if (TextBytes[i] == 0x07)
+                    {
+                        // Line Break
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += "\r\n";
+                        LastPos = i + 1;
+                    }
+                    else if (TextBytes[i] == 0x08)
+                    {
+                        // Character Name (You)
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Player Name{1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd);
+                        LastPos = i + 1;
+                    }
+                    else if (TextBytes[i] == 0x09)
+                    {
+                        // Character Name (They)
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Speaker Name{1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd);
+                        LastPos = i + 1;
+                    }
+                    else if (TextBytes[i] == 0x0a && i + 1 < TextBytes.Length)
+                    {
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Numeric Parameter {2}{1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 1]);
+                        LastPos = i + 2;
+                        ++i;
+                    }
+                    else if (TextBytes[i] == 0x0b)
+                    {
+                        // Indicates that the lines after this are in a prompt window
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Selection Dialog{1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd);
+                        LastPos = i + 1;
+                    }
+                    else if (TextBytes[i] == 0x0c && i + 1 < TextBytes.Length)
+                    {
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Multiple Choice (Parameter {2}){1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 1]);
+                        LastPos = i + 2;
+                        ++i;
+                    }
+                    else if (TextBytes[i] == 0x19 && i + 1 < TextBytes.Length)
+                    {
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Item Parameter {2}{1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 1]);
+                        LastPos = i + 2;
+                        ++i;
+                    }
+                    else if (TextBytes[i] == 0x1a && i + 1 < TextBytes.Length)
+                    {
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Key Item Parameter {2}{1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 1]);
+                        LastPos = i + 2;
+                        ++i;
+                    }
+                    else if (TextBytes[i] == 0x1c && i + 1 < TextBytes.Length)
+                    {
+                        // Chocobo Name
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Player/Chocobo Parameter {2}{1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 1]);
+                        LastPos = i + 2;
+                        ++i;
+                    }
+                    else if (TextBytes[i] == 0x1e && i + 1 < TextBytes.Length)
+                    {
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Set Color #{2}{1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 1]);
+                        LastPos = i + 2;
+                        ++i;
+                    }
+                    else if (TextBytes[i] == 0x7f && i + 1 < TextBytes.Length)
+                    {
+                        // Various stuff
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        if (TextBytes[i + 1] == 0x31 && i + 2 < TextBytes.Length)
+                        {
+                            // Unknown, but seems to indicate user needs to hit RET
+                            if (TextBytes[i + 2] != 0)
+                            {
+                                DTE.Text += String.Format("{0}{2}-Second Delay + Prompt{1}", FFXIEncoding.SpecialMarkerStart,
+                                    FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 2]);
+                            }
+                            else
+                            {
+                                DTE.Text += String.Format("{0}Prompt{1}", FFXIEncoding.SpecialMarkerStart,
+                                    FFXIEncoding.SpecialMarkerEnd);
+                            }
+                            ++LastPos;
+                            ++i;
+                        }
+                        else if (TextBytes[i + 1] == 0x85) // Multiple Choice: Player Gender
+                        {
+                            DTE.Text += String.Format("{0}Multiple Choice (Player Gender){1}", FFXIEncoding.SpecialMarkerStart,
+                                FFXIEncoding.SpecialMarkerEnd);
+                        }
+                        else if (TextBytes[i + 1] == 0x8D && i + 2 < TextBytes.Length)
+                        {
+                            DTE.Text += String.Format("{0}Weather Event Parameter {2}{1}", FFXIEncoding.SpecialMarkerStart,
+                                FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 2]);
+                            ++LastPos;
+                            ++i;
+                        }
+                        else if (TextBytes[i + 1] == 0x8E && i + 2 < TextBytes.Length)
+                        {
+                            DTE.Text += String.Format("{0}Weather Type Parameter {2}{1}", FFXIEncoding.SpecialMarkerStart,
+                                FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 2]);
+                            ++LastPos;
+                            ++i;
+                        }
+                        else if (TextBytes[i + 1] == 0x92 && i + 2 < TextBytes.Length)
+                        {
+                            DTE.Text += String.Format("{0}Singular/Plural Choice (Parameter {2}){1}",
+                                FFXIEncoding.SpecialMarkerStart, FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 2]);
+                            ++LastPos;
+                            ++i;
+                        }
+                        else if (TextBytes[i + 1] == 0xB1 && i + 2 < TextBytes.Length)
+                        {
+                            // Usually found before an item name or key item name
+                            DTE.Text += String.Format("{0}Title Parameter {2}{1}", FFXIEncoding.SpecialMarkerStart,
+                                FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 2]);
+                            ++LastPos;
+                            ++i;
+                        }
+                        else if (i + 2 < TextBytes.Length)
+                        {
+                            DTE.Text += String.Format("{0}Unknown Parameter (Type: {2:X2}) {3}{1}",
+                                FFXIEncoding.SpecialMarkerStart, FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 1], TextBytes[i + 2]);
+                            ++LastPos;
+                            ++i;
+                        }
+                        else
+                        {
+                            DTE.Text += String.Format("{0}Unknown Marker Type: {2:X2}{1}", FFXIEncoding.SpecialMarkerStart,
+                                FFXIEncoding.SpecialMarkerEnd, TextBytes[i + 1]);
+                        }
+                        LastPos = i + 2;
+                        ++i;
+                    }
+                    else if (TextBytes[i] == 0x7f || TextBytes[i] < 0x20)
+                    {
+                        if (LastPos < i)
+                        {
+                            DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, i - LastPos);
+                        }
+                        DTE.Text += String.Format("{0}Possible Special Code: {2:X2}{1}", FFXIEncoding.SpecialMarkerStart,
+                            FFXIEncoding.SpecialMarkerEnd, TextBytes[i]);
+                        LastPos = i + 1;
+                    }
+                }
+                if (LastPos < TextBytes.Length)
+                {
+                    DTE.Text += FFXIEncoding.UTF8.GetString(TextBytes, LastPos, TextBytes.Length - LastPos);
+                }
+                DTE.Text = DTE.Text.TrimEnd('\0');
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        static private Dictionary<uint, FFXI_DialogTableEntry> ReadDialogListFromDatFile(uint datFile, ushort zoneId)
+        {
+            var res = new Dictionary<uint, FFXI_DialogTableEntry>();
+
+            if (!FFXI_FTable.TryGetValue(datFile, out var FileDatInfo))
+                return res;
+
+            if (!File.Exists(FileDatInfo.FullFileName))
+                return res;
+
+            var FS = new FileStream(FileDatInfo.FullFileName, FileMode.Open, FileAccess.Read);
+            var BR = new BinaryReader(FS);
+
+            if (BR.BaseStream.Length < 4)
+                return res;
+
+            uint FileSizeMaybe = BR.ReadUInt32();
+            if (FileSizeMaybe != (0x10000000 + BR.BaseStream.Length - 4))
+                return res;
+
+            uint FirstTextPos = (BR.ReadUInt32() ^ 0x80808080);
+            if ((FirstTextPos % 4) != 0 || FirstTextPos > BR.BaseStream.Length || FirstTextPos < 8)
+                return res;
+
+            uint EntryCount = FirstTextPos / 4;
+            // The entries are usually, but not always, sequential in the file.
+            // Because we need to know how long one entry is (no clear end-of-message marker), we need them in
+            // sequential order.
+            List<uint> Entries = new List<uint>((int)EntryCount + 1);
+            Entries.Add(FirstTextPos);
+            for (int i = 1; i < EntryCount; ++i)
+                Entries.Add(BR.ReadUInt32() ^ 0x80808080);
+
+            Entries.Add((uint)BR.BaseStream.Length - 4);
+            Entries.Sort();
+            for (uint i = 0; i < EntryCount; ++i)
+            {
+                if (Entries[(int)i] < 4 * EntryCount || 4 + Entries[(int)i] >= BR.BaseStream.Length)
+                {
+                    res.Clear();
+                    break;
+                }
+                FFXI_DialogTableEntry DTE = new FFXI_DialogTableEntry();
+                if (!ReadDialogTableEntryInsideFile(BR, ref DTE, i, Entries[(int)i], Entries[(int)i + 1]))
+                {
+                    res.Clear();
+                    break;
+                }
+                DTE.zoneId = zoneId;
+                res.Add(DTE.KeyIndex,DTE);
+            }
+            return res;
+
+        }
+
+        /// <summary>
+        /// Loads dialog text for a specified zone into memory
+        /// </summary>
+        /// <param name="dialogList"></param>
+        /// <param name="specifiedZone">If no zone specified, it will load all the zones (takes very long)</param>
+        /// <returns></returns>
+        static public bool FFXI_LoadDialogsFromDats(ref Dictionary<uint, FFXI_DialogTableEntry> dialogList,int specifiedZone = -1)
+        {
+            bool res = false;
+
+            Dictionary<uint, FFXI_DialogTableEntry> dialogs = new Dictionary<uint, FFXI_DialogTableEntry>();
+
+            bool Add(ref Dictionary<uint, FFXI_DialogTableEntry> dList, int zoneId)
+            {
+                int datFile ;
+
+                // Calculate the dat file number from zone
+                if ((zoneId >= 0x000) && (zoneId <= 0x0FF))
+                    datFile = zoneId + 6420;
+                else if ((zoneId >= 0x100) && (zoneId <= 0x1FF))
+                    datFile = zoneId + 85590 - 256 ;
+                else
+                    datFile = -1;
+
+                if (datFile < 0)
+                    return false;
+                try
+                {
+                    var newItems = ReadDialogListFromDatFile((uint)datFile, (ushort)zoneId);
+                    var union = dList.Union(newItems);
+                    dList = union.ToDictionary(k => k.Key, v => v.Value);
+                }
+                catch
+                {
+                    return false;
+                }
+                return true;
+            }
+
+            if (specifiedZone >= 0)
+                res = Add(ref dialogs, specifiedZone);
+            else
+            {
+                // Load all the zones o/
+                // Dialog Tables
+                dialogList.Clear();
+                for (ushort i = 0; i < 0x1FF; ++i)
+                    res = Add(ref dialogs, i) || res ;
+                // Add(ref dialogs, "50-2", (uint)57945); // Whitegate's 2nd table ?
+
+                /*
+                // first 256 zones
+                for (ushort i = 0; i < 0x100; ++i)
+                    Add(ref dialogs, i, (uint)6420 + i);
+                Add(ref dialogs, 50, (uint)57945); // Whitegate's 2nd table ?
+                // next 256 zones
+                for (ushort i = 0; i < 0x100; ++i)
+                    Add(ref dialogs, (ushort)(i + 0x100), (uint)85590 + i);
+                */
+            }
+
+            // We don't sort this, it should already be in order
+            dialogList = dialogs.OrderBy(d => d.Value).ToDictionary(k => k.Key, v => v.Value);
+            return res;
+        }
+
+        /// <summary>
+        /// Loads NPC names for a specified zone, special instances are not yet supported
+        /// </summary>
+        /// <param name="mobList"></param>
+        /// <param name="zoneId"></param>
+        /// <returns></returns>
+        static public bool FFXI_LoadMobListForZone(ref Dictionary<uint, FFXI_MobListEntry> mobList,uint zoneId)
+        {
+            uint datFile = zoneId + 0 ;
+            if ((zoneId >= 0) && (zoneId < 0x100))
+            {
+                datFile = zoneId + 6720;
+            }
+            else
+            if ((zoneId >= 0x100) && (zoneId < 0x200))
+            {
+                datFile = zoneId + 86491 - 0x100 ;
+            }
+            else
+            {
+                datFile = zoneId + 67910; // Special instanced zones
+            }
+
+            if (!FFXI_FTable.TryGetValue(datFile, out var FileDatInfo))
+                return false;
+
+            if (!File.Exists(FileDatInfo.FullFileName))
+                return false;
+
+            var FS = new FileStream(FileDatInfo.FullFileName, FileMode.Open, FileAccess.Read);
+            var BR = new BinaryReader(FS);
+
+            if ((BR.BaseStream.Length % 0x20) != 0 || BR.BaseStream.Position != 0)
+            {
+                return false ;
+            }
+            long EntryCount = BR.BaseStream.Length / 0x20;
+            try
+            {
+                int ZoneID = -1;
+                for (int i = 0; i < EntryCount; ++i)
+                {
+                    FFXI_MobListEntry MLE = new FFXI_MobListEntry();
+
+                    try
+                    {
+                        MLE.Name = FFXIEncoding.UTF8.GetString(BR.ReadBytes(0x1C)).TrimEnd('\0');
+                        MLE.Id = BR.ReadUInt32();
+                        // ID seems to be 010 + zone id + mob id (=> there's a hard max of 0xFFF (= 4095) mobs per zone, which seems plenty :))
+                        // Special 'instanced' zones like MMM or Meebles use 013 + 'zone id' + mob id.
+                        if ((MLE.Id != 0 && (MLE.Id & 0xFFF00000) != 0x01000000) &&
+                            (MLE.Id != 0 && (MLE.Id & 0xFFF00000) != 0x01300000) &&
+                            (MLE.Id != 0 && (MLE.Id & 0xFFF00000) != 0x01100000))
+                        {
+                            continue;
+                        }
+                        MLE.ExpectedZoneId = (ushort)((MLE.Id & 0x001FF000) >> 12);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+
+                    // First entry should always be "none"
+                    if (i == 0 && (MLE.Id != 0 || MLE.Name != "none"))
+                    {
+                        break;
+                    }
+                    else if (i > 0)
+                    {
+                        // Sanity-check
+                        // Entire file should be for 1 specific zone
+                        if (ZoneID < 0)
+                        {
+                            ZoneID = MLE.ExpectedZoneId;
+                        }
+                        else if (ZoneID != MLE.ExpectedZoneId)
+                        {
+                            break;
+                        }
+                        mobList.Add(MLE.Id, MLE);
+                    }
+                }
+
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
     }

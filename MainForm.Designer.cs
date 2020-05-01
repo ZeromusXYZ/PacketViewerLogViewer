@@ -60,6 +60,7 @@
             this.MMExtraN1 = new System.Windows.Forms.ToolStripSeparator();
             this.MMExtraUpdateParser = new System.Windows.Forms.ToolStripMenuItem();
             this.MMExtraImportFromGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.mmExtraExportPacketsAsCSV = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutGithub = new System.Windows.Forms.ToolStripMenuItem();
             this.mmAboutDiscord = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,6 +99,7 @@
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.sbExtraInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbProjectInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.saveCSVFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.MM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -319,7 +321,8 @@
             this.MMExtraGameView,
             this.MMExtraN1,
             this.MMExtraUpdateParser,
-            this.MMExtraImportFromGame});
+            this.MMExtraImportFromGame,
+            this.mmExtraExportPacketsAsCSV});
             this.mmExtra.Name = "mmExtra";
             this.mmExtra.Size = new System.Drawing.Size(45, 20);
             this.mmExtra.Text = "E&xtra";
@@ -339,7 +342,7 @@
             this.MMExtraGameView.Name = "MMExtraGameView";
             this.MMExtraGameView.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.I)));
             this.MMExtraGameView.Size = new System.Drawing.Size(305, 24);
-            this.MMExtraGameView.Text = "View Game Info";
+            this.MMExtraGameView.Text = "View Game Info ...";
             this.MMExtraGameView.Click += new System.EventHandler(this.MMExtraGameView_Click);
             // 
             // MMExtraN1
@@ -360,6 +363,13 @@
             this.MMExtraImportFromGame.Size = new System.Drawing.Size(305, 24);
             this.MMExtraImportFromGame.Text = "Import data lookups from FFXI Game Client";
             this.MMExtraImportFromGame.Click += new System.EventHandler(this.MMExtraImportFromGame_Click);
+            // 
+            // mmExtraExportPacketsAsCSV
+            // 
+            this.mmExtraExportPacketsAsCSV.Name = "mmExtraExportPacketsAsCSV";
+            this.mmExtraExportPacketsAsCSV.Size = new System.Drawing.Size(305, 24);
+            this.mmExtraExportPacketsAsCSV.Text = "Export packets tab as CSV";
+            this.mmExtraExportPacketsAsCSV.Click += new System.EventHandler(this.mmExtraExportPacketsAsCSV_Click);
             // 
             // mmAbout
             // 
@@ -734,6 +744,13 @@
             this.sbProjectInfo.Size = new System.Drawing.Size(81, 19);
             this.sbProjectInfo.Text = "Project: none";
             // 
+            // saveCSVFileDialog
+            // 
+            this.saveCSVFileDialog.DefaultExt = "csv";
+            this.saveCSVFileDialog.Filter = "CSV Files|*.csv|All files|*.*";
+            this.saveCSVFileDialog.RestoreDirectory = true;
+            this.saveCSVFileDialog.Title = "Export CSV File";
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -848,6 +865,8 @@
         private System.Windows.Forms.ToolStripMenuItem MMAbout7ZipMain;
         private System.Windows.Forms.ToolStripMenuItem MMAbout7ZipDownload;
         private System.Windows.Forms.ToolStripMenuItem MMExtraImportFromGame;
+        private System.Windows.Forms.ToolStripMenuItem mmExtraExportPacketsAsCSV;
+        private System.Windows.Forms.SaveFileDialog saveCSVFileDialog;
     }
 }
 

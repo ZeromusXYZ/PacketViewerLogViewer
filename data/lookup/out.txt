@@ -20,7 +20,7 @@
 0x03D;Blacklist Command;Sent in response to /blacklist add or /blacklist delete.
 0x041;Lot Item;Lotting an item in the treasure pool.
 0x042;Pass Item;Passing an item in the treasure pool.
-0x04B;Servmes;Requests the server message (/servmes).
+0x04B;Request Server Message;Requests a server message (e.g. /servmes).
 0x04D;Delivery Box;Used to manipulate the delivery box.
 0x04E;Auction;Used to bid on an Auction House item.
 0x050;Equip;This command is used to equip your character.

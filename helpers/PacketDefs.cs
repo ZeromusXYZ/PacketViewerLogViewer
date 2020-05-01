@@ -159,7 +159,7 @@ namespace PacketViewerLogViewer.Packets
         public DateTime TimeStamp { get; set; }
         public DateTime VirtualTimeStamp { get; set; }
         public string OriginalTimeString { get; set; }
-        public int capturedZoneId { get; set; }
+        public ushort capturedZoneId { get; set; }
 
         public PacketParser PP;
 
@@ -837,7 +837,14 @@ namespace PacketViewerLogViewer.Packets
                 {
                     switch (PacketID)
                     {
-                        case 0x00a: CompileSpecialized.In0x00a(this,pl);
+                        case 0x00a:
+                            CompileSpecialized.In0x00a(this, pl);
+                            break;
+                        case 0x032:
+                            CompileSpecialized.In0x032(this, pl);
+                            break;
+                        case 0x034:
+                            CompileSpecialized.In0x034(this, pl);
                             break;
                         default:
                             break;
@@ -1406,7 +1413,7 @@ namespace PacketViewerLogViewer.Packets
                             var pData = reader.GetString(reader.GetOrdinal("PACKET_DATA"));
                             pd.RawText.Add(pData);
                             pd.AddRawHexStringDataAsBytes(pData);
-                            pd.capturedZoneId = reader.GetInt16(reader.GetOrdinal("ZONE_ID"));
+                            pd.capturedZoneId = (ushort)reader.GetInt16(reader.GetOrdinal("ZONE_ID"));
 
                             pd.OriginalHeaderText = "PACKET_ID " + reader.GetInt64(reader.GetOrdinal("PACKET_ID")) + " , DIR " + dir.ToString() + " , TYPE " + pd.PacketID.ToString();
                             pd.OriginalTimeString = "";
@@ -1536,6 +1543,7 @@ namespace PacketViewerLogViewer.Packets
         {
             int c = 0;
             Clear();
+            IsPreParsed = Original.IsPreParsed;
             foreach (PacketData pd in Original.PacketDataList)
             {
                 if (pd.MatchesSearch(p))

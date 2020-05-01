@@ -45,7 +45,7 @@
 rem;0x04B;Logout Acknowledge;Acknowledges a logout attempt.
 0x04B;Delivery Item;Item in delivery box.
 0x04C;Auction House Menu;Sent when visiting auction counter.
-0x04D;Servmes Resp;Server response when someone requests it.
+0x04D;Server Response;Server response when someone requests it.
 0x04F;Data Download 2;The data that is sent to the client when it is "Downloading data...".
 0x050;Equip;Updates the characters equipment slots.
 0x051;Model Change;Info about equipment and appearance.

@@ -288,3 +288,4 @@
 295;Dynamis-Bastok [D]
 296;Dynamis-Windurst [D]
 297;Dynamis-Jeuno [D]
+298;Walk of Echoes [P]
