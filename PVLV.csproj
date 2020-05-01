@@ -313,6 +313,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="pvlvsetup.nsi">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Res\usgaiji-10.png" />
     <None Include="Res\usgaiji-9.png" />
     <None Include="Res\mini_video_icon.png" />
