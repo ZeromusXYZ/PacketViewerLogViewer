@@ -1677,8 +1677,8 @@ namespace PacketViewerLogViewer
                 {
                     // This packet is too complex to do the normal way (for now)
                     var bytesfor0x028 = Parse_Packet_In_0x028(PD,ref DataFieldIndex);
-                    var maxIndex = Math.Min(bytesfor0x028, ParsedBytes.Count);
-                    // Mark any byts that didn't get marked as parsed, as parsed
+                    var maxIndex = Math.Min(bytesfor0x028, ParsedBytes.Count); // Fix for if parsing did something wrong, credits to InoUno
+                    // Mark any bytes that didn't get marked as parsed, as parsed
                     for (int i = 0; i < maxIndex; i++)
                     {
                         if (ParsedBytes[i] == 0)
