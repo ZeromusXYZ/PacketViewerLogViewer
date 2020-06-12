@@ -936,6 +936,8 @@ namespace PacketViewerLogViewer
             int i = startIndex + 1;
             for (int c = 0; c < tp.lbPackets.Items.Count - 1; c++)
             {
+                if (i >= tp.lbPackets.Items.Count)
+                    i = 0;
                 var pd = tp.PL.GetPacket(i);
                 if (pd.MatchesSearch(searchParameters))
                 {
@@ -955,8 +957,6 @@ namespace PacketViewerLogViewer
                     return;
                 }
                 i++;
-                if (i >= tp.lbPackets.Items.Count)
-                    i = 0;
             }
             MessageBox.Show("No matches found !", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
