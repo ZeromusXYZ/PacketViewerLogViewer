@@ -11,6 +11,9 @@ using System.IO;
 using PacketViewerLogViewer.Packets;
 using PacketViewerLogViewer.PVLVHelper;
 using Microsoft.Win32;
+using YoutubeExplode.Videos;
+using YoutubeExplode;
+using YoutubeExplode.Videos.Streams;
 
 namespace PacketViewerLogViewer
 {
@@ -110,6 +113,46 @@ namespace PacketViewerLogViewer
             return true;
         }
 
+        public async Task<bool> LoadVideoFromYoutubeURLAsync(string URL)
+        {
+            bool res = false;
+            eYoutubeURL.Enabled = false;
+            btnTestYT.Enabled = false;
+            try
+            {
+                var youtube = new YoutubeClient();
+                // Read the video ID
+                var videoId = new VideoId(URL);
+
+                // Get media streams & choose the best muxed stream
+                var streams = await youtube.Videos.Streams.GetManifestAsync(videoId);
+                var streamInfo = streams.GetMuxed().WithHighestVideoQuality();
+                if (streamInfo == null)
+                {
+                    Console.Error.WriteLine("This videos has no streams");
+                    MessageBox.Show("This videos has no streams", "Load Youtube Error");
+                    res = false;
+                }
+                else
+                {
+                    media.SetMedia(new Uri(streamInfo.Url));
+                    if (sourceTP != null)
+                        sourceTP.LinkYoutubeURL = streamInfo.Url;
+                    res = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Load Youtube Exception");
+                if (sourceTP != null)
+                    sourceTP.LinkYoutubeURL = string.Empty;
+            }
+            eYoutubeURL.Enabled = true;
+            btnTestYT.Enabled = true;
+            return res;
+        }
+
+
         public bool LoadVideoFromYoutube(string URL)
         {
             try
@@ -150,8 +193,9 @@ namespace PacketViewerLogViewer
                 else
                 if ((sourceTP.LinkYoutubeURL.ToLower().StartsWith("http://")) || (sourceTP.LinkYoutubeURL.ToLower().StartsWith("https://")))
                 {
-                    if (!LoadVideoFromYoutube(sourceTP.LinkYoutubeURL))
-                        sourceTP.LinkYoutubeURL = string.Empty;
+                    var l = LoadVideoFromYoutubeURLAsync(sourceTP.LinkYoutubeURL);
+                    //if (!LoadVideoFromYoutube(sourceTP.LinkYoutubeURL))
+                    //    sourceTP.LinkYoutubeURL = string.Empty;
                 }
                 else
                 {
@@ -375,7 +419,8 @@ namespace PacketViewerLogViewer
         private void BtnTestYT_Click(object sender, EventArgs e)
         {
             Application.UseWaitCursor = true;
-            var s = eYoutubeURL.Text;
+            var l = LoadVideoFromYoutubeURLAsync(eYoutubeURL.Text);
+            /*
             if (LoadVideoFromYoutube(s))
             {
                 if (sourceTP != null)
@@ -385,6 +430,7 @@ namespace PacketViewerLogViewer
             {
                 MessageBox.Show("Link does not seem valid, or could not access the page.", "Test Youtube Link", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            */
             Application.UseWaitCursor = false;
         }
 
