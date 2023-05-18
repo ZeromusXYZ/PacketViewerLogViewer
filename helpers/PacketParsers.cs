@@ -986,7 +986,7 @@ namespace PacketViewerLogViewer
                 {
                     var sizeStr = typeField.Substring(6, typeField.Length - 6);
                     int size = -1;
-                    if ((sizeStr != string.Empty) || (!int.TryParse(sizeStr,out size)))
+                    if ((sizeStr == string.Empty) || (!int.TryParse(sizeStr,out size)))
                     {
                         size = -1;
                     }
