@@ -1,5 +1,8 @@
 # PVLV
 
+## This program has since been superseeded by [VieweD](https://github.com/ZeromusXYZ/VieweD), please use that instead.
+-----
+
 This program is meant to be used with .log files made with the Windower4 Packetviewer add-on.
 It is also able to read Ashita Packeteer .txt log files, and with PacketDB .sqlite3 files.
 
